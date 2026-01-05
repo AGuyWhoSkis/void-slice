@@ -18,4 +18,4 @@ In other words, Void Explorer provides the incredibly useful Export/Import/Gener
 	- Comparing D2 and DOTO code will reveal a lot about how DOTO was built, which is information that can be used both to enhance this repo and develop more sophisticated mods.
 
 ### Want to help?
-If you made it this far, you might be interested in contributing. Please reach out on [Nexus Mods]([url](https://www.nexusmods.com/profile/kleptobismal)) where we can discuss how to make that happen!
+If you made it this far, you might be interested in contributing. Please reach out on [Nexus Mods](https://www.nexusmods.com/profile/kleptobismal) where we can discuss how to make that happen!
