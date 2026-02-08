@@ -12,6 +12,8 @@ const PATH_VF_DOTO = "./void-files/VoidComponents-DOTO-all-text/Dishonored_Death
 func main() {
 	selector := "generated.decls.localized.english.speechbarks.speech.speech_barks.special.duke.bk_duke_search.decl"
 
+	// for now, tests are enough to develop against
+	// TODO: eventually make main() do something useful
 	path := filepath.Join(PATH_VF_D2, selector)
 	read, errRead := os.ReadFile(path)
 	if errRead != nil {
