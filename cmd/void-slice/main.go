@@ -1,154 +1,247 @@
 package main
 
 import (
-	"bufio"
-	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
-	"time"
-
-	"void-slice/internal/core"
 )
 
+const PATH_VF_D2 = "./void-files/VoidComponents-D2-all-text/Dishonored2/Export/game0"
+const PATH_VF_DOTO = "./void-files/VoidComponents-DOTO-all-text/Dishonored_DeathOfTheOutsider/Export/game0"
+
 func main() {
-	var (
-		nonInteractive = flag.Bool("non-interactive", false, "Run without prompts")
-		exportRoot     = flag.String("export-root", "", "Path to Export/ directory (contains game1/game2/...)")
-		entry          = flag.String("entry", "", "Entry: canonical resource name (contains '/') OR exported .decl filename")
-		outDir         = flag.String("out", "", "Destination output directory")
-		maxDepth       = flag.Int("max-depth", 10, "Max traversal depth (hard cap)")
-	)
-	flag.Parse()
+	selector := "generated.decls.localized.english.speechbarks.speech.speech_barks.special.duke.bk_duke_search.decl"
 
-	reader := bufio.NewReader(os.Stdin)
-
-	if !*nonInteractive {
-		if *exportRoot == "" {
-			guess := "./Export"
-			if _, err := os.Stat(guess); err == nil {
-				*exportRoot = guess
-			} else {
-				*exportRoot = prompt(reader, "Export root", "")
-			}
-		}
-		if *entry == "" {
-			*entry = prompt(reader, "Entry (canonical name with '/' OR exported filename)", "")
-		}
-		if *outDir == "" {
-			def := defaultOutDir()
-			v := prompt(reader, "Destination folder", def)
-			if strings.TrimSpace(v) == "" {
-				*outDir = def
-			} else {
-				*outDir = v
-			}
-		}
-	} else {
-		missing := []string{}
-		if *exportRoot == "" {
-			missing = append(missing, "--export-root")
-		}
-		if *entry == "" {
-			missing = append(missing, "--entry")
-		}
-		if *outDir == "" {
-			missing = append(missing, "--out")
-		}
-		if len(missing) > 0 {
-			fmt.Fprintf(os.Stderr, "missing required flags in --non-interactive mode: %s\n", strings.Join(missing, ", "))
-			os.Exit(2)
-		}
+	path := filepath.Join(PATH_VF_D2, selector)
+	read, errRead := os.ReadFile(path)
+	if errRead != nil {
+		fmt.Println(fmt.Errorf("io error: %v", errRead))
 	}
 
-	absOut, err := filepath.Abs(*outDir)
-	if err != nil {
-		fatal("failed to resolve output dir", err)
-	}
-
-	// Safety check: destination exists and is non-empty
-	if info, err := os.Stat(absOut); err == nil && info.IsDir() {
-		entries, _ := os.ReadDir(absOut)
-		if len(entries) > 0 {
-			if *nonInteractive {
-				fatal("destination folder exists and is not empty", nil)
-			}
-			resp := prompt(reader, "Destination exists and is not empty. Continue? (y/N)", "n")
-			if strings.ToLower(strings.TrimSpace(resp)) != "y" {
-				fmt.Println("aborted")
-				return
-			}
-		}
-	}
-
-	if err := os.MkdirAll(absOut, 0o755); err != nil {
-		fatal("failed to create output directory", err)
-	}
-
-	result, err := core.Run(core.Options{
-		ExportRoot: *exportRoot,
-		Entry:      *entry,
-		OutDir:     absOut,
-		MaxDepth:   *maxDepth,
-	})
-	if err != nil {
-		fatal("error", err)
-	}
-
-	fmt.Println("OK")
-	fmt.Printf("  roots processed:   %d\n", result.RootsProcessed)
-	fmt.Printf("  visited nodes:     %d\n", result.VisitedNodes)
-	fmt.Printf("  unresolved unique: %d\n", result.UnresolvedUnique)
-	fmt.Printf("  output:            %s\n", absOut)
-
-	if len(result.Warnings) > 0 {
-		fmt.Printf("\nWarnings (%d):\n", len(result.Warnings))
-		for i, w := range result.Warnings {
-			if i >= 20 {
-				fmt.Printf("  ... (%d more)\n", len(result.Warnings)-20)
-				break
-			}
-			fmt.Printf("  - %s\n", w)
-		}
-	}
-
-	if result.UnresolvedUnique > 0 {
-		fmt.Printf("\nUnresolved (%d) (showing up to 50):\n", result.UnresolvedUnique)
-		for i, u := range result.Unresolved {
-			if i >= 50 {
-				fmt.Printf("  ... (%d more)\n", result.UnresolvedUnique-50)
-				break
-			}
-			fmt.Printf("  - %s\n", u)
-		}
-	}
+	fmt.Println(read)
 }
 
-func prompt(r *bufio.Reader, label, def string) string {
-	if def != "" {
-		fmt.Printf("%s [%s]: ", label, def)
-	} else {
-		fmt.Printf("%s: ", label)
+/*
+
+one canonical parse entry point:
+
+
+and then layer wrappers:
+
+ParseBytes(b []byte) → calls Parse(bytes.NewReader(b))
+
+ParseString(s string) → calls Parse(strings.NewReader(s))
+
+*/
+
+type ErrorType string
+
+const (
+	MISMATCH_QUOTE = "MISMATCH QUOTE"
+)
+
+// func Parse(r io.Reader) ([]lex.Token, error) {
+// 	br := bufio.NewReader(r)
+
+// 	var stackPairedChars []lex.Token
+
+// 	line, col := 1, 0
+// 	lineSoFar := ""
+// 	debugMarks := []mark{}
+// 	bIsWithinDblQuote := false
+// 	bIsWithinSngQuote := false
+// 	parsingErrors := []ParseError{}
+
+// 	for {
+// 		b, err := br.ReadByte()
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 		col++
+
+// 		switch b {
+// 		case '(', '[', '{':
+// 			if bIsWithinDblQuote || bIsWithinSngQuote {
+// 				parsingErrors = append(parsingErrors, ParseError{
+// 					// TODO: test against game files to answer 'are there any valid quotes containing brackets?'
+// 					Line:  line,
+// 					Col:   col,
+// 					Error: fmt.Errorf("illegal? %q within quote at %d:%d\n\tLSF: %s", b, line, col, lineSoFar),
+// 				})
+// 				// pretend the quote is closed and move on
+// 				bIsWithinDblQuote = false
+// 				bIsWithinSngQuote = false
+// 			}
+// 			stackPairedChars = append(stackPairedChars, newToken(b, line, col))
+// 		case ')', ']', '}':
+// 			if bIsWithinDblQuote || bIsWithinSngQuote {
+// 				// syntax err: i have yet to see a quote containing a closing bracket
+// 				parsingErrors = append(parsingErrors, ParseError{
+// 					Line:  line,
+// 					Col:   col,
+// 					Error: fmt.Errorf("illegal? %q within quote at %d:%d\n\tLSF: %s", b, line, col, lineSoFar),
+// 				})
+// 				// pretend the quote is closed and move on
+// 				bIsWithinDblQuote = false
+// 				bIsWithinSngQuote = false
+// 			}
+// 			if len(stackPairedChars) == 0 {
+// 				return nil, fmt.Errorf("unexpected %q at %d:%d\n\tLSF: %s", b, line, col, lineSoFar)
+// 			}
+// 			top := stackPairedChars[len(stackPairedChars)-1]
+// 			if !matches(top.Ch, b) {
+// 				parsingErrors = append(parsingErrors, ParseError{
+// 					Line: line,
+// 					Col:  col,
+// 					Error: fmt.Errorf("mismatched: opened %q at %d:%d, got %q at %d:%d\n\tLSF: %s",
+// 						top.Ch, top.Pos.Line, top.Pos.Col, b, line, col, lineSoFar),
+// 				})
+// 				// assume it's recoverable
+// 				// TODO reset the state by inserting matching bracket onto stack
+
+// 				// requiredPair := pairOf(top.ch)
+
+// 				stackPairedChars = stackPairedChars[:len(stackPairedChars)-1]
+// 				topPairCh := pairOf(top.Ch)
+// 				topPair := lex.Token{
+// 					Ch: topPairCh,
+// 					Pos: lex.Pos{
+// 						Line: top.Pos.Line,
+// 						Col:  top.Pos.Col - 1,
+// 					},
+// 				}
+// 				stackPairedChars = append(stackPairedChars, topPair, top)
+// 			}
+// 			stackPairedChars = stackPairedChars[:len(stackPairedChars)-1]
+// 		case '"': // "Double Quotes"
+// 			if bIsWithinSngQuote {
+// 				continue
+// 			} else if len(stackPairedChars) > 0 {
+// 				top := stackPairedChars[len(stackPairedChars)-1]
+// 				if matches(top.Ch, b) {
+// 					// remove from stack
+// 					stackPairedChars = stackPairedChars[:len(stackPairedChars)-1]
+// 					bIsWithinDblQuote = false
+// 					// debugMarks = append(debugMarks, mark{line: line, col: col, displayAs: "|" + string(top.ch) + "|" + string(b)})
+// 					continue
+// 				}
+// 			}
+// 			// otherwise add to stack
+// 			stackPairedChars = append(stackPairedChars, newToken(b, line, col))
+// 			bIsWithinDblQuote = true
+// 			// debugMarks = append(debugMarks, mark{line: line, col: col, displayAs: "0" + string(top.ch) + "0" + string(b)})
+// 		case '\'': // 'Single Quotes'
+// 			if bIsWithinDblQuote {
+// 				continue
+// 			} else if len(stackPairedChars) > 0 {
+// 				top := stackPairedChars[len(stackPairedChars)-1]
+// 				if matches(top.Ch, b) {
+// 					// remove from stack
+// 					stackPairedChars = stackPairedChars[:len(stackPairedChars)-1]
+// 					bIsWithinSngQuote = false
+// 					// debugMarks = append(debugMarks, mark{line: line, col: col, displayAs: "|" + string(top.ch) + "|" + string(b)})
+// 					continue
+// 				}
+// 			}
+// 			// otherwise add to stack
+// 			stackPairedChars = append(stackPairedChars, newToken(b, line, col))
+// 			bIsWithinSngQuote = true
+// 			// debugMarks = append(debugMarks, mark{line: line, col: col, displayAs: "0" + string(top.ch) + "0" + string(b)})
+// 		}
+
+// 		if b == '\n' {
+// 			if bIsWithinDblQuote {
+// 				return nil, fmt.Errorf("no matching pair for double-quote (\") on line %d\n\tLSF: %s", line, lineSoFar)
+// 			} else if bIsWithinSngQuote {
+// 				return nil, fmt.Errorf("no matching pair for single-quote (') on line %d\n\tLSF: %s", line, lineSoFar)
+// 			}
+
+// 			fmt.Println(lineSoFar)
+// 			if len(debugMarks) > 0 {
+// 				markings := ""
+
+// 				for i := 0; i < col; i++ {
+// 					isMarkByCol := func(m mark) bool {
+// 						return i == m.col
+// 					}
+// 					index := slices.IndexFunc(debugMarks, isMarkByCol)
+
+// 					colIsMarked := index != -1
+
+// 					if colIsMarked {
+// 						m := debugMarks[index]
+// 						markings = markings + string(m.displayAs)
+// 					} else {
+// 						markings = markings + string(lineSoFar[i])
+// 					}
+// 				}
+// 				fmt.Println(markings)
+// 				debugMarks = []mark{}
+// 			}
+// 			lineSoFar = ""
+// 			col = 0
+// 			line++
+// 		} else {
+// 			lineSoFar = lineSoFar + string(b)
+// 		}
+
+// 	}
+
+// 	if len(stackPairedChars) != 0 {
+// 		top := stackPairedChars[len(stackPairedChars)-1]
+// 		return nil, fmt.Errorf("unclosed %q opened at %d:%d", top.Ch, top.Pos.Line, top.Pos.Col)
+// 	}
+
+// 	return stackPairedChars, nil
+// }
+
+// func newToken(ch byte, line, col int) lex.Token {
+// 	return lex.Token{
+// 		Ch:  ch,
+// 		Pos: lex.Pos{Line: line, Col: col},
+// 	}
+// }
+
+func matches(open, close byte) bool {
+	switch open {
+	case '(':
+		return close == ')'
+	case '[':
+		return close == ']'
+	case '{':
+		return close == '}'
+	case '<':
+		return close == '>'
+	case '"', '\'':
+		return open == close
 	}
-	line, _ := r.ReadString('\n')
-	line = strings.TrimSpace(line)
-	if line == "" {
-		return def
-	}
-	return line
+
+	panic(fmt.Errorf("oh FUCK %b:%b", open, close))
 }
 
-func defaultOutDir() string {
-	ts := time.Now().Format("20060102-150405")
-	return "./void-slice-output-" + ts
-}
-
-func fatal(msg string, err error) {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", msg, err)
-	} else {
-		fmt.Fprintln(os.Stderr, msg)
+func pairOf(openOrClose byte) byte {
+	switch openOrClose {
+	case '\'':
+		return '\''
+	case '"':
+		return '"'
+	case '(':
+		return ')'
+	case ')':
+		return '('
+	case '{':
+		return '}'
+	case '}':
+		return '{'
+	case '[':
+		return ']'
+	case '<':
+		return '>'
+	case '>':
+		return '<'
 	}
-	os.Exit(1)
+	panic(fmt.Errorf("no pair for char %b", openOrClose))
 }
