@@ -1,70 +1,86 @@
 package scan_test
 
 import (
+	"flag"
+	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 	"void-slice/internal/scan"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestIsASCIIPunct(t *testing.T) {
-	type tc struct {
-		name string
-		b    byte
-		want bool
+var ingestedFiles map[string]string
+var filesToIngest = []string{
+	"generated.decls.activeragdoll.models.characters.base.active_ragdoll.ar_hookmine_head_ceiling..activeragdoll.decl",
+}
+
+func TestMain(m *testing.M) {
+	flag.Parse()
+
+	testDir := filepath.FromSlash("../../../void-files/big-Export/game1")
+	ingestedFiles = make(map[string]string)
+
+	for _, filename := range filesToIngest {
+		fp := filepath.Join(testDir, filename)
+		b, err := os.ReadFile(fp)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "test setup failed: read %q: %v\n", fp, err)
+			os.Exit(1)
+		}
+		ingestedFiles[filename] = string(b)
 	}
 
+	os.Exit(m.Run())
+}
+
+func Test1(t *testing.T) {
+
+}
+
+func TestScanner(t *testing.T) {
+	type tc struct {
+		name      string
+		bytes     []byte
+		wantDiags []scan.Diagnostic
+	}
+
+	file0 := ingestedFiles[filesToIngest[0]]
+
+	require.NotEmpty(t, file0, "expected non-empty test file (file0)")
+
 	tests := []tc{
-		// --- Lower edge cases / non-printing ---
-		{name: "NUL", b: 0x00, want: false},
-		{name: "space", b: ' ', want: false}, // 0x20
-		{name: "DEL", b: 0x7F, want: false},  // 127, not in any range below
-		{name: "non_ascii_128", b: 0x80, want: false},
-
-		// --- Digits / letters should be false ---
-		{name: "digit_0", b: '0', want: false},
-		{name: "digit_9", b: '9', want: false},
-		{name: "upper_A", b: 'A', want: false},
-		{name: "upper_Z", b: 'Z', want: false},
-		{name: "lower_a", b: 'a', want: false},
-		{name: "lower_z", b: 'z', want: false},
-
-		// --- Range 1: '!'..'/' (33..47) ---
-		{name: "bang_lower_bound", b: '!', want: true},
-		{name: "paren_open", b: '(', want: true},
-		{name: "paren_close", b: ')', want: true},
-		{name: "plus", b: '+', want: true},
-		{name: "slash_upper_bound", b: '/', want: true},
-
-		// --- Range 2: ':'..'@' (58..64) ---
-		{name: "colon_lower_bound", b: ':', want: true},
-		{name: "semicolon", b: ';', want: true},
-		{name: "equals", b: '=', want: true},
-		{name: "at_upper_bound", b: '@', want: true},
-
-		// --- Range 3: '['..'`' (91..96) ---
-		{name: "lbracket_lower_bound", b: '[', want: true},
-		{name: "backslash", b: '\\', want: true},
-		{name: "rbracket", b: ']', want: true},
-		{name: "caret", b: '^', want: true},
-		{name: "underscore", b: '_', want: true},
-		{name: "backtick_upper_bound", b: '`', want: true},
-
-		// --- Range 4: '{'..'~' (123..126) ---
-		{name: "lbrace_lower_bound", b: '{', want: true},
-		{name: "pipe", b: '|', want: true},
-		{name: "rbrace", b: '}', want: true},
-		{name: "tilde_upper_bound", b: '~', want: true},
-
-		// --- Just outside boundaries (to prove bounds are tight) ---
-		{name: "one_before_bang", b: 0x20, want: false}, // space
-		{name: "one_after_tilde", b: 0x7F, want: false}, // DEL
+		{
+			name:      "sanity test",
+			bytes:     []byte("\n{\n\tedit = {\n\t\n\t}\n}"),
+			wantDiags: []scan.Diagnostic{}, // zero scanner errors should be produced
+		},
+		{
+			name:      "file0",
+			bytes:     []byte(file0),
+			wantDiags: []scan.Diagnostic{},
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := scan.IsASCIIPunct(tt.b)
-			assert.Equal(t, tt.want, got)
+			fmt.Printf("\n=== RUN %s\n", tt.name)
+			fmt.Printf("%s", tt.bytes)
+			result_tokens, result_diags := scan.Scan(tt.bytes)
+
+			assert.NotEmpty(t, result_tokens, "expected more than zero tokens")
+
+			for _, token := range result_tokens {
+				fmt.Printf("\n\t%v", token)
+			}
+
+			for _, diag := range result_diags {
+				fmt.Printf("\n\t%v", diag)
+				// fmt.Printf("\n\t%s", diag.Code, diag.Severity, diag.Span)
+			}
 		})
 	}
+
 }
