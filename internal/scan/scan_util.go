@@ -1,5 +1,10 @@
 package scan
 
+import (
+	"strconv"
+	"strings"
+)
+
 func IsWhitespace(b byte) bool {
 	// TODO: assess if \v \r \f are worth checking
 	return b == ' ' || b == '\t' || b == '\r' || b == '\v' || b == '\f'
@@ -7,6 +12,11 @@ func IsWhitespace(b byte) bool {
 
 func IsDigit(b byte) bool {
 	return b >= '0' && b <= '9'
+}
+
+// check for things like 'f' from 0f, or 'm' from  0m
+func IsNumberTypeSuffix(b byte) bool {
+	return b == 'f' || b == 'm'
 }
 
 func IsAlpha(b byte) bool {
@@ -29,6 +39,43 @@ func IsASCIIPunct(b byte) bool {
 		(b >= '{' && b <= '~')
 }
 
+// HumanSpan formats Span using line:col positions, given a LineIndex
+func HumanSpan(li LineIndex, s Span) string {
+	start := li.PosAt(s.Start)
+	end := li.PosAt(s.End)
+
+	var b strings.Builder
+	b.Grow(32)
+
+	// Example output: "1:5-1:12"
+	b.WriteString(strconv.Itoa(start.Line))
+	b.WriteByte(':')
+	b.WriteString(strconv.Itoa(start.Col))
+	b.WriteByte('-')
+	b.WriteString(strconv.Itoa(end.Line))
+	b.WriteByte(':')
+	b.WriteString(strconv.Itoa(end.Col))
+
+	return b.String()
+}
+
+// If you want a human-readable diagnostic, make it explicit (no global state).
+func (d Diagnostic) HumanString(li LineIndex) string {
+	var b strings.Builder
+	b.Grow(len(d.Message) + 80)
+
+	b.WriteString("Diagnostic{Code=")
+	b.WriteString(d.Code.String())
+	b.WriteString(", Severity=")
+	b.WriteString(d.Severity.String())
+	b.WriteString(", Span=")
+	b.WriteString(HumanSpan(li, d.Span))
+	b.WriteString(", Message=")
+	b.WriteString(strconv.Quote(d.Message))
+	b.WriteByte('}')
+
+	return b.String()
+}
 
 func (li LineIndex) SpanPos(sp Span) SpanPos {
 	return SpanPos{
