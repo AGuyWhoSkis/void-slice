@@ -13,14 +13,6 @@ const (
 	SCANNING_PANIC    = -1
 )
 
-// Token kinds needed for Stage 2:
-// 	- punctuation: { } [ ] ( ) = ; , (maybe . depending)
-// 	- identifiers: edit, m_rules, enumItem, item, num, m_name, etc
-// 	- number literals: 34, -1, 23.89 (float maybe)
-// 	- string literals: "..." (with escapes)
-// 	- comment tokens: line and block (or simply skip them)
-// 	- newlines/whitespace usually skipped
-
 var TokenKind = struct {
 	SYMBOL         Kind
 	IDENTIFIER     Kind
@@ -29,7 +21,7 @@ var TokenKind = struct {
 	COMMENT_BLOCK  Kind
 	COMMENT_LINE   Kind
 	NEWLINE        Kind
-	WHITESPACE     Kind
+	WHITESPACE     Kind // unused; remove this
 }{
 	SYMBOL:         kindSymbol,
 	IDENTIFIER:     kindIdentifier,

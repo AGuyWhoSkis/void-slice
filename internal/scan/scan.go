@@ -1,5 +1,25 @@
 package scan
 
+// Planned: keep the scanner stable; only add tiny helpers if they reduce
+// friction in parse/validate without changing the token model
+//
+// Goals:
+//   - Scanner stays: []byte -> []Token{Kind+Span} + []Diagnostic
+//   - Parser/Validator distinguishes punctuation via src[t.Span.Start] (Option A)
+//
+// Optional tiny additions (only if friction appears):
+//   [ ] Add helper to avoid repeating span slicing everywhere:
+//         func Lexeme(src []byte, t Token) []byte { return src[t.Span.Start:t.Span.End] }
+//       (Place in scan_util.go; safe, no allocations beyond slice header)
+//
+//   [ ] Add helper for single-byte symbol extraction (assert length==1 if desired):
+//         func Sym(src []byte, t Token) byte { return src[t.Span.Start] }
+//
+// Non-goals:
+//   - Do NOT add keyword kinds (Version/component/edit/num/etc)
+//   - Do NOT split SYMBOL kinds yet (back-pocket option to simplify bracket matching)
+//   - Do NOT introduce parse coupling here (keep scan reusable)
+
 import "fmt"
 
 // Input:

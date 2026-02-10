@@ -1,10 +1,6 @@
 package scan
 
-// =====================================================================================
-// FILE: internal/scan/scan_util.go
-// =====================================================================================
-//
-// PLAN: utilities that parse/validate will likely want.
+// Planned: utilities that parse/validate will likely want.
 //
 // Suggested utilities to implement as needed
 //   [ ] Lexeme(src, tok) []byte
