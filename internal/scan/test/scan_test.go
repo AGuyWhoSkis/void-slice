@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 	"void-slice/internal/scan"
 
 	"github.com/stretchr/testify/assert"
@@ -14,13 +15,17 @@ import (
 
 var ingestedFiles map[string]string
 var filesToIngest = []string{
-	"generated.decls.activeragdoll.models.characters.base.active_ragdoll.ar_hookmine_head_ceiling..activeragdoll.decl",
+	"game1/generated.decls.gamelogicmanager.ui.gamelogic.manager..gamelogicmanager.decl",
+	// "game1/generated.decls.activeragdoll.models.characters.base.active_ragdoll.ar_hookmine_head_ceiling..activeragdoll.decl",
+	"game1/generated.decls.cpntplayerfxmanager.components.characters.player.base.fx_manager..cpntplayerfxmanager.decl",
+	"game1/generated.decls.greatestmomentsmanager.greatestmoments.manager.manager..greatestmomentsmanager.decl",
+	"game1/maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities",
 }
 
 func TestMain(m *testing.M) {
 	flag.Parse()
 
-	testDir := filepath.FromSlash("../../../void-files/big-Export/game1")
+	testDir := filepath.FromSlash("../../../void-files/d2/")
 	ingestedFiles = make(map[string]string)
 
 	for _, filename := range filesToIngest {
@@ -48,18 +53,24 @@ func TestScanner(t *testing.T) {
 	}
 
 	file0 := ingestedFiles[filesToIngest[0]]
+	// file1 := ingestedFiles[filesToIngest[1]]
 
 	require.NotEmpty(t, file0, "expected non-empty test file (file0)")
 
 	tests := []tc{
+		// {
+		// 	name:      "sanity test",
+		// 	bytes:     []byte("\n{\n\tedit = {\n\t\n\t}\n}"),
+		// 	wantDiags: []scan.Diagnostic{}, // zero scanner errors should be produced
+		// },
+		// {
+		// 	name:      "file0",
+		// 	bytes:     []byte(file0),
+		// 	wantDiags: []scan.Diagnostic{},
+		// },
 		{
-			name:      "sanity test",
-			bytes:     []byte("\n{\n\tedit = {\n\t\n\t}\n}"),
-			wantDiags: []scan.Diagnostic{}, // zero scanner errors should be produced
-		},
-		{
-			name:      "file0",
-			bytes:     []byte(file0),
+			name:      "giant .entities file",
+			bytes:     []byte(ingestedFiles[filesToIngest[3]]),
 			wantDiags: []scan.Diagnostic{},
 		},
 	}
@@ -67,19 +78,19 @@ func TestScanner(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			fmt.Printf("\n=== RUN %s\n", tt.name)
-			fmt.Printf("%s", tt.bytes)
+			// fmt.Printf("%s", tt.bytes)
+
+			startTime := time.Now()
 			result_tokens, result_diags := scan.Scan(tt.bytes)
+			endTime := time.Now()
 
 			assert.NotEmpty(t, result_tokens, "expected more than zero tokens")
+			assert.ElementsMatch(t, tt.wantDiags, result_diags,
+				"expected Diagnostics does not match actual Dignostics:\n"+
+					"\tExpected\n%v\n\tActual\n%v\n", tt.wantDiags, result_diags)
 
-			for _, token := range result_tokens {
-				fmt.Printf("\n\t%v", token)
-			}
-
-			for _, diag := range result_diags {
-				fmt.Printf("\n\t%v", diag)
-				// fmt.Printf("\n\t%s", diag.Code, diag.Severity, diag.Span)
-			}
+			timeMillis := endTime.Sub(startTime).Milliseconds()
+			fmt.Printf("%s\nconsumed %d bytes, produced %d tokens and %d diags\t(took %dms)", t.Name(), len(tt.bytes), len(result_tokens), len(result_diags), timeMillis)
 		})
 	}
 
