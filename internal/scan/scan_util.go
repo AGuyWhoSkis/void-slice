@@ -1,5 +1,26 @@
 package scan
 
+// =====================================================================================
+// FILE: internal/scan/scan_util.go
+// =====================================================================================
+//
+// PLAN: utilities that parse/validate will likely want.
+//
+// Suggested utilities to implement as needed
+//   [ ] Lexeme(src, tok) []byte
+//   [ ] Sym(src, tok) byte
+//   [ ] EqIdent(src, tok, lit string) bool
+//         - Return true iff tok.Kind==IDENTIFIER and lexeme bytes equal lit
+//         - Implement without allocation (compare lengths then bytes)
+//   [ ] ParseIntLiteral(src, tok) (int64, ok)
+//         - Only for NUMBER_LITERAL tokens (handles leading '-' + digits)
+//         - Keep fast: avoid strconv if possible; or use strconv.ParseInt on string(tokBytes)
+//           if acceptable (string alloc). For huge files, avoid per-token string alloc.
+//         - If a fast int parser already exists, reuse it.
+//
+// Tests planned
+//   [ ] scan_models_test.go: Lexeme/Sym/EqIdent sanity
+
 import (
 	"strconv"
 	"strings"
@@ -14,7 +35,7 @@ func IsDigit(b byte) bool {
 	return b >= '0' && b <= '9'
 }
 
-// check for things like 'f' from 0f, or 'm' from  0m
+// A number type suffix is the 'f' in 0f, or 'm' in 0m
 func IsNumberTypeSuffix(b byte) bool {
 	return b == 'f' || b == 'm'
 }
