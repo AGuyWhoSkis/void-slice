@@ -18,6 +18,7 @@ package scan
 //   [ ] scan_models_test.go: Lexeme/Sym/EqIdent sanity
 
 import (
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -83,8 +84,6 @@ func (d Diagnostic) HumanString(li LineIndex) string {
 
 	b.WriteString("Diagnostic{Code=")
 	b.WriteString(d.Code.String())
-	b.WriteString(", Severity=")
-	b.WriteString(d.Severity.String())
 	b.WriteString(", Span=")
 	b.WriteString(HumanSpan(li, d.Span))
 	b.WriteString(", Message=")
@@ -135,4 +134,66 @@ func (li LineIndex) PosAt(offset int) Pos {
 	}
 	// col is 1-based: the byte right after '\n' is col 1
 	return Pos{Line: line, Col: offset - prevNLOffset}
+}
+
+// findTokensAtOffsets returns, for each provided offset, the first token that contains it.
+// The returned slice is the same length/order as offsets: out[i] corresponds to offsets[i].
+// If an offset is not inside any token span, the corresponding entry is nil.
+//
+// Assumptions
+// - tokens are sorted by Span.Start ascending
+// - spans are non-overlapping and Span.End is non-decreasing
+func FindTokensAtOffsets(tokens []Token, offsets ...int) []*Token {
+	if len(offsets) == 0 {
+		panic("findTokensAtOffsets: at least one offset is required")
+	}
+
+	type req struct {
+		off int
+		idx int
+	}
+
+	reqs := make([]req, len(offsets))
+	for i, off := range offsets {
+		reqs[i] = req{off: off, idx: i}
+	}
+
+	// Sort by offset so we can walk tokens once
+	sort.Slice(reqs, func(i, j int) bool {
+		return reqs[i].off < reqs[j].off
+	})
+
+	out := make([]*Token, len(offsets))
+
+	i_token := 0
+	for _, offsetReq := range reqs {
+		offset := offsetReq.off
+
+		// Negative offsets can't match anything
+		if offset < 0 {
+			out[offsetReq.idx] = nil
+			continue
+		}
+
+		// Advance token index until the current token could possibly contain off.
+		// If tokens are non-overlapping and sorted, then any token with End <= off
+		// cannot contain off
+		for i_token < len(tokens) && tokens[i_token].Span.End <= offset {
+			i_token++
+		}
+
+		if i_token >= len(tokens) {
+			out[offsetReq.idx] = nil
+			continue
+		}
+
+		if tokens[i_token].Span.Start <= offset && offset < tokens[i_token].Span.End {
+			out[offsetReq.idx] = &tokens[i_token]
+		} else {
+			// off is either in a gap before tokens[ti], or beyond all tokens (handled above)
+			out[offsetReq.idx] = nil
+		}
+	}
+
+	return out
 }

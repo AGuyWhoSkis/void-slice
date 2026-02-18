@@ -309,3 +309,46 @@ func findTokenAtOffset(tokens []scan.Token, offset int) *scan.Token {
 	return nil
 }
 
+func Test_findTokensAtOffsets(t *testing.T) {
+	tokens := []scan.Token{
+		{Kind: 1, Span: scan.NewSpan(0, 1)},
+		{Kind: 2, Span: scan.NewSpan(1, 3)},
+		{Kind: 3, Span: scan.NewSpan(5, 6)},
+	}
+
+	got := scan.FindTokensAtOffsets(tokens, 0, 2, 4, 5, 10, -1, 2)
+
+	require.Len(t, got, 7)
+
+	require.NotNil(t, got[0])
+	assert.Equal(t, scan.Kind(1), got[0].Kind)
+	assert.Equal(t, scan.NewSpan(0, 1), got[0].Span)
+
+	require.NotNil(t, got[1])
+	assert.Equal(t, scan.Kind(2), got[1].Kind)
+	assert.Equal(t, scan.NewSpan(1, 3), got[1].Span)
+
+	assert.Nil(t, got[2]) // 4 is in a gap (no token contains it)
+
+	require.NotNil(t, got[3])
+	assert.Equal(t, scan.Kind(3), got[3].Kind)
+	assert.Equal(t, scan.NewSpan(5, 6), got[3].Span)
+
+	assert.Nil(t, got[4]) // beyond last token
+	assert.Nil(t, got[5]) // negative offset
+
+	// Duplicate offset: should map to the same token span as earlier offset 2.
+	require.NotNil(t, got[6])
+	assert.Equal(t, scan.Kind(2), got[6].Kind)
+	assert.Equal(t, scan.NewSpan(1, 3), got[6].Span)
+}
+
+func Test_findTokensAtOffsets_panicsOnNoOffsets(t *testing.T) {
+	tokens := []scan.Token{
+		{Kind: 1, Span: scan.NewSpan(0, 1)},
+	}
+
+	require.Panics(t, func() {
+		_ = scan.FindTokensAtOffsets(tokens)
+	})
+}
