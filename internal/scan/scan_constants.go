@@ -21,7 +21,6 @@ var TokenKind = struct {
 	COMMENT_BLOCK  Kind
 	COMMENT_LINE   Kind
 	NEWLINE        Kind
-	WHITESPACE     Kind // unused; remove this
 }{
 	SYMBOL:         kindSymbol,
 	IDENTIFIER:     kindIdentifier,
@@ -30,7 +29,6 @@ var TokenKind = struct {
 	COMMENT_BLOCK:  kindCommentBlock,
 	COMMENT_LINE:   kindCommentLine,
 	NEWLINE:        kindNewline,
-	WHITESPACE:     kindWhitespace,
 }
 
 const (
@@ -41,7 +39,6 @@ const (
 	kindCommentBlock
 	kindCommentLine
 	kindNewline
-	kindWhitespace
 )
 
 func (tk Kind) String() string {
@@ -60,8 +57,6 @@ func (tk Kind) String() string {
 		return "comment-line"
 	case kindNewline:
 		return "new-line"
-	case kindWhitespace:
-		return "whitespace"
 	default:
 		return "UNDEFINED"
 	}
@@ -73,14 +68,9 @@ var Codes = struct {
 	SCAN           DiagnosticCode
 	SCAN_STRUCTURE DiagnosticCode
 }{
-	SCAN:           scan,
-	SCAN_STRUCTURE: codeStructure,
+	SCAN:           "VOID_SCAN",
+	SCAN_STRUCTURE: "VOID_SCAN_STRUCTURE",
 }
-
-const (
-	scan          DiagnosticCode = "VOID_SCAN"
-	codeStructure DiagnosticCode = "VOID_SCAN_STRUCTURE"
-)
 
 // 	Lexical diagnostics:
 // 		- unterminated string

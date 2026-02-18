@@ -40,11 +40,6 @@ func TestMain(m *testing.M) {
 
 	os.Exit(m.Run())
 }
-
-func Test1(t *testing.T) {
-
-}
-
 func TestScanner(t *testing.T) {
 	type tc struct {
 		name      string
@@ -86,7 +81,7 @@ func TestScanner(t *testing.T) {
 			wantToks: []scan.Token{
 				{
 					Kind: scan.TokenKind.QUOTE_LITERAL,
-					Span: scan.NewSpan(, end int),
+					Span: scan.NewSpan(1, 2),
 				},
 			},
 		},
@@ -95,7 +90,6 @@ func TestScanner(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			fmt.Printf("\n=== RUN %s\n", tt.name)
-			// fmt.Printf("%s", tt.bytes)
 
 			startTime := time.Now()
 			result_tokens, result_diags := scan.Scan(tt.bytes)
@@ -109,11 +103,9 @@ func TestScanner(t *testing.T) {
 			if tt.wantToks != nil {
 				for i, wantToken := range tt.wantToks {
 					require.NotNil(t, wantToken, "how the heck is this nil anyway (wantToken %d)", i)
-					if wantToken.Span.Start != 0 || wantToken.Span.End != 0 {
-						// the test defined Spans to assert
-						assert.Containsf(t, result_tokens, wantToken, "test %s wants this token, but it was missing from Scanner output: %v", t.Name(), wantToken)
-					}
+					require.NotNil(t, wantToken.Kind, "wantToken cannot have nil Kind")
 				}
+				assert.ElementsMatchf(t, tt.wantToks, result_tokens, "expected tokens to match: \n\tExpected\n%v\n\tActual\n%v", tt.wantToks, result_tokens)
 			}
 
 			timeMillis := endTime.Sub(startTime).Milliseconds()
