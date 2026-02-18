@@ -1,5 +1,10 @@
 package parse
 
+import (
+	"fmt"
+	"void-slice/internal/scan"
+)
+
 // Planned: build a token-driven parser that can *walk* .entities structure while:
 //   - emitting structural diagnostics (missing braces/semicolon, unexpected token, etc.)
 //   - enabling validate package to do semantic checks (array num/item parity, required keys)
@@ -9,127 +14,180 @@ package parse
 //   - Huge files: parsing should be streaming-ish; do not build a full-file AST.
 //     Parse one component at a time; allow validator to process and discard.
 //
+
 // -------------------------
 // 1) Public API (parse package)
 // -------------------------
 //
-// Choose ONE of these shapes (A or B). A is simplest and is the recommended start.
+// The “Walk” API (streaming-based validation)
 //
-// A) “Walk” API (recommended for streaming validation):
-//
-//   type Handler interface {
-//     OnVersion(versionTok scan.Token, versionValue int64)
-//     OnComponentBegin(componentTok scan.Token, lbrace scan.Token)
-//     OnComponentDecl(typeTok, nameTok scan.Token, lbrace scan.Token) // e.g. cpntFoo name {
-//     OnComponentEnd(rbrace scan.Token)
-//
-//     OnObjectBegin(lbrace scan.Token) // for nested { ... }
-//     OnObjectEnd(rbrace scan.Token)
-//
-//     OnAssignment(key Key, eqTok scan.Token, value Value, semiTok scan.Token)
-//     // Optional: OnTypedBlock(typeTok, nameTok, lbrace) if a distinct hook is helpful.
-//
-//     OnDiag(diag scan.Diagnostic)
-//   }
-//
-//   func WalkEntities(src []byte, toks []scan.Token, h Handler) (diags []scan.Diagnostic)
-//
-// Notes:
+//	Note: validate.go will implement Handler to track object frames and run checks at ObjectEnd.
+type Handler interface {
+	OnVersion(versionTok scan.Token, versionValue int64)
+	OnComponentBegin(componentTok scan.Token, lbrace scan.Token)
+	OnComponentDecl(typeTok, nameTok scan.Token, lbrace scan.Token) // e.g. cpntFoo name {
+	OnComponentEnd(rbrace scan.Token)
+
+	OnObjectBegin(lbrace scan.Token) // for nested { ... }
+	OnObjectEnd(rbrace scan.Token)
+
+	OnAssignment(key Key, eqTok scan.Token, value Value, semiTok scan.Token)
+	OnTypedBlock(typeTok scan.Kind, nameTok, lbrace scan.Token) // optional; use if a distinct hook is helpful.
+
+	OnDiag(diag scan.Diagnostic)
+}
+
 //   - WalkEntities may *also* return diags; Handler.OnDiag is optional redundancy.
-//   - validate will implement Handler to track object frames and run checks at ObjectEnd.
-//
-// B) “Parse component” API (still streaming, slightly more AST):
-//
-//   type Component struct { /* minimal fields: type/name token spans, root object range */ }
-//   func ParseEntities(src []byte, toks []scan.Token) (components []Component, diags []scan.Diagnostic)
-//
-// If approach B is used, validate iterates components, then re-walks tokens within that span.
-// Approach A avoids re-walking and is simpler overall.
-//
+
+func WalkEntities(src []byte, toks []scan.Token, h Handler) (diags []scan.Diagnostic) {
+	return nil
+}
+
 // -------------------------
 // 2) Cursor / token stream helper
 // -------------------------
 //
 // Implement TokenCursor (private to parse):
-//
-//   type cursor struct {
-//     src   []byte
-//     toks  []scan.Token
-//     i     int
-//     diags []scan.Diagnostic
-//   }
-//
-//   func (c *cursor) eof() bool
-//   func (c *cursor) peek() (scan.Token, bool)
-//   func (c *cursor) next() (scan.Token, bool)
-//   func (c *cursor) lexeme(t scan.Token) []byte  // slice: src[start:end]
-//   func (c *cursor) sym(t scan.Token) byte       // src[start]
-//   func (c *cursor) isIdent(t scan.Token, lit string) bool // no allocations
-//
+type cursor struct {
+	src   []byte
+	toks  []scan.Token
+	i     int
+	n     int
+	diags []scan.Diagnostic
+}
+
+func (c *cursor) eof() bool {
+	return c.i >= c.n
+}
+
+func (c *cursor) peek() *scan.Token {
+	if c.i+1 >= c.n {
+		return nil
+	} else {
+		return &c.toks[c.i+1]
+	}
+}
+
+func (c *cursor) next() *scan.Token {
+	nextItem := c.peek()
+	c.i += 1
+	return nextItem
+}
+
+// slice: src[start:end]
+func (c *cursor) lexeme(t scan.Token) []byte {
+	if t.Span.Start < 0 {
+		panic(fmt.Sprintf("invalid Token for lexeme: Span.Start %d out of bounds", t.Span.Start))
+	}
+	if t.Span.End > c.n {
+		panic(fmt.Errorf("invalid Token for lexeme: Span.End %d out of bounds (len=%d)", t.Span.End, c.n))
+	}
+	return c.src[t.Span.Start:t.Span.End]
+}
+
+// src[start]
+func (c *cursor) sym(t scan.Token) byte {
+	if t.Span.Start < 0 || t.Span.Start > c.n {
+		panic(fmt.Errorf("invalid Token for sym: Span.Start %d out of bounds (len=%d)", t.Span.Start, c.n))
+	}
+	return c.src[t.Span.Start]
+}
+
+// no allocations
+func (c *cursor) isIdent(t scan.Token, bytes string) bool {
+	if len(bytes) < 1 { 
+		return false
+	}
+	for i, b := range []byte(bytes) {
+		src_i := t.Span.Start + i
+		if src_i < 0 || src_i > c.n {
+			// safe to compare
+			if c.src[src_i] != b {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 // Expect/match helpers (these should be the only places that create parse diags):
-//   func (c *cursor) matchKind(k scan.Kind) (scan.Token, bool)
-//   func (c *cursor) expectKind(k scan.Kind, code scan.DiagnosticCode, msg string) (scan.Token, bool)
-//
-//   func (c *cursor) matchSym(ch byte) (scan.Token, bool)
-//   func (c *cursor) expectSym(ch byte, code scan.DiagnosticCode, msg string) (scan.Token, bool)
-//
-//   func (c *cursor) matchIdent(lit string) (scan.Token, bool)
-//   func (c *cursor) expectIdent(lit string, code scan.DiagnosticCode, msg string) (scan.Token, bool)
-//
-// Recovery (critical for “keep going”):
-//   func (c *cursor) syncTo(sym1 byte, sym2 byte /* optional */) // advance until one found
+func (c *cursor) matchKind(k scan.Kind) (scan.Token, bool)
+func (c *cursor) expectKind(k scan.Kind, code scan.DiagnosticCode, msg string) (scan.Token, bool)
+
+func (c *cursor) matchSym(ch byte) (scan.Token, bool)
+func (c *cursor) expectSym(ch byte, code scan.DiagnosticCode, msg string) (scan.Token, bool)
+
+func (c *cursor) matchIdent(lit string) (scan.Token, bool)
+func (c *cursor) expectIdent(lit string, code scan.DiagnosticCode, msg string) (scan.Token, bool)
+
+// Recovery (critical = keep going):
+func (c *cursor) syncTo(sym1 byte, sym2 byte /* optional */) // advance until one found
 //   Recovery rules used most:
 //     - Inside object: sync to ';' or '}'.
 //     - At top-level: sync to 'component' or EOF.
-//
+
 // -------------------------
 // 3) Minimal parse data types
 // -------------------------
 //
 // Key + indexers (enough for “item[0]” and “item_add[\"id\"]”):
-//
-//   type Key struct {
-//     BaseTok scan.Token       // IDENT token for base name (e.g. "item")
-//     Indexers []Indexer       // zero or more
-//   }
-//   type IndexerKind int { IndexInt, IndexString, IndexIdent } // start with int+string only if preferred
-//   type Indexer struct {
-//     LBrackTok scan.Token
-//     ValueTok  scan.Token     // NUMBER_LITERAL or QUOTE_LITERAL (or IDENT if needed)
-//     RBrackTok scan.Token
-//     Kind IndexerKind
-//     IntValue int64           // if Kind==IndexInt
-//   }
-//
-// Value representation (keep it light; validator mainly needs type + token spans):
-//
-//   type ValueKind int { ValNumber, ValString, ValIdent, ValObject }
-//   type Value struct {
-//     Kind ValueKind
-//     Tok  scan.Token          // for number/string/ident
-//     Obj  ObjectSpan          // for object value
-//   }
-//   type ObjectSpan struct { LBraceTok scan.Token; RBraceTok scan.Token }
-//
+type Key struct {
+	BaseTok  scan.Token // IDENT token for base name (e.g. "item")
+	Indexers []Indexer  // zero or more
+}
+type IndexerKind int
+
+const (
+	IndexInt IndexerKind = iota
+	IndexString
+	IndexIdent
+)
+
+// start with int+string only if preferred
+type Indexer struct {
+	LBrackTok scan.Token
+	ValueTok  scan.Token // NUMBER_LITERAL or QUOTE_LITERAL (or IDENT if needed)
+	RBrackTok scan.Token
+	Kind      IndexerKind
+	IntValue  int64 // if Kind==IndexInt
+}
+
+// Value representation
+type ValueKind int
+
+const (
+	ValNumber ValueKind = iota
+	ValString
+	ValIdent
+	ValObject
+)
+
+type Value struct {
+	Kind ValueKind
+	Tok  scan.Token // for number/string/ident
+	Obj  ObjectSpan // for object value
+}
+type ObjectSpan struct {
+	LBraceTok scan.Token
+	RBraceTok scan.Token
+}
+
 // -------------------------
 // 4) Grammar / walk functions (for .entities specifically)
 // -------------------------
 //
 // Top-level walker:
-//
-//   func (c *cursor) walkEntities(h Handler) {
-//     // Expect: Version <number>
-//     // Then: zero or more component blocks until EOF
-//   }
-//
+func (c *cursor) walkEntities(h Handler) {
+	// Expect: Version <number>
+	// Then: zero or more component blocks until EOF
+}
+
 // Version:
 //   - Expect IDENT "Version"
 //   - Expect NUMBER_LITERAL
 //   - Emit handler.OnVersion(...)
 //
-//
 // Component block:
-//
 //   component {
 //     <TypeIdent> <NameIdent> { <body> }
 //   }
@@ -148,11 +206,9 @@ package parse
 //   - handler.OnComponentEnd(...)
 //
 // Object body:
-//
 //   walkObjectBody assumes '{' has already been consumed and statements are parsed until '}'.
 //
 // Statement forms needed:
-//
 //   A) Assignment:
 //       Key '=' Value ';'
 //
@@ -192,6 +248,7 @@ package parse
 //   - If missing, emit diag and sync to ';' or '}'.
 //   - Pass the semicolon token to handler if present (useful span anchor).
 //
+
 // -------------------------
 // 5) Diagnostics conventions (parse layer)
 // -------------------------
@@ -208,6 +265,7 @@ package parse
 //   - Missing symbol => zero-length span at “expected position” (use previous token end)
 //   - Unterminated object => span from lbrace to EOF
 //
+
 // -------------------------
 // 6) parse.go milestones (commit-sized)
 // -------------------------
