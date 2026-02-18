@@ -1,18 +1,5 @@
 package scan
 
-type ScanState int
-
-const (
-	// Scan state (multi-byte tokens)
-	SCANNING_BLOCK_COMMENT ScanState = iota
-	SCANNING_LINE_COMMENT
-	SCANNING_QUOTE_LITERAL
-	SCANNING_NUMBER_LITERAL
-	SCANNING_IDENTIFIER
-	SCANNING_STANDARD // first skips whitespace, then checks for entry into other scanning states, then checks for single-byte tokens like {}()[],.-=+; etc.
-	SCANNING_PANIC    = -1
-)
-
 var TokenKind = struct {
 	SYMBOL         Kind
 	IDENTIFIER     Kind
@@ -20,45 +7,40 @@ var TokenKind = struct {
 	NUMBER_LITERAL Kind
 	COMMENT_BLOCK  Kind
 	COMMENT_LINE   Kind
-	NEWLINE        Kind
 }{
-	SYMBOL:         kindSymbol,
-	IDENTIFIER:     kindIdentifier,
-	QUOTE_LITERAL:  kindQuoteLiteral,
-	NUMBER_LITERAL: kindNumberLiteral,
-	COMMENT_BLOCK:  kindCommentBlock,
-	COMMENT_LINE:   kindCommentLine,
-	NEWLINE:        kindNewline,
+	SYMBOL:         KindSymbol,
+	IDENTIFIER:     KindIdentifier,
+	QUOTE_LITERAL:  KindQuoteLiteral,
+	NUMBER_LITERAL: KindNumberLiteral,
+	COMMENT_BLOCK:  KindCommentBlock,
+	COMMENT_LINE:   KindCommentLine,
 }
 
 const (
-	kindSymbol Kind = iota
-	kindIdentifier
-	kindQuoteLiteral
-	kindNumberLiteral
-	kindCommentBlock
-	kindCommentLine
-	kindNewline
+	KindSymbol Kind = iota
+	KindIdentifier
+	KindQuoteLiteral
+	KindNumberLiteral
+	KindCommentBlock
+	KindCommentLine
 )
 
 func (tk Kind) String() string {
 	switch tk {
-	case kindSymbol:
-		return "symbol"
-	case kindIdentifier:
-		return "identifier"
-	case kindQuoteLiteral:
-		return "dbl-quote-literal"
-	case kindNumberLiteral:
-		return "number-literal"
-	case kindCommentBlock:
-		return "comment-block"
-	case kindCommentLine:
-		return "comment-line"
-	case kindNewline:
-		return "new-line"
+	case KindSymbol:
+		return "Sym"
+	case KindIdentifier:
+		return "Ident"
+	case KindQuoteLiteral:
+		return "Quot"
+	case KindNumberLiteral:
+		return "Num"
+	case KindCommentBlock:
+		return "Cmt-Blk"
+	case KindCommentLine:
+		return "Cmt-Lin"
 	default:
-		return "UNDEFINED"
+		return "(?)"
 	}
 }
 

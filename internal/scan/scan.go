@@ -42,15 +42,15 @@ import "fmt"
 //   - The scanner never panics on malformed input; it emits diags and tries to recover.
 //
 // see 'TokenKind' (scan_constants.go) for a list of all Token.Kind values
-func Scan(src []byte) (tokens []Token, diags []Diagnostic) {
+func Scan(src []byte) (tokens []Token, diags []Diagnostic, newlineIndexes []int) {
 	n := len(src)
 
 	// helper for appending to 'diags'
-	emitDiag := func(c DiagnosticCode, s Severity, start, end int, msg string, args ...interface{}) {
+	emitDiag := func(c DiagnosticCode, start, end int, msg string, args ...interface{}) {
 		if len(args) > 0 {
 			msg = fmt.Sprint(msg, args)
 		}
-		diags = append(diags, Diagnostic{Code: c, Severity: s, Span: NewSpan(start, end), Message: msg})
+		diags = append(diags, Diagnostic{Code: c, Span: NewSpan(start, end), Message: msg})
 	}
 
 	// helper for appending to 'tokens'
@@ -75,8 +75,9 @@ mainLoop:
 		case ' ', '\t', '\r':
 			continue
 
+		case '\n':
+			newlineIndexes = append(newlineIndexes, i)
 		case '"':
-			// quote literal
 			if i+1 >= n {
 				emitToken(TokenKind.QUOTE_LITERAL, i, i+1)
 				break
@@ -87,14 +88,16 @@ mainLoop:
 					j += 1
 					continue
 				} else if j_b == '"' {
-					// end of quote
+					// end quote
 					emitToken(TokenKind.QUOTE_LITERAL, i, j+1)
 					i = j
 					continue mainLoop
 				}
 			}
-			emitDiag(Codes.SCAN, ERROR, i, n, "unterminated quote")
-
+			// fall-through case: at this point, quote literal has reached EOF
+			emitToken(TokenKind.QUOTE_LITERAL, i, n)
+			emitDiag(Codes.SCAN, i, n, "unterminated quote")
+			i = n
 		case '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
 			if i+1 >= n {
 				emitToken(TokenKind.NUMBER_LITERAL, i, i+1)
@@ -110,18 +113,13 @@ mainLoop:
 					continue mainLoop
 				}
 			}
-			// fall-through edge case: at this point, number literal has reached EOF
-			emitDiag(Codes.SCAN, ERROR, i, n, "unterminated number literal")
+			// fall-through case: at this point, number literal has reached EOF
+			emitToken(TokenKind.NUMBER_LITERAL, i, n)
+			emitDiag(Codes.SCAN, i, n, "unterminated number literal")
+			i = n
 
 		case '{', '}', '[', ']', '=', ';':
 			emitToken(TokenKind.SYMBOL, i, i+1)
-
-		case '\n':
-			// notice the index of the non-matching byte is always used for the Token's end-index
-			// 	in this case: i+1 is the index of the byte that comes after \n
-			emitToken(TokenKind.NEWLINE, i, i+1)
-			// this is because Token.Span.End is an 'exclusive' index; so it should not be the index of a byte
-			// 	that is within the actual Token
 
 		default:
 			b_next, ok_bNext := peek(i + 1)
@@ -143,6 +141,7 @@ mainLoop:
 					if b_lineCmt == '\n' {
 						emitToken(TokenKind.COMMENT_BLOCK, i, i_lineCmt)
 						i = i_lineCmt
+						newlineIndexes = append(newlineIndexes, i_lineCmt)
 						continue mainLoop
 					}
 				}
@@ -158,10 +157,10 @@ mainLoop:
 				}
 			} else {
 				// produce a Diagnostic that this char could not be parsed
-				emitDiag(Codes.SCAN, SCANNING_PANIC, i, i+1, fmt.Sprintf("unknown byte %b", b))
+				emitDiag(Codes.SCAN, i, i+1, fmt.Sprintf("unknown byte %b", b))
 			}
 		}
 	}
 
-	return tokens, diags
+	return tokens, diags, newlineIndexes
 }

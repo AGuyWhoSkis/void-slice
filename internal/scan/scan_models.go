@@ -18,20 +18,8 @@ type LineIndex struct {
 	Newlines []int // offsets of '\n'
 }
 
-// Describes what a token actually is
+// Token category or type; see scan_constants.go for values
 type Kind int
-
-func NewSpan(start, end int) Span {
-	return Span{
-		Start: start,
-		End:   end,
-	}
-}
-
-type Span struct {
-	Start int // byte offset, inclusive
-	End   int // byte offset, exclusive
-}
 
 type Pos struct {
 	Line int // 1-based
@@ -44,10 +32,9 @@ type SpanPos struct {
 	End   Pos
 }
 
-// ----- Layer 1: raw, test-friendly string forms -----
-
-func (dc DiagnosticCode) String() string {
-	return string(dc)
+type Span struct {
+	Start int // byte offset, inclusive
+	End   int // byte offset, exclusive
 }
 
 // String prints raw offsets in a compact, unambiguous form.
@@ -62,12 +49,21 @@ func (s Span) String() string {
 	b.WriteString(")")
 	return b.String()
 }
+func NewSpan(start, end int) Span {
+	return Span{
+		Start: start,
+		End:   end,
+	}
+}
 
 type Diagnostic struct {
-	Code     DiagnosticCode // Answers "who" reported
-	Severity Severity       // Answers "how bad"
-	Span     Span           // Answers "where"
-	Message  string         // Summary of the problem (excluding span/severity/code)
+	Code    DiagnosticCode // Answers "what happened"
+	Span    Span           // Answers "where did it happen"
+	Message string         // Summarizes the issue
+}
+
+func (dc DiagnosticCode) String() string {
+	return string(dc)
 }
 
 // Diagnostic.String is also raw-offset based by default.
@@ -79,8 +75,6 @@ func (d Diagnostic) String() string {
 
 	b.WriteString("Diagnostic{Code=")
 	b.WriteString(d.Code.String()) // assume these have String() already
-	b.WriteString(", Severity=")
-	b.WriteString(d.Severity.String())
 	b.WriteString(", Span=")
 	b.WriteString(d.Span.String())
 	b.WriteString(", Message=")
