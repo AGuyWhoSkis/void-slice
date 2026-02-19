@@ -139,7 +139,7 @@ mainLoop:
 				for i_lineCmt := i + 2; i_lineCmt < n; i_lineCmt++ {
 					b_lineCmt := src[i_lineCmt]
 					if b_lineCmt == '\n' {
-						emitToken(TokenKind.COMMENT_BLOCK, i, i_lineCmt)
+						emitToken(TokenKind.COMMENT_LINE, i, i_lineCmt)
 						i = i_lineCmt
 						newlineIndexes = append(newlineIndexes, i_lineCmt)
 						continue mainLoop
