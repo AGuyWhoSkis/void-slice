@@ -14,19 +14,63 @@ Each ticket is a markdown file. Filename: `T<n>-short-name.md`.
 
 Move the file between folders to track status. Do not rename it.
 
-## Ticket order (v1 critical path)
+## v1 — Linter engine + CLI (T0–T7)
+
+Critical path:
 
 ```
 T0 (scaffold) → T1 (parser) → T2 (validator) ─┐
-                                                ├→ T4 (lint facade) → T5 (cli)
+                                                ├→ T4 (lint facade) → T5 (cli) → T7 (integration tests)
                T3 (report) ────────────────────┘
                T6 (testdata, can run alongside T1)
 ```
 
-T3 and T6 have no upstream dependencies within v1 and can be started immediately.
+T3 and T6 have no upstream dependencies and can be started immediately.  
+T7 runs last — it's the end-of-v1 quality gate against real game files.
 
-## Scope
+| Ticket | What | Size |
+|--------|------|------|
+| T0 | Project scaffold — rename cmd/, create internal/lint stub | small |
+| T1 | Parser — implement cursor helpers + WalkEntities | large |
+| T2 | Validator — array count/index rules | large |
+| T3 | Report rendering — human-pretty + JSON output | medium |
+| T4 | Lint facade — single engine API, file classification, binary sniff | medium |
+| T5 | CLI — `voidslice lint <file> [--json]` | medium |
+| T6 | Testdata — broken .decl fixture files + expected output snapshots | small |
+| T7 | Integration tests — run linter against void-files/ corpus | small |
 
-**v1:** T0–T6 (linter engine + CLI only)
-**v2:** HTTP server + React playground
-**v3:** LSP server
+---
+
+## v2 — HTTP server + React playground (T8–T13)
+
+Starts after v1 is complete and deployed locally.
+
+| Ticket | What | Size |
+|--------|------|------|
+| T8 | HTTP server — `POST /lint`, CORS, rate limits, health check | medium |
+| T9 | Frontend playground — React + Vite + CodeMirror | large |
+| T10 | Containerization — Dockerfile (distroless, <20MB) + docker-compose | small |
+| T11 | CI/CD — GitHub Actions + Wrangler config | medium |
+| T12 | Production deploy — Cloudflare Pages + Worker + Container, custom domain | small |
+| T13 | Docs polish — README → landing page, architecture page, LSP design doc | small |
+
+---
+
+## v3 — LSP server (T14)
+
+Starts after v2. Does not depend on any v2 ticket except T4 (lint facade).
+
+| Ticket | What | Size |
+|--------|------|------|
+| T14 | LSP server — JSON-RPC 2.0 over stdio, wraps internal/lint | large |
+
+---
+
+## Stretch / backlog
+
+Evaluate after the relevant v1 milestone; start only if there is velocity buffer.
+
+| Ticket | What | Gate |
+|--------|------|------|
+| T-null-ref | NULL; reference validation — third lint rule | after T7 corpus sweep shows low false-positive rate |
+| T-k3d | k3d Kubernetes lab | after end-of-week-1 velocity check |
