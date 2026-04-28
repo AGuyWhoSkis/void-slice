@@ -11,7 +11,6 @@ Void Slice is a modding tool — contributors who know Dishonored 2 / DOTO file 
 
 **Code:**
 - Ready tickets live in [`kanban/todo/v1/`](kanban/todo/v1/). Each is a self-contained markdown file with acceptance criteria.
-- [`T6`](kanban/todo/v1/T6-testdata.md) (testdata fixtures) is the most accessible entry point — no Go required.
 
 ## Finding work
 
