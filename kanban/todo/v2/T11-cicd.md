@@ -20,11 +20,11 @@ jobs:
   test:   go test ./... (Go 1.23, cache modules)
   build:  go build ./cmd/voidslice (verify binary compiles)
   deploy: (main branch only, after test passes)
-    - build Docker image
-    - push to Cloudflare Container Registry
-    - deploy Worker + Container via Wrangler
     - build frontend (npm run build in web/)
     - deploy Pages via Wrangler
+    - L4 deploy — shape depends on T25 outcome:
+        WASM path: compile GOOS=wasip1 GOARCH=wasm, bundle into Worker, deploy via Wrangler
+        Containers path: build Docker image, push to Cloudflare Container Registry, deploy Worker + Container via Wrangler
 ```
 
 **Required secrets in GitHub repo:**
@@ -44,7 +44,7 @@ jobs:
 
 ## Dependencies
 
-T10 (Dockerfile must exist), T9 (web/dist must be buildable)
+T10 (Dockerfile must exist for the Containers fallback path), T9 (web/dist must be buildable), T25 (WASM spike — determines which L4 deploy path to implement)
 
 ## Verification
 

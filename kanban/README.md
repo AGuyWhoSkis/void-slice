@@ -56,6 +56,8 @@ Starts after v1 is complete and deployed locally.
 | T11 | CI/CD — GitHub Actions + Wrangler config | medium |
 | T12 | Production deploy — Cloudflare Pages + Worker + Container, custom domain | small |
 | T13 | Docs polish — README → landing page, architecture page, LSP design doc | small |
+| T25 | WASM compile spike — determine if linter compiles to wasip1/wasm for Workers | small |
+| T26 | Linter resource profile — benchmark memory + wall-clock on void-files/ corpus | small |
 
 ---
 

@@ -19,7 +19,7 @@ Implement `internal/server` — a minimal HTTP server that exposes `POST /lint` 
 - Include `"file"` field derived from the uploaded filename or a default
 
 **Input limits:**
-- Max body: 5MB — reject with `413` if exceeded
+- Max body: 5MB — reject with `413` if exceeded (provisional; T26 resource profile may adjust this)
 - Parse timeout: 5s — use `context.WithTimeout`, respond `504` if exceeded
 - Content-type validation: reject anything clearly non-text without binary-sniff fallback
 

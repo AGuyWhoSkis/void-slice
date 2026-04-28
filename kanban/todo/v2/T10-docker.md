@@ -9,6 +9,8 @@
 
 Multi-stage Dockerfile for the Go binary. `docker-compose.yml` for running the full local stack (backend + frontend dev server).
 
+The Dockerfile is needed for local development regardless of the production L4 outcome. If T25 (WASM compile spike) succeeds, production uses a Worker/WASM deployment and this container is local-dev-only. If T25 fails, the container becomes the production L4 as well.
+
 ## Scope
 
 **`Dockerfile` (repo root):**

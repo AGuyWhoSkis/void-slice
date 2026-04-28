@@ -24,12 +24,14 @@ First production push to Cloudflare. Custom domain wired via Cloudflare DNS. San
 - Test from your phone on mobile data — confirm CORS headers and mobile layout
 - Check Cloudflare's built-in uptime monitoring is enabled for the domain
 
-**Fallback:**
-- If Cloudflare Containers has issues, `fly.io` is the known fallback — `fly launch` on the same Dockerfile and update the Worker to proxy there instead
+**L4 architecture (resolved by T25):**
+- Primary: Workers/WASM — linter compiled to `wasip1/wasm`, runs inside the Worker (no container)
+- First fallback: Cloudflare Containers — if WASM is fundamentally blocked; target archetype D (low wake fraction, high CPU-active-within-wake)
+- Second fallback: `fly.io` — `fly launch` on the same Dockerfile, update the Worker to proxy there; keeps L1–L3 on Cloudflare
 
 ## Dependencies
 
-T11 (CI/CD pipeline must run end-to-end successfully at least once)
+T11 (CI/CD pipeline must run end-to-end successfully at least once), T25 (WASM spike — determines L4 architecture), T26 (resource profile — confirms linter fits within Workers limits and informs upload size cap)
 
 ## Verification
 
