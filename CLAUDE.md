@@ -89,7 +89,11 @@ git worktree prune
 ```
 Worktrees land as siblings to the repo root (`../void-slice-<branch>`). `.claude/` settings are git-tracked; each branch has its own copy.
 
-**Subagents (T22):** evaluation pending — collaborative trial scheduled for T7 implementation. No adopt/reject decision yet.
+**Subagents (T22):** **Adopt with caveats.** Parallel subagents provide ~3× speedup on file-disjoint write tasks with zero merge friction. Restrictions:
+- Only for tasks with truly file-disjoint subtasks (no shared files, no git operations during parallel phase).
+- Subagents cannot access worktrees outside the project directory (`/tmp/` is blocked); place worktrees inside `/workspaces/void-slice/` or skip isolation and write directly to distinct files.
+- Each agent must be self-contained — no coordination or shared state between agents.
+- Budget for post-agent integration overhead (testing, corrections) in wall-clock estimates.
 
 ## Dev setup
 
