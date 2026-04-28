@@ -59,7 +59,7 @@ A ticket is complete when all of the following are true:
 
 Tickets live in `kanban/todo/<version>/`, `kanban/in-progress/<version>/`, or `kanban/done/<version>/`.
 
-**To change a ticket's status:** edit only the `**Status:**` field in the ticket file (valid values: `todo`, `in-progress`, `done`). The kanban-move hook automatically runs `git mv` to move the file to the correct folder. Do not manually move ticket files.
+**To change a ticket's status:** edit only the `**Status:**` field in the ticket file (valid values: `todo`, `in-progress`, `done`). The kanban-move hook automatically runs `git mv` to move the file to the correct folder. Do not manually move ticket files. **Always use the Edit or Write tool for any kanban file change** — Bash writes (e.g. `cat >>`) bypass the hook and leave the file in the wrong folder.
 
 Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>` for common operations (see § Tooling).
 
