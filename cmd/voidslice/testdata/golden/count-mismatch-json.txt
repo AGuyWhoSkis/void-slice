@@ -1,0 +1,12 @@
+{
+  "file": "../../testdata/broken/count-mismatch.decl",
+  "diagnostics": [
+    {
+      "line": 6,
+      "col": 11,
+      "severity": "warning",
+      "code": "VALIDATE_ARRAY_COUNT_MISMATCH",
+      "message": "array count mismatch: num=3 but 2 item(s) defined"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # T5 · CLI (`cmd/voidslice`)
 
-**Status:** todo  
+**Status:** done  
 **Version:** v1  
 **Size:** medium
 
@@ -43,3 +43,11 @@ go build -o voidslice ./cmd/voidslice
 ./voidslice lint testdata/binary/sample.bwm                  # exit 1, binary error
 go test ./cmd/voidslice/...
 ```
+
+## Completion
+
+Replaced the `cmd/voidslice/main.go` stub with a real `voidslice lint <file> [--json]` CLI. The binary reads a file from disk, calls `lint.New().Lint`, converts `[]lint.Diagnostic` to `[]scan.Diagnostic` for rendering, outputs via `report.Render` (default) or `report.RenderJSON` (`--json`), and exits 1 on any Error-severity diagnostic.
+
+Added `cmd/voidslice/main_test.go` with 6 tests using `exec.Command` + `TestMain`-built binary: exit code 0/1, human-format golden, JSON golden, binary file, and file-not-found. Golden files generated under `cmd/voidslice/testdata/golden/`.
+
+Key decision: `count-mismatch.decl` only emits `VALIDATE_*` warnings (exit 0), so `TestLint_ExitCode_Error` uses `missing-semicolon.decl` which produces a `PARSE_EXPECTED_SEMICOLON` error (exit 1). All `go test ./...` and `go vet ./...` pass.
