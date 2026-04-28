@@ -6,7 +6,7 @@ SHELL := /usr/bin/bash
 
 GO      ?= go
 BIN_DIR ?= bin
-CMD ?=./cmd/void-slice
+CMD ?=./cmd/voidslice
 
 .PHONY: help tidy fmt vet test race cover build run clean
 

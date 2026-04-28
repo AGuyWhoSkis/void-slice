@@ -1,6 +1,6 @@
 # T0 · Project Scaffold
 
-**Status:** todo  
+**Status:** done  
 **Size:** small  
 **Blocks:** T5
 
