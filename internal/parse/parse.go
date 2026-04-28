@@ -75,31 +75,31 @@ func (c *cursor) next() *scan.Token {
 }
 
 // slice: src[start:end]
-func (c *cursor) lexeme(t scan.Token) []byte {
-	if t.Span.Start < 0 {
-		panic(fmt.Sprintf("invalid Token for lexeme: Span.Start %d out of bounds", t.Span.Start))
+func (c *cursor) lexeme(tok scan.Token) []byte {
+	if tok.Span.Start < 0 {
+		panic(fmt.Sprintf("invalid Token for lexeme: Span.Start %d out of bounds", tok.Span.Start))
 	}
-	if t.Span.End > c.n {
-		panic(fmt.Errorf("invalid Token for lexeme: Span.End %d out of bounds (len=%d)", t.Span.End, c.n))
+	if tok.Span.End > c.n {
+		panic(fmt.Errorf("invalid Token for lexeme: Span.End %d out of bounds (len=%d)", tok.Span.End, c.n))
 	}
-	return c.src[t.Span.Start:t.Span.End]
+	return c.src[tok.Span.Start:tok.Span.End]
 }
 
 // src[start]
-func (c *cursor) sym(t scan.Token) byte {
-	if t.Span.Start < 0 || t.Span.Start > c.n {
-		panic(fmt.Errorf("invalid Token for sym: Span.Start %d out of bounds (len=%d)", t.Span.Start, c.n))
+func (c *cursor) sym(tok scan.Token) byte {
+	if tok.Span.Start < 0 || tok.Span.Start > c.n {
+		panic(fmt.Errorf("invalid Token for sym: Span.Start %d out of bounds (len=%d)", tok.Span.Start, c.n))
 	}
-	return c.src[t.Span.Start]
+	return c.src[tok.Span.Start]
 }
 
 // no allocations
-func (c *cursor) isIdent(t scan.Token, bytes string) bool {
+func (c *cursor) isIdent(tok scan.Token, bytes string) bool {
 	if len(bytes) < 1 { 
 		return false
 	}
 	for i, b := range []byte(bytes) {
-		src_i := t.Span.Start + i
+		src_i := tok.Span.Start + i
 		if src_i < 0 || src_i > c.n {
 			// safe to compare
 			if c.src[src_i] != b {
