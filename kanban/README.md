@@ -5,6 +5,7 @@
 | Folder | Meaning |
 |--------|---------|
 | `todo/v1/`, `todo/v2/`, `todo/v3/`, `todo/stretch/` | Prioritized and ready to start, grouped by milestone |
+| `todo/meta/` | Workflow and tooling improvements (meta-tickets about the dev process itself) |
 | `in-progress/` | Being worked on right now (move file here when you start) |
 | `done/v1/` | Finished — move file here, add a completion note at the bottom |
 
