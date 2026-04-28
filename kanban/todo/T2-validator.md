@@ -40,6 +40,9 @@ Internally creates a validator handler and calls `parse.WalkEntities`.
 **New diagnostic codes:**
 - `VALIDATE_ARRAY_COUNT_MISMATCH`, `VALIDATE_ARRAY_INDEX_OOB`, `VALIDATE_ARRAY_DUP_INDEX`, `VALIDATE_ARRAY_MISSING_NUM`
 
+**Explicitly out of scope for v1:**
+- `VALIDATE_COMPONENT_MISSING_EDIT` (warn when a component block lacks an `edit` sub-block) — deferred; do not implement in T2. If the design doc in `validate.go` references it, remove or comment it out as "future rule."
+
 **Tests (`internal/validate/validate_test.go`):**
 - Table-driven against broken `.decl` fixtures from T6
 - One test per rule: count mismatch, OOB index, duplicate index, missing-num warning
