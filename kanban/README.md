@@ -26,7 +26,7 @@ T0 (scaffold) → T1 (parser) → T2 (validator) ─┐
                T6 (testdata, can run alongside T1)
 ```
 
-T3 and T6 have no upstream dependencies and can be started immediately.  
+T3 and T6 are both done. The remaining critical path starts from T15.  
 T7 runs last — it's the end-of-v1 quality gate against real game files.
 
 | Ticket | What | Size |
@@ -34,7 +34,7 @@ T7 runs last — it's the end-of-v1 quality gate against real game files.
 | T0 ✓ | Project scaffold — rename cmd/, create internal/lint stub | small |
 | T1 ✓ | Parser — implement cursor helpers + WalkEntities | large |
 | T2 ✓ | Validator — array count/index rules | large |
-| T3 | Report rendering — human-pretty + JSON output | medium |
+| T3 ✓ | Report rendering — human-pretty + JSON output | medium |
 | T4 | Lint facade — single engine API, file classification, binary sniff | medium |
 | T5 | CLI — `voidslice lint <file> [--json]` | medium |
 | T6 ✓ | Testdata — broken .decl fixture files + expected output snapshots | small |

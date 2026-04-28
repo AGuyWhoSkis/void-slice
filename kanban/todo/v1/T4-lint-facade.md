@@ -66,7 +66,9 @@ Lint(filename, src):
 
 ## Dependencies
 
-T1, T2, T3 (all must be complete)
+T1, T2, T3, T15 (all must be complete)
+
+T15 is required because `Lexeme`, `Sym`, `EqIdent`, and `ParseIntLiteral` are unimplemented stubs in `internal/scan` until T15 stage 4e. T4's wiring calls these utilities.
 
 ## Verification
 

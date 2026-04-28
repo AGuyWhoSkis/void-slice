@@ -3,7 +3,7 @@
 **Status:** todo  
 **Version:** v1  
 **Size:** large  
-**Blocks:** T2 (validator uses scan), T4 (lint facade)
+**Blocks:** T4 (lint facade) — T2 was completed before T15 finished; that dependency is resolved
 
 ## What
 

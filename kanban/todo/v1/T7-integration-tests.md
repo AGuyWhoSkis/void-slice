@@ -28,6 +28,12 @@ Create `integration/integration_test.go` (or add a `TestCorpus` function in `int
 - Load files at test time via `os.ReadFile`; do NOT embed or read inline
 - If `./void-files/` is absent (e.g., CI without the corpus), skip with `t.Skip("void-files corpus not present")`
 
+**Behavioral coverage audit:**
+- After both sweeps pass, collect every distinct diagnostic code emitted across the corpus (aggregate from all returned `[]lint.Diagnostic`)
+- Cross-reference the collected codes against documented rules: T2 (array count/index), T4 (binary detection, VE-inconsistency warning), and any stretch rules
+- Log the full code inventory (e.g. via `t.Logf`) so it is visible in verbose test output
+- Flag any code with no corresponding ticket as a gap — open a follow-up ticket in `kanban/todo/v1/` or `kanban/todo/v2/` before closing V1
+
 ## Dependencies
 
 T4 (lint facade must be complete — this test imports only `internal/lint`)
