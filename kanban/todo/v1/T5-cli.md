@@ -1,6 +1,7 @@
 # T5 · CLI (`cmd/voidslice`)
 
 **Status:** todo  
+**Version:** v1  
 **Size:** medium
 
 ## What

@@ -4,22 +4,23 @@
 
 | Folder | Meaning |
 |--------|---------|
-| `todo/` | Prioritized and ready to start |
+| `todo/v1/`, `todo/v2/`, `todo/v3/`, `todo/stretch/` | Prioritized and ready to start, grouped by milestone |
 | `in-progress/` | Being worked on right now (move file here when you start) |
-| `done/` | Finished — move file here, add a completion note at the bottom |
+| `done/v1/` | Finished — move file here, add a completion note at the bottom |
 
 ## Ticket format
 
-Each ticket is a markdown file. Filename: `T<n>-short-name.md`.
+Each ticket is a markdown file. Filename: `T<n>-short-name.md`, stored under the versioned subfolder matching its milestone.
 
-Move the file between folders to track status. Do not rename it.
+Move the file between `todo/<version>/` → `in-progress/` → `done/<version>/` to track status. Do not rename it.
 
-## v1 — Linter engine + CLI (T0–T7)
+## v1 — Linter engine + CLI (`todo/v1/`)
 
 Critical path:
 
 ```
 T0 (scaffold) → T1 (parser) → T2 (validator) ─┐
+                T15 (scan tests) ──────────────┤
                                                 ├→ T4 (lint facade) → T5 (cli) → T7 (integration tests)
                T3 (report) ────────────────────┘
                T6 (testdata, can run alongside T1)
@@ -30,18 +31,19 @@ T7 runs last — it's the end-of-v1 quality gate against real game files.
 
 | Ticket | What | Size |
 |--------|------|------|
-| T0 | Project scaffold — rename cmd/, create internal/lint stub | small |
-| T1 | Parser — implement cursor helpers + WalkEntities | large |
+| T0 ✓ | Project scaffold — rename cmd/, create internal/lint stub | small |
+| T1 ✓ | Parser — implement cursor helpers + WalkEntities | large |
 | T2 | Validator — array count/index rules | large |
 | T3 | Report rendering — human-pretty + JSON output | medium |
 | T4 | Lint facade — single engine API, file classification, binary sniff | medium |
 | T5 | CLI — `voidslice lint <file> [--json]` | medium |
 | T6 | Testdata — broken .decl fixture files + expected output snapshots | small |
 | T7 | Integration tests — run linter against void-files/ corpus | small |
+| T15 | Scan package — TDD test coverage expansion for internal/scan | large |
 
 ---
 
-## v2 — HTTP server + React playground (T8–T13)
+## v2 — HTTP server + React playground (`todo/v2/`)
 
 Starts after v1 is complete and deployed locally.
 
@@ -56,7 +58,7 @@ Starts after v1 is complete and deployed locally.
 
 ---
 
-## v3 — LSP server (T14)
+## v3 — LSP server (`todo/v3/`)
 
 Starts after v2. Does not depend on any v2 ticket except T4 (lint facade).
 
@@ -66,7 +68,7 @@ Starts after v2. Does not depend on any v2 ticket except T4 (lint facade).
 
 ---
 
-## Stretch / backlog
+## Stretch / backlog (`todo/stretch/`)
 
 Evaluate after the relevant v1 milestone; start only if there is velocity buffer.
 

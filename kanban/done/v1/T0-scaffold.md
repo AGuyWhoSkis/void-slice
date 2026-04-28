@@ -1,6 +1,7 @@
 # T0 · Project Scaffold
 
 **Status:** done  
+**Version:** v1  
 **Size:** small  
 **Blocks:** T5
 

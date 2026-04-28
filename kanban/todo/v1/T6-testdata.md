@@ -1,6 +1,7 @@
 # T6 · Testdata — Broken Fixture Files
 
 **Status:** todo  
+**Version:** v1  
 **Size:** small  
 **Blocks:** T2 (tests), T3 (snapshot tests)
 

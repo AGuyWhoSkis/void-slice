@@ -1,6 +1,7 @@
 # T4 · Lint Facade (`internal/lint`)
 
 **Status:** todo  
+**Version:** v1  
 **Size:** medium  
 **Blocks:** T5
 

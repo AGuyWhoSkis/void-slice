@@ -1,6 +1,7 @@
 # T2 · Implement Validator
 
 **Status:** todo  
+**Version:** v1  
 **Size:** large  
 **Blocks:** T4
 

@@ -1,6 +1,7 @@
 # T3 · Implement Report Rendering
 
 **Status:** todo  
+**Version:** v1  
 **Size:** medium  
 **Blocks:** T5
 
