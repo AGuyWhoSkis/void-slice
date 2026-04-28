@@ -25,8 +25,6 @@ Base each file on the structure of a real `.decl` golden file (copy a small clea
 
 For each broken file, create a matching `<name>.expected.txt` and `<name>.expected.json` containing the expected `report.Render` and `report.RenderJSON` output. These are the snapshot files T3 tests compare against.
 
-**Existing binary fixtures:** `void-files/binwalk test/` already exists with `.bwm`, `.tome`, `.entities` binaries — reuse as-is for T4 binary detection tests.
-
 ## Dependencies
 
 None — can be done in parallel with T1.

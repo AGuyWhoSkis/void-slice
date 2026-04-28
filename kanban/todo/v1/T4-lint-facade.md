@@ -60,7 +60,7 @@ Lint(filename, src):
 
 **Tests:**
 - Clean `.decl` → `[]Diagnostic{}`
-- Binary fixture (from `void-files/binwalk test/`) → single binary error
+- Binary fixture (small committed file under `testdata/binary/`, e.g. a file with a null byte) → single binary error
 - `.entities` input → first diagnostic is the VE-inconsistency warning
 - Known-broken `.decl` → diagnostics match expected codes
 

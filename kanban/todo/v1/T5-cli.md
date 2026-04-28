@@ -40,6 +40,6 @@ go build -o voidslice ./cmd/voidslice
 ./voidslice lint void-files/d2/game1/some-clean.decl      # exit 0, no diagnostics
 ./voidslice lint testdata/broken/count-mismatch.decl       # exit 1, human-pretty diagnostics
 ./voidslice lint --json testdata/broken/count-mismatch.decl  # exit 1, JSON output
-./voidslice lint void-files/binwalk\ test/boat_curator_p.bwm # exit 1, binary error
+./voidslice lint testdata/binary/sample.bwm                  # exit 1, binary error
 go test ./cmd/voidslice/...
 ```

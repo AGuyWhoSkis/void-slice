@@ -17,7 +17,7 @@ import (
 // 	Use this JS console command to switch it to 0-index
 //		document.querySelector(".text").style.counterReset = "num-chars -1";
 
-var testDir = filepath.FromSlash("../../../void-files/d2/")
+var testDir = filepath.FromSlash("../../void-files/d2/")
 
 var goldenFiles map[string][]byte
 var goldenFileNames = []string{
@@ -280,7 +280,7 @@ func validateSpotChecks(t *testing.T, src []byte, tokens []scan.Token, checks []
 
 		require.NotNil(t, tok,
 			"no token found at offset %d", check.offset)
-		
+
 		// Validate token kind
 		assert.Equal(t, check.wantKind, tok.Kind,
 			"offset %d: expected kind %v, got %v",
