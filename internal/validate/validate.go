@@ -1,80 +1,152 @@
 package validate
 
-// Planned: semantic validation that requires structure. This should be a thin layer that
-// hooks into parse.WalkEntities via a Handler implementation.
-//
-// Recommended public API:
-//
-//   func ValidateEntities(src []byte, toks []scan.Token) (diags []scan.Diagnostic) {
-//     // creates validator handler
-//     // calls parse.WalkEntities(src, toks, handler)
-//     // returns combined diags (parse + validate)
-//   }
-//
-// Core idea: maintain an object-frame stack while walking nested { ... }.
-//
-//   type objFrame struct {
-//     // Array-shape tracking:
-//     numTok   *scan.Token
-//     numVal   *int64
-//     items    map[int64]scan.Token    // item index -> token span anchor
-//     itemDup  map[int64]scan.Token    // for duplicate detection (optional)
-//     // Track presence of keys if “required keys” checks are added later:
-//     seenKeys map[string]scan.Token
-//   }
-//
-//   type validator struct {
-//     src []byte
-//     frames []objFrame
-//     diags []scan.Diagnostic
-//   }
-//
-// Hook points:
-//
-//   OnObjectBegin: push new frame
-//   OnAssignment: update top frame (detect num/item)
-//   OnObjectEnd: run checks on that frame, then pop
-//
-// Array-shape detection:
-//
-//   When OnAssignment(key, value) fires:
-//     - base := lexeme(key.BaseTok)
-//     - if base == "num" and value.Kind==ValNumber:
-//         parse int -> frame.numVal
-//         frame.numTok = &key.BaseTok (or value.Tok for better pointing)
-//     - if base == "item" and key has exactly one Indexer of Kind IndexInt:
-//         idx := indexer.IntValue
-//         record idx in frame.items (detect duplicates)
-//
-// At OnObjectEnd:
-//   if frame.numVal != nil:
-//     - expected := *frame.numVal
-//     - actual := len(frame.items)
-//     - checks:
-//         [ ] actual == expected  (if not: diag at numTok/valueTok)
-//         [ ] all indices in [0, expected-1]  (diag at offending item token)
-//         [ ] no duplicates (diag at duplicate item token)
-//         [ ] optionally: contiguous coverage (0..expected-1) (diag at numTok + list missing)
-//   else:
-//     - optionally: if item[...] entries exist but no num => warn
-//
-// Component-level validations (add after arrays work):
-//   - Track when inside a component decl; ensure "edit = { ... }" exists somewhere.
-//   - Track Version value acceptable range if needed.
-//
-// Diagnostic codes (validate layer):
-//   - VALIDATE_ARRAY_COUNT_MISMATCH
-//   - VALIDATE_ARRAY_INDEX_OOB
-//   - VALIDATE_ARRAY_DUP_INDEX
-//   - VALIDATE_ARRAY_MISSING_NUM (optional warning)
-//   - VALIDATE_COMPONENT_MISSING_EDIT (optional warning)
-//
-// Spans:
-//   - Count mismatch: span of num value token if available; else num key token.
-//   - OOB/dup: span of the item[...] key token (or the indexer token).
-//
-// Milestones:
-//   1) Wire validate.ValidateEntities to parse.WalkEntities (no rules yet).
-//   2) Implement frame stack with OnObjectBegin/End.
-//   3) Add num/item rules + tests.
-//   4) Add “missing edit” rule if it’s reliably required in the corpus.
+import (
+	"fmt"
+	"strconv"
+
+	"void-slice/internal/parse"
+	"void-slice/internal/scan"
+)
+
+// ValidateEntities runs both the parser and semantic validator over src.
+// Returned diagnostics include parse errors followed by validate warnings.
+func ValidateEntities(src []byte, toks []scan.Token) []scan.Diagnostic {
+	v := &validator{src: src}
+	parseDiags := parse.WalkEntities(src, toks, v)
+	all := make([]scan.Diagnostic, 0, len(parseDiags)+len(v.diags))
+	all = append(all, parseDiags...)
+	all = append(all, v.diags...)
+	return all
+}
+
+// objFrame tracks array-shape state for one nested object block.
+type objFrame struct {
+	numTok *scan.Token        // points at the num value token
+	numVal *int64             // parsed value of num = N
+	items  map[int64]scan.Token // index -> anchor token (indexer value tok)
+}
+
+type validator struct {
+	src    []byte
+	frames []objFrame
+	diags  []scan.Diagnostic
+}
+
+func (v *validator) top() *objFrame {
+	if len(v.frames) == 0 {
+		return nil
+	}
+	return &v.frames[len(v.frames)-1]
+}
+
+func (v *validator) lexeme(tok scan.Token) []byte {
+	return v.src[tok.Span.Start:tok.Span.End]
+}
+
+// Handler no-ops for events we don't need.
+func (v *validator) OnVersion(versionTok scan.Token, versionValue int64)             {}
+func (v *validator) OnComponentBegin(componentTok scan.Token, lbrace scan.Token)     {}
+func (v *validator) OnComponentDecl(typeTok, nameTok scan.Token, lbrace scan.Token)  {}
+func (v *validator) OnComponentEnd(rbrace scan.Token)                                 {}
+func (v *validator) OnTypedBlock(typeTok, nameTok scan.Token, lbrace scan.Token)     {}
+func (v *validator) OnDiag(diag scan.Diagnostic)                                      {}
+
+func (v *validator) OnObjectBegin(lbrace scan.Token) {
+	v.frames = append(v.frames, objFrame{items: make(map[int64]scan.Token)})
+}
+
+func (v *validator) OnAssignment(key parse.Key, eqTok scan.Token, value parse.Value, semiTok scan.Token) {
+	f := v.top()
+	if f == nil {
+		return
+	}
+	base := string(v.lexeme(key.BaseTok))
+
+	if base == "num" && value.Kind == parse.ValNumber {
+		n, ok := parseIntLiteral(v.lexeme(value.Tok))
+		if ok {
+			tok := value.Tok
+			f.numTok = &tok
+			f.numVal = &n
+		}
+		return
+	}
+
+	if base == "item" && len(key.Indexers) == 1 && key.Indexers[0].Kind == parse.IndexInt {
+		idx := key.Indexers[0].IntValue
+		anchor := key.Indexers[0].ValueTok
+		if _, dup := f.items[idx]; dup {
+			v.diags = append(v.diags, scan.Diagnostic{
+				Code:    Codes.ARRAY_DUP_INDEX,
+				Span:    anchor.Span,
+				Message: fmt.Sprintf("duplicate array index %d", idx),
+			})
+		} else {
+			f.items[idx] = anchor
+		}
+	}
+}
+
+func (v *validator) OnObjectEnd(rbrace scan.Token) {
+	f := v.top()
+	if f == nil {
+		return
+	}
+	defer func() { v.frames = v.frames[:len(v.frames)-1] }()
+
+	if f.numVal != nil {
+		expected := *f.numVal
+		actual := int64(len(f.items))
+		if actual != expected {
+			v.diags = append(v.diags, scan.Diagnostic{
+				Code:    Codes.ARRAY_COUNT_MISMATCH,
+				Span:    f.numTok.Span,
+				Message: fmt.Sprintf("array count mismatch: num=%d but %d item(s) defined", expected, actual),
+			})
+		}
+		for idx, tok := range f.items {
+			if idx < 0 || idx >= expected {
+				v.diags = append(v.diags, scan.Diagnostic{
+					Code:    Codes.ARRAY_INDEX_OOB,
+					Span:    tok.Span,
+					Message: fmt.Sprintf("array index %d out of bounds [0, %d)", idx, expected),
+				})
+			}
+		}
+	} else if len(f.items) > 0 {
+		var firstTok scan.Token
+		first := true
+		for _, tok := range f.items {
+			if first || tok.Span.Start < firstTok.Span.Start {
+				firstTok = tok
+				first = false
+			}
+		}
+		v.diags = append(v.diags, scan.Diagnostic{
+			Code:    Codes.ARRAY_MISSING_NUM,
+			Span:    firstTok.Span,
+			Message: "item[...] entries found but no num declaration",
+		})
+	}
+}
+
+func parseIntLiteral(b []byte) (int64, bool) {
+	s := string(b)
+	if len(s) > 0 && (s[len(s)-1] == 'f' || s[len(s)-1] == 'm') {
+		s = s[:len(s)-1]
+	}
+	for i, ch := range s {
+		if ch == '.' {
+			s = s[:i]
+			break
+		}
+	}
+	if s == "" || s == "-" {
+		return 0, false
+	}
+	n, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return 0, false
+	}
+	return n, true
+}

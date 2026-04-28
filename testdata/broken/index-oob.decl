@@ -1,0 +1,12 @@
+Version 1
+component {
+	cpntTest myTest {
+		edit = {
+			m_items = {
+				num = 2;
+				item[0] = { m_val = "a"; }
+				item[5] = { m_val = "b"; }
+			}
+		}
+	}
+}

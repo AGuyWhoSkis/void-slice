@@ -1,0 +1,5 @@
+Version 1
+component {
+	cpntTest myTest {
+		edit = {
+			m_val = "a";
