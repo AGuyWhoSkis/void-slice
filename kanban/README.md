@@ -33,11 +33,11 @@ T7 runs last — it's the end-of-v1 quality gate against real game files.
 |--------|------|------|
 | T0 ✓ | Project scaffold — rename cmd/, create internal/lint stub | small |
 | T1 ✓ | Parser — implement cursor helpers + WalkEntities | large |
-| T2 | Validator — array count/index rules | large |
+| T2 ✓ | Validator — array count/index rules | large |
 | T3 | Report rendering — human-pretty + JSON output | medium |
 | T4 | Lint facade — single engine API, file classification, binary sniff | medium |
 | T5 | CLI — `voidslice lint <file> [--json]` | medium |
-| T6 | Testdata — broken .decl fixture files + expected output snapshots | small |
+| T6 ✓ | Testdata — broken .decl fixture files + expected output snapshots | small |
 | T7 | Integration tests — run linter against void-files/ corpus | small |
 | T15 | Scan package — TDD test coverage expansion for internal/scan | large |
 
