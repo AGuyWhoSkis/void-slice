@@ -1,0 +1,45 @@
+# T13 · Docs Polish
+
+**Status:** todo  
+**Version:** v2  
+**Size:** small  
+**Blocks:** nothing
+
+## What
+
+Turn the existing README content into a proper landing page, write the architecture page with the LSP roadmap, and do a final read-through. This is the last ticket before calling v2 done.
+
+## Scope
+
+**`README.md` → landing page:**
+- Headline: what the project is and who it's for (one sentence)
+- "Try it" link/CTA pointing to the live URL
+- Brief "what it checks" section (the two v1 rules in plain language)
+- Quick install: `go install github.com/you/void-slice/cmd/voidslice@latest`
+- Link to architecture page
+- Roadmap: verification, D2/DOTO comparison, LSP server
+
+**`docs/architecture.md` (or `ARCHITECTURE.md`):**
+- Include the architecture diagram from README-v1.md (three transport layers over one engine)
+- Explain why the shape was chosen (LSP in v3 is not a rewrite — it's a new file that imports `lint`)
+- **LSP design section** — write this well; it's the "what's next" story that signals architectural thinking:
+  - Protocol: JSON-RPC 2.0 over stdio (standard LSP transport)
+  - Capabilities to implement: `textDocument/publishDiagnostics`, `textDocument/didOpen`, `textDocument/didChange`
+  - Why this is near-free given the existing engine: `lint.New().Lint()` is already incremental per file
+  - Estimated effort: one weekend sprint
+- Section on file type classification (why `.entities` warns, why `.bwm` errors)
+
+**Final read-through:**
+- Fix every typo
+- Check all links work
+- Confirm the "Try it" CTA actually works end-to-end
+
+## Dependencies
+
+T12 (deploy — need the live URL before writing it into the README)
+
+## Verification
+
+- Open the README on GitHub — value is clear in under 30 seconds
+- Architecture page is readable and the LSP design section stands on its own
+- `go install` command works from a clean environment
