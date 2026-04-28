@@ -89,6 +89,20 @@ git worktree prune
 ```
 Worktrees land as siblings to the repo root (`../void-slice-<branch>`). `.claude/` settings are git-tracked; each branch has its own copy.
 
+**v2/v3 parallel session setup:**
+```bash
+# Create milestone branches from main
+git checkout -b v2-dev && git checkout main
+git checkout -b v3-dev && git checkout main
+
+# Terminal 1 — works T8→T9→T10→T11→T12→T13:
+claude --worktree v2-dev
+
+# Terminal 2 — works T14:
+claude --worktree v3-dev
+```
+Merge order: v3-dev first (smaller delta), then v2-dev. Expected conflict: `cmd/voidslice/main.go` — both branches add a new subcommand (`serve` and `lsp`). Resolve by keeping both cases.
+
 **Subagents (T22):** **Adopt with caveats.** Parallel subagents provide ~3× speedup on file-disjoint write tasks with zero merge friction. Restrictions:
 - Only for tasks with truly file-disjoint subtasks (no shared files, no git operations during parallel phase).
 - Subagents cannot access worktrees outside the project directory (`/tmp/` is blocked); place worktrees inside `/workspaces/void-slice/` or skip isolation and write directly to distinct files.

@@ -41,6 +41,8 @@ Implement `internal/server` — a minimal HTTP server that exposes `POST /lint` 
 
 T4 (lint facade), T5 (CLI — confirms the binary structure is settled)
 
+**Parallel dev note:** T14 (LSP server) also modifies `cmd/voidslice/main.go` (adds `lsp` subcommand). If developed in parallel on `v3-dev`, resolve at merge by keeping both `serve` and `lsp` cases.
+
 ## Verification
 
 ```bash

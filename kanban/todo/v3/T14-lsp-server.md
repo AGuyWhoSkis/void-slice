@@ -35,6 +35,8 @@ A Language Server Protocol server that wraps `internal/lint` and speaks JSON-RPC
 T4 (lint facade), T5 (CLI — confirms binary entry point pattern)  
 Does NOT depend on any v2 ticket.
 
+**Parallel dev note:** T8 (HTTP server) also modifies `cmd/voidslice/main.go` (adds `serve` subcommand). If developed in parallel on `v2-dev`, resolve at merge by keeping both `lsp` and `serve` cases.
+
 ## Verification
 
 ```bash
