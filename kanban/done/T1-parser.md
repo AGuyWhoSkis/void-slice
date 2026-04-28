@@ -1,6 +1,6 @@
 # T1 · Complete Parser
 
-**Status:** todo  
+**Status:** done  
 **Size:** large  
 **Blocks:** T2, T4
 

@@ -151,10 +151,13 @@ mainLoop:
 					b_identCont := src[i_ident]
 					if !IsIdentCont(b_identCont) {
 						emitToken(TokenKind.IDENTIFIER, i, i_ident)
-						i = i_ident
+						i = i_ident - 1 // same as NUMBER_LITERAL: let outer i++ land on the delimiter
 						continue mainLoop
 					}
 				}
+				// identifier reached EOF
+				emitToken(TokenKind.IDENTIFIER, i, n)
+				i = n
 			} else {
 				// produce a Diagnostic that this char could not be parsed
 				emitDiag(Codes.SCAN, i, i+1, fmt.Sprintf("unknown byte %b", b))
