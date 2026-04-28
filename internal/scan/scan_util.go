@@ -1,22 +1,5 @@
 package scan
 
-// Planned: utilities that parse/validate will likely want.
-//
-// Suggested utilities to implement as needed
-//   [ ] Lexeme(src, tok) []byte
-//   [ ] Sym(src, tok) byte
-//   [ ] EqIdent(src, tok, lit string) bool
-//         - Return true iff tok.Kind==IDENTIFIER and lexeme bytes equal lit
-//         - Implement without allocation (compare lengths then bytes)
-//   [ ] ParseIntLiteral(src, tok) (int64, ok)
-//         - Only for NUMBER_LITERAL tokens (handles leading '-' + digits)
-//         - Keep fast: avoid strconv if possible; or use strconv.ParseInt on string(tokBytes)
-//           if acceptable (string alloc). For huge files, avoid per-token string alloc.
-//         - If a fast int parser already exists, reuse it.
-//
-// Tests planned
-//   [ ] scan_models_test.go: Lexeme/Sym/EqIdent sanity
-
 import (
 	"sort"
 	"strconv"
@@ -196,4 +179,42 @@ func FindTokensAtOffsets(tokens []Token, offsets ...int) []*Token {
 	}
 
 	return out
+}
+
+// Lexeme returns the source bytes for tok's span.
+func Lexeme(src []byte, tok Token) []byte {
+	return src[tok.Span.Start:tok.Span.End]
+}
+
+// Sym returns the single byte at tok's start position.
+func Sym(src []byte, tok Token) byte {
+	return src[tok.Span.Start]
+}
+
+// EqIdent reports whether tok is an IDENTIFIER whose lexeme equals lit.
+// No allocations: compares bytes directly.
+func EqIdent(src []byte, tok Token, lit string) bool {
+	if tok.Kind != KindIdentifier {
+		return false
+	}
+	lex := src[tok.Span.Start:tok.Span.End]
+	if len(lex) != len(lit) {
+		return false
+	}
+	for i := range lex {
+		if lex[i] != lit[i] {
+			return false
+		}
+	}
+	return true
+}
+
+// ParseIntLiteral parses a NUMBER_LITERAL token as int64.
+// A trailing type suffix ('f', 'm') is stripped before parsing.
+func ParseIntLiteral(src []byte, tok Token) (int64, error) {
+	lex := src[tok.Span.Start:tok.Span.End]
+	if len(lex) > 0 && IsNumberTypeSuffix(lex[len(lex)-1]) {
+		lex = lex[:len(lex)-1]
+	}
+	return strconv.ParseInt(string(lex), 10, 64)
 }

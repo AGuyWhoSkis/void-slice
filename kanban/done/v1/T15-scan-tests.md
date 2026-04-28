@@ -124,3 +124,15 @@ T1 (parser, complete — uses scan; regressions must not appear)
 go test ./internal/scan/...   # all pass, zero failures
 go test ./...                 # no regressions in parse or validate
 ```
+
+## Completion
+
+**Done 2026-04-28.**
+
+- Fixed offset bug (5765 → 25980) in `.entities` golden-file spot-check
+- Replaced broken `unknown byte` test case with clean single-byte fixture
+- Added `scan_util_test.go`: table-driven tests for all 6 `Is*` predicates
+- Added `TestSpanString`, `TestTokenString`, `TestDiagnosticString`, `TestKindString`, `TestSeverityString` to `scan_models_test.go`
+- Added 2 new golden files from `doto/game1/` (physicsmaterial, md6def); filled spot-checks on all 3 previously-empty `.decl` test cases
+- Implemented `Lexeme`, `Sym`, `EqIdent`, `ParseIntLiteral` in `scan_util.go` (TDD: tests first)
+- `go test ./...` green, zero regressions

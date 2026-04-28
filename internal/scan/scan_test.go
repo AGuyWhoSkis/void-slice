@@ -17,14 +17,16 @@ import (
 // 	Use this JS console command to switch it to 0-index
 //		document.querySelector(".text").style.counterReset = "num-chars -1";
 
-var testDir = filepath.FromSlash("../../void-files/d2/")
+var testDir = filepath.FromSlash("../../void-files/")
 
 var goldenFiles map[string][]byte
 var goldenFileNames = []string{
-	"game1/generated.decls.gamelogicmanager.ui.gamelogic.manager..gamelogicmanager.decl",
-	"game1/generated.decls.cpntplayerfxmanager.components.characters.player.base.fx_manager..cpntplayerfxmanager.decl",
-	"game1/generated.decls.greatestmomentsmanager.greatestmoments.manager.manager..greatestmomentsmanager.decl",
-	"game1/maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities",
+	"d2/game1/generated.decls.gamelogicmanager.ui.gamelogic.manager..gamelogicmanager.decl",
+	"d2/game1/generated.decls.cpntplayerfxmanager.components.characters.player.base.fx_manager..cpntplayerfxmanager.decl",
+	"d2/game1/generated.decls.greatestmomentsmanager.greatestmoments.manager.manager..greatestmomentsmanager.decl",
+	"d2/game1/maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities",
+	"doto/game1/generated.decls.physicsmaterial.contactsystem.weapons.decl",
+	"doto/game1/generated.decls.md6def.models.characters.small.civ_middle.dockers.docker_01.docker_small_01_head..md6.decl",
 }
 
 func TestMain(m *testing.M) {
@@ -89,24 +91,14 @@ func TestScanner(t *testing.T) {
 			},
 		},
 		{
-			name:      "unknown byte",
-			bytes:     []byte("{ edit = ╓┴.Ö└.║"),
+			name:  "unknown byte",
+			bytes: []byte("{ \xff }"),
 			wantDiags: []scan.Diagnostic{
-				// TODO
+				{Code: scan.Codes.SCAN, Span: scan.NewSpan(2, 3), Message: "unknown byte 11111111"},
 			},
 			wantToks: []scan.Token{
-				{
-					Kind: scan.TokenKind.IDENTIFIER,
-					Span: scan.NewSpan(0, 1),
-				},
-				{
-					Kind: scan.TokenKind.SYMBOL,
-					Span: scan.NewSpan(2, 6),
-				},
-				{
-					Kind: scan.TokenKind.SYMBOL,
-					Span: scan.NewSpan(2, 6),
-				},
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(0, 1)},
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(4, 5)},
 			},
 		},
 	}
@@ -156,11 +148,15 @@ func TestScannerGoldenFiles(t *testing.T) {
 	file1 := goldenFiles[goldenFileNames[1]]
 	file2 := goldenFiles[goldenFileNames[2]]
 	file3 := goldenFiles[goldenFileNames[3]]
+	file4 := goldenFiles[goldenFileNames[4]]
+	file5 := goldenFiles[goldenFileNames[5]]
 
 	require.NotEmpty(t, file0, "expected non-empty test file (file0)")
 	require.NotEmpty(t, file1, "expected non-empty test file (file1)")
 	require.NotEmpty(t, file2, "expected non-empty test file (file2)")
 	require.NotEmpty(t, file3, "expected non-empty test file (file3)")
+	require.NotEmpty(t, file4, "expected non-empty test file (file4)")
+	require.NotEmpty(t, file5, "expected non-empty test file (file5)")
 
 	type tc struct {
 		name       string
@@ -177,26 +173,54 @@ func TestScannerGoldenFiles(t *testing.T) {
 				{offset: 8, wantKind: scan.TokenKind.NUMBER_LITERAL, wantText: "6"},
 				{offset: 10, wantKind: scan.TokenKind.IDENTIFIER, wantText: "component"},
 				{offset: 20, wantKind: scan.TokenKind.SYMBOL, wantText: "{"},
-				{offset: 5765, wantKind: scan.TokenKind.NUMBER_LITERAL, wantText: "20150324"},
+				{offset: 25980, wantKind: scan.TokenKind.NUMBER_LITERAL, wantText: "20150324"},
 				// Add more spot checks for different sections of the file
 			},
 		},
 		{
-			name:       ".gamelogicmanager",
-			bytes:      []byte(file0),
+			name:  ".gamelogicmanager",
+			bytes: []byte(file0),
 			spotChecks: []spotCheck{
-				// Add relevant spot checks
+				{offset: 0, wantKind: scan.TokenKind.SYMBOL, wantText: "{"},
+				{offset: 4, wantKind: scan.TokenKind.IDENTIFIER, wantText: "edit"},
 			},
 		},
 		{
-			name:       ".cpntplayerfxmanager",
-			bytes:      []byte(file1),
-			spotChecks: []spotCheck{},
+			name:  ".cpntplayerfxmanager",
+			bytes: []byte(file1),
+			spotChecks: []spotCheck{
+				{offset: 0, wantKind: scan.TokenKind.SYMBOL, wantText: "{"},
+				{offset: 4, wantKind: scan.TokenKind.IDENTIFIER, wantText: "edit"},
+			},
 		},
 		{
-			name:       ".greatestmomentsmanager",
-			bytes:      []byte(file2),
-			spotChecks: []spotCheck{},
+			name:  ".greatestmomentsmanager",
+			bytes: []byte(file2),
+			spotChecks: []spotCheck{
+				{offset: 0, wantKind: scan.TokenKind.SYMBOL, wantText: "{"},
+				{offset: 4, wantKind: scan.TokenKind.IDENTIFIER, wantText: "edit"},
+				{offset: 43, wantKind: scan.TokenKind.IDENTIFIER, wantText: "num"},
+				{offset: 49, wantKind: scan.TokenKind.NUMBER_LITERAL, wantText: "10"},
+			},
+		},
+		{
+			name:  ".physicsmaterial (doto)",
+			bytes: []byte(file4),
+			spotChecks: []spotCheck{
+				{offset: 0, wantKind: scan.TokenKind.SYMBOL, wantText: "{"},
+				{offset: 4, wantKind: scan.TokenKind.IDENTIFIER, wantText: "inherit"},
+				{offset: 100, wantKind: scan.TokenKind.NUMBER_LITERAL, wantText: "20150324"},
+			},
+		},
+		{
+			name:  ".md6def docker head (doto)",
+			bytes: []byte(file5),
+			spotChecks: []spotCheck{
+				{offset: 0, wantKind: scan.TokenKind.SYMBOL, wantText: "{"},
+				{offset: 4, wantKind: scan.TokenKind.IDENTIFIER, wantText: "init"},
+				{offset: 105, wantKind: scan.TokenKind.IDENTIFIER, wantText: "lod"},
+				{offset: 109, wantKind: scan.TokenKind.NUMBER_LITERAL, wantText: "0"},
+			},
 		},
 	}
 
@@ -215,10 +239,6 @@ func TestScannerGoldenFiles(t *testing.T) {
 
 			// 2. Validate we got tokens
 			require.NotEmpty(t, result_tokens, "expected scanner to produce tokens")
-
-			for _, token222 := range result_tokens {
-				fmt.Fprintf(os.Stderr, "%s", token222)
-			}
 
 			// 3. Validate token integrity: sequential, non-overlapping spans
 			validateTokenIntegrity(t, tt.bytes, result_tokens)

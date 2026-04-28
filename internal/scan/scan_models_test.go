@@ -126,6 +126,63 @@ func TestSpanPos(t *testing.T) {
 	assert.Equal(t, scan.Pos{Line: 2, Col: 10}, out.End)
 }
 
+func TestSpanString(t *testing.T) {
+	assert.Equal(t, "[3,7)", scan.NewSpan(3, 7).String())
+	assert.Equal(t, "[0,0)", scan.NewSpan(0, 0).String())
+}
+
+func TestTokenString(t *testing.T) {
+	tok := scan.Token{Kind: scan.KindIdentifier, Span: scan.NewSpan(3, 7)}
+	assert.Equal(t, "Ident@[3,7)", tok.String())
+}
+
+func TestDiagnosticString(t *testing.T) {
+	d := scan.Diagnostic{
+		Code:    scan.Codes.SCAN,
+		Span:    scan.NewSpan(0, 5),
+		Message: "oops",
+	}
+	s := d.String()
+	assert.Contains(t, s, "VOID_SCAN")
+	assert.Contains(t, s, "[0,5)")
+	assert.Contains(t, s, "oops")
+}
+
+func TestKindString(t *testing.T) {
+	tests := []struct {
+		k    scan.Kind
+		want string
+	}{
+		{scan.KindSymbol, "Sym"},
+		{scan.KindIdentifier, "Ident"},
+		{scan.KindQuoteLiteral, "Quot"},
+		{scan.KindNumberLiteral, "Num"},
+		{scan.KindCommentBlock, "Cmt-Blk"},
+		{scan.KindCommentLine, "Cmt-Lin"},
+		{scan.Kind(99), "(?)"},
+	}
+	for _, tt := range tests {
+		assert.Equal(t, tt.want, tt.k.String(), "Kind(%d)", tt.k)
+	}
+}
+
+func TestSeverityString(t *testing.T) {
+	tests := []struct {
+		s    scan.Severity
+		want string
+	}{
+		{scan.NIL, "NIL"},
+		{scan.RISK, "RISK"},
+		{scan.WARN, "WARN"},
+		{scan.ERROR, "ERROR"},
+		{scan.PANIC, "PANIC"},
+		{scan.Severity(99), "DNE"},
+	}
+	for _, tt := range tests {
+		assert.Equal(t, tt.want, tt.s.String(), "Severity(%d)", tt.s)
+	}
+}
+
 // func (li LineIndex) PosAt(offset int) Pos {
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

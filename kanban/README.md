@@ -26,7 +26,7 @@ T0 (scaffold) → T1 (parser) → T2 (validator) ─┐
                T6 (testdata, can run alongside T1)
 ```
 
-T3 and T6 are both done. The remaining critical path starts from T15.  
+T3, T6, and T15 are done. The remaining critical path is T4 → T5 → T7.  
 T7 runs last — it's the end-of-v1 quality gate against real game files.
 
 | Ticket | What | Size |
@@ -39,7 +39,7 @@ T7 runs last — it's the end-of-v1 quality gate against real game files.
 | T5 | CLI — `voidslice lint <file> [--json]` | medium |
 | T6 ✓ | Testdata — broken .decl fixture files + expected output snapshots | small |
 | T7 | Integration tests — run linter against void-files/ corpus | small |
-| T15 | Scan package — TDD test coverage expansion for internal/scan | large |
+| T15 ✓ | Scan package — TDD test coverage expansion for internal/scan | large |
 
 ---
 
