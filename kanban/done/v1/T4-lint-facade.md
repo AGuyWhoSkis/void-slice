@@ -1,6 +1,6 @@
 # T4 · Lint Facade (`internal/lint`)
 
-**Status:** todo  
+**Status:** done  
 **Version:** v1  
 **Size:** medium  
 **Blocks:** T5
@@ -76,3 +76,11 @@ T15 is required because `Lexeme`, `Sym`, `EqIdent`, and `ParseIntLiteral` are un
 go test ./internal/lint/...
 go test ./...    # full suite, no regressions
 ```
+
+## Completion
+
+Implemented `internal/lint/lint.go` with the full public API (`Severity`, `Diagnostic`, `Linter`, `New()`), `classifyFile`, `isBinary`, and `Lint()` wiring through `scan.Scan` + `validate.ValidateEntities`. Tests in `internal/lint/lint_test.go` cover clean `.decl`, binary fixture, binary sniff on unknown extension, `.entities` VE-inconsistency warning, and known-broken `.decl`. Binary fixture committed at `testdata/binary/sample.bwm`.
+
+Devcontainer setup changes in the same session: Go 1.23.5 added to `.devcontainer/Dockerfile` (installed as root to `/usr/local/go`), module cache pre-populated via `go mod download` during Docker build, and `proxy.golang.org`/`sum.golang.org` added to `init-firewall.sh` allowlist.
+
+`go test ./...` and `go vet ./...` both pass clean.
