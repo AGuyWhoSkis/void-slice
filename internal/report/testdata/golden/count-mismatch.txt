@@ -1,0 +1,3 @@
+count-mismatch.decl:6:11 warning [VALIDATE_ARRAY_COUNT_MISMATCH] array count mismatch: num=3 but 2 item(s) defined
+  6 | 				num = 3;
+                ^

@@ -1,0 +1,3 @@
+dup-index.decl:8:10 warning [VALIDATE_ARRAY_DUP_INDEX] duplicate array index 0
+  8 | 				item[0] = { m_val = "b"; }
+               ^

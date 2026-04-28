@@ -1,6 +1,6 @@
 # T3 · Implement Report Rendering
 
-**Status:** todo  
+**Status:** done  
 **Version:** v1  
 **Size:** medium  
 **Blocks:** T5
@@ -58,3 +58,11 @@ T6 (broken testdata for snapshot tests); can otherwise be started immediately si
 ```
 go test ./internal/report/...
 ```
+
+## Completion note
+
+Implemented `Render` and `RenderJSON` in `internal/report/report.go`. Added `filename string`
+as the first parameter to `Render` (ticket spec omitted it but the example output required it).
+12 tests pass: 5 golden snapshot tests (one per T6 fixture), JSON round-trip, and 6 edge cases.
+Golden files live in `internal/report/testdata/golden/`; regenerate with `-update` flag.
+Pre-existing scan package failures (T15 scope) are unaffected.
