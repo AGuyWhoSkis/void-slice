@@ -1,0 +1,3 @@
+# void-files corpus
+
+Two top-level trees of known-valid, real game-export files used by integration tests, lint sweeps, and golden comparisons. Set 1 (`d2/`) is Dishonored 2 exports; set 2 (`doto/`) is Death of the Outsider exports. Each tree preserves its `game0/`–`game3/` subtree structure, which is referenced directly by `internal/scan`, `internal/parse`, and the sweeps in `internal/lint`. The contents are read-only — do not edit, hand-author, or trim files inside these trees. This README is the only file under `void-files/` tracked by git; everything else is gitignored and obtained out-of-band (see T30).

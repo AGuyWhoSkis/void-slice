@@ -1,6 +1,6 @@
 # T29 · Reorganize void-files corpus
 
-**Status:** todo
+**Status:** done
 **Version:** meta
 **Size:** small
 
@@ -29,3 +29,18 @@ None. Should land before T30 so the CI/corpus-hosting work has a stable layout t
 - `ls void-files/` shows only `d2/` and `doto/` (plus the new `README.md`).
 - `grep -rn "big-Export\|trimmed-Export" .` returns no matches outside `kanban/done/`.
 - `go test ./...` still passes locally (the existing scan/parse/lint tests only reference `d2/game1/` and `doto/game1/`, both of which are unchanged).
+
+## Completion
+
+- Deleted `void-files/big-Export/`, `void-files/trimmed-Export/`, `void-files/trimmed-Export-2/`. `void-files/` now contains exactly `d2/`, `doto/`, and the new `README.md`.
+- Added `void-files/README.md` (one paragraph) describing the two-set layout (`d2/` = set 1 D2, `doto/` = set 2 DOTO), the read-only nature of the corpus, the `game0/`–`game3/` subtree structure consumed by `internal/scan`, `internal/parse`, and `internal/lint`, and the gitignore exception for the README itself.
+- Updated `.gitignore` to keep `void-files/*` ignored while allowing `void-files/README.md` to be tracked (`!void-files/README.md`). This was the minimum gitignore change needed to make the README the only tracked file under the corpus root, as scoped.
+- Doc audit: `CLAUDE.md` and `README.md` did not mention the deleted folders by name, so no edits were needed there. The only remaining grep hits for `big-Export`/`trimmed-Export` outside of this ticket file are in `kanban/done/v1/T15` and `kanban/done/v2/T25`, which are completion notes and were left untouched per scope.
+
+**Verification:** `ls void-files/` → `README.md d2 doto`; `grep -rn 'big-Export\|trimmed-Export' .` → no matches outside `kanban/done/`; `go test ./...` → all packages pass; `go vet ./...` → clean.
+
+**Decisions:**
+- Chose `!void-files/README.md` over moving the README outside the corpus tree (e.g. a top-level `void-files.md`). The ticket explicitly asked for `void-files/README.md`, and the gitignore exception is the standard idiom for this case.
+- The kanban-move hook did not auto-move this file when its `**Status:**` field was edited (likely because the hook activates in a new session per `CLAUDE.md`). Used `git mv` manually to land the file in `kanban/in-progress/meta/` for the work, and the close edit will move it to `kanban/done/meta/` via the same path. Not a scope deviation, just a session-level note.
+
+**Follow-ups:** none

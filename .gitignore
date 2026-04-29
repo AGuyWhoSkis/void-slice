@@ -32,5 +32,6 @@ go.work.sum
 # .vscode/
 
 void-files/*
+!void-files/README.md
 
 .devcontainer/*
