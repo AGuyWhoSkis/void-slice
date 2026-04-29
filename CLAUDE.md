@@ -13,8 +13,7 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 | `internal/report/` | Report renderer: human-pretty and JSON output from `[]scan.Diagnostic` |
 | `internal/lint/` | Lint facade (T4 — pending) |
 | `kanban/` | Markdown task board — see § Kanban workflow |
-| `void-files/` | **Read-only**, **gitignored** real game file corpus (~2.2 GB extracted trees). Local-only — see § Dev setup. |
-| `testdata/` | Fixture files for unit tests; committed binaries under `testdata/binary/`; mini corpus (committed subset of `void-files/`) under `testdata/corpus-mini/` |
+| `testdata/` | Fixture files for unit tests; committed binaries under `testdata/binary/`; committed mini corpus of real game files under `testdata/corpus-mini/` |
 
 ## Key abstractions
 
@@ -47,12 +46,10 @@ A ticket is complete when all of the following are true:
 1. All scope items in the ticket are addressed.
 2. `go test ./...` passes with no failures.
 3. `go vet ./...` reports no issues.
-4. Integration tests (T7, once merged) do not regress against the `void-files/` corpus.
-5. The ticket's `**Status:**` field is set to `done` and a `## Completion` section is appended.
+4. The ticket's `**Status:**` field is set to `done` and a `## Completion` section is appended.
 
 ## What not to touch
 
-- `void-files/` — read-only real game data. Never edit, commit, or delete files here.
 - `testdata/binary/` — committed binary fixtures. Replace only when updating expected scanner output for a known change.
 
 ## Kanban workflow
@@ -127,7 +124,4 @@ Merge order: v3-dev first (smaller delta), then v2-dev. Expected conflict: `cmd/
 
 If credentials expire: re-authenticate on the **host** (`claude auth login` in a WSL2 terminal outside the container). The container reads credentials from the bind-mount — no container rebuild needed.
 
-**Corpus (T30):** the project has two corpus tiers:
-
-- `testdata/corpus-mini/` — committed to git. Mirrors the six golden files referenced by `internal/scan/scan_test.go` (`d2/game1/...` and `doto/game1/...`, ~7.7 MB). CI and `go test ./...` both rely on these; the scan goldens fail hard if any are missing. Refresh from a local `void-files/` tree with `make corpus-mini` after editing `goldenFileNames`.
-- `void-files/` — gitignored, ~2.2 GB. Local-only because the contents are extracted Bethesda/Arkane game data and cannot be redistributed. Required only for the broader sweep tests (`internal/lint/` `TestCleanSweep`, `TestBinarySweep`, `TestCoverageAudit`), which `t.Skip` cleanly when the directory is absent. Obtain it by extracting your own `.entities` / `.decl` exports into `void-files/d2/gameN/` and `void-files/doto/gameN/`; no fetch script is shipped because there is no public source.
+**Corpus:** real game-file fixtures live under `testdata/corpus-mini/` (committed, ~7.7 MB). The six files mirror the `goldenFileNames` list in `internal/scan/scan_test.go` (paths under `d2/game1/...` and `doto/game1/...`); the scan tests fail hard if any are missing. The same tree also feeds the lint sweeps (`internal/lint/` `TestCleanSweep`, `TestCoverageAudit`), and `testdata/binary/sample.bwm` feeds `TestBinarySweep`. To add a new golden, drop the file under the matching subpath, add it to `goldenFileNames`, and commit. The previous `void-files/` corpus (~2.2 GB of extracted game data) has been retired — the larger sweep was redistribution-blocked and CI couldn't see it anyway.

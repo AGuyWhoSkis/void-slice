@@ -11,10 +11,7 @@ import (
 )
 
 func TestBinarySweep(t *testing.T) {
-	corpusRoot := filepath.Join("..", "..", "void-files")
-	if _, err := os.Stat(corpusRoot); os.IsNotExist(err) {
-		t.Skip("void-files corpus not present")
-	}
+	corpusRoot := filepath.Join("..", "..", "testdata", "binary")
 
 	binaryExts := map[string]bool{
 		".bwm":               true,

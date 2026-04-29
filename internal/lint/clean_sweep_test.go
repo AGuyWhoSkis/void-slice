@@ -10,10 +10,7 @@ import (
 )
 
 func TestCleanSweep(t *testing.T) {
-	corpusRoot := filepath.Join("..", "..", "void-files")
-	if _, err := os.Stat(corpusRoot); os.IsNotExist(err) {
-		t.Skip("void-files corpus not present")
-	}
+	corpusRoot := filepath.Join("..", "..", "testdata", "corpus-mini")
 
 	linter := lint.New()
 	count := 0

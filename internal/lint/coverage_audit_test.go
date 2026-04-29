@@ -9,10 +9,7 @@ import (
 )
 
 func TestCoverageAudit(t *testing.T) {
-	corpusRoot := filepath.Join("..", "..", "void-files")
-	if _, err := os.Stat(corpusRoot); os.IsNotExist(err) {
-		t.Skip("void-files corpus not present")
-	}
+	corpusRoot := filepath.Join("..", "..", "testdata", "corpus-mini")
 
 	knownCodes := map[string]bool{
 		// T1 — parser (parse_constants.go)
