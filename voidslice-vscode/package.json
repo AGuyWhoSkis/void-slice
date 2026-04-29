@@ -1,0 +1,53 @@
+{
+  "name": "voidslice-vscode",
+  "displayName": "voidslice",
+  "description": "Linter for Dishonored 2 / DOTO game files (.decl, .entitydef, .entities)",
+  "version": "0.1.0",
+  "publisher": "voidslice",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:voidslice-decl",
+    "onLanguage:voidslice-entitydef",
+    "onLanguage:voidslice-entities"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "voidslice-decl",
+        "aliases": ["Dishonored decl"],
+        "extensions": [".decl"]
+      },
+      {
+        "id": "voidslice-entitydef",
+        "aliases": ["Dishonored entitydef"],
+        "extensions": [".entitydef"]
+      },
+      {
+        "id": "voidslice-entities",
+        "aliases": ["Dishonored entities"],
+        "extensions": [".entities"]
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.0",
+    "typescript": "^5.3.0"
+  }
+}

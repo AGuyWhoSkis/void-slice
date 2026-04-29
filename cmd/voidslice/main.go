@@ -6,12 +6,36 @@ import (
 	"os"
 
 	"void-slice/internal/lint"
+	"void-slice/internal/lsp"
 	"void-slice/internal/report"
 	"void-slice/internal/scan"
 )
 
 func main() {
-	if len(os.Args) < 3 || os.Args[1] != "lint" {
+	if len(os.Args) < 2 {
+		usage()
+		os.Exit(2)
+	}
+
+	switch os.Args[1] {
+	case "lint":
+		runLint()
+	case "lsp":
+		runLSP()
+	default:
+		usage()
+		os.Exit(2)
+	}
+}
+
+func usage() {
+	fmt.Fprintln(os.Stderr, "usage: voidslice <lint|lsp> [args]")
+	fmt.Fprintln(os.Stderr, "  voidslice lint <file> [--json]")
+	fmt.Fprintln(os.Stderr, "  voidslice lsp")
+}
+
+func runLint() {
+	if len(os.Args) < 3 {
 		fmt.Fprintln(os.Stderr, "usage: voidslice lint <file> [--json]")
 		os.Exit(2)
 	}
@@ -54,6 +78,13 @@ func main() {
 		}
 	}
 	os.Exit(0)
+}
+
+func runLSP() {
+	if err := lsp.New().Serve(os.Stdin, os.Stdout); err != nil {
+		fmt.Fprintf(os.Stderr, "voidslice lsp: %v\n", err)
+		os.Exit(1)
+	}
 }
 
 func toScanDiags(ds []lint.Diagnostic) []scan.Diagnostic {

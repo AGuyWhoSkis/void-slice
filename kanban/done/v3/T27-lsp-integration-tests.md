@@ -1,6 +1,6 @@
 # T27 · LSP Subprocess Integration Tests
 
-**Status:** todo
+**Status:** done
 **Version:** v3
 **Size:** small
 
@@ -46,3 +46,14 @@ T14 (LSP server must be complete and building)
 ```bash
 go test ./cmd/voidslice/... -run TestLSP -v
 ```
+
+## Completion
+
+Added `cmd/voidslice/lsp_integration_test.go` (`package main_test`) with two subprocess tests:
+
+- `TestLSP_FullSession` — full handshake: `initialize` -> `initialized` -> `didOpen` broken fixture (asserts `PARSE_EXPECTED_SEMICOLON` present) -> `didChange` clean inline source (asserts raw JSON `"diagnostics":[]`) -> `shutdown` -> `exit` -> process exits 0.
+- `TestLSP_ExitWithoutShutdown` — `exit` without prior `shutdown` -> process exits 1.
+
+Helper `lspSession` reuses `binaryPath` from `main_test.go`'s `TestMain`. Frame reader (~15 lines) is duplicated locally in the test file rather than exporting `readMsg` from `internal/lsp`, per ticket guidance. `waitExit` uses a 5-second timeout guard so a hung server fails the test fast instead of stalling CI.
+
+Verification: `go test ./cmd/voidslice/... -run TestLSP -v` -> 2/2 pass; full `go test ./cmd/voidslice/...` -> 8/8 pass (no v1 regressions). `go vet ./cmd/voidslice/...` clean.
