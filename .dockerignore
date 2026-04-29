@@ -1,0 +1,10 @@
+.git
+.github
+.claude
+kanban
+testdata
+void-files
+web
+docs
+*.md
+Makefile
