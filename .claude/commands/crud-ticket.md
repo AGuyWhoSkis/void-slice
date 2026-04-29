@@ -30,6 +30,35 @@ After creating the file, confirm the ticket number does not collide with existin
 
 ---
 
+## PROPOSE a follow-up ticket (gap discovered during another ticket)
+
+Same as CREATE, with one addition: include an **Origin** field directly under **Size** so the gap-ticket traces back to the ticket that surfaced it.
+
+```
+# T<n> · <Title>
+
+**Status:** todo
+**Version:** <meta|v1|v2|v3|stretch>
+**Size:** <small|medium|large>
+**Origin:** T<originating-ticket>
+
+## What
+<one paragraph — include what was observed during T<origin> that motivated this ticket>
+
+## Scope
+<bullet list>
+
+## Dependencies
+<ticket numbers, or None>
+
+## Verification
+<how to confirm this ticket is complete>
+```
+
+Use this format when the trigger is `/implement-ticket`'s GAPS step or any other "noticed while doing X" situation.
+
+---
+
 ## UPDATE STATUS
 
 Edit **only** the `**Status:**` field — valid values: `todo`, `in-progress`, `done`.
