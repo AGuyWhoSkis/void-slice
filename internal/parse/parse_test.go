@@ -395,7 +395,7 @@ component {
 // -------------------------
 
 func TestIntegration_EntitiesGoldenFile(t *testing.T) {
-	path := filepath.Join("..", "..", "void-files", "d2", "game1",
+	path := filepath.Join("..", "..", "testdata", "corpus-mini", "d2", "game1",
 		"maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities")
 	src, err := os.ReadFile(path)
 	if err != nil {

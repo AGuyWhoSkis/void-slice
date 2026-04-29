@@ -1,0 +1,15 @@
+{
+	inherit = "contactsystem/genericcontact";
+	edit = {
+		m_collisionSettings = {
+			m_version = 20150324;
+			m_blockNPC = false;
+			m_blockPlayer = false;
+			m_blockDynamic = false;
+			m_blockedByStatic = false;
+		}
+		m_projectileContactSettings = {
+			m_canStick = false;
+		}
+	}
+}

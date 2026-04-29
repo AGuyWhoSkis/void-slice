@@ -8,19 +8,20 @@ GO      ?= go
 BIN_DIR ?= bin
 CMD ?=./cmd/voidslice
 
-.PHONY: help tidy fmt vet test race cover build run clean
+.PHONY: help tidy fmt vet test race cover build run clean corpus-mini
 
 help:
 	@echo "Targets:"
-	@echo "  tidy   - go mod tidy"
-	@echo "  fmt    - gofmt on all .go files"
-	@echo "  vet    - go vet ./..."
-	@echo "  test   - go test ./..."
-	@echo "  race   - go test -race ./..."
-	@echo "  cover  - run tests with coverage and open a local HTML report"
-	@echo "  build  - build binaries (defaults to ./cmd/* if CMD not set)"
-	@echo "  run    - run (requires CMD=./cmd/<app> or adjust to your layout)"
-	@echo "  clean  - remove build artifacts"
+	@echo "  tidy         - go mod tidy"
+	@echo "  fmt          - gofmt on all .go files"
+	@echo "  vet          - go vet ./..."
+	@echo "  test         - go test ./..."
+	@echo "  race         - go test -race ./..."
+	@echo "  cover        - run tests with coverage and open a local HTML report"
+	@echo "  build        - build binaries (defaults to ./cmd/* if CMD not set)"
+	@echo "  run          - run (requires CMD=./cmd/<app> or adjust to your layout)"
+	@echo "  clean        - remove build artifacts"
+	@echo "  corpus-mini  - refresh testdata/corpus-mini/ from a local void-files/ tree"
 
 tidy:
 	$(GO) mod tidy
@@ -66,3 +67,33 @@ run:
 
 clean:
 	rm -rf "$(BIN_DIR)"
+
+# Repopulate testdata/corpus-mini/ from a full void-files/ tree (local-only,
+# gitignored). Use this only when adding a new golden to scan_test.go's
+# goldenFileNames or when the source files in void-files/ change. The mini
+# corpus is committed; CI does not run this target.
+CORPUS_FILES := \
+	d2/game1/generated.decls.gamelogicmanager.ui.gamelogic.manager..gamelogicmanager.decl \
+	d2/game1/generated.decls.cpntplayerfxmanager.components.characters.player.base.fx_manager..cpntplayerfxmanager.decl \
+	d2/game1/generated.decls.greatestmomentsmanager.greatestmoments.manager.manager..greatestmomentsmanager.decl \
+	d2/game1/maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities \
+	doto/game1/generated.decls.physicsmaterial.contactsystem.weapons.decl \
+	doto/game1/generated.decls.md6def.models.characters.small.civ_middle.dockers.docker_01.docker_small_01_head..md6.decl
+
+corpus-mini:
+	@if [[ ! -d void-files ]]; then
+		echo "ERROR: void-files/ not present. The full corpus is local-only and not hosted publicly (game data)."
+		echo "       Place an extracted void-files/ tree at the repo root, then re-run."
+		exit 2
+	fi
+	@for f in $(CORPUS_FILES); do
+		src="void-files/$$f"
+		dst="testdata/corpus-mini/$$f"
+		if [[ ! -f "$$src" ]]; then
+			echo "MISSING in void-files/: $$f"
+			exit 2
+		fi
+		mkdir -p "$$(dirname "$$dst")"
+		cp "$$src" "$$dst"
+		echo "refreshed $$dst"
+	done

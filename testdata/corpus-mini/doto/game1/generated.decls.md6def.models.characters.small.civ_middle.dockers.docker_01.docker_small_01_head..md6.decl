@@ -1,0 +1,23 @@
+{
+	init {
+		inherit "models/characters/small/civ_middle/dockers/docker_01/docker_small_01_body.md6"
+		lod 0 {
+			mesh "models/characters/small/civ_middle/dockers/docker_01/docker_small_01_head.md6mesh"
+		}
+		lod 1 {
+			mesh "models/characters/small/civ_middle/dockers/docker_01/docker_small_01_head_lod01.md6mesh"
+		}
+		lod 2 {
+			mesh "models/characters/small/civ_middle/dockers/docker_01/docker_small_01_head_lod02.md6mesh"
+		}
+		lod 3 {
+			mesh "models/characters/small/civ_middle/dockers/docker_01/docker_small_01_head_lod03.md6mesh"
+		}
+	}
+	animsets {
+	}
+	faceanimsets {
+	}
+	props {
+	}
+}

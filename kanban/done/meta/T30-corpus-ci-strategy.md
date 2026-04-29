@@ -1,6 +1,6 @@
 # T30 · Decouple CI from the void-files corpus
 
-**Status:** todo
+**Status:** done
 **Version:** meta
 **Size:** medium
 
@@ -41,3 +41,31 @@ T29 (corpus reorg) — should land first so the hosted/curated artifact reflects
 - `internal/scan/scan_test.go` either reads goldens from a path that's reliably present, or skips cleanly with an actionable message.
 - `CLAUDE.md` documents how a contributor fetches the corpus locally.
 - `void-files/` (the full 2.2 GB) remains gitignored; nothing of meaningful size is added to the main repo's git history.
+
+## Completion
+
+**Strategy chosen: Option C (minimal in-repo corpus, full corpus local-only).** Rationale: the project already had `void-files/` correctly gitignored as private game data with no public hosting source, and the only test that hard-failed on its absence was the scan goldens. Hosting the full 2.2 GB corpus (Options A/B) would either require redistributing copyrighted Bethesda/Arkane content or pointing CI at a private endpoint that no fresh contributor could reach — neither defensible. Option C is also what the ticket flagged as the least-friction path, and matches what the codebase actually needs CI to verify (scan goldens green, sweeps may skip).
+
+**What shipped:**
+
+- Six golden files referenced by `internal/scan/scan_test.go:goldenFileNames` were copied from `void-files/` into `testdata/corpus-mini/`, preserving the `d2/game1/...` and `doto/game1/...` subpaths. Total size ~7.7 MB; the dominant contributor is the 7.4 MB `maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities` fixture, which the spot-check at byte offset 25980 in `TestScannerGoldenFiles` requires.
+- `internal/scan/scan_test.go:20` `testDir` now points at `../../testdata/corpus-mini/`. The `os.Exit(1)` hard-fail in `TestMain` is now correct: the goldens are committed to the repo, so a missing file is a genuine misconfiguration rather than a CI environment issue.
+- `internal/parse/parse_test.go:398` integration test (`TestIntegration_EntitiesGoldenFile`) now reads from `testdata/corpus-mini/` as well, so it exercises the entities golden in CI instead of skipping. The `t.Skipf` fallback was kept as a harmless safety net.
+- `Makefile` gained a `corpus-mini` target that refreshes the in-repo fixture from a local `void-files/` tree. The file list is encoded as a `CORPUS_FILES` variable so adding a new golden is a one-line edit on top of an edit to `goldenFileNames`. The target is local-only — CI does not invoke it.
+- `CLAUDE.md` § Dev setup documents the two corpus tiers (mini = committed, full = gitignored, no fetch script) and updates the project-layout table to reflect that `void-files/` is gitignored and `testdata/corpus-mini/` is the committed counterpart.
+- `.github/workflows/ci.yml` was deliberately left untouched — once the goldens are in-repo, the existing `go test ./...` step exercises them. Adding a fetch step would be dead weight.
+
+**Verification:**
+
+- `go vet ./...` — clean.
+- `go test ./...` (corpus present) — all packages pass, including `TestScannerGoldenFiles` reading from the mini corpus and `TestIntegration_EntitiesGoldenFile` no longer skipping.
+- Fresh-checkout simulation: `mv void-files void-files.hidden && go test -count=1 ./...` — all packages pass, with the lint sweeps (`internal/lint/`) skipping cleanly as designed.
+- `.gitignore` still has `void-files/*` + `!void-files/README.md`; no path under `void-files/` is staged.
+
+**Decisions / deviations:**
+
+- No `scripts/fetch-corpus.sh` was added. The ticket scope said "or equivalent `Makefile` target"; `make corpus-mini` is that equivalent for the mini fixture, and a fetch script for the full corpus has no public source to fetch from. CLAUDE.md explicitly tells contributors that the full corpus is BYO (extracted from their own game install).
+- The lint sweeps (`TestCleanSweep`, `TestBinarySweep`, `TestCoverageAudit`) continue to `t.Skip` in CI when `void-files/` is absent. The ticket explicitly accepted this for Option C ("the sweeps continue to `t.Skip` in CI; the scan goldens get a stable, version-controlled fixture").
+- Committing a 7.4 MB text fixture to git is a one-time cost; `.git` was 3.6 MB pre-T30. Considered truncating the entities file to a smaller representative slice but rejected — the existing spot-check at offset 25980 and the "syntactically valid file produces zero diagnostics" assertion both depend on the file being intact, and the test's stated purpose is to exercise large real-world files.
+
+**Follow-ups:** none

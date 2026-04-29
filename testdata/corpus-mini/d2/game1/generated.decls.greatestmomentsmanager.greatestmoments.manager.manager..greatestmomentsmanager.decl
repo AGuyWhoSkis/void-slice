@@ -1,0 +1,81 @@
+{
+	edit = {
+		m_charactersKilled = {
+			num = 10;
+			item[0] = {
+				m_clip = "greatestmoments/killed_mortimer_ramsey.gamevideoclip";
+				m_entityDef = "models/characters/def/story/mortimer_ramsey.def";
+			}
+			item[1] = {
+				m_clip = "greatestmoments/killed_grim_alex.gamevideoclip";
+				m_entityDef = "models/characters/def/story/grim_alex.def";
+			}
+			item[2] = {
+				m_clip = "greatestmoments/killed_kirin_jindosh.gamevideoclip";
+				m_entityDef = "models/characters/def/story/kirin_jindosh.def";
+			}
+			item[3] = {
+				m_clip = "greatestmoments/killed_breanna_ashworth.gamevideoclip";
+				m_entityDef = "models/characters/def/story/breanna_ashworth.def";
+			}
+			item[4] = {
+				m_clip = "greatestmoments/killed_paolo.gamevideoclip";
+				m_entityDef = "models/characters/def/story/paolo_resurrected.def";
+			}
+			item[5] = {
+				m_clip = "greatestmoments/killed_liam_byrne.gamevideoclip";
+				m_entityDef = "models/characters/def/story/liam_byrne.def";
+			}
+			item[6] = {
+				m_clip = "greatestmoments/killed_aramis_stilton.gamevideoclip";
+				m_entityDef = "models/characters/def/story/aramis_stilton.def";
+			}
+			item[7] = {
+				m_clip = "greatestmoments/killed_luca_abele.gamevideoclip";
+				m_entityDef = "models/characters/def/story/luca_abele.def";
+			}
+			item[8] = {
+				m_clip = "greatestmoments/killed_delilah_copperspoon.gamevideoclip";
+				m_entityDef = "models/characters/def/story/delilah_copperspoon.def";
+			}
+			item[9] = {
+				m_clip = "greatestmoments/killed_aramis_stilton.gamevideoclip";
+				m_entityDef = "models/characters/def/story/aramis_stilton_crazy.def";
+			}
+		}
+		m_records = {
+			num = 2;
+			item[0] = {
+				m_clip = "greatestmoments/highest_drop_assassination.gamevideoclip";
+				m_minValue = 5;
+			}
+			item[1] = {
+				m_clip = "greatestmoments/farthest_crossbow_headshot.gamevideoclip";
+				m_type = "RECORDTYPE_FARTHEST_CROSSBOW_HEADSHOT";
+				m_minValue = 25;
+			}
+		}
+		m_streaks = {
+			num = 2;
+			item[0] = {
+				m_clip = "greatestmoments/longest_kill_streak.gamevideoclip";
+				m_maxDuration = {
+					m_seconds = 10;
+				}
+				m_maxLapse = {
+					m_seconds = 4;
+				}
+			}
+			item[1] = {
+				m_clip = "greatestmoments/longest_neutralization_streak.gamevideoclip";
+				m_maxDuration = {
+					m_seconds = 12;
+				}
+				m_maxLapse = {
+					m_seconds = 5;
+				}
+				m_type = "STREAKTYPE_CHOKE_NEUTRALIZE";
+			}
+		}
+	}
+}

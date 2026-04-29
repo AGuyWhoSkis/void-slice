@@ -17,7 +17,7 @@ import (
 // 	Use this JS console command to switch it to 0-index
 //		document.querySelector(".text").style.counterReset = "num-chars -1";
 
-var testDir = filepath.FromSlash("../../void-files/")
+var testDir = filepath.FromSlash("../../testdata/corpus-mini/")
 
 var goldenFiles map[string][]byte
 var goldenFileNames = []string{

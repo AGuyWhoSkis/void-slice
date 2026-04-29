@@ -1,0 +1,250 @@
+{
+	edit = {
+		m_motionBlur = {
+			m_screenFX = "models/effects/gameplay/player_generic/cam_blur/ply_cam_blur_01.fx";
+		}
+		m_blink = {
+			m_screenFX = "models/effects/gameplay/powers/blink/blink_travel_01.fx";
+			m_endFX = "models/effects/gameplay/powers/blink/blink_out_01.fx";
+		}
+		m_grapple = {
+			m_holdFX = "models/effects/gameplay/powers/shadow_grapple/player/sgrapple_ply_aim_01.fx";
+			m_moveFX = "models/effects/gameplay/powers/shadow_grapple/player/sgrapple_ply_travel_01.fx";
+			m_moveBodyFX = {
+				m_fxList = {
+					num = 4;
+					item[0] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentName = "left_elbow_jnt";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_grapple/player/sgrapple_ply_ghost_trail_01.fx";
+					}
+					item[1] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentName = "left_wrist_jnt";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_grapple/player/sgrapple_ply_ghost_trail_01.fx";
+					}
+					item[2] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentName = "right_elbow_jnt";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_grapple/player/sgrapple_ply_ghost_trail_01.fx";
+					}
+					item[3] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentName = "right_wrist_jnt";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_grapple/player/sgrapple_ply_ghost_trail_01.fx";
+					}
+				}
+			}
+			m_endFX = "models/effects/gameplay/powers/shadow_grapple/player/sgrapple_ply_out_01.fx";
+		}
+		m_sneak = {
+			m_screenFX = "models/effects/gameplay/stealth/stealthshroud/ply_stealth_shroud_01.fx";
+		}
+		m_sprint = {
+			m_sprintFX = "models/effects/gameplay/player_generic/sprint/ply_sprint_01.fx";
+		}
+		m_shadowWalk = {
+			m_groundFX = "models/effects/gameplay/powers/shadow_walk/ply_pp/swalk_vision_01.fx";
+			m_wallFX = "models/effects/gameplay/powers/shadow_walk/ply_pp/swalk_vision_01.fx";
+			m_endOfPowerFX = "models/effects/gameplay/powers/shadow_walk/ply_pp/swalk_end_01.fx";
+			m_enterRatHoleFX = "models/effects/gameplay/powers/shadow_walk/ply_pp/rathole_in_01";
+			m_leaveRatHoleFX = "models/effects/gameplay/powers/shadow_walk/ply_pp/rathole_out_01";
+			m_endOfPowerRemainingTime = 4;
+			m_idleBodyFX = {
+				m_fxList = {
+					num = 8;
+					item[0] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_hand_trail_01";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/idle/ply_hand_idle_01.fx";
+					}
+					item[1] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_02";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/idle/ply_arm_idle_01.fx";
+					}
+					item[2] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_02b";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/idle/ply_arm_idle_01.fx";
+					}
+					item[3] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_06";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/idle/ply_arm_idle_01.fx";
+					}
+					item[4] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_hand_trail_01";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/idle/ply_hand_idle_01.fx";
+					}
+					item[5] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_02";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/idle/ply_arm_idle_01.fx";
+					}
+					item[6] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_02b";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/idle/ply_arm_idle_01.fx";
+					}
+					item[7] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_06";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/idle/ply_arm_idle_01.fx";
+					}
+				}
+			}
+			m_minimumMoveSpeed = 0.6999999881;
+			m_moveBodyFX = {
+				m_fxList = {
+					num = 8;
+					item[0] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_hand_trail_01";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/loco/ply_hand_loco_01.fx";
+					}
+					item[1] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_06";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/loco/ply_arm_loco_02.fx";
+					}
+					item[2] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_05";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/loco/ply_arm_loco_01.fx";
+					}
+					item[3] = {
+						m_bodyPart = "BODY_PART_RIGHT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_02c";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/loco/ply_arm_loco_01.fx";
+					}
+					item[4] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_hand_trail_01";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/loco/ply_hand_loco_01.fx";
+					}
+					item[5] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_06";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/loco/ply_arm_loco_02.fx";
+					}
+					item[6] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_05";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/loco/ply_arm_loco_01.fx";
+					}
+					item[7] = {
+						m_bodyPart = "BODY_PART_LEFT_ARM";
+						m_attachmentType = "ATTACH_TYPE_TAG";
+						m_attachmentName = "fx_arm_trail_02c";
+						m_fxDecl = "models/effects/gameplay/powers/shadow_walk/ply_arms/loco/ply_arm_loco_01.fx";
+					}
+				}
+			}
+		}
+		m_spyglass = {
+			m_mainFx = "models/effects/gameplay/stealth/spyglass/ply_spyglass_pp_01.fx";
+			m_zoomLevelFxs = {
+				num = 2;
+				item[0] = "models/effects/gameplay/stealth/spyglass/ply_spyglass_01.fx";
+				item[1] = "models/effects/gameplay/stealth/spyglass/ply_spyglass_02.fx";
+			}
+			m_turnSpeedFactor = 0.4499999881;
+		}
+		m_bendtime = {
+			m_bendTimeScreenFX = "models/effects/gameplay/powers/bend_time/bend_time_01.fx";
+			m_stopTimeScreenFX = "models/effects/gameplay/powers/bend_time/bend_time_02.fx";
+			m_daudBlinkScreenFX = "models/effects/gameplay/powers/blink/blink_upgrade_01.fx";
+			m_daudGrappleScreenFX = "models/effects/gameplay/powers/shadow_grapple/player/sgrapple_upgrade_01.fx";
+			m_slideScreenFX = "models/effects/gameplay/player_generic/slide/slide_01.fx";
+		}
+		m_nearDeath = {
+			m_healthThreshold = 15;
+			m_healthScreenFX = "models/effects/gameplay/combat/player_combat/ply_near_death_01.fx";
+			m_breathScreenFX = "models/effects/gameplay/player_generic/underwater/ply_pp/ply_undwater_drawning_pp_01.fx";
+		}
+		m_slide = {
+			m_screenFX = "models/effects/gameplay/stealth/stealthshroud/ply_stealth_shroud_01.fx";
+		}
+		m_flash = {
+			m_flashFx = "models/effects/phys_mat/projectiles/howling_bolt/flashbang_pp.fx";
+		}
+		m_electricDamage = {
+			m_electricFx = "models/effects/gameplay/player_generic/electric_damages/ply_elec_damages_01.fx";
+			m_deathRayFx = "models/effects/gameplay/player_generic/electric_damages/ply_elec_damages_01.fx";
+		}
+		m_combatFocus = {
+			m_screenFX = "models/effects/gameplay/combat/player_combat/combat_focus_01.fx";
+		}
+		m_focusedAttack = {
+			m_screenFX = "models/effects/gameplay/combat/player_combat/focused_attack_01.fx";
+		}
+		m_doubleJump = {
+			m_screenFX = "models/effects/gameplay/player_generic/double_jump/ply_double_jump_01.fx";
+		}
+		m_bigHit = {
+			m_bigHitFx = "models/effects/gameplay/combat/player_combat/ply_bighit_react_01.fx";
+		}
+		m_blowDust = {
+			m_blowDustFx = "models/effects/gameplay/combat/howler_dust/ply/hwlrdust_ply_pp_01.fx";
+		}
+		m_swimming = {
+			m_enterWaterFX = "models/effects/gameplay/player_generic/underwater/swim/ply_undwater_jump_in_01.fx";
+			m_leaveWaterFX = "models/effects/gameplay/player_generic/underwater/ply_pp/ply_undwater_out_pp_01.fx";
+			m_underWaterFX = "models/effects/gameplay/player_generic/underwater/ply_pp/ply_undwater_pp_01.fx";
+		}
+		m_screenShake = {
+			m_screenShakeFx = "models/effects/characters/clockwork/ckw_land.fx";
+		}
+		m_bloodthirsty = {
+			m_screenFX = "models/effects/gameplay/combat/player_combat/ply_adrenaline_01.fx";
+		}
+		m_watchtower = {
+			m_screenFX = "models/effects/gameplay/watchtower/watchtower_pp.fx";
+		}
+		m_magicSuppression = {
+			m_disorientedFx = "models/effects/gameplay/combat/warfare_overseer/ply/wrfr_pp_disoriented.fx";
+			m_suppressedFx = "models/effects/gameplay/combat/warfare_overseer/ply/wrfr_pp_suppress.fx";
+		}
+		m_shriek = {
+			m_shriekFx = "models/effects/gameplay/combat/player_combat/ply_witch_shriek_01.fx";
+		}
+		m_briskEye = {
+			m_screenFX = "models/effects/gameplay/player_generic/brisk_eye/ply_brisk_eye_01.fx";
+		}
+		m_knockDown = {
+			m_knockDownFx = "models/effects/characters/paolo/blowback/ply_blowback_pp_01.fx";
+		}
+		m_nestkeeperShriek = {
+			m_shriekFx = "models/effects/characters/nest_keeper/shriek/ply_keeper_shriek_pp_01.fx";
+			m_distanceMax = 40;
+		}
+		m_slomo = {
+			m_slomoFxStart = "models/effects/gameplay/player_generic/start_slomo.fx";
+			m_slomoFxStop = "models/effects/gameplay/player_generic/stop_slomo.fx";
+		}
+		m_cameraBlood = {
+			m_bloodLightFx = "models/effects/gameplay/player_generic/cam_blood/ply_cam_blood_light.fx";
+			m_bloodHeavyFx = "models/effects/gameplay/player_generic/cam_blood/ply_cam_blood_heavy.fx";
+		}
+		m_ether = {
+			m_fx = "models/effects/gameplay/player_generic/ether/ply_ether_pp_01.fx";
+		}
+	}
+}

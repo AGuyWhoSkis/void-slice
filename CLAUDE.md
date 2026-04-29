@@ -13,8 +13,8 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 | `internal/report/` | Report renderer: human-pretty and JSON output from `[]scan.Diagnostic` |
 | `internal/lint/` | Lint facade (T4 — pending) |
 | `kanban/` | Markdown task board — see § Kanban workflow |
-| `void-files/` | **Read-only** real game file corpus (`.zip` archives + extracted trees) |
-| `testdata/` | Fixture files for unit tests; committed binaries under `testdata/binary/` |
+| `void-files/` | **Read-only**, **gitignored** real game file corpus (~2.2 GB extracted trees). Local-only — see § Dev setup. |
+| `testdata/` | Fixture files for unit tests; committed binaries under `testdata/binary/`; mini corpus (committed subset of `void-files/`) under `testdata/corpus-mini/` |
 
 ## Key abstractions
 
@@ -114,3 +114,8 @@ Merge order: v3-dev first (smaller delta), then v2-dev. Expected conflict: `cmd/
 **Container auth (T21):** `~/.claude/` from the WSL2 host is bind-mounted into the container at `/home/node/.claude` via `devcontainer.json`. OAuth credentials persist across container restarts and rebuilds automatically.
 
 If credentials expire: re-authenticate on the **host** (`claude auth login` in a WSL2 terminal outside the container). The container reads credentials from the bind-mount — no container rebuild needed.
+
+**Corpus (T30):** the project has two corpus tiers:
+
+- `testdata/corpus-mini/` — committed to git. Mirrors the six golden files referenced by `internal/scan/scan_test.go` (`d2/game1/...` and `doto/game1/...`, ~7.7 MB). CI and `go test ./...` both rely on these; the scan goldens fail hard if any are missing. Refresh from a local `void-files/` tree with `make corpus-mini` after editing `goldenFileNames`.
+- `void-files/` — gitignored, ~2.2 GB. Local-only because the contents are extracted Bethesda/Arkane game data and cannot be redistributed. Required only for the broader sweep tests (`internal/lint/` `TestCleanSweep`, `TestBinarySweep`, `TestCoverageAudit`), which `t.Skip` cleanly when the directory is absent. Obtain it by extracting your own `.entities` / `.decl` exports into `void-files/d2/gameN/` and `void-files/doto/gameN/`; no fetch script is shipped because there is no public source.

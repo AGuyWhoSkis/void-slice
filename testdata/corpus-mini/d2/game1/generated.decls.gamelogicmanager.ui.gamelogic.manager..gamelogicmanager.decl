@@ -1,0 +1,184 @@
+{
+	edit = {
+		m_states = {
+			enumItem[ARK_GAME_LOGIC_STATE_INGAME] = "ui/gamelogic/state_ingame.gamelogicstateingame";
+			enumItem[ARK_GAME_LOGIC_STATE_PAUSE] = "ui/gamelogic/state_pause.gamelogicstatepause";
+			enumItem[ARK_GAME_LOGIC_STATE_NOTIFICATION] = "ui/gamelogic/state_notification.gamelogicstatenotification";
+			enumItem[ARK_GAME_LOGIC_STATE_READNOTE] = "ui/gamelogic/state_readnote.gamelogicstatereadnote";
+			enumItem[ARK_GAME_LOGIC_STATE_CINEMATIC] = "ui/gamelogic/state_cinematic.gamelogicstatecinematic";
+			enumItem[ARK_GAME_LOGIC_STATE_MAINMENU] = "ui/gamelogic/state_mainmenu.gamelogicstatemainmenu";
+			enumItem[ARK_GAME_LOGIC_STATE_JOURNAL] = "ui/gamelogic/state_journal.gamelogicstatejournal";
+			enumItem[ARK_GAME_LOGIC_STATE_POWERWHEEL] = "ui/gamelogic/state_powerwheel.gamelogicstatepowerwheel";
+			enumItem[ARK_GAME_LOGIC_STATE_CONVERSATION] = "ui/gamelogic/state_conversation.gamelogicstateconversation";
+			enumItem[ARK_GAME_LOGIC_STATE_BLACKMARKET] = "ui/gamelogic/state_blackmarket.gamelogicstateblackmarket";
+			enumItem[ARK_GAME_LOGIC_STATE_RESULTS] = "ui/gamelogic/state_missionresults.gamelogicstateresults";
+			enumItem[ARK_GAME_LOGIC_STATE_TUTORIAL] = "ui/gamelogic/state_tutorial.gamelogicstatetutorial";
+			enumItem[ARK_GAME_LOGIC_STATE_GAMEOVER] = "ui/gamelogic/state_gameover.gamelogicstategameover";
+			enumItem[ARK_GAME_LOGIC_STATE_CHARACTER_CHOICE] = "ui/gamelogic/state_characterchoice.gamelogicstatecharacterchoice";
+			enumItem[ARK_GAME_LOGIC_STATE_MAP_TRANSITION] = "ui/gamelogic/state_maptransition.gamelogicstatemaptransition";
+			enumItem[ARK_GAME_LOGIC_STATE_DEMO] = "ui/gamelogic/state_demo.gamelogicstatedemo";
+		}
+		m_rules = {
+			num = 34;
+			item[0] = {
+				m_from = "ARK_GAME_LOGIC_STATE_ANY";
+				m_to = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_quitAll = true;
+			}
+			item[1] = {
+				m_from = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_to = "ARK_GAME_LOGIC_STATE_READNOTE";
+			}
+			item[2] = {
+				m_from = "ARK_GAME_LOGIC_STATE_JOURNAL";
+				m_to = "ARK_GAME_LOGIC_STATE_READNOTE";
+				m_keepCurrentFlash = true;
+			}
+			item[3] = {
+				m_from = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_to = "ARK_GAME_LOGIC_STATE_CINEMATIC";
+			}
+			item[4] = {
+				m_from = "ARK_GAME_LOGIC_STATE_ANY";
+				m_to = "ARK_GAME_LOGIC_STATE_MAINMENU";
+				m_quitAll = true;
+			}
+			item[5] = {
+				m_from = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_to = "ARK_GAME_LOGIC_STATE_JOURNAL";
+			}
+			item[6] = {
+				m_from = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_to = "ARK_GAME_LOGIC_STATE_POWERWHEEL";
+			}
+			item[7] = {
+				m_from = "ARK_GAME_LOGIC_STATE_CINEMATIC";
+				m_to = "ARK_GAME_LOGIC_STATE_CONVERSATION";
+			}
+			item[8] = {
+				m_from = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_to = "ARK_GAME_LOGIC_STATE_BLACKMARKET";
+			}
+			item[9] = {
+				m_from = "ARK_GAME_LOGIC_STATE_ANY";
+				m_to = "ARK_GAME_LOGIC_STATE_RESULTS";
+				m_quitAll = true;
+			}
+			item[10] = {
+				m_from = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_to = "ARK_GAME_LOGIC_STATE_TUTORIAL";
+			}
+			item[11] = {
+				m_from = "ARK_GAME_LOGIC_STATE_JOURNAL";
+				m_to = "ARK_GAME_LOGIC_STATE_TUTORIAL";
+				m_keepCurrentFlash = true;
+			}
+			item[12] = {
+				m_from = "ARK_GAME_LOGIC_STATE_ANY";
+				m_to = "ARK_GAME_LOGIC_STATE_GAMEOVER";
+				m_quitAll = true;
+			}
+			item[13] = {
+				m_from = "ARK_GAME_LOGIC_STATE_CINEMATIC";
+				m_to = "ARK_GAME_LOGIC_STATE_CHARACTER_CHOICE";
+			}
+			item[14] = {
+				m_from = "ARK_GAME_LOGIC_STATE_ANY";
+				m_to = "ARK_GAME_LOGIC_STATE_NOTIFICATION";
+				m_keepCurrentFlash = true;
+			}
+			item[15] = {
+				m_from = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_to = "ARK_GAME_LOGIC_STATE_CONVERSATION";
+			}
+			item[16] = {
+				m_from = "ARK_GAME_LOGIC_STATE_ANY";
+				m_to = "ARK_GAME_LOGIC_STATE_MAP_TRANSITION";
+				m_quitAll = true;
+			}
+			item[17] = {
+				m_from = "ARK_GAME_LOGIC_STATE_GAMEOVER";
+				m_to = "ARK_GAME_LOGIC_STATE_ANY";
+				m_allow = false;
+			}
+			item[18] = {
+				m_from = "ARK_GAME_LOGIC_STATE_POWERWHEEL";
+				m_to = "ARK_GAME_LOGIC_STATE_CINEMATIC";
+				m_quitCurrent = true;
+			}
+			item[19] = {
+				m_from = "ARK_GAME_LOGIC_STATE_POWERWHEEL";
+				m_to = "ARK_GAME_LOGIC_STATE_READNOTE";
+				m_quitCurrent = true;
+			}
+			item[20] = {
+				m_from = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_to = "ARK_GAME_LOGIC_STATE_PAUSE";
+			}
+			item[21] = {
+				m_from = "ARK_GAME_LOGIC_STATE_POWERWHEEL";
+				m_to = "ARK_GAME_LOGIC_STATE_PAUSE";
+			}
+			item[22] = {
+				m_from = "ARK_GAME_LOGIC_STATE_CINEMATIC";
+				m_to = "ARK_GAME_LOGIC_STATE_PAUSE";
+				m_keepCurrentFlash = true;
+			}
+			item[23] = {
+				m_from = "ARK_GAME_LOGIC_STATE_MAP_TRANSITION";
+				m_to = "ARK_GAME_LOGIC_STATE_ANY";
+				m_allow = false;
+			}
+			item[24] = {
+				m_from = "ARK_GAME_LOGIC_STATE_MAP_TRANSITION";
+				m_to = "ARK_GAME_LOGIC_STATE_MAINMENU";
+				m_quitAll = true;
+			}
+			item[25] = {
+				m_from = "ARK_GAME_LOGIC_STATE_MAP_TRANSITION";
+				m_to = "ARK_GAME_LOGIC_STATE_INGAME";
+				m_quitAll = true;
+			}
+			item[26] = {
+				m_from = "ARK_GAME_LOGIC_STATE_MAP_TRANSITION";
+				m_to = "ARK_GAME_LOGIC_STATE_GAMEOVER";
+				m_quitAll = true;
+			}
+			item[27] = {
+				m_from = "ARK_GAME_LOGIC_STATE_POWERWHEEL";
+				m_to = "ARK_GAME_LOGIC_STATE_NOTIFICATION";
+				m_quitCurrent = true;
+			}
+			item[28] = {
+				m_from = "ARK_GAME_LOGIC_STATE_CINEMATIC";
+				m_to = "ARK_GAME_LOGIC_STATE_JOURNAL";
+			}
+			item[29] = {
+				m_from = "ARK_GAME_LOGIC_STATE_MAP_TRANSITION";
+				m_to = "ARK_GAME_LOGIC_STATE_NOTIFICATION";
+				m_keepCurrentFlash = true;
+			}
+			item[30] = {
+				m_from = "ARK_GAME_LOGIC_STATE_GAMEOVER";
+				m_to = "ARK_GAME_LOGIC_STATE_NOTIFICATION";
+				m_keepCurrentFlash = true;
+			}
+			item[31] = {
+				m_from = "ARK_GAME_LOGIC_STATE_READNOTE";
+				m_to = "ARK_GAME_LOGIC_STATE_PAUSE";
+				m_allow = false;
+			}
+			item[32] = {
+				m_from = "ARK_GAME_LOGIC_STATE_PAUSE";
+				m_to = "ARK_GAME_LOGIC_STATE_READNOTE";
+				m_quitCurrent = true;
+			}
+			item[33] = {
+				m_from = "ARK_GAME_LOGIC_STATE_RESULTS";
+				m_to = "ARK_GAME_LOGIC_STATE_DEMO";
+				m_quitCurrent = true;
+			}
+		}
+		m_initialState = "ARK_GAME_LOGIC_STATE_INGAME";
+	}
+}
