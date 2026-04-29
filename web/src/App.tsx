@@ -8,7 +8,8 @@ export default function App() {
       <Playground />
       <footer className="vs-footer">
         <p>
-          void-slice &middot; <a href="https://github.com/anthropics/void-slice">source</a>
+          void-slice &middot;{" "}
+          <a href="https://github.com/AGuyWhoSkis/void-slice">source</a>
         </p>
       </footer>
     </div>
