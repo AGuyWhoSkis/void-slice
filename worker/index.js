@@ -2,7 +2,7 @@
 // at globalThis.voidsliceLint by cmd/voidslice-wasm/main.go and serves the
 // same /health + /lint API as internal/server.
 //
-// Wrangler's [[wasm_modules]] binding (see wrangler.toml) provides the
+// Wrangler's [wasm_modules] binding (see wrangler.toml) provides the
 // compiled .wasm as a WebAssembly.Module on `env.VOIDSLICE_WASM`.
 
 import "./wasm_exec.js";

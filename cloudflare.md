@@ -29,7 +29,7 @@ fly.io fallback. Dockerfile / docker-compose stay in the repo for local dev.
 | `cmd/voidslice-wasm/main.go` | `syscall/js` entry — exports `voidsliceLint(filename, src)` |
 | `worker/index.js` | Worker fetch handler, `/health` + `/lint`, CORS, multipart + octet-stream |
 | `worker/build.sh` | Compiles WASM and copies `wasm_exec.js` from the active Go toolchain |
-| `wrangler.toml` | Worker name `voidslice-api`, `[[wasm_modules]]` binding, prod env stub |
+| `wrangler.toml` | Worker name `voidslice-api`, `[wasm_modules]` binding, prod env stub |
 | `.github/workflows/ci.yml` | test / lint / build / deploy (deploy main-only) |
 
 ### Numbers you should know
