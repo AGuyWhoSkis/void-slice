@@ -1,13 +1,13 @@
 # Cloudflare deploy — handover
 
-Status as of post-T12 deploy (2026-04-28). The Cloudflare push has happened and
+Status as of post-M2.5 deploy (2026-04-28). The Cloudflare push has happened and
 the playground is live; § 2 below is retained as a runbook for re-running or
 reproducing the deploy. The five sanity checks at the bottom of § 2 still need
-to be ticked off before T12 itself can close — see the [T12 ticket](kanban/todo/v2/T12-deploy.md).
+to be ticked off before M2.5 itself can close — see the [M2.5 ticket](kanban/todo/M2.5-deploy.md).
 
 ## 1. Expectations
 
-### Architecture (post-T25 decision)
+### Architecture (post-M2.7 decision)
 
 ```
                   ┌──────────────┐
@@ -44,7 +44,7 @@ fly.io fallback. Dockerfile / docker-compose stay in the repo for local dev.
 - **CPU**: ~5 ms native on typical inputs, ~2 s native worst-case under the body
   cap. js/wasm is 2–5× slower → safe under Workers Paid 30 s budget.
 - **Cost floor**: **Workers Paid plan ($5 / month)** is required.
-  Free-tier 10 ms CPU is conclusively unviable (T26 confirmed).
+  Free-tier 10 ms CPU is conclusively unviable (M2.8 confirmed).
 
 ### What CI does today
 
@@ -56,7 +56,7 @@ fly.io fallback. Dockerfile / docker-compose stay in the repo for local dev.
 
 Deploy job will fail until the secrets/vars in § 2 are set.
 
-## 2. Next steps (T12 — your Cloudflare account)
+## 2. Next steps (M2.5 — your Cloudflare account)
 
 ### Pre-flight
 
@@ -90,7 +90,7 @@ Token creation: Cloudflare dashboard → My Profile → API Tokens → "Create T
    branch URL). Drag in `testdata/broken/count-mismatch.decl`. Expect the
    `VALIDATE_ARRAY_COUNT_MISMATCH` warning to render.
 
-### Custom domain (optional but listed in T12)
+### Custom domain (optional but listed in M2.5)
 
 1. Cloudflare Pages → project → Custom domains → add e.g. `void-slice.dev`.
 2. Cloudflare DNS → add a `CNAME api → voidslice-api-production…workers.dev`
@@ -102,7 +102,7 @@ Token creation: Cloudflare dashboard → My Profile → API Tokens → "Create T
    intentionally** — too-early lockdown breaks the playground's preview
    deployments.
 
-### Sanity checks (from T12 ticket)
+### Sanity checks (from M2.5 ticket)
 
 - Fresh browser, no cache → playground loads.
 - Drag in a broken `.decl` → diagnostics in <1 s.
@@ -119,9 +119,9 @@ These are deliberate or known-unfilled. Each one is a real risk if ignored.
 - **Diagnostic-count cap is not implemented.** A 1 MB pathological `.decl` will
   still produce ~115K diagnostics under the current code, blow past 128 MB
   Worker memory, and fail the request. The 1 MiB body cap is a partial
-  mitigation but doesn't bound the amplification. **T26 recommended filing
-  this as a follow-up ticket, but no ticket was actually opened — the T27
-  number was reused for LSP integration tests.** This remains an unfilled gap
+  mitigation but doesn't bound the amplification. **M2.8 recommended filing
+  this as a follow-up ticket, but no ticket was actually opened.** This
+  remains an unfilled gap
   and should be filed before opening the Pages URL to wider public traffic.
   Suggested implementation: add a counter inside `parse.WalkEntities`'s
   diag-emit path; at 1,000 diagnostics, append one final
@@ -162,12 +162,12 @@ These are deliberate or known-unfilled. Each one is a real risk if ignored.
 
 - **TinyGo bundle path not explored.** TinyGo would likely cut the WASM from
   865 KB gz to ~50–150 KB gz, but requires a code audit (TinyGo's `reflect`
-  and `encoding/json` subsets are limited). T25 deliberately deferred this —
+  and `encoding/json` subsets are limited). M2.7 deliberately deferred this —
   reopen if bundle size becomes a constraint.
 
 - **No staging environment.** `[env.production]` exists in `wrangler.toml` but
   nothing else. A `[env.staging]` block + a `staging` branch trigger in the
-  workflow would let you dry-run deploys. T12's "dry-run requirement" bullet
+  workflow would let you dry-run deploys. M2.5's "dry-run requirement" bullet
   is currently satisfied only by the `if: github.ref == 'refs/heads/main'`
   guard — that's "feature branches don't deploy", not a true staging.
 
@@ -176,18 +176,18 @@ These are deliberate or known-unfilled. Each one is a real risk if ignored.
   the Cloudflare dashboard.
 
 - **`web/public/samples/*.decl` are static copies of `testdata/broken/*.decl`.**
-  Drift is unlikely (3 small fixtures) but possible. T9 noted this; not worth
+  Drift is unlikely (3 small fixtures) but possible. M2.2 noted this; not worth
   a sync mechanism yet.
 
-### Documentation drift to fix in T13
+### Documentation drift to fix in M2.6
 
-- `README.md` still describes v1 (CLI only). T13 will update it.
-- `architecture.md` predates the Worker decision. T13 will rewrite it with the
+- `README.md` still describes M1 (CLI only). M2.6 will update it.
+- `architecture.md` predates the Worker decision. M2.6 will rewrite it with the
   three-transport-layers diagram and the LSP roadmap.
 
 ## TL;DR
 
 Push to `main` after setting three secrets/vars, upgrade to Workers Paid, and
-the playground goes live. Add a diagnostics cap (T27) before publicizing the
+the playground goes live. Add a diagnostics cap (see "Hard" risk above) before publicizing the
 URL; everything else in § 3 is "should fix when traffic warrants" rather than
 "will break on day one".

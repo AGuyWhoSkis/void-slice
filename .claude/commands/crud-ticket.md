@@ -1,16 +1,22 @@
-Read or manage the kanban ticket $ARGUMENTS. Search kanban/todo/, kanban/in-progress/, and kanban/done/ (including all version subfolders: meta, v1, v2, v3, stretch).
+Read or manage the kanban ticket $ARGUMENTS. Search kanban/todo/, kanban/in-progress/, and kanban/done/ — all status folders are flat; goal-membership is encoded in the filename prefix (e.g. `M1.10-cli-polish.md`, `M5.7-subagents-eval.md`, `M3.4-lsp-followups.md`).
 
 ---
 
 ## CREATE a new ticket
 
-Write a new file at kanban/todo/<version>/T<n>-short-name.md using this format:
+Pick the goal-id from `kanban/goals/` (one of `M1`, `M2`, `M3`, `M4`, `M5`). Pick the next free `<n>` within that goal:
 
 ```
-# T<n> · <Title>
+ls kanban/{todo,in-progress,done}/<goal-id>.* 2>/dev/null | wc -l
+```
+
+Add 1 to that count to get `<n>`. Then write a new file at `kanban/todo/<goal-id>.<n>-short-name.md` using this format:
+
+```
+# <goal-id>.<n> · <Title>
 
 **Status:** todo
-**Version:** <meta|v1|v2|v3|stretch>
+**Goal:** <M1|M2|M3|M4|M5>
 **Size:** <small|medium|large>
 
 ## What
@@ -20,13 +26,13 @@ Write a new file at kanban/todo/<version>/T<n>-short-name.md using this format:
 <bullet list of specific, verifiable deliverables>
 
 ## Dependencies
-<ticket numbers, or None>
+<ticket IDs, or None>
 
 ## Verification
 <how to confirm this ticket is complete>
 ```
 
-After creating the file, confirm the ticket number does not collide with existing tickets.
+After creating the file, confirm the ID does not collide with an existing ticket.
 
 ---
 
@@ -35,21 +41,21 @@ After creating the file, confirm the ticket number does not collide with existin
 Same as CREATE, with one addition: include an **Origin** field directly under **Size** so the gap-ticket traces back to the ticket that surfaced it.
 
 ```
-# T<n> · <Title>
+# <goal-id>.<n> · <Title>
 
 **Status:** todo
-**Version:** <meta|v1|v2|v3|stretch>
+**Goal:** <M1|M2|M3|M4|M5>
 **Size:** <small|medium|large>
-**Origin:** T<originating-ticket>
+**Origin:** <originating-ticket-id>
 
 ## What
-<one paragraph — include what was observed during T<origin> that motivated this ticket>
+<one paragraph — include what was observed during <origin> that motivated this ticket>
 
 ## Scope
 <bullet list>
 
 ## Dependencies
-<ticket numbers, or None>
+<ticket IDs, or None>
 
 ## Verification
 <how to confirm this ticket is complete>

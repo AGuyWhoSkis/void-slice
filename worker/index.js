@@ -10,7 +10,7 @@
 import "./wasm_exec.js";
 import voidsliceWasm from "./voidslice.wasm";
 
-const MAX_BODY_BYTES = 1 << 20; // 1 MiB — see kanban/done/v2/T26-linter-resource-profile.md
+const MAX_BODY_BYTES = 1 << 20; // 1 MiB — see kanban/done/M2.8-linter-resource-profile.md
 const ALLOW_METHODS = "POST, GET, OPTIONS";
 const ALLOW_HEADERS = "Content-Type";
 

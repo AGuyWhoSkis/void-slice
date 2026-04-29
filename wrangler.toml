@@ -3,7 +3,7 @@ main = "worker/index.js"
 compatibility_date = "2025-09-01"
 
 # Worker plan note: requires Workers Paid ($5/mo) for the 30 s CPU budget.
-# See kanban/done/v2/T26-linter-resource-profile.md — Free tier's 10 ms cap
+# See kanban/done/M2.8-linter-resource-profile.md — Free tier's 10 ms cap
 # is not viable for this workload.
 
 # CORS origin in production. Override per environment if the Pages domain changes.

@@ -4,7 +4,7 @@
 
 ## Linked ticket
 
-<!-- e.g. kanban/todo/v1/T6-testdata.md, or "none" -->
+<!-- e.g. kanban/todo/M1.7-testdata.md, or "none" -->
 
 ## Checklist
 

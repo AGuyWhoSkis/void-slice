@@ -55,29 +55,29 @@ A ticket is complete when all of the following are true:
 
 ## Kanban workflow
 
-Tickets live in `kanban/todo/<version>/`, `kanban/in-progress/<version>/`, or `kanban/done/<version>/`.
+Tickets live in `kanban/{todo,in-progress,done}/`. Status folders are flat; each ticket's filename starts with its goal ID (`M1.3-…`, `M5.7-…`, `M2.5-…`). See [`kanban/goals/`](kanban/goals/) for the goal index.
 
 **To change a ticket's status:** edit only the `**Status:**` field in the ticket file (valid values: `todo`, `in-progress`, `done`). The kanban-move hook automatically runs `git mv` to move the file to the correct folder. Do not manually move ticket files. **Always use the Edit or Write tool for any kanban file change** — Bash writes (e.g. `cat >>`) bypass the hook and leave the file in the wrong folder.
 
 Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>` for common operations (see § Tooling).
 
-Version subfolders: `meta`, `v1`, `v2`, `v3`, `stretch`.
+Goal IDs: `M1`, `M2`, `M3`, `M4`, `M5`.
 
 ## Tooling
 
-**Test-runner hook (T18):** `PostToolUse` on Edit/Write of `*.go` files → runs `go test ./...` automatically. Result appears in the conversation. Takes effect in a new session after `.claude/settings.json` was created.
+**Test-runner hook (M5.3):** `PostToolUse` on Edit/Write of `*.go` files → runs `go test ./...` automatically. Result appears in the conversation. Takes effect in a new session after `.claude/settings.json` was created.
 
-**Kanban-move hook (T23):** `PostToolUse` on Edit/Write of `kanban/**/*.md` → reads the `**Status:**` field and runs `git mv` to move the ticket to the matching folder. Takes effect in a new session.
+**Kanban-move hook (M5.8):** `PostToolUse` on Edit/Write of `kanban/{todo,in-progress,done}/*.md` → reads the `**Status:**` field and runs `git mv` to move the ticket to the matching status folder. Goals (`kanban/goals/*.md`) are excluded. Takes effect in a new session.
 
-**Slash commands (T17):**
+**Slash commands (M5.2):**
 - `/crud-ticket <ticket>` — scaffold for creating, updating, or closing a ticket
 - `/implement-ticket <ticket>` — full plan → implement → verify loop for a ticket
 
-**Pre-approved commands (T19):** run without an approval prompt: `go test ./...`, `go test <pkg>`, `go build ./...`, `go vet ./...`, `grep`, `find`, `ls`. Still gated: `rm`, `git reset --hard`, `git push --force`, `git branch -D`.
+**Pre-approved commands (M5.4):** run without an approval prompt: `go test ./...`, `go test <pkg>`, `go build ./...`, `go vet ./...`, `grep`, `find`, `ls`. Still gated: `rm`, `git reset --hard`, `git push --force`, `git branch -D`.
 
-**Lint (T33):** `make lint` runs `golangci-lint run --timeout=5m` against the same pinned version the CI `lint` job uses. On first invocation, the target self-installs the binary to `$(go env GOPATH)/bin` if it isn't already on PATH, so a fresh checkout needs no extra setup. The pinned version is the `GOLANGCI_LINT_VERSION` variable at the top of the `lint` target in `Makefile`; if you bump it, also update the `version:` arg in [.github/workflows/ci.yml](.github/workflows/ci.yml) to keep local and CI aligned.
+**Lint (M5.13):** `make lint` runs `golangci-lint run --timeout=5m` against the same pinned version the CI `lint` job uses. On first invocation, the target self-installs the binary to `$(go env GOPATH)/bin` if it isn't already on PATH, so a fresh checkout needs no extra setup. The pinned version is the `GOLANGCI_LINT_VERSION` variable at the top of the `lint` target in `Makefile`; if you bump it, also update the `version:` arg in [.github/workflows/ci.yml](.github/workflows/ci.yml) to keep local and CI aligned.
 
-**Worktrees (T16):** to run two Claude Code sessions in parallel on separate branches:
+**Worktrees (M5.1):** to run two Claude Code sessions in parallel on separate branches:
 ```bash
 # Preferred — automatic setup/teardown:
 claude --worktree <branch>
@@ -89,21 +89,21 @@ git worktree prune
 ```
 Worktrees land as siblings to the repo root (`../void-slice-<branch>`). `.claude/` settings are git-tracked; each branch has its own copy.
 
-**v2/v3 parallel session setup:**
+**M2/M3 parallel session setup:**
 ```bash
 # Create milestone branches from main
-git checkout -b v2-dev && git checkout main
-git checkout -b v3-dev && git checkout main
+git checkout -b m2-dev && git checkout main
+git checkout -b m3-dev && git checkout main
 
-# Terminal 1 — works T8→T9→T10→T11→T12→T13:
-claude --worktree v2-dev
+# Terminal 1 — works M2.1→M2.2→M2.3→M2.4→M2.5→M2.6:
+claude --worktree m2-dev
 
-# Terminal 2 — works T14:
-claude --worktree v3-dev
+# Terminal 2 — works M3.1:
+claude --worktree m3-dev
 ```
-Merge order: v3-dev first (smaller delta), then v2-dev. Expected conflict: `cmd/voidslice/main.go` — both branches add a new subcommand (`serve` and `lsp`). Resolve by keeping both cases.
+Merge order: m3-dev first (smaller delta), then m2-dev. Expected conflict: `cmd/voidslice/main.go` — both branches add a new subcommand (`serve` and `lsp`). Resolve by keeping both cases.
 
-**Subagents (T22):** **Adopt with caveats.** Parallel subagents provide ~3× speedup on file-disjoint write tasks with zero merge friction. Restrictions:
+**Subagents (M5.7):** **Adopt with caveats.** Parallel subagents provide ~3× speedup on file-disjoint write tasks with zero merge friction. Restrictions:
 - Only for tasks with truly file-disjoint subtasks (no shared files, no git operations during parallel phase).
 - Subagents cannot access worktrees outside the project directory (`/tmp/` is blocked); place worktrees inside `/workspaces/void-slice/` or skip isolation and write directly to distinct files.
 - Each agent must be self-contained — no coordination or shared state between agents.
@@ -111,7 +111,7 @@ Merge order: v3-dev first (smaller delta), then v2-dev. Expected conflict: `cmd/
 
 ## Dev setup
 
-**Devcontainer (T34):** `.devcontainer/` is tracked in git. A fresh clone gets a working devcontainer out of the box — no manual bootstrap from the upstream Anthropic template required. The three files are:
+**Devcontainer (M5.14):** `.devcontainer/` is tracked in git. A fresh clone gets a working devcontainer out of the box — no manual bootstrap from the upstream Anthropic template required. The three files are:
 
 - [.devcontainer/Dockerfile](.devcontainer/Dockerfile) — base image, system packages, Go/Claude Code/UV/chezmoi installs
 - [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json) — VS Code extensions, host bind-mounts, port forwards, post-start firewall hook
@@ -119,9 +119,9 @@ Merge order: v3-dev first (smaller delta), then v2-dev. Expected conflict: `cmd/
 
 **Syncing upstream template updates:** the upstream Anthropic devcontainer lives at [github.com/anthropics/claude-code/tree/main/.devcontainer](https://github.com/anthropics/claude-code/tree/main/.devcontainer). To take an update, diff our tracked copy against the upstream tree and cherry-pick what's wanted. The leading `# Changes from upstream …` header in each file is a load-bearing sync log — append new deltas to it whenever you edit and preserve the existing entries so the next sync is mechanical. Do not silently re-base onto upstream; the log is how a future maintainer reconstructs why each line diverges.
 
-**Adding new container infra:** prefer putting the install in `.devcontainer/Dockerfile` (where Go, UV, chezmoi, and Claude Code already live) rather than routing it through `Makefile` self-bootstrap. Self-bootstrap (e.g. T33's `make lint`) is still useful as a safety net for contributors who run outside the devcontainer, but the Dockerfile is now the primary delivery path for container-resident tools.
+**Adding new container infra:** prefer putting the install in `.devcontainer/Dockerfile` (where Go, UV, chezmoi, and Claude Code already live) rather than routing it through `Makefile` self-bootstrap. Self-bootstrap (e.g. M5.13's `make lint`) is still useful as a safety net for contributors who run outside the devcontainer, but the Dockerfile is now the primary delivery path for container-resident tools.
 
-**Container auth (T21):** `~/.claude/` from the WSL2 host is bind-mounted into the container at `/home/node/.claude` via `devcontainer.json`. OAuth credentials persist across container restarts and rebuilds automatically.
+**Container auth (M5.6):** `~/.claude/` from the WSL2 host is bind-mounted into the container at `/home/node/.claude` via `devcontainer.json`. OAuth credentials persist across container restarts and rebuilds automatically.
 
 If credentials expire: re-authenticate on the **host** (`claude auth login` in a WSL2 terminal outside the container). The container reads credentials from the bind-mount — no container rebuild needed.
 

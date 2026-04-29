@@ -1,6 +1,6 @@
 Implement ticket $ARGUMENTS end-to-end. Follow these steps in order:
 
-1. **LOCATE** — find the ticket file in kanban/ (search todo/, in-progress/, and done/ subdirectories across all version folders).
+1. **LOCATE** — find the ticket file in `kanban/{todo,in-progress,done}/`. Status folders are flat; the goal-id is encoded in the filename prefix (e.g. `M1.10-cli-polish.md`).
 
 2. **READ** — read the full ticket. Understand the What, Scope, Dependencies, and Verification sections before doing anything else.
 
@@ -23,7 +23,7 @@ Implement ticket $ARGUMENTS end-to-end. Follow these steps in order:
    - **Verification gaps** — the ticket's Verification section didn't cover a real risk; propose a test/observability ticket
    - **New design pressure** — implementation revealed a refactor worth doing separately
 
-   Present findings in a single batched prompt: "Found N follow-ups. Create tickets for: [one-line title + 2–3 sentence rationale per item]? (y / pick subset / n)". On approval, scaffold each via the PROPOSE format in `/crud-ticket` (each gets `**Origin:** T<this-ticket>`). If no gaps, say so explicitly ("No follow-ups found.") so the user knows the step ran.
+   Present findings in a single batched prompt: "Found N follow-ups. Create tickets for: [one-line title + 2–3 sentence rationale per item]? (y / pick subset / n)". On approval, scaffold each via the PROPOSE format in `/crud-ticket` (each gets `**Origin:** <this-ticket-id>`). If no gaps, say so explicitly ("No follow-ups found.") so the user knows the step ran.
 
 9. **CLOSE** — edit the ticket's `**Status:**` field to `done`. Append a `## Completion` section: what was done, key decisions, any deviations from the original scope. End the section with a `**Follow-ups:**` line listing the ticket IDs created in step 8 (or `none`).
 

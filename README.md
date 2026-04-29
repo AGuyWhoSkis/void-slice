@@ -53,10 +53,10 @@ Three transport layers share one engine. The LSP server is not a rewrite — it'
 
 ## Status
 
-- **v1** (linter engine + CLI) — shipped; only [T24](kanban/todo/v1/T24-cli-polish.md) (CLI ergonomics — color, multi-file, `--strict`) remains.
-- **v2** (HTTP server + Cloudflare playground) — deployed via Pages + Worker/WASM. [T13](kanban/todo/v2/T13-docs.md) (landing-page rewrite + LSP design doc) is the last open item.
-- **v3** (LSP server + VS Code extension) — shipped; follow-up polish tracked in [T-v3-followups](kanban/todo/stretch/T-v3-followups.md).
-- **v4** (linter scope refinement) — parked; see [T35](kanban/todo/v4/T35-v4-linter-scope.md).
+- **M1** (linter engine + CLI) — shipped; only [M1.10](kanban/todo/M1.10-cli-polish.md) (CLI ergonomics — color, multi-file, `--strict`) remains.
+- **M2** (HTTP server + Cloudflare playground) — deployed via Pages + Worker/WASM. [M2.6](kanban/todo/M2.6-docs.md) (landing-page rewrite + LSP design doc) is the last open item.
+- **M3** (LSP server + VS Code extension) — shipped; follow-up polish tracked in [stretch.3-v3-followups](kanban/todo/stretch.3-v3-followups.md).
+- **M4** (linter scope refinement) — parked; see [M4.1](kanban/todo/M4.1-linter-scope.md).
 
 See [`kanban/`](kanban/README.md) for the full board.
 
