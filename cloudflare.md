@@ -127,10 +127,14 @@ These are deliberate or known-unfilled. Each one is a real risk if ignored.
   diag-emit path; at 1,000 diagnostics, append one final
   `LINT_DIAGNOSTIC_LIMIT` warning and stop.
 
-- **No rate limiting.** Anonymous, public, single-shot lint endpoint. A
-  scripted client could chew up the 30 s × N concurrent quota. Cloudflare's
-  built-in Bot Fight Mode + Rate Limiting Rules (dashboard, no Worker code
-  needed) is the cheapest defense. Suggest: 30 req/min per IP on `/lint`.
+- ~~**No rate limiting.**~~ **Closed.** A `ratelimit` binding (`RATE_LIMITER`,
+  30 req / 60 s, keyed on `cf-connecting-ip`) is declared in
+  [wrangler.toml](wrangler.toml) and consumed at the top of `handleLint` in
+  [worker/index.js](worker/index.js); over-budget requests get a 429 before
+  the body is read or the WASM is invoked. `/health` is intentionally
+  uncapped so smoke checks aren't throttled. If abuse patterns shift to
+  many-IP / low-rate, layer Cloudflare's dashboard Rate Limiting Rules or Bot
+  Fight Mode on top — they run at the edge before the Worker.
 
 - **Workers logs are ephemeral.** `console.log` in `worker/index.js` goes to
   Workers Logs (24h retention by default on Paid). No log forwarding to

@@ -108,6 +108,12 @@ async function handleLint(req, env) {
     return textResponse(405, "method not allowed", env);
   }
 
+  if (env.RATE_LIMITER) {
+    const key = req.headers.get("cf-connecting-ip") || "unknown";
+    const { success } = await env.RATE_LIMITER.limit({ key });
+    if (!success) return textResponse(429, "rate limit exceeded", env);
+  }
+
   const ct = req.headers.get("Content-Type") || "";
   if (!isAllowedContentType(ct)) {
     return textResponse(415, "unsupported media type", env);
