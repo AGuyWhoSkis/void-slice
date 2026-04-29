@@ -1,6 +1,6 @@
 # T-null-ref · NULL; Reference Validation (Stretch)
 
-**Status:** todo  
+**Status:** done
 **Version:** v1 stretch (evaluate at end-of-week-1 velocity check)  
 **Size:** small
 
@@ -32,3 +32,13 @@ go test ./internal/validate/... -run TestNullRef
 ```
 
 Gate: zero false positives on the void-files/ corpus sweep.
+
+## Completion
+
+Closed on 2026-04-28 — absorbed into the v4 refinement conversation. Status:
+
+- The rule itself (a 14th lint code, `VALIDATE_NULL_REFERENCE`) may still be worth landing.
+- The original gate is dead: the `void-files/` corpus referenced by the prerequisite check was retired in [T29-void-files-reorg](../meta/T29-void-files-reorg.md). The replacement corpus is `testdata/corpus-mini/`, but rewriting the gate against it without first deciding whether the rule is wanted is wasted work.
+- Triage is therefore parked as **open question #3** in [T35-v4-linter-scope](../../todo/v4/T35-v4-linter-scope.md), where the user will decide between (a) absorb into v4 with a corpus-mini gate, (b) absorb into v4 without a gate, or (c) won't-do, during the v4 refinement conversation.
+
+This ticket closes here so the backlog stops carrying a stretch item with a stale gate. The decision lives in T35.

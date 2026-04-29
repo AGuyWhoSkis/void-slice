@@ -16,7 +16,7 @@ These are parked, not committed. Each one is a v4 candidate:
 
 1. **`PARSE_UNEXPECTED_TOKEN` false-positive class.** Non-`component` `.decl` sub-types (iggyfile, activeragdoll, renderprog, prefab, …) emit ~1900 of these against the 6-file corpus-mini. Labelled "fix before T5" in [internal/lint/clean_sweep_test.go:67-74](internal/lint/clean_sweep_test.go#L67-L74) but never fixed. Need to determine whether this is a parser-model gap (T1 didn't cover those grammars) or a deliberate exclusion that should be silenced rather than diagnosed.
 2. **Semantic / schema awareness.** Today's linter is a grammar checker, not a contract checker — it doesn't know that `cpntPlayerFxManager` has field `m_maxValue` and not `m_maxValu`. Adding this would be a fundamental scope shift (likely a separate `internal/schema/` package, plus a per-component-type schema corpus). Cost-of-implementation vs. modder value is unclear.
-3. **`VALIDATE_NULL_REFERENCE` revival.** [kanban/todo/stretch/T-null-ref.md](kanban/todo/stretch/T-null-ref.md) was scoped to add a 14th rule but gated on a corpus-sweep prerequisite that pointed at the now-deleted `void-files/` tree. The gate is stale; the rule itself may still be worth landing. Decide: absorb into v4, rewrite the gate against `testdata/corpus-mini/`, or close as won't-do.
+3. **`VALIDATE_NULL_REFERENCE` revival.** [kanban/done/stretch/T-null-ref.md](kanban/done/stretch/T-null-ref.md) was scoped to add a 14th rule but gated on a corpus-sweep prerequisite that pointed at the now-deleted `void-files/` tree. The gate is stale; the rule itself may still be worth landing. Decide: absorb into v4, rewrite the gate against `testdata/corpus-mini/`, or close as won't-do.
 4. **Array-rule hits on "valid" files.** `TestCoverageAudit` reports 7× `VALIDATE_ARRAY_COUNT_MISMATCH` and 1× `VALIDATE_ARRAY_MISSING_NUM` against the corpus-mini files, which are nominally valid game exports. Either the rules have false positives on real data, or the data has actual bugs that ship in-game. Uninvestigated. Worth one focused session.
 5. **Live re-lint in the playground.** The Cloudflare path is one-shot upload → diagnostics. The LSP server in [internal/lsp/](internal/lsp/) already supports incremental re-lint but isn't wired to the web frontend. Worth a UX-cost/value sketch before scoping.
 
@@ -34,7 +34,7 @@ These are parked, not committed. Each one is a v4 candidate:
 ## Dependencies
 
 - T12 (Cloudflare deploy) — need real-world playground feedback before committing to rule-set changes
-- May absorb [kanban/todo/stretch/T-null-ref.md](kanban/todo/stretch/T-null-ref.md) depending on the refinement outcome
+- May absorb [kanban/done/stretch/T-null-ref.md](kanban/done/stretch/T-null-ref.md) depending on the refinement outcome
 
 ## Verification
 
@@ -85,9 +85,9 @@ The five [testdata/broken/](testdata/broken/) fixtures (count-mismatch, dup-inde
 | [T12-deploy.md](../v2/T12-deploy.md) | no | The Cloudflare deploy itself |
 | [T13-docs.md](../v2/T13-docs.md) | no | Docs polish, blocked on T12 |
 | [T24-cli-polish.md](../v1/T24-cli-polish.md) | no | ANSI color, multi-file args, `--strict` — CLI ergonomics only |
-| [T-null-ref.md](../stretch/T-null-ref.md) | `VALIDATE_NULL_REFERENCE` | Stretch; gate references the deleted `void-files/` corpus |
-| [T-v3-followups.md](../stretch/T-v3-followups.md) | no | LSP polish (T29-T32 children) |
-| [T-k3d.md](../stretch/T-k3d.md) | no | Superseded by Cloudflare decision; effectively dead |
+| [T-null-ref.md](../../done/stretch/T-null-ref.md) | `VALIDATE_NULL_REFERENCE` | Closed; absorbed into open question #3 above |
+| [T-v3-followups.md](../stretch/T-v3-followups.md) | no | LSP polish (T36-T39 children, re-numbered from original T29-T32 after collision with meta tickets) |
+| [T-k3d.md](../../done/stretch/T-k3d.md) | no | Closed; superseded by Cloudflare Workers/WASM (T25) |
 
 ### Honest UX framing
 

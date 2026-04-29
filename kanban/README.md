@@ -69,6 +69,6 @@ Evaluate after the relevant milestone; start only if there is velocity buffer.
 
 | Ticket | What | Gate |
 |--------|------|------|
-| T-null-ref | NULL; reference validation — third lint rule | after T7 corpus sweep shows low false-positive rate |
-| T-k3d | k3d Kubernetes lab | after end-of-week-1 velocity check |
 | T-v3-followups | LSP umbrella: editor-setup docs, VS Code e2e test, stderr logging, release pipeline | evaluate after v2 lands |
+
+Closed without implementation: T-null-ref (absorbed into T35 open question #3), T-k3d (superseded by Cloudflare Workers/WASM). Both live in `done/stretch/`.

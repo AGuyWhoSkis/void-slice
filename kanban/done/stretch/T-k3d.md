@@ -1,6 +1,6 @@
 # T-k3d · k3d Kubernetes Lab (Stretch)
 
-**Status:** todo  
+**Status:** done
 **Version:** stretch (evaluate at end-of-week-1)  
 **Size:** medium
 
@@ -35,3 +35,7 @@ kubectl apply -f k8s/deployment.yaml
 kubectl port-forward svc/voidslice 8080:8080 &
 curl http://localhost:8080/health   # {"status":"ok"}
 ```
+
+## Completion
+
+Closed as won't-do on 2026-04-28. Superseded by the L4 architecture decision in [T25](../meta/) (resolved): Cloudflare Workers/WASM became the primary runtime, with Cloudflare Containers as the first fallback. The k3d validation path is no longer relevant — it was scoped against an earlier plan to host the Go service on Kubernetes, which never materialised. The Cloudflare playground deployment is now live ([T12](../../todo/v2/T12-deploy.md)). Nothing in this ticket needs to be salvaged; recorded here for backlog hygiene only.

@@ -8,11 +8,11 @@
 
 Tracking ticket for gaps observed at the close of v3. v3 shipped a working LSP server, subprocess integration tests, and a buildable VS Code extension — sufficient for a developer running VS Code from this repo. The items below close the gap between "developer can use it" and "any modder can install it on any LSP-capable editor and we'll know if it breaks."
 
-Promote each child to its own ticket (numbered T29+) when scheduled.
+Promote each child to its own ticket (numbered T36+) when scheduled. The original numbering (T29-T32) was reused for unrelated meta tickets in `kanban/done/meta/`, so the next free slot is T36.
 
 ## Children
 
-### T29 — LSP client setup docs (Neovim, Helix, Zed) — small
+### T36 — LSP client setup docs (Neovim, Helix, Zed) — small
 
 T14's stated audience was "VS Code, Neovim, etc." but only VS Code got a client. Add `docs/editor-setup.md` (or a top-level README section) with copy-pasteable snippets:
 
@@ -22,7 +22,7 @@ T14's stated audience was "VS Code, Neovim, etc." but only VS Code got a client.
 
 No code, just docs. Closes the scope gap from T14.
 
-### T30 — VS Code extension end-to-end smoke test — medium
+### T37 — VS Code extension end-to-end smoke test — medium
 
 `extension.ts` is currently unverified by automation. If someone breaks the activation event, document selector, or the `LanguageClient` wiring, every Go test still passes.
 
@@ -32,7 +32,7 @@ No code, just docs. Closes the scope gap from T14.
 
 Only test that catches extension-side regressions.
 
-### T31 — LSP server stderr logging — small
+### T38 — LSP server stderr logging — small
 
 The server is opaque: no way for a user to tell why diagnostics aren't appearing.
 
@@ -43,7 +43,7 @@ The server is opaque: no way for a user to tell why diagnostics aren't appearing
 
 Cheap; high payoff first time something goes wrong in the wild.
 
-### T32 — Release pipeline for the binary + .vsix — medium
+### T39 — Release pipeline for the binary + .vsix — medium
 
 Non-Go modders currently have no install path: no released binary, no published `.vsix`. On tag push:
 
@@ -62,7 +62,7 @@ Does **not** publish to the VS Code Marketplace (out of scope per T28). Pairs wi
 ## Dependencies
 
 T14, T27, T28 (all done).
-T32 lines up well with v2 T11 — schedule together if v2 still in flight.
+T39 lines up well with v2 T11 — though v2 T11 has now landed (`done/v2/`), so the scheduling note is informational only.
 
 ## Verification
 
