@@ -1,0 +1,75 @@
+// Changes from upstream Anthropic template (github.com/anthropics/claude-code/tree/main/.devcontainer):
+//   - Added: github.copilot and github.copilot-chat extensions
+//   - Removed: claude-code-config volume mount (source=claude-code-config-${devcontainerId},
+//     target=/home/node/.claude) — removed so the pre-configured settings.json baked into
+//     the image is not shadowed by an empty volume on first run
+//   - Added: host ~/.claude bind-mount (T21) — mounts WSL2 host ~/.claude into the container so
+//     OAuth credentials persist across restarts without re-authentication. Re-auth on the host
+//     if credentials expire: `claude auth login` in a WSL2 terminal, no rebuild needed.
+//   - Added: host ~/.ssh bind-mount (readonly) — mounts WSL2 host ~/.ssh into the container so
+//     git push over SSH works. No rebuild needed if keys change on the host.
+//   - Added: forwardPorts [35519] — forwards OAuth callback port so `claude auth login` inside
+//     the container completes via browser redirect without manual code pasting.
+//   - Removed: workspaceMount and workspaceFolder fields (devcontainer template format handles this)
+//   - Added: chezmoi via Dockerfile (for dotfiles management)
+//   - Changed: waitFor from postStartCommand to postCreateCommand — VS Code dotfiles (chezmoi apply)
+//     run before the firewall so that plugin installation has internet access
+{
+  "name": "Claude Code Sandbox",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "TZ": "${localEnv:TZ:America/Los_Angeles}",
+      "CLAUDE_CODE_VERSION": "latest",
+      "GIT_DELTA_VERSION": "0.18.2",
+      "ZSH_IN_DOCKER_VERSION": "1.2.0"
+    }
+  },
+  "runArgs": [
+    "--cap-add=NET_ADMIN",
+    "--cap-add=NET_RAW"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "github.copilot",
+        "github.copilot-chat",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          },
+          "zsh": {
+            "path": "zsh"
+          }
+        }
+      }
+    }
+  },
+  "remoteUser": "node",
+  "mounts": [
+    "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
+    "source=${localEnv:HOME}/.claude,target=/home/node/.claude,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,readonly,consistency=cached"
+  ],
+  "containerEnv": {
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+    "POWERLEVEL9K_DISABLE_GITSTATUS": "true"
+  },
+  "forwardPorts": [35519],
+  "postStartCommand": "sudo /usr/local/bin/init-firewall.sh",
+  "waitFor": "postCreateCommand"
+}

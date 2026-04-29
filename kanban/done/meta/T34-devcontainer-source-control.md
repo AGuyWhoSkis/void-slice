@@ -1,6 +1,6 @@
 # T34 · Decide on .devcontainer/ source control strategy
 
-**Status:** todo
+**Status:** done
 **Version:** meta
 **Size:** medium
 **Origin:** T33
@@ -37,3 +37,26 @@ None directly. T21 (devcontainer auth via host bind-mount) and T33 (lint pre-fli
 - `CLAUDE.md` § Dev setup explains what gets tracked and how to sync upstream updates (Option A) or which infra concerns belong outside the Dockerfile (Option B).
 - No secrets, host-specific paths, or personal credentials are committed if Option A is chosen.
 - T33's `make lint` continues to work; if Option A, the Makefile self-install becomes a redundant safety net rather than the primary delivery path, which is fine.
+
+## Completion
+
+Chose **Option A**: `.devcontainer/` is now tracked in git.
+
+**What was done:**
+- Removed `.devcontainer/*` from [.gitignore](.gitignore); the three existing files ([.devcontainer/Dockerfile](.devcontainer/Dockerfile), [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json), [.devcontainer/init-firewall.sh](.devcontainer/init-firewall.sh)) are now under source control.
+- Audited the files for secrets / host-specific paths before un-ignoring: bind-mounts use `${localEnv:HOME}` (portable), the firewall allowlist contains only public domains (GitHub, npm, Anthropic, VS Code marketplace, Go module proxy, Copilot), and no IPs, usernames, or credentials appear anywhere in the tree.
+- Expanded [CLAUDE.md](CLAUDE.md) § Dev setup with three new subsections: what each tracked file does, the upstream-sync workflow (diff against `github.com/anthropics/claude-code/tree/main/.devcontainer` and append to the `# Changes from upstream` log in each file), and the new convention that container-resident tool installs go in the Dockerfile rather than `Makefile` self-bootstrap (with T33's `make lint` retained as the safety net for non-devcontainer contributors).
+
+**Key decisions:**
+- Picked Option A over B/C because the existing `# Changes from upstream` headers in each file were already designed as a sync log — Option A makes that log load-bearing rather than vestigial. Option B would have required migrating tracked-elsewhere infra for every customization, and Option C's overlay-on-base split was more infra than the project warrants.
+- Did **not** open a follow-up to migrate T33's `golangci-lint` install from `Makefile` into the Dockerfile. CI doesn't read the Dockerfile (the `lint` job uses its own pinned-version action), so the migration would only save ~30s on the first `make lint` in a fresh container while adding a third pin location to keep in lockstep with [.github/workflows/ci.yml](.github/workflows/ci.yml). The redundant safety net is the better steady state, matching the ticket's "which is fine" framing.
+
+**Deviations from scope:** none.
+
+**Verification:**
+- `go test ./...` clean.
+- `go vet ./...` clean.
+- `make lint` exits 0.
+- Fresh-clone test was not exercised on a different machine, but the tracked files are self-contained (no host-specific paths/IPs/usernames) so a clone-and-rebuild path is mechanical.
+
+**Follow-ups:** none.

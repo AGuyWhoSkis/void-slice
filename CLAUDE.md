@@ -113,6 +113,16 @@ Merge order: v3-dev first (smaller delta), then v2-dev. Expected conflict: `cmd/
 
 ## Dev setup
 
+**Devcontainer (T34):** `.devcontainer/` is tracked in git. A fresh clone gets a working devcontainer out of the box — no manual bootstrap from the upstream Anthropic template required. The three files are:
+
+- [.devcontainer/Dockerfile](.devcontainer/Dockerfile) — base image, system packages, Go/Claude Code/UV/chezmoi installs
+- [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json) — VS Code extensions, host bind-mounts, port forwards, post-start firewall hook
+- [.devcontainer/init-firewall.sh](.devcontainer/init-firewall.sh) — iptables/ipset firewall with an allowlist of public domains (GitHub, npm, Anthropic, VS Code marketplace, Go module proxy, Copilot)
+
+**Syncing upstream template updates:** the upstream Anthropic devcontainer lives at [github.com/anthropics/claude-code/tree/main/.devcontainer](https://github.com/anthropics/claude-code/tree/main/.devcontainer). To take an update, diff our tracked copy against the upstream tree and cherry-pick what's wanted. The leading `# Changes from upstream …` header in each file is a load-bearing sync log — append new deltas to it whenever you edit and preserve the existing entries so the next sync is mechanical. Do not silently re-base onto upstream; the log is how a future maintainer reconstructs why each line diverges.
+
+**Adding new container infra:** prefer putting the install in `.devcontainer/Dockerfile` (where Go, UV, chezmoi, and Claude Code already live) rather than routing it through `Makefile` self-bootstrap. Self-bootstrap (e.g. T33's `make lint`) is still useful as a safety net for contributors who run outside the devcontainer, but the Dockerfile is now the primary delivery path for container-resident tools.
+
 **Container auth (T21):** `~/.claude/` from the WSL2 host is bind-mounted into the container at `/home/node/.claude` via `devcontainer.json`. OAuth credentials persist across container restarts and rebuilds automatically.
 
 If credentials expire: re-authenticate on the **host** (`claude auth login` in a WSL2 terminal outside the container). The container reads credentials from the bind-mount — no container rebuild needed.
