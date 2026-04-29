@@ -63,6 +63,8 @@ Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>` for common operatio
 
 Goal IDs: `M1`, `M2`, `M3`, `M4`, `M5`.
 
+**Goal completion drains tickets.** When a goal's last ticket closes, its done tickets are compacted into a `## Retrospective` section on the goal file and deleted (`git rm kanban/done/M{N}.*`). See [kanban/README.md § Goal completion](kanban/README.md#goal-completion--context-drain) for the v1 retrospective format and checklist.
+
 ## Tooling
 
 **Test-runner hook (M5.3):** `PostToolUse` on Edit/Write of `*.go` files → runs `go test ./...` automatically. Result appears in the conversation. Takes effect in a new session after `.claude/settings.json` was created.
