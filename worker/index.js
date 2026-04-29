@@ -2,10 +2,13 @@
 // at globalThis.voidsliceLint by cmd/voidslice-wasm/main.go and serves the
 // same /health + /lint API as internal/server.
 //
-// Wrangler's [wasm_modules] binding (see wrangler.toml) provides the
-// compiled .wasm as a WebAssembly.Module on `env.VOIDSLICE_WASM`.
+// The .wasm file is bundled at deploy time via wrangler's default
+// CompiledWasm rule for *.wasm imports — the import below resolves to a
+// WebAssembly.Module. ES module workers cannot use the [wasm_modules]
+// config form.
 
 import "./wasm_exec.js";
+import voidsliceWasm from "./voidslice.wasm";
 
 const MAX_BODY_BYTES = 1 << 20; // 1 MiB — see kanban/done/v2/T26-linter-resource-profile.md
 const ALLOW_METHODS = "POST, GET, OPTIONS";
@@ -13,12 +16,12 @@ const ALLOW_HEADERS = "Content-Type";
 
 let wasmReady = null;
 
-function ensureWasm(env) {
+function ensureWasm() {
   if (wasmReady) return wasmReady;
   wasmReady = (async () => {
     // eslint-disable-next-line no-undef
     const go = new Go();
-    const instance = await WebAssembly.instantiate(env.VOIDSLICE_WASM, go.importObject);
+    const instance = await WebAssembly.instantiate(voidsliceWasm, go.importObject);
     // go.run() never resolves (the Go program calls select{}).
     // Don't await it — let it run in the background.
     go.run(instance);
@@ -138,7 +141,7 @@ async function handleLint(req, env) {
     return textResponse(400, "could not read body", env);
   }
 
-  await ensureWasm(env);
+  await ensureWasm();
   const out = globalThis.voidsliceLint(filename, src);
   return jsonResponse(200, out, env);
 }

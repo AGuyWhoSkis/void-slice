@@ -10,9 +10,6 @@ compatibility_date = "2025-09-01"
 [vars]
 ALLOWED_ORIGIN = "*"
 
-[wasm_modules]
-VOIDSLICE_WASM = "worker/voidslice.wasm"
-
 [observability]
 enabled = true
 
