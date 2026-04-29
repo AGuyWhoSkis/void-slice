@@ -1,0 +1,141 @@
+name: ci
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  GO_VERSION: "1.23"
+  NODE_VERSION: "20"
+
+jobs:
+  test:
+    name: Go test + vet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - run: go vet ./...
+      - run: go test ./...
+
+  lint:
+    name: golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: --timeout=5m
+
+  build:
+    name: Build CLI + Worker bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      - name: Build CLI
+        run: go build -o /tmp/voidslice ./cmd/voidslice
+
+      - name: Build Worker WASM
+        run: ./worker/build.sh
+
+      - name: Verify bundle fits Free-tier compressed limit (3 MB)
+        run: |
+          gz=$(gzip -9 -c worker/voidslice.wasm | wc -c)
+          echo "voidslice.wasm gz=$gz bytes"
+          test "$gz" -lt 3145728 || (echo "Worker bundle exceeds 3 MB compressed" && exit 1)
+
+      - name: Build frontend
+        working-directory: web
+        run: |
+          npm ci || npm install
+          npm run build
+        env:
+          # Set this in repo Settings → Variables for production builds.
+          # Falls back to localhost for branch builds where the var is unset.
+          VITE_API_URL: ${{ vars.VITE_API_URL || 'http://localhost:8080' }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: worker-bundle
+          path: |
+            worker/index.js
+            worker/wasm_exec.js
+            worker/voidslice.wasm
+            wrangler.toml
+          retention-days: 7
+
+  deploy:
+    name: Deploy (main only)
+    needs: [test, lint, build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build Worker WASM
+        run: ./worker/build.sh
+
+      - name: Build frontend
+        working-directory: web
+        run: |
+          npm ci || npm install
+          npm run build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env production
+
+      - name: Deploy Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy web/dist --project-name=voidslice --branch=main
+
+# Required GitHub secrets (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN  — scoped to: Workers Scripts:Edit, Pages:Edit
+#   CLOUDFLARE_ACCOUNT_ID — Cloudflare account ID
+#
+# Required GitHub variables (Settings → Secrets and variables → Variables):
+#   VITE_API_URL          — Worker route URL once T12 wires the custom domain
+#                           (e.g. https://api.example.com or
+#                           https://voidslice-api-production.<acct>.workers.dev)

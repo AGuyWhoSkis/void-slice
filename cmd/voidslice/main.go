@@ -3,12 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log/slog"
 	"os"
+	"strconv"
 
 	"void-slice/internal/lint"
 	"void-slice/internal/lsp"
 	"void-slice/internal/report"
 	"void-slice/internal/scan"
+	"void-slice/internal/server"
 )
 
 func main() {
@@ -19,9 +22,11 @@ func main() {
 
 	switch os.Args[1] {
 	case "lint":
-		runLint()
+		os.Exit(runLint(os.Args[2:]))
+	case "serve":
+		os.Exit(runServe(os.Args[2:]))
 	case "lsp":
-		runLSP()
+		os.Exit(runLSP())
 	default:
 		usage()
 		os.Exit(2)
@@ -29,37 +34,33 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: voidslice <lint|lsp> [args]")
+	fmt.Fprintln(os.Stderr, "usage:")
 	fmt.Fprintln(os.Stderr, "  voidslice lint <file> [--json]")
+	fmt.Fprintln(os.Stderr, "  voidslice serve [--port 8080]")
 	fmt.Fprintln(os.Stderr, "  voidslice lsp")
 }
 
-func runLint() {
-	if len(os.Args) < 3 {
-		fmt.Fprintln(os.Stderr, "usage: voidslice lint <file> [--json]")
-		os.Exit(2)
-	}
-
+func runLint(args []string) int {
 	lintFlags := flag.NewFlagSet("lint", flag.ExitOnError)
 	jsonMode := lintFlags.Bool("json", false, "machine-readable JSON output")
-	lintFlags.Parse(os.Args[2:]) //nolint
+	lintFlags.Parse(args) //nolint
 
 	if lintFlags.NArg() != 1 {
 		fmt.Fprintln(os.Stderr, "usage: voidslice lint <file> [--json]")
-		os.Exit(2)
+		return 2
 	}
 	filename := lintFlags.Arg(0)
 
 	src, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "voidslice: %v\n", err)
-		os.Exit(2)
+		return 2
 	}
 
 	diags, err := lint.New().Lint(filename, src)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "voidslice: %v\n", err)
-		os.Exit(2)
+		return 2
 	}
 
 	scanDiags := toScanDiags(diags)
@@ -74,17 +75,45 @@ func runLint() {
 
 	for _, d := range diags {
 		if d.Severity == lint.Error {
-			os.Exit(1)
+			return 1
 		}
 	}
-	os.Exit(0)
+	return 0
 }
 
-func runLSP() {
+func runServe(args []string) int {
+	serveFlags := flag.NewFlagSet("serve", flag.ExitOnError)
+	port := serveFlags.Int("port", 8080, "TCP port to listen on")
+	serveFlags.Parse(args) //nolint
+
+	logger := slog.New(slog.NewJSONHandler(os.Stderr, nil))
+	cfg := server.Config{
+		AllowedOrigin: os.Getenv("ALLOWED_ORIGIN"),
+		Logger:        logger,
+	}
+
+	addr := ":" + strconv.Itoa(*port)
+	logger.Info("server starting", slog.String("addr", addr), slog.String("allowed_origin", originOrDefault(cfg.AllowedOrigin)))
+	if err := server.ListenAndServe(addr, cfg); err != nil {
+		fmt.Fprintf(os.Stderr, "voidslice: %v\n", err)
+		return 1
+	}
+	return 0
+}
+
+func originOrDefault(o string) string {
+	if o == "" {
+		return "*"
+	}
+	return o
+}
+
+func runLSP() int {
 	if err := lsp.New().Serve(os.Stdin, os.Stdout); err != nil {
 		fmt.Fprintf(os.Stderr, "voidslice lsp: %v\n", err)
-		os.Exit(1)
+		return 1
 	}
+	return 0
 }
 
 func toScanDiags(ds []lint.Diagnostic) []scan.Diagnostic {
