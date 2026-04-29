@@ -83,11 +83,6 @@ func (c *cursor) lexeme(tok scan.Token) []byte {
 	return c.src[tok.Span.Start:tok.Span.End]
 }
 
-// sym returns the first source byte for tok (for SYMBOL tokens).
-func (c *cursor) sym(tok scan.Token) byte {
-	return c.src[tok.Span.Start]
-}
-
 // isIdent returns true iff tok is an IDENTIFIER whose text equals lit, without allocating.
 func (c *cursor) isIdent(tok scan.Token, lit string) bool {
 	if tok.Kind != scan.KindIdentifier {
@@ -162,15 +157,6 @@ func (c *cursor) matchIdent(lit string) (scan.Token, bool) {
 		return scan.Token{}, false
 	}
 	return *c.next(), true
-}
-
-// expectIdent is like matchIdent but emits a diagnostic if the match fails.
-func (c *cursor) expectIdent(lit string, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
-	tok, ok := c.matchIdent(lit)
-	if !ok {
-		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
-	}
-	return tok, ok
 }
 
 // syncTo advances until the peeked token is a SYMBOL matching sym1 or (if sym2!=0) sym2.

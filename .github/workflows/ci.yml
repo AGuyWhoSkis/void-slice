@@ -37,7 +37,9 @@ jobs:
           cache: true
       - uses: golangci/golangci-lint-action@v6
         with:
-          version: latest
+          # Keep this pinned version aligned with .devcontainer/devcontainer.json's
+          # GOLANGCI_LINT_VERSION arg so local `make lint` and CI run the same binary.
+          version: v1.64.8
           args: --timeout=5m
 
   build:

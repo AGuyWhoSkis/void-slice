@@ -77,6 +77,8 @@ Version subfolders: `meta`, `v1`, `v2`, `v3`, `stretch`.
 
 **Pre-approved commands (T19):** run without an approval prompt: `go test ./...`, `go test <pkg>`, `go build ./...`, `go vet ./...`, `grep`, `find`, `ls`. Still gated: `rm`, `git reset --hard`, `git push --force`, `git branch -D`.
 
+**Lint (T33):** `make lint` runs `golangci-lint run --timeout=5m` against the same pinned version the CI `lint` job uses. On first invocation, the target self-installs the binary to `$(go env GOPATH)/bin` if it isn't already on PATH, so a fresh checkout needs no extra setup. The pinned version is the `GOLANGCI_LINT_VERSION` variable at the top of the `lint` target in `Makefile`; if you bump it, also update the `version:` arg in [.github/workflows/ci.yml](.github/workflows/ci.yml) to keep local and CI aligned.
+
 **Worktrees (T16):** to run two Claude Code sessions in parallel on separate branches:
 ```bash
 # Preferred — automatic setup/teardown:
