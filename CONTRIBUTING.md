@@ -10,11 +10,11 @@ Void Slice is a modding tool — contributors who know Dishonored 2 / DOTO file 
 - Documentation fixes
 
 **Code:**
-- Ready tickets live in [`kanban/todo/v1/`](kanban/todo/v1/). Each is a self-contained markdown file with acceptance criteria.
+- Ready tickets live in [`kanban/todo/`](kanban/todo/) under milestone subfolders (`v1/`, `v2/`, `v4/`, `stretch/`). Each is a self-contained markdown file with acceptance criteria.
 
 ## Finding work
 
-Browse [`kanban/todo/v1/`](kanban/todo/v1/) for tickets that are ready to start. Pick one, move the file to `kanban/in-progress/`, and open a PR when you're ready.
+Browse [`kanban/todo/`](kanban/todo/) for tickets that are ready to start. v1 is essentially done (one cleanup ticket left); the most active areas now are v2 docs polish and stretch follow-ups. Pick one, edit its `**Status:**` field to `in-progress` (a hook will move the file), and open a PR when you're ready.
 
 Not sure where to start? Reach out on [Nexus Mods](https://www.nexusmods.com/profile/kleptobismal) and we can find something that fits.
 

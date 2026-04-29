@@ -1,7 +1,9 @@
 # Cloudflare deploy — handover
 
-Status as of T11 close. Everything below is what's actually in the repo, what
-still needs to happen on the Cloudflare side, and what we knowingly didn't do.
+Status as of post-T12 deploy (2026-04-28). The Cloudflare push has happened and
+the playground is live; § 2 below is retained as a runbook for re-running or
+reproducing the deploy. The five sanity checks at the bottom of § 2 still need
+to be ticked off before T12 itself can close — see the [T12 ticket](kanban/todo/v2/T12-deploy.md).
 
 ## 1. Expectations
 
@@ -117,11 +119,13 @@ These are deliberate or known-unfilled. Each one is a real risk if ignored.
 - **Diagnostic-count cap is not implemented.** A 1 MB pathological `.decl` will
   still produce ~115K diagnostics under the current code, blow past 128 MB
   Worker memory, and fail the request. The 1 MiB body cap is a partial
-  mitigation but doesn't bound the amplification. **T26 recommended this as
-  its own ticket (T27); it should land before opening the Pages URL to public
-  traffic.** Suggested implementation: add a counter inside
-  `parse.WalkEntities`'s diag-emit path; at 1,000 diagnostics, append one
-  final `LINT_DIAGNOSTIC_LIMIT` warning and stop.
+  mitigation but doesn't bound the amplification. **T26 recommended filing
+  this as a follow-up ticket, but no ticket was actually opened — the T27
+  number was reused for LSP integration tests.** This remains an unfilled gap
+  and should be filed before opening the Pages URL to wider public traffic.
+  Suggested implementation: add a counter inside `parse.WalkEntities`'s
+  diag-emit path; at 1,000 diagnostics, append one final
+  `LINT_DIAGNOSTIC_LIMIT` warning and stop.
 
 - **No rate limiting.** Anonymous, public, single-shot lint endpoint. A
   scripted client could chew up the 30 s × N concurrent quota. Cloudflare's

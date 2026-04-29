@@ -6,13 +6,15 @@ A modding linter for Dishonored 2 and DOTO, shipped as a CLI and a web playgroun
 
 [Void Explorer](https://www.nexusmods.com/dishonored2/mods/9) enables patch-based modding of code and game assets — Export, Import, Generate Mod. No tooling exists yet for parsing, linting, or verifying the compiled id Tech files those workflows produce. Void Slice fills that gap.
 
-In v1, Void Slice lints individual game files (`.entities`, `.decl`, `.entitydef`) and reports diagnostics:
+Void Slice lints individual game files (`.entities`, `.decl`, `.entitydef`) and reports diagnostics:
 
-- **Bracket and quote parity** — unmatched `[] {} ()` and `"" ''`
-- **Count/index validation** — `count = X;` doesn't match the number of entries below it
-- **File reference checks** — invalid references and misuse of `NULL;`
+- **Bracket and quote parity** — unmatched `[] {} ()` and `"" ''`, unterminated literals
+- **Grammar errors** — missing `;`, missing `{` / `}` / `=`, identifier expected, unterminated objects
+- **Array bookkeeping** — `num = X;` doesn't match the number of `item[]` entries; out-of-bounds, duplicate, or missing indices
+- **Binary-file refusal** — `.bwm`/`.tome`/etc. and any null-byte content rejected with a clear error
+- **`.entities` / `.cfg` round-trip warning** — flags upload of file types Void Explorer cannot reliably re-import
 
-Verification (linting all files in a mod) and D2/DOTO comparison are roadmapped for later milestones, not v1.
+Verification (linting all files in a mod) and D2/DOTO comparison are roadmapped for later milestones.
 
 ## Architecture
 
@@ -25,9 +27,9 @@ Verification (linting all files in a mod) and D2/DOTO comparison are roadmapped 
         ┌─────────────┼─────────────┐
         ▼             ▼             ▼
    ┌─────────┐  ┌──────────┐  ┌──────────┐
-   │   CLI   │  │  server  │  │   LSP    │   ← v2, designed for now
-   │voidslice│  │ POST     │  │ (later)  │
-   │  lint   │  │ /lint    │  │          │
+   │   CLI   │  │  server  │  │   LSP    │
+   │voidslice│  │  POST    │  │ JSON-RPC │
+   │  lint   │  │  /lint   │  │ over io  │
    └─────────┘  └────┬─────┘  └──────────┘
                      │
                      ▼
@@ -37,10 +39,10 @@ Verification (linting all files in a mod) and D2/DOTO comparison are roadmapped 
             │ CodeMirror      │
             └─────────────────┘
 
-  Deploy:  Pages (frontend)  →  Worker (router)  →  Container (Go binary)
+  Deploy:  Pages (frontend)  →  Worker (Go compiled to WASM, runs in-isolate)
 ```
 
-Three transport layers share one engine. The LSP server (v2) is not a rewrite — it's a new file that imports `lint` and speaks JSON-RPC instead of HTTP.
+Three transport layers share one engine. The LSP server is not a rewrite — it's a thin entry point that imports `lint` and speaks JSON-RPC.
 
 ## Stack
 
@@ -51,7 +53,12 @@ Three transport layers share one engine. The LSP server (v2) is not a rewrite �
 
 ## Status
 
-v1 (linter engine + CLI) is in progress. See [`kanban/`](kanban/README.md) for current ticket status and the v2/v3 roadmap.
+- **v1** (linter engine + CLI) — shipped; only [T24](kanban/todo/v1/T24-cli-polish.md) (CLI ergonomics — color, multi-file, `--strict`) remains.
+- **v2** (HTTP server + Cloudflare playground) — deployed via Pages + Worker/WASM. [T13](kanban/todo/v2/T13-docs.md) (landing-page rewrite + LSP design doc) is the last open item.
+- **v3** (LSP server + VS Code extension) — shipped; follow-up polish tracked in [T-v3-followups](kanban/todo/stretch/T-v3-followups.md).
+- **v4** (linter scope refinement) — parked; see [T35](kanban/todo/v4/T35-v4-linter-scope.md).
+
+See [`kanban/`](kanban/README.md) for the full board.
 
 ## Contributing
 

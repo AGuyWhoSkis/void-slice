@@ -6,12 +6,12 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 
 | Path | Purpose |
 |------|---------|
-| `cmd/voidslice/` | CLI entry point (`main.go`) — T5 pending |
+| `cmd/voidslice/` | CLI entry point (`main.go`) |
 | `internal/scan/` | Tokenizer: `[]byte → []Token + []Diagnostic + []int (newline offsets)` |
 | `internal/parse/` | Structural parser: token stream → events via `Handler` interface |
 | `internal/validate/` | Semantic validator: implements `parse.Handler`, emits `VALIDATE_*` diagnostics |
 | `internal/report/` | Report renderer: human-pretty and JSON output from `[]scan.Diagnostic` |
-| `internal/lint/` | Lint facade (T4 — pending) |
+| `internal/lint/` | Lint facade |
 | `kanban/` | Markdown task board — see § Kanban workflow |
 | `testdata/` | Fixture files for unit tests; committed binaries under `testdata/binary/`; committed mini corpus of real game files under `testdata/corpus-mini/` |
 
