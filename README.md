@@ -58,4 +58,3 @@ v1 (linter engine + CLI) is in progress. See [`kanban/`](kanban/README.md) for c
 Non-code contributions (broken fixture files, bug reports, doc fixes) are just as valuable as code. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started and what's ready to pick up.
 
 To discuss contributing or the project in general, reach out on [Nexus Mods](https://www.nexusmods.com/profile/kleptobismal).
-
