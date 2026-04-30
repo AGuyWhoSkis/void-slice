@@ -38,7 +38,7 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 - **Golden-file tests:** expected output lives under `testdata/golden/` as `.txt` files; diff with `testify/assert`.
 - **Test file placement:** `*_test.go` co-located with the package under test.
 - **No external deps** beyond `github.com/stretchr/testify`.
-- **Commit messages:** keep them concise — a short subject line is usually enough. Reach for a body only when the *why* genuinely needs explanation. The log is for skimming, not reading.
+- **Commit messages:** default to subject line only — no body. Reach for a body only when the user has explicitly asked for one or the *why* is impossible to infer from the diff. Match the bar of `git log --oneline -10`. The log is for skimming, not reading.
 
 ## Definition of done
 
