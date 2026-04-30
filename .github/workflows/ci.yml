@@ -116,26 +116,23 @@ jobs:
 
       - name: Upload preview Worker version
         id: worker
-        uses: cloudflare/wrangler-action@v3
-        with:
-          # The action's default Wrangler is 3.90.0; --preview-alias was
-          # added in Wrangler 4.x. Pin a version that supports it.
-          wranglerVersion: "4.86.0"
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --preview-alias pr-${{ github.event.number }} --message "PR #${{ github.event.number }} (${{ github.event.pull_request.head.sha }})"
-
-      - name: Extract preview Worker URL
-        id: worker-url
+        # Invoke wrangler directly rather than via cloudflare/wrangler-action@v3:
+        # the action wrapper doesn't reliably expose Wrangler stdout via its
+        # command-output, and we need to parse "Version Preview Alias URL"
+        # out of stdout to feed into the SPA build below.
         env:
-          WRANGLER_OUTPUT: ${{ steps.worker.outputs.command-output }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ github.event.number }}
+          PR_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          # wrangler versions upload prints a "Version Preview URL: https://..." line.
-          # Extract it directly rather than templating from a constant subdomain.
-          url=$(echo "$WRANGLER_OUTPUT" | grep -oE 'https://pr-[0-9]+-[a-z0-9-]+\.workers\.dev' | head -1)
+          output=$(npx -y wrangler@4.86.0 versions upload \
+            --preview-alias "pr-${PR_NUMBER}" \
+            --message "PR #${PR_NUMBER} (${PR_SHA})" 2>&1)
+          echo "$output"
+          url=$(echo "$output" | sed -n 's/^Version Preview Alias URL: //p' | head -1)
           if [ -z "$url" ]; then
-            echo "Failed to extract preview URL from wrangler output:"
-            echo "$WRANGLER_OUTPUT"
+            echo "::error::Failed to extract Version Preview Alias URL from wrangler output"
             exit 1
           fi
           echo "url=$url" >> "$GITHUB_OUTPUT"
@@ -147,18 +144,21 @@ jobs:
           npm ci || npm install
           npm run build
         env:
-          VITE_API_URL: ${{ steps.worker-url.outputs.url }}
+          VITE_API_URL: ${{ steps.worker.outputs.url }}
 
       - name: Deploy Pages preview
         id: pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          # Match the wrangler version used for versions upload above
-          # so any Pages-deploy quirks are observable consistently.
-          wranglerVersion: "4.86.0"
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy web/dist --project-name=voidslice --branch=pr-${{ github.event.number }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          npx -y wrangler@4.86.0 pages deploy web/dist \
+            --project-name=voidslice \
+            --branch="pr-${PR_NUMBER}"
+          # Pages mints a deterministic branch-alias URL given (project, branch).
+          # Template rather than parse stdout — we own both inputs.
+          echo "url=https://pr-${PR_NUMBER}.voidslice.pages.dev" >> "$GITHUB_OUTPUT"
 
       - name: Post preview URLs to PR
         uses: marocchino/sticky-pull-request-comment@v2
@@ -169,8 +169,8 @@ jobs:
 
             | Surface | URL |
             |---------|-----|
-            | Worker  | ${{ steps.worker-url.outputs.url }} |
-            | Pages   | ${{ steps.pages.outputs.deployment-url }} |
+            | Worker  | ${{ steps.worker.outputs.url }} |
+            | Pages   | ${{ steps.pages.outputs.url }} |
 
             Drop a `.decl` / `.entities` / `.entitydef` into the Pages playground to exercise the change end-to-end.
 
