@@ -6,7 +6,8 @@ compatibility_date = "2025-09-01"
 # See kanban/done/M2.8-linter-resource-profile.md — Free tier's 10 ms cap
 # is not viable for this workload.
 
-# CORS origin in production. Override per environment if the Pages domain changes.
+# CORS origin. Custom-domain lockdown (replace "*" with the Pages domain) is
+# tracked in M7 — Production hardening.
 [vars]
 ALLOWED_ORIGIN = "*"
 
@@ -14,20 +15,10 @@ ALLOWED_ORIGIN = "*"
 enabled = true
 
 # Per-IP rate limit on /lint. 30 requests / 60 s, keyed on cf-connecting-ip.
-# Wrangler does not inherit bindings into named environments, so the same
-# block is duplicated under [env.production] below.
+# Shared across all versions of the script — preview versions deployed by the
+# CI preview-deploy job (M6.2) use the same bucket as production. Acceptable
+# at current traffic; revisit if preview load grows.
 [[unsafe.bindings]]
-name = "RATE_LIMITER"
-type = "ratelimit"
-namespace_id = "1001"
-simple = { limit = 30, period = 60 }
-
-[env.production]
-[env.production.vars]
-# Replace with the Cloudflare Pages domain once T12 ties the custom domain in.
-ALLOWED_ORIGIN = "*"
-
-[[env.production.unsafe.bindings]]
 name = "RATE_LIMITER"
 type = "ratelimit"
 namespace_id = "1001"
