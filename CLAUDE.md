@@ -74,6 +74,7 @@ Goal IDs: `M1`, `M2`, `M3`, `M4`, `M5`.
 **Slash commands (M5.2):**
 - `/crud-ticket <ticket>` — scaffold for creating, updating, or closing a ticket
 - `/implement-ticket <ticket>` — full plan → implement → verify loop for a ticket
+- `/define-goal` — conversational goal-creation: pressure-tests intent and scope, then writes `kanban/goals/M{N}.md` and updates the README index
 
 **Pre-approved commands (M5.4):** run without an approval prompt: `go test ./...`, `go test <pkg>`, `go build ./...`, `go vet ./...`, `grep`, `find`, `ls`. Still gated: `rm`, `git reset --hard`, `git push --force`, `git branch -D`.
 
