@@ -1,9 +1,9 @@
 name: ci
 
 on:
-  push:
-    branches: ["**"]
   pull_request:
+    branches: [main]
+  push:
     branches: [main]
 
 permissions:
@@ -70,8 +70,9 @@ jobs:
           npm ci || npm install
           npm run build
         env:
-          # Set this in repo Settings → Variables for production builds.
-          # Falls back to localhost for branch builds where the var is unset.
+          # Falls back to localhost when the var isn't set (e.g. main pushes
+          # before vars.VITE_API_URL is configured). Production / preview
+          # deploys rebuild the frontend with the right URL.
           VITE_API_URL: ${{ vars.VITE_API_URL || 'http://localhost:8080' }}
 
       - uses: actions/upload-artifact@v4
@@ -90,10 +91,93 @@ jobs:
             wrangler.toml
           retention-days: 7
 
-  deploy:
-    name: Deploy (main only)
+  preview-deploy:
+    name: Preview deploy (PR only)
     needs: [test, lint, build]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # Same-repo PRs only. Fork PRs don't have access to repo secrets, so
+    # Cloudflare deploys can't run from them; the job is intentionally skipped.
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build Worker WASM
+        run: ./worker/build.sh
+
+      - name: Upload preview Worker version
+        id: worker
+        # Invoke wrangler directly rather than via cloudflare/wrangler-action@v3:
+        # the action wrapper doesn't reliably expose Wrangler stdout via its
+        # command-output, and we need to parse "Version Preview Alias URL"
+        # out of stdout to feed into the SPA build below.
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ github.event.number }}
+          PR_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          output=$(npx -y wrangler@4.86.0 versions upload \
+            --preview-alias "pr-${PR_NUMBER}" \
+            --message "PR #${PR_NUMBER} (${PR_SHA})" 2>&1)
+          echo "$output"
+          url=$(echo "$output" | sed -n 's/^Version Preview Alias URL: //p' | head -1)
+          if [ -z "$url" ]; then
+            echo "::error::Failed to extract Version Preview Alias URL from wrangler output"
+            exit 1
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Preview Worker URL: $url"
+
+      - name: Build frontend with preview API URL
+        working-directory: web
+        run: |
+          npm ci || npm install
+          npm run build
+        env:
+          VITE_API_URL: ${{ steps.worker.outputs.url }}
+
+      - name: Deploy Pages preview
+        id: pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          npx -y wrangler@4.86.0 pages deploy web/dist \
+            --project-name=voidslice \
+            --branch="pr-${PR_NUMBER}"
+          # Pages mints a deterministic branch-alias URL given (project, branch).
+          # Template rather than parse stdout — we own both inputs.
+          echo "url=https://pr-${PR_NUMBER}.voidslice.pages.dev" >> "$GITHUB_OUTPUT"
+
+      - name: Post preview URLs to PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: void-slice-preview
+          message: |
+            ## Preview deploy
+
+            | Surface | URL |
+            |---------|-----|
+            | Worker  | ${{ steps.worker.outputs.url }} |
+            | Pages   | ${{ steps.pages.outputs.url }} |
+
+            Drop a `.decl` / `.entities` / `.entitydef` into the Pages playground to exercise the change end-to-end.
+
+  production-deploy:
+    name: Production deploy (main only)
+    needs: [test, lint, build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -138,6 +222,6 @@ jobs:
 #   CLOUDFLARE_ACCOUNT_ID — Cloudflare account ID
 #
 # Required GitHub variables (Settings → Secrets and variables → Variables):
-#   VITE_API_URL          — Worker route URL once T12 wires the custom domain
-#                           (e.g. https://api.example.com or
-#                           https://voidslice-api-production.<acct>.workers.dev)
+#   VITE_API_URL          — production Worker URL embedded in the prod SPA build
+#                           (e.g. https://voidslice-api.<acct>.workers.dev).
+#                           Preview deploys override this per-PR.
