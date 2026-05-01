@@ -2,10 +2,6 @@ name = "voidslice-api"
 main = "worker/index.js"
 compatibility_date = "2025-09-01"
 
-# Worker plan note: requires Workers Paid ($5/mo) for the 30 s CPU budget.
-# See kanban/done/M2.8-linter-resource-profile.md — Free tier's 10 ms cap
-# is not viable for this workload.
-
 # CORS origin. Custom-domain lockdown (replace "*" with the Pages domain) is
 # tracked in M7 — Production hardening.
 [vars]

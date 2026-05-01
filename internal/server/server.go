@@ -15,8 +15,7 @@ import (
 )
 
 const (
-	// 1 MiB matches Cloudflare Workers' realistic memory headroom for the
-	// linter; see kanban/done/M2.8-linter-resource-profile.md.
+	// 1 MiB matches Cloudflare Workers' realistic memory headroom for the linter
 	defaultMaxBodyBytes = 1 << 20
 	defaultLintTimeout  = 5 * time.Second
 )
