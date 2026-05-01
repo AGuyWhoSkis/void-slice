@@ -20,20 +20,19 @@ Goals capture durable intent — the why and the scope of a body of work. Ticket
 |--------|---------|
 | `todo/` | Prioritized and ready to start |
 | `in-progress/` | Being worked on right now |
-| `done/` | Finished — has a `## Completion` note at the bottom |
 
-Status folders are flat. Goal-membership is encoded in the filename prefix.
+Status folders are flat. Goal-membership is encoded in the filename prefix. Closed tickets are deleted (`git rm`) — there is no `done` folder or status; `git log` is the closure record.
 
 ## Ticket format
 
 Filename: `<goal-id>.<n>-short-name.md`. Examples: `M1.10-cli-polish.md`, `M5.7-subagents-eval.md`, `M3.4-lsp-followups.md`.
 
-Edit the `**Status:**` field (`todo` / `in-progress` / `done`) — the kanban-move hook moves the file into the matching folder. Do not rename or `git mv` manually.
+Edit the `**Status:**` field (`todo` / `in-progress`) — the kanban-move hook moves the file into the matching folder. Do not rename or `git mv` manually.
 
 New tickets pick the next free `<n>` within their goal:
 
 ```
-ls kanban/{todo,in-progress,done}/<goal-id>.* 2>/dev/null | wc -l
+ls kanban/{todo,in-progress}/<goal-id>.* 2>/dev/null | wc -l
 ```
 
 Add 1 to that count.
@@ -42,7 +41,6 @@ Add 1 to that count.
 
 1. **Create** — write `kanban/todo/M<N>.<n>-name.md` with `**Status:** todo`. No other file is touched.
 2. **Pick up** — edit `**Status:** in-progress`. The hook moves the file to `kanban/in-progress/`.
-3. **Close** — edit `**Status:** done`. The hook moves the file to `kanban/done/`. Optionally append a `## Completion` section.
-4. **Dispose** — `git rm` the file when it stops being useful as in-flight context. No batch event, no compaction step. `git log` is the durable record.
+3. **Close** — `git rm` the ticket file. The commit message is the closure record; optionally append a brief retro to the parent goal file. There is no `done` folder or status.
 
 Closing a goal is just flipping its `**Status:**` field. A retrospective on the goal file is optional, not mandatory; [goals/M2.md](goals/M2.md) and [goals/M6.md](goals/M6.md) serve as exemplars.

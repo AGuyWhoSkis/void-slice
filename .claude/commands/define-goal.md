@@ -89,7 +89,7 @@ Match the tone of M1–M5 — terse, factual, confident about boundaries. Avoid 
 
 ## Out of scope for this command
 
-- **Goal closure / compaction.** Handled by the manual checklist in [kanban/README.md § Goal completion](../../kanban/README.md). Do not bundle that flow in here — it stays manual until friction proves otherwise.
+- **Goal closure.** Handled by the lifecycle in [kanban/README.md § Lifecycle](../../kanban/README.md): flip the goal file's `**Status:**` to `done.` and optionally append a retro (see [goals/M2.md](../../kanban/goals/M2.md), [goals/M6.md](../../kanban/goals/M6.md) as exemplars). Do not bundle that flow in here.
 - **Status updates after creation.** The user edits `**Status:**` directly; the kanban-move hook excludes `goals/`, so there's nothing to automate.
 - **Goal deletion.** Rare and case-by-case; not worth a command.
 - **Creating the seed tickets themselves.** That's `/crud-ticket`'s job. Keep this command focused on the goal artifact.

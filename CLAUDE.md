@@ -38,11 +38,11 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 
 ## Kanban
 
-Tickets live in `kanban/{todo,in-progress,done}/`. Each ticket's filename starts with its goal ID. Status folders are flat. Goal index in [`kanban/goals/`](kanban/goals/).
+Tickets live in `kanban/{todo,in-progress}/`. Each ticket's filename starts with its goal ID. Status folders are flat. Goal index in [`kanban/goals/`](kanban/goals/).
 
 Tickets are self-contained: creating, editing, or deleting a ticket should never require updating any other file — including the goal file. Goal files do not maintain ticket tables; the kanban folder listing is the source of truth.
 
-To change a ticket's status, edit the `**Status:**` field (`todo` / `in-progress` / `done`) using Edit/Write. The kanban-move hook runs `git mv` to the matching folder. Bash writes bypass the hook.
+To change a ticket's status, edit the `**Status:**` field (`todo` / `in-progress`) using Edit/Write. The kanban-move hook runs `git mv` to the matching folder. Bash writes bypass the hook. Closed tickets are deleted (`git rm`); `git log` is the closure record.
 
 Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
 
@@ -50,7 +50,7 @@ Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
 
 - **Hooks** (`PostToolUse` on Edit/Write):
   - `*.go` → `go test ./...`.
-  - `kanban/{todo,in-progress,done}/*.md` → `git mv` based on `**Status:**`. `kanban/goals/*.md` excluded.
+  - `kanban/{todo,in-progress}/*.md` → `git mv` based on `**Status:**`. `kanban/goals/*.md` excluded.
 - **Slash commands:** `/crud-ticket`, `/implement-ticket`, `/define-goal`.
 - **Pre-approved Bash:** `go test`, `go build ./...`, `go vet ./...`, `grep`, `find`, `ls`. Still gated: `rm`, `git reset --hard`, `git push --force`, `git branch -D`.
 - **Lint:** `make lint` runs `golangci-lint` at the version pinned in `Makefile` (self-installs to `$(go env GOPATH)/bin`). Keep `Makefile`'s `GOLANGCI_LINT_VERSION` and the `version:` in [.github/workflows/ci.yml](.github/workflows/ci.yml) in sync.
