@@ -1,33 +1,8 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(go test ./...)",
-      "Bash(go test *)",
-      "Bash(go build ./...)",
-      "Bash(go vet ./...)",
-      "Bash(grep *)",
-      "Bash(find *)",
-      "Bash(ls *)",
-      "Bash(ls)",
-      "Bash(git status)",
-      "Bash(git log *)",
-      "Bash(git diff *)",
-      "Bash(git show *)",
-      "Bash(go mod download)",
-      "Bash(go mod tidy)",
-      "Bash(go env *)",
-      "Bash(which *)",
-      "Bash(make *)",
-      "Bash(./bin/* *)",
-      "Bash(go run *)",
-      "Bash(curl *)",
-      "Bash(npm *)",
-      "Bash(npx *)",
-      "Bash(node *)",
-      "Bash(docker *)",
-      "Bash(wrangler *)"
-    ]
+    "allow": []
   },
+  "defaultMode": "default",
   "hooks": {
     "PostToolUse": [
       {
