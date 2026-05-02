@@ -8,7 +8,7 @@ GO      ?= go
 BIN_DIR ?= bin
 CMD ?=./cmd/voidslice
 
-.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness harnesses
+.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness web-harness harnesses
 
 help:
 	@echo "Targets:"
@@ -24,7 +24,8 @@ help:
 	@echo "  wasm           - build worker/voidslice.wasm via worker/build.sh"
 	@echo "  wasm-harness   - run the WASM-boundary harness (M8.1) against a fresh wasm build"
 	@echo "  worker-harness - run the Worker-glue harness (M8.2) in Miniflare against a fresh wasm build"
-	@echo "  harnesses      - run wasm-harness and worker-harness"
+	@echo "  web-harness    - run the frontend-transport harness (M8.3) via vitest in web/"
+	@echo "  harnesses      - run wasm-harness, worker-harness, and web-harness"
 	@echo "  clean          - remove build artifacts"
 
 tidy:
@@ -107,5 +108,16 @@ node_modules: package.json package-lock.json
 worker-harness: wasm node_modules
 	node worker/harness/worker-harness.mjs
 
-# Run both middle-layer harnesses end-to-end.
-harnesses: wasm-harness worker-harness
+# Install npm deps for the frontend-transport harness (M8.3). Tracks
+# web/package-lock.json so subsequent runs are no-ops.
+web/node_modules: web/package.json web/package-lock.json
+	npm --prefix web ci
+
+# Frontend-transport harness (M8.3). Pins web/src/api.ts's lintFile() against
+# a stubbed globalThis.fetch via vitest. No React, no DOM, no network.
+# Like the other harnesses, NOT part of `go test ./...`.
+web-harness: web/node_modules
+	npm --prefix web test
+
+# Run all middle-layer harnesses end-to-end.
+harnesses: wasm-harness worker-harness web-harness
