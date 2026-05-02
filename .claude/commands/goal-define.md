@@ -41,11 +41,9 @@ Ask which fits. If `parked`, ask what the gating condition is so the status line
 
 Ask: are there tickets already in mind? Or does the goal exist primarily as a container that'll grow?
 
-This shapes the file:
-- If seed tickets are mentioned, the goal file gets a `## Tickets` table with placeholder rows. The actual tickets get created separately via `/crud-ticket`.
-- If no seed tickets, omit the `## Tickets` section entirely — empty tables are noise. The section gets added the first time a real ticket lands.
+The answer doesn't change the goal file — goal files do not list tickets (the kanban folders are the source of truth). It only shapes whether the user's next step is `/goal-slice` (break the goal into a minimal ticket set) or just sitting on the goal until it's ready.
 
-Do **not** create the seed tickets as part of this command. Direct the user to `/crud-ticket` after the goal is written.
+Do **not** create tickets as part of this command. Direct the user to `/goal-slice <goal-id>` after the goal is written, when they're ready to break it down.
 
 ---
 
@@ -63,11 +61,6 @@ Goal file structure (assemble from the conversation, don't fill in a template):
 **Scope:** <Paragraph from §2: in-scope surfaces and explicit exclusions, with references to adjacent goals where relevant.>
 
 **Status:** <value from §3, with gating condition if parked>
-
-## Tickets       <-- include only if §4 produced seed tickets
-| Ticket | What | Size |
-|--------|------|------|
-| <rows> | <one-line each> | <small/medium/large> |
 ```
 
 Match the tone of M1–M5 — terse, factual, confident about boundaries. Avoid hedging language ("might," "perhaps") in the why and scope; if the goal is uncertain enough that hedging feels right, the answer is to keep working through §1 and §2, not to encode the uncertainty into the file.
