@@ -15,50 +15,12 @@ import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { tmpdir } from "node:os";
 
+import { FIXTURES, WRONG_ARG_EXPECTED } from "./fixtures.mjs";
+
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..", "..");
 const wasmPath = resolve(repoRoot, "worker", "voidslice.wasm");
 const shimPath = resolve(repoRoot, "worker", "wasm_exec.js");
-
-// Each fixture's `path` is the string passed to BOTH wasm (as the `filename`
-// argument) and the CLI (as argv). Same string → same `file` field in JSON,
-// so comparisons stay meaningful.
-const FIXTURES = [
-  {
-    name: "clean",
-    path: "testdata/corpus-mini/d2/game1/generated.decls.gamelogicmanager.ui.gamelogic.manager..gamelogicmanager.decl",
-    reference: "cli",
-  },
-  {
-    name: "validate-warning",
-    path: "testdata/broken/count-mismatch.decl",
-    reference: "cli",
-  },
-  {
-    name: "scan-error",
-    path: "testdata/broken/missing-semicolon.decl",
-    reference: "cli",
-  },
-  {
-    name: "empty-input",
-    path: "empty.decl",
-    inlineSrc: "",
-    reference: { file: "empty.decl", diagnostics: [] },
-  },
-];
-
-const WRONG_ARG_EXPECTED = {
-  file: "",
-  diagnostics: [
-    {
-      line: 0,
-      col: 0,
-      severity: "error",
-      code: "WORKER_HARNESS",
-      message: "voidsliceLint requires (filename, src)",
-    },
-  ],
-};
 
 async function loadWasm() {
   // wasm_exec.js is a side-effecting script that mutates globalThis. Eval it

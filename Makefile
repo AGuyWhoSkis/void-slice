@@ -8,7 +8,7 @@ GO      ?= go
 BIN_DIR ?= bin
 CMD ?=./cmd/voidslice
 
-.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness
+.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness harnesses
 
 help:
 	@echo "Targets:"
@@ -21,9 +21,11 @@ help:
 	@echo "  cover        - run tests with coverage and open a local HTML report"
 	@echo "  build        - build binaries (defaults to ./cmd/* if CMD not set)"
 	@echo "  run          - run (requires CMD=./cmd/<app> or adjust to your layout)"
-	@echo "  wasm         - build worker/voidslice.wasm via worker/build.sh"
-	@echo "  wasm-harness - run the WASM-boundary harness against a fresh wasm build"
-	@echo "  clean        - remove build artifacts"
+	@echo "  wasm           - build worker/voidslice.wasm via worker/build.sh"
+	@echo "  wasm-harness   - run the WASM-boundary harness (M8.1) against a fresh wasm build"
+	@echo "  worker-harness - run the Worker-glue harness (M8.2) in Miniflare against a fresh wasm build"
+	@echo "  harnesses      - run wasm-harness and worker-harness"
+	@echo "  clean          - remove build artifacts"
 
 tidy:
 	$(GO) mod tidy
@@ -93,3 +95,17 @@ wasm:
 # self-contained.
 wasm-harness: wasm
 	node worker/harness/harness.mjs
+
+# Install npm deps for the Worker-glue harness (M8.2). Tracks package-lock.json
+# so subsequent `make worker-harness` runs are no-ops.
+node_modules: package.json package-lock.json
+	npm ci
+
+# Worker-glue harness (M8.2). Boots worker/index.js inside Miniflare 3 and
+# asserts every branch of the router and handleLint. Offline; no Cloudflare
+# account required. Like wasm-harness, NOT part of `go test ./...`.
+worker-harness: wasm node_modules
+	node worker/harness/worker-harness.mjs
+
+# Run both middle-layer harnesses end-to-end.
+harnesses: wasm-harness worker-harness
