@@ -8,7 +8,7 @@ GO      ?= go
 BIN_DIR ?= bin
 CMD ?=./cmd/voidslice
 
-.PHONY: help tidy fmt vet lint test race cover build run clean
+.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness web-harness layer-harnesses harnesses oracle
 
 help:
 	@echo "Targets:"
@@ -21,7 +21,14 @@ help:
 	@echo "  cover        - run tests with coverage and open a local HTML report"
 	@echo "  build        - build binaries (defaults to ./cmd/* if CMD not set)"
 	@echo "  run          - run (requires CMD=./cmd/<app> or adjust to your layout)"
-	@echo "  clean        - remove build artifacts"
+	@echo "  wasm           - build worker/voidslice.wasm via worker/build.sh"
+	@echo "  wasm-harness   - run the WASM-boundary harness (M8.1) against a fresh wasm build"
+	@echo "  worker-harness - run the Worker-glue harness (M8.2) in Miniflare against a fresh wasm build"
+	@echo "  web-harness    - run the frontend-transport harness (M8.3) via vitest in web/"
+	@echo "  layer-harnesses- run wasm-harness, worker-harness, and web-harness (per-layer pinning, M8.1–M8.3)"
+	@echo "  oracle         - differential oracle (M8.4): run the same fixtures through native, wasm, worker, and frontend-transport, and report the first divergent boundary"
+	@echo "  harnesses      - run all harnesses end-to-end: layer-harnesses + oracle"
+	@echo "  clean          - remove build artifacts"
 
 tidy:
 	$(GO) mod tidy
@@ -82,3 +89,53 @@ run:
 
 clean:
 	rm -rf "$(BIN_DIR)"
+
+wasm:
+	bash worker/build.sh
+
+# WASM-boundary harness (M8.1). Owns its own toolchain (Node + wasm_exec.js)
+# and is intentionally NOT wired into `go test ./...` — the Go suite stays
+# self-contained.
+wasm-harness: wasm
+	node worker/harness/harness.mjs
+
+# Install npm deps for the Worker-glue harness (M8.2). Tracks
+# worker/harness/package-lock.json so subsequent `make worker-harness` runs
+# are no-ops.
+worker/harness/node_modules: worker/harness/package.json worker/harness/package-lock.json
+	npm --prefix worker/harness ci
+
+# Worker-glue harness (M8.2). Boots worker/index.js inside Miniflare 3 and
+# asserts every branch of the router and handleLint. Offline; no Cloudflare
+# account required. Like wasm-harness, NOT part of `go test ./...`.
+worker-harness: wasm worker/harness/node_modules
+	node worker/harness/worker-harness.mjs
+
+# Install npm deps for the frontend-transport harness (M8.3). Tracks
+# web/package-lock.json so subsequent runs are no-ops.
+web/node_modules: web/package.json web/package-lock.json
+	npm --prefix web ci
+
+# Frontend-transport harness (M8.3). Pins web/src/api.ts's lintFile() against
+# a stubbed globalThis.fetch via vitest. No React, no DOM, no network.
+# Like the other harnesses, NOT part of `go test ./...`.
+web-harness: web/node_modules
+	npm --prefix web test
+
+# Per-layer harnesses (M8.1–M8.3): each pins exactly one boundary in
+# isolation. Failures here name the layer that broke.
+layer-harnesses: wasm-harness worker-harness web-harness
+
+# All-up alias: per-layer pinning plus the differential oracle that diffs
+# outputs across all four layers (native ↔ wasm ↔ worker ↔ frontend).
+# This is what CI runs.
+harnesses: layer-harnesses oracle
+
+# Differential oracle (M8.4). Runs each fixture through four layers — native
+# Go CLI, WASM export, Worker (in Miniflare), and a replica of the frontend
+# transport from web/src/api.ts — and names the first boundary at which the
+# outputs diverge. Layer-internal assertions stay in their owning harness;
+# this one only diffs final outputs to bisect playground regressions to a
+# single layer.
+oracle: wasm worker/harness/node_modules
+	node worker/harness/oracle.mjs
