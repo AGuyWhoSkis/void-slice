@@ -88,8 +88,26 @@ jobs:
             wrangler.toml
           retention-days: 7
 
+  harnesses:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            web/package-lock.json
+      - run: make harnesses
+
   preview-deploy:
-    needs: [test, lint, build]
+    needs: [test, lint, build, harnesses]
     # Same-repo PRs only. Fork PRs don't have access to repo secrets, so
     # Cloudflare deploys can't run from them; the job is intentionally skipped.
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
@@ -171,7 +189,7 @@ jobs:
             Drop a `.decl` / `.entities` / `.entitydef` into the Pages playground to exercise the change end-to-end.
 
   production-deploy:
-    needs: [test, lint, build]
+    needs: [test, lint, build, harnesses]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
