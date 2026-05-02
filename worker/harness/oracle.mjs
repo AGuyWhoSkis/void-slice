@@ -25,11 +25,10 @@ import { tmpdir } from "node:os";
 import { Miniflare } from "miniflare";
 
 import { FIXTURES } from "./fixtures.mjs";
+import { loadWasm } from "./wasm-loader.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..", "..");
-const wasmPath = resolve(repoRoot, "worker", "voidslice.wasm");
-const shimPath = resolve(repoRoot, "worker", "wasm_exec.js");
 const workerScriptPath = resolve(repoRoot, "worker", "index.js");
 
 const COMPATIBILITY_DATE = "2025-09-01";
@@ -60,26 +59,6 @@ function runNative(binPath, relPath, cwd) {
 }
 
 // --- Layer 2: wasm (loaded into this process's globalThis) ---------------
-
-async function loadWasm() {
-  const shim = await readFile(shimPath, "utf8");
-  // wasm_exec.js mutates globalThis. Eval it in global scope.
-  // eslint-disable-next-line no-new-func
-  new Function(shim).call(globalThis);
-  if (typeof globalThis.Go !== "function") {
-    throw new Error("wasm_exec.js did not register globalThis.Go");
-  }
-  const bytes = await readFile(wasmPath);
-  const go = new globalThis.Go();
-  const { instance } = await WebAssembly.instantiate(bytes, go.importObject);
-  // go.run() never resolves — main() calls select{}. One microtask is enough
-  // for the export to register.
-  go.run(instance);
-  await new Promise((r) => setTimeout(r, 0));
-  if (typeof globalThis.voidsliceLint !== "function") {
-    throw new Error("voidsliceLint export missing after WASM init");
-  }
-}
 
 function runWasm(filename, src) {
   return globalThis.voidsliceLint(filename, src);

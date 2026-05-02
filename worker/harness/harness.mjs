@@ -16,33 +16,10 @@ import { dirname, resolve } from "node:path";
 import { tmpdir } from "node:os";
 
 import { FIXTURES, WRONG_ARG_EXPECTED } from "./fixtures.mjs";
+import { loadWasm } from "./wasm-loader.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..", "..");
-const wasmPath = resolve(repoRoot, "worker", "voidslice.wasm");
-const shimPath = resolve(repoRoot, "worker", "wasm_exec.js");
-
-async function loadWasm() {
-  // wasm_exec.js is a side-effecting script that mutates globalThis. Eval it
-  // in the global scope so it registers globalThis.Go.
-  const shim = await readFile(shimPath, "utf8");
-  // eslint-disable-next-line no-new-func
-  new Function(shim).call(globalThis);
-  if (typeof globalThis.Go !== "function") {
-    throw new Error("wasm_exec.js did not register globalThis.Go");
-  }
-
-  const bytes = await readFile(wasmPath);
-  const go = new globalThis.Go();
-  const { instance } = await WebAssembly.instantiate(bytes, go.importObject);
-  // go.run(instance) never resolves — main() calls select{}. Let it run; one
-  // microtask tick is enough for the export to register.
-  go.run(instance);
-  await new Promise((r) => setTimeout(r, 0));
-  if (typeof globalThis.voidsliceLint !== "function") {
-    throw new Error("voidsliceLint export missing after WASM init");
-  }
-}
 
 function runCLI(relPath, cwd) {
   const r = spawnSync("go", ["run", "./cmd/voidslice", "lint", relPath, "--json"], {

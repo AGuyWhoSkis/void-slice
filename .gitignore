@@ -31,5 +31,5 @@ go.work.sum
 # .idea/
 # .vscode/
 
-# Node (worker harness — see worker/harness/)
+# Node (worker harness)
 node_modules/

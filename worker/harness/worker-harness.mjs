@@ -10,18 +10,16 @@
 //
 // Run via `make worker-harness` from the repo root.
 
-import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { Miniflare } from "miniflare";
 
 import { FIXTURES } from "./fixtures.mjs";
+import { loadWasm } from "./wasm-loader.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..", "..");
 const workerScriptPath = resolve(repoRoot, "worker", "index.js");
-const wasmPath = resolve(repoRoot, "worker", "voidslice.wasm");
-const shimPath = resolve(repoRoot, "worker", "wasm_exec.js");
 
 // Mirrors worker/index.js. Test 8 sends MAX_BODY_BYTES + 1; if the constant
 // in the Worker changes, this harness must change too — that coupling is the
@@ -42,27 +40,8 @@ const VALID_FILENAME = VALID.path;
 const VALID_SRC = VALID.inlineSrc;
 
 // --- WASM oracle ---------------------------------------------------------
-// Same loader trick as worker/harness/harness.mjs — eval wasm_exec.js into
-// the harness's own globalThis to register `Go`, then instantiate the wasm
-// to register `globalThis.voidsliceLint`. Used to compute expected bodies
-// for 200-cases without a second subprocess.
-
-async function loadWasmOracle() {
-  const shim = await readFile(shimPath, "utf8");
-  // eslint-disable-next-line no-new-func
-  new Function(shim).call(globalThis);
-  if (typeof globalThis.Go !== "function") {
-    throw new Error("wasm_exec.js did not register globalThis.Go");
-  }
-  const bytes = await readFile(wasmPath);
-  const go = new globalThis.Go();
-  const { instance } = await WebAssembly.instantiate(bytes, go.importObject);
-  go.run(instance);
-  await new Promise((r) => setTimeout(r, 0));
-  if (typeof globalThis.voidsliceLint !== "function") {
-    throw new Error("voidsliceLint export missing after WASM init");
-  }
-}
+// Loads the WASM export into this harness's own globalThis so we can compute
+// expected bodies for 200-cases without a second subprocess.
 
 function oracle(filename, src) {
   return globalThis.voidsliceLint(filename, src);
@@ -330,7 +309,7 @@ async function runRateLimitUnboundCases(mf) {
 // --- main ----------------------------------------------------------------
 
 async function main() {
-  await loadWasmOracle();
+  await loadWasm();
 
   const families = [
     { name: "default", build: () => newMiniflare(), run: runDefaultCases },
