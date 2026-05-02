@@ -17,7 +17,7 @@ project_dir="${CLAUDE_PROJECT_DIR:-$PWD}"
 
 # Only act on kanban/<col>/*.md  (e.g. kanban/todo/M1.10-cli-polish.md).
 # Explicitly does NOT match kanban/goals/*.md — goals don't auto-move.
-[[ "$file_path" =~ /kanban/(todo|in-progress|done)/[^/]+\.md$ ]] || exit 0
+[[ "$file_path" =~ /kanban/(todo|in-progress)/[^/]+\.md$ ]] || exit 0
 [[ -f "$file_path" ]] || exit 0
 
 # Read new status from the (already-written) file.
@@ -25,7 +25,7 @@ status=$(grep -m1 '\*\*Status:\*\*' "$file_path" 2>/dev/null \
   | sed 's/.*\*\*Status:\*\*[[:space:]]*//' | tr -d '[:space:]')
 
 case "$status" in
-  todo|in-progress|done) ;;
+  todo|in-progress) ;;
   *) exit 0 ;;
 esac
 

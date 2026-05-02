@@ -1,10 +1,10 @@
 Implement ticket $ARGUMENTS end-to-end. Follow these steps in order:
 
-1. **LOCATE** — find the ticket file in `kanban/{todo,in-progress,done}/`. Status folders are flat; the goal-id is encoded in the filename prefix (e.g. `M1.10-cli-polish.md`).
+1. **LOCATE** — find the ticket file in `kanban/{todo,in-progress}/`. Status folders are flat; the goal-id is encoded in the filename prefix (e.g. `M1.10-cli-polish.md`).
 
 2. **READ** — read the full ticket. Understand the What, Scope, Dependencies, and Verification sections before doing anything else.
 
-3. **DEPENDENCIES** — for each listed dependency, verify it is in kanban/done/. If any dependency is not done, stop and report which ones are missing.
+3. **DEPENDENCIES** — for each listed dependency, verify it is no longer present in `kanban/todo/` or `kanban/in-progress/` (closed tickets are deleted, so absence = done). If a dependency is still open in either folder, stop and report which ones.
 
 4. **START** — edit the ticket's `**Status:**` field to `in-progress`. The kanban-move hook will move the file automatically.
 
@@ -25,6 +25,4 @@ Implement ticket $ARGUMENTS end-to-end. Follow these steps in order:
 
    Present findings in a single batched prompt: "Found N follow-ups. Create tickets for: [one-line title + 2–3 sentence rationale per item]? (y / pick subset / n)". On approval, scaffold each via the PROPOSE format in `/crud-ticket` (each gets `**Origin:** <this-ticket-id>`). If no gaps, say so explicitly ("No follow-ups found.") so the user knows the step ran.
 
-9. **CLOSE** — edit the ticket's `**Status:**` field to `done`. Append a `## Completion` section: what was done, key decisions, any deviations from the original scope. End the section with a `**Follow-ups:**` line listing the ticket IDs created in step 8 (or `none`).
-
-**Definition of done:** see CLAUDE.md § Definition of done.
+9. **CLOSE** — `git rm` the ticket file. Use the commit message as the closure record: summarise what was done, key decisions, and any deviations from the original scope. End the message with a `Follow-ups:` line listing the ticket IDs created in step 8 (or `none`).
