@@ -110,6 +110,14 @@ func TestLint_JSONFormat(t *testing.T) {
 	checkGolden(t, "count-mismatch-json", stdout)
 }
 
+// The usage banner advertises `voidslice lint <file> [--json]`, so the flag
+// must work after the filename too. The stdlib flag package stops at the
+// first non-flag arg by default; parseInterspersed is the workaround.
+func TestLint_JSONFormat_FlagAfterFile(t *testing.T) {
+	stdout, _, _ := run("lint", "../../testdata/broken/count-mismatch.decl", "--json")
+	checkGolden(t, "count-mismatch-json", stdout)
+}
+
 func TestLint_Binary(t *testing.T) {
 	stdout, _, code := run("lint", "../../testdata/binary/sample.bwm")
 	assert.Equal(t, 1, code)

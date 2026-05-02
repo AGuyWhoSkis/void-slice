@@ -8,7 +8,7 @@ GO      ?= go
 BIN_DIR ?= bin
 CMD ?=./cmd/voidslice
 
-.PHONY: help tidy fmt vet lint test race cover build run clean
+.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness
 
 help:
 	@echo "Targets:"
@@ -21,6 +21,8 @@ help:
 	@echo "  cover        - run tests with coverage and open a local HTML report"
 	@echo "  build        - build binaries (defaults to ./cmd/* if CMD not set)"
 	@echo "  run          - run (requires CMD=./cmd/<app> or adjust to your layout)"
+	@echo "  wasm         - build worker/voidslice.wasm via worker/build.sh"
+	@echo "  wasm-harness - run the WASM-boundary harness against a fresh wasm build"
 	@echo "  clean        - remove build artifacts"
 
 tidy:
@@ -82,3 +84,12 @@ run:
 
 clean:
 	rm -rf "$(BIN_DIR)"
+
+wasm:
+	bash worker/build.sh
+
+# WASM-boundary harness (M8.1). Owns its own toolchain (Node + wasm_exec.js)
+# and is intentionally NOT wired into `go test ./...` — the Go suite stays
+# self-contained.
+wasm-harness: wasm
+	node worker/harness/harness.mjs
