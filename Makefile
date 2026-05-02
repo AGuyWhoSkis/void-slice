@@ -8,7 +8,7 @@ GO      ?= go
 BIN_DIR ?= bin
 CMD ?=./cmd/voidslice
 
-.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness web-harness harnesses
+.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness web-harness harnesses oracle
 
 help:
 	@echo "Targets:"
@@ -26,6 +26,7 @@ help:
 	@echo "  worker-harness - run the Worker-glue harness (M8.2) in Miniflare against a fresh wasm build"
 	@echo "  web-harness    - run the frontend-transport harness (M8.3) via vitest in web/"
 	@echo "  harnesses      - run wasm-harness, worker-harness, and web-harness"
+	@echo "  oracle         - differential oracle (M8.4): run the same fixtures through native, wasm, worker, and frontend-transport, and report the first divergent boundary"
 	@echo "  clean          - remove build artifacts"
 
 tidy:
@@ -121,3 +122,12 @@ web-harness: web/node_modules
 
 # Run all middle-layer harnesses end-to-end.
 harnesses: wasm-harness worker-harness web-harness
+
+# Differential oracle (M8.4). Runs each fixture through four layers — native
+# Go CLI, WASM export, Worker (in Miniflare), and a replica of the frontend
+# transport from web/src/api.ts — and names the first boundary at which the
+# outputs diverge. Layer-internal assertions stay in their owning harness;
+# this one only diffs final outputs to bisect playground regressions to a
+# single layer.
+oracle: wasm node_modules
+	node worker/harness/oracle.mjs
