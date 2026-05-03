@@ -80,9 +80,6 @@ jobs:
         # build time. Fail fast here instead of post-deploy.
         run: test -f web/dist/_headers
 
-          path: web/dist
-          retention-days: 7
-
       - uses: actions/upload-artifact@v4
         with:
           name: worker-bundle
@@ -227,6 +224,32 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
+
+      - name: Smoke test prod Worker
+        # Wrangler can deploy successfully while the Worker fails to boot
+        # (wasm import errors at module-load, missing binding, etc.). Hit the
+        # live Worker with /health and one /lint request that should produce
+        # a known non-empty diagnostic set. Sends an allowed Origin so the
+        # M7.2 origin gate accepts the request.
+        id: smoke
+        run: ./worker/smoke/smoke.sh "${{ vars.VITE_API_URL }}"
+
+      - name: Rollback Worker on smoke failure
+        # Scoped to smoke regressions: an earlier-step failure (build,
+        # deploy itself) shouldn't trigger an automatic rollback because
+        # there's nothing new to roll back to. `wrangler rollback --yes`
+        # without a version arg reverts to the immediately-prior version
+        # non-interactively. The job still exits non-zero (the smoke step
+        # is the failure source) — a rolled-back deploy must remain visible
+        # in CI history rather than going green.
+        if: failure() && steps.smoke.conclusion == 'failure'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "::error::Worker smoke failed; rolling back to previous version"
+          npx -y wrangler@4.86.0 rollback --yes \
+            --message "auto-rollback: smoke failure on ${GITHUB_SHA}"
 
       - name: Deploy Pages
         uses: cloudflare/wrangler-action@v3
