@@ -16,6 +16,19 @@ ALLOWED_ORIGIN_SUFFIXES = ".voidslice.pages.dev"
 [observability]
 enabled = true
 
+# Durable log export. logpush = true opts this script into the
+# `workers_trace_events` Logpush dataset; the per-request JSON we write
+# at worker/index.js (method, path, status, duration_ms) lands inside
+# each event's `Logs` field. The Logpush *job* (destination R2 bucket,
+# fields, sample, batch frequency) is configured once in the Cloudflare
+# dashboard — wrangler has no [[logpush_job]] block. Current setup:
+# bucket `voidslice-worker-logs` (same account, no extra vendor),
+# 100% sampling, hourly batches, 30-day R2 lifecycle. Preview versions
+# of this script feed the same job — same caveat as the rate-limiter
+# binding above; preview traffic is noise-level. Setup steps and the
+# retrieval recipe live in worker/LOGS.md.
+logpush = true
+
 # Per-deploy version stamp. Mixed into the /lint cache key so a new
 # Worker version invalidates prior cached lint responses without waiting
 # for TTL expiry.
