@@ -73,6 +73,6 @@ Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
 Real game-file fixtures under `testdata/golden/` (~7.7 MB committed). Layout:
 
 - `d2/game1/`, `doto/game1/` — files spot-checked by `goldenFileNames` in [internal/scan/scan_test.go](internal/scan/scan_test.go); scan tests fail hard if any are missing.
-- Flat root files (`generated.decls.*.decl`, `*.decl.xml`) — broader corpus walked by `internal/lint/`'s `TestCleanSweep` / `TestCoverageAudit` for diagnostic-shape coverage.
+- Flat root files (`generated.decls.*.decl`, `eof.*.decl`) — broader corpus included alongside the subdirs in `internal/lint/`'s `TestCleanSweep` / `TestCoverageAudit` (which walk `testdata/golden/` recursively) for diagnostic-shape coverage. `*.decl.xml` files sit at the flat root too but are skipped by extension — they're XML, not the `.decl` grammar.
 
 A file graduates from the flat root into `d2/game1/` or `doto/game1/` when it becomes a spot-checked golden — i.e. when we want byte-level scanner output pinned. `testdata/binary/sample.bwm` feeds `TestBinarySweep`.

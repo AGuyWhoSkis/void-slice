@@ -86,8 +86,7 @@ func TestCoverageAudit(t *testing.T) {
 		})
 	}
 
-	walkDir(filepath.Join(corpusRoot, "doto", "game1"))
-	walkDir(filepath.Join(corpusRoot, "d2", "game1"))
+	walkDir(corpusRoot)
 
 	t.Logf("coverage audit: %d files, %d distinct codes", fileCount, len(codeCount))
 	for code, count := range codeCount {

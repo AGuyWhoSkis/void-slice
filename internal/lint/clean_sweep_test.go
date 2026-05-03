@@ -82,8 +82,7 @@ func TestCleanSweep(t *testing.T) {
 		})
 	}
 
-	walkDir(filepath.Join(corpusRoot, "doto", "game1"))
-	walkDir(filepath.Join(corpusRoot, "d2", "game1"))
+	walkDir(corpusRoot)
 
 	t.Logf("clean sweep: checked %d files", count)
 	if parseGapFiles > 0 {
