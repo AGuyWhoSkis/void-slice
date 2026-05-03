@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Editor } from "./Editor";
 import { DiagnosticsList } from "./DiagnosticsList";
 import { lintFile, type Diagnostic } from "../api";
@@ -15,29 +15,39 @@ export function Playground() {
   const [text, setText] = useState<string>("");
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
   const [status, setStatus] = useState<Status>({ kind: "empty" });
-  const [scrollTarget, setScrollTarget] = useState<{ line: number; nonce: number } | null>(null);
+  const [scrollTarget, setScrollTarget] = useState<{
+    line: number;
+    nonce: number;
+  } | null>(null);
   const [dragOver, setDragOver] = useState(false);
-  const lintNonce = useRef(0);
 
-  const runLint = useCallback(async (name: string, body: string) => {
-    const myNonce = ++lintNonce.current;
-    setStatus({ kind: "loading" });
-    try {
-      const res = await lintFile(name, body);
-      if (myNonce !== lintNonce.current) return;
-      setDiagnostics(res.diagnostics);
-      setStatus({ kind: "ok" });
-    } catch (err) {
-      if (myNonce !== lintNonce.current) return;
-      const message = err instanceof Error ? err.message : "lint failed";
-      setStatus({ kind: "error", message });
-      setDiagnostics([]);
-    }
-  }, []);
+  const runLint = useCallback(
+    async (name: string, body: string, signal: AbortSignal) => {
+      setStatus({ kind: "loading" });
+      try {
+        const res = await lintFile(name, body, signal);
+        setDiagnostics(res.diagnostics);
+        setStatus({ kind: "ok" });
+      } catch (err) {
+        if (signal.aborted) return;
+        const message = err instanceof Error ? err.message : "lint failed";
+        setStatus({ kind: "error", message });
+        setDiagnostics([]);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     if (text === "") return;
-    runLint(filename || "untitled", text);
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      runLint(filename || "untitled", text, controller.signal);
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
   }, [filename, text, runLint]);
 
   const loadSample = useCallback((sampleFilename: string) => {
@@ -106,7 +116,8 @@ export function Playground() {
         onDrop={onDrop}
       >
         <p>
-          Drop a <code>.decl</code>, <code>.entities</code>, or <code>.entitydef</code> file here, or{" "}
+          Drop a <code>.decl</code>, <code>.entities</code>, or{" "}
+          <code>.entitydef</code> file here, or{" "}
           <label className="vs-file-trigger">
             choose a file
             <input type="file" onChange={onPickFile} hidden />
@@ -140,7 +151,10 @@ export function Playground() {
         </div>
         <aside className="vs-workbench-side">
           <h3>Diagnostics</h3>
-          <DiagnosticsList diagnostics={diagnostics} onSelect={selectDiagnostic} />
+          <DiagnosticsList
+            diagnostics={diagnostics}
+            onSelect={selectDiagnostic}
+          />
         </aside>
       </div>
     </section>
