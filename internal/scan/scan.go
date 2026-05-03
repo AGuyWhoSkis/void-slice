@@ -134,6 +134,10 @@ mainLoop:
 						continue mainLoop
 					}
 				}
+				// fall-through: block comment reached EOF without closing */
+				emitToken(TokenKind.COMMENT_BLOCK, i, n)
+				emitDiag(Codes.SCAN, i, n, "unterminated block comment")
+				i = n
 			} else if b == '/' && ok_bNext && b_next == '/' {
 				// parse line comment, emit token
 				for i_lineCmt := i + 2; i_lineCmt < n; i_lineCmt++ {
@@ -150,6 +154,9 @@ mainLoop:
 						continue mainLoop
 					}
 				}
+				// fall-through: line comment reached EOF without '\n' (valid; no diag)
+				emitToken(TokenKind.COMMENT_LINE, i, n)
+				i = n
 			} else if IsIdentStart(b) {
 				// scan until IsIdentCont() is false
 				for i_ident := i + 1; i_ident < n; i_ident++ {

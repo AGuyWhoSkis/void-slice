@@ -117,6 +117,24 @@ func TestScanner(t *testing.T) {
 			},
 		},
 		{
+			name:  "unterminated-block-comment",
+			bytes: []byte("/* foo"), // len=6
+			wantDiags: []scan.Diagnostic{
+				{Code: scan.Codes.SCAN, Span: scan.NewSpan(0, 6), Message: "unterminated block comment"},
+			},
+			wantToks: []scan.Token{
+				{Kind: scan.TokenKind.COMMENT_BLOCK, Span: scan.NewSpan(0, 6)},
+			},
+		},
+		{
+			name:      "line-comment-eof-no-newline",
+			bytes:     []byte("// foo"), // len=6
+			wantDiags: []scan.Diagnostic{},
+			wantToks: []scan.Token{
+				{Kind: scan.TokenKind.COMMENT_LINE, Span: scan.NewSpan(0, 6)},
+			},
+		},
+		{
 			// CRLF: COMMENT_LINE span must not include the trailing '\r'.
 			// Source: "// foo\r\nbar"
 			//   bytes:  /  /  ' '  f  o  o  \r  \n  b  a  r
