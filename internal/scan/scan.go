@@ -118,7 +118,7 @@ mainLoop:
 			emitDiag(Codes.SCAN, i, n, "unterminated number literal")
 			i = n
 
-		case '{', '}', '[', ']', '=', ';':
+		case '{', '}', '[', ']', '=', ';', ',', '(', ')', ':':
 			emitToken(TokenKind.SYMBOL, i, i+1)
 
 		default:
@@ -139,7 +139,12 @@ mainLoop:
 				for i_lineCmt := i + 2; i_lineCmt < n; i_lineCmt++ {
 					b_lineCmt := src[i_lineCmt]
 					if b_lineCmt == '\n' {
-						emitToken(TokenKind.COMMENT_LINE, i, i_lineCmt)
+						// CRLF: exclude trailing '\r' from the comment span
+						end := i_lineCmt
+						if end > i+2 && src[end-1] == '\r' {
+							end--
+						}
+						emitToken(TokenKind.COMMENT_LINE, i, end)
 						i = i_lineCmt
 						newlineIndexes = append(newlineIndexes, i_lineCmt)
 						continue mainLoop

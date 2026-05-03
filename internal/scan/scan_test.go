@@ -17,7 +17,7 @@ import (
 // 	Use this JS console command to switch it to 0-index
 //		document.querySelector(".text").style.counterReset = "num-chars -1";
 
-var testDir = filepath.FromSlash("../../testdata/corpus-mini/")
+var testDir = filepath.FromSlash("../../testdata/golden/")
 
 var goldenFiles map[string][]byte
 var goldenFileNames = []string{
@@ -99,6 +99,34 @@ func TestScanner(t *testing.T) {
 			wantToks: []scan.Token{
 				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(0, 1)},
 				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(4, 5)},
+			},
+		},
+		{
+			// `,` `(` `)` `:` are SYMBOL: shape-1 tuples (`color = ( 1, 1, 1 );`),
+			// shape-2 scoped names (`Foo::Bar`), shape-3 function-call values.
+			name:      "comma paren colon symbols",
+			bytes:     []byte("(1,2):"),
+			wantDiags: []scan.Diagnostic{},
+			wantToks: []scan.Token{
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(0, 1)},         // (
+				{Kind: scan.TokenKind.NUMBER_LITERAL, Span: scan.NewSpan(1, 2)}, // 1
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(2, 3)},         // ,
+				{Kind: scan.TokenKind.NUMBER_LITERAL, Span: scan.NewSpan(3, 4)}, // 2
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(4, 5)},         // )
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(5, 6)},         // :
+			},
+		},
+		{
+			// CRLF: COMMENT_LINE span must not include the trailing '\r'.
+			// Source: "// foo\r\nbar"
+			//   bytes:  /  /  ' '  f  o  o  \r  \n  b  a  r
+			//   offset: 0  1   2   3  4  5   6   7  8  9 10
+			name:      "CRLF line comment trims trailing CR",
+			bytes:     []byte("// foo\r\nbar"),
+			wantDiags: []scan.Diagnostic{},
+			wantToks: []scan.Token{
+				{Kind: scan.TokenKind.COMMENT_LINE, Span: scan.NewSpan(0, 6)}, // "// foo" — no \r
+				{Kind: scan.TokenKind.IDENTIFIER, Span: scan.NewSpan(8, 11)},  // "bar"
 			},
 		},
 	}

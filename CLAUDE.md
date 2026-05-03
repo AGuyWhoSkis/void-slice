@@ -13,7 +13,7 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 | `internal/report/` | Renderer: human-pretty + JSON |
 | `internal/lint/` | Lint facade |
 | `kanban/` | Markdown task board — see § Kanban |
-| `testdata/` | Fixtures; binaries under `binary/`, real game files under `corpus-mini/` |
+| `testdata/` | Fixtures; binaries under `binary/`, real game files under `golden/` |
 
 ## Key abstractions
 
@@ -28,7 +28,7 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 
 - **Option A punctuation:** `Kind == SYMBOL`; caller reads `src[t.Span.Start]` for the byte. Don't subtype.
 - **Streaming parse:** no full-file AST; `WalkEntities` processes one component at a time.
-- **Golden-file tests:** expected output under `testdata/golden/*.txt`; diff with `testify/assert`. `*_test.go` co-located with package.
+- **Co-located tests:** `*_test.go` lives with the package it tests; expected values are typically inline in the test file, diffed with `testify/assert`.
 - **No external deps** beyond `github.com/stretchr/testify`.
 - **Commit messages:** subject only. Body only if the user asks or the *why* can't be inferred from the diff. Bar = `git log --oneline -10`.
 
@@ -70,4 +70,9 @@ Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
 
 ## Corpus
 
-Real game-file fixtures under `testdata/corpus-mini/` (~7.7 MB committed). The six files mirror `goldenFileNames` in [internal/scan/scan_test.go](internal/scan/scan_test.go) (paths under `d2/game1/…` and `doto/game1/…`); scan tests fail hard if any are missing. The same tree feeds `internal/lint/`'s `TestCleanSweep` / `TestCoverageAudit`; `testdata/binary/sample.bwm` feeds `TestBinarySweep`. To add a golden: drop the file under the matching subpath, add to `goldenFileNames`, commit.
+Real game-file fixtures under `testdata/golden/` (~7.7 MB committed). Layout:
+
+- `d2/game1/`, `doto/game1/` — files spot-checked by `goldenFileNames` in [internal/scan/scan_test.go](internal/scan/scan_test.go); scan tests fail hard if any are missing.
+- Flat root files (`generated.decls.*.decl`, `*.decl.xml`) — broader corpus walked by `internal/lint/`'s `TestCleanSweep` / `TestCoverageAudit` for diagnostic-shape coverage.
+
+A file graduates from the flat root into `d2/game1/` or `doto/game1/` when it becomes a spot-checked golden — i.e. when we want byte-level scanner output pinned. `testdata/binary/sample.bwm` feeds `TestBinarySweep`.

@@ -9,7 +9,7 @@ import (
 )
 
 func TestCoverageAudit(t *testing.T) {
-	corpusRoot := filepath.Join("..", "..", "testdata", "corpus-mini")
+	corpusRoot := filepath.Join("..", "..", "testdata", "golden")
 
 	knownCodes := map[string]bool{
 		// T1 — parser (parse_constants.go)
