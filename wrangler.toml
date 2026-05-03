@@ -1,6 +1,6 @@
 name = "voidslice-api"
 main = "worker/index.js"
-compatibility_date = "2025-09-01"
+compatibility_date = "2026-04-15"
 
 # CORS allowlist. ALLOWED_ORIGINS is comma-separated exact origins
 # (scheme + host). ALLOWED_ORIGIN_SUFFIXES is comma-separated host suffixes,

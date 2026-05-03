@@ -44,6 +44,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Check wrangler compatibility_date freshness
+        # Fails fast when wrangler.toml's compatibility_date drifts past the
+        # threshold, so the bump becomes a deliberate decision rather than
+        # silent drift. Pure bash; runs before language toolchain setup.
+        run: ./worker/check-compat-date.sh
+
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
