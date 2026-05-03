@@ -8,7 +8,19 @@ compatibility_date = "2025-09-01"
 ALLOWED_ORIGIN = "*"
 
 [observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
 enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1
 
 # Per-IP rate limit on /lint. 30 requests / 60 s, keyed on cf-connecting-ip.
 # Shared across all versions of the script — preview versions deployed by the
