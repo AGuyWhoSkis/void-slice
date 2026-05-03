@@ -1,0 +1,154 @@
+{
+	inherit = "models/characters/base/witch.def";
+	editorVars {
+		placeable = true;
+		color = ( 1, 1, 1, 1 );
+	}
+	edit = {
+		renderModelInfo = {
+			model = "models/characters/female/witches/witch_01_head.md6";
+		}
+		m_componentDecls = {
+			item_override["uAh4M2"] = {
+				inheritedDecl = "components/characters/npc/delilah_copperspoon/health_delilah_copperspoon.cpnthealthevolved";
+			}
+			item_override["VC-_X0"] = {
+				inlineDecl = {
+					m_visionConfig = {
+						item[0] = {
+							m_angleOffset = {
+								pitch = 10;
+							}
+						}
+					}
+				}
+			}
+			item_override["GQ8xD0"] = {
+				inheritedDecl = "components/characters/npc/delilah_copperspoon/aibarksnpc_delilah.cpntaibarksnpc";
+			}
+			item_override["uKLll1"] = {
+				inlineDecl = {
+					m_attackSettings = {
+						m_genericAttackRules = {
+							enumItem[AI_ATTACK_FAMILY_RANGED] = {
+								m_ruleHandlerList = {
+									item_override["lyvtJ2"] = "components/characters/npc/delilah_copperspoon/rules/delilah_skills_ranged.rulehandler";
+									item_add["Xvhh22"] = "components/characters/npc/witch/rules/witch_skills_ranged.rulehandler";
+								}
+							}
+						}
+					}
+				}
+			}
+			item_override["OwZUO3"] = {
+				inlineDecl = {
+					m_carryCorpse = {
+						m_name = "Talk_delilah";
+					}
+					m_loot = {
+						m_name = "Talk_delilah";
+					}
+					m_pickpocket = {
+						m_name = "Talk_delilah";
+					}
+					m_talk = {
+						m_name = "Talk_delilah";
+					}
+					m_busyTalk = {
+						m_name = "Talk_delilah";
+					}
+				}
+			}
+			item_override["_OAlJ3"] = {
+				inheritedDecl = "components/characters/npc/delilah_copperspoon/assassination_vulnerable.cpntassassination";
+			}
+			item_override["jKdmx1"] = {
+				inlineDecl = {
+					m_outDangerSettings = {
+						m_midnightSets = {
+							enumItem[DANGER_ZONE_GRENADE] = {
+								m_divePercentChance = 0;
+								m_panicPercentChance = 0;
+								m_diveMidnights = {
+									enumItem[A4DIR_FRONT] = NULL;
+									enumItem[A4DIR_BACK] = NULL;
+									enumItem[A4DIR_LEFT] = NULL;
+									enumItem[A4DIR_RIGHT] = NULL;
+								}
+								m_panicMidnight = NULL;
+							}
+						}
+					}
+				}
+			}
+			item_override["XnSHK3"] = {
+				inlineDecl = {
+					m_shadowKillSettings = {
+						m_doesShadowKill = false;
+					}
+				}
+			}
+			item_override["1yBNj2"] = {
+				inlineDecl = {
+					m_name = "Delilah Copperspoon";
+					m_rememberHeartBarks = true;
+				}
+			}
+			item_override["QdBaO3"] = {
+				inlineDecl = {
+					m_minDamageInterval = 0.3000000119;
+					m_maxDamageInterval = 0.400000006;
+					m_eating = {
+						m_allowed = false;
+					}
+					m_infection = {
+						m_allowed = false;
+					}
+				}
+			}
+			item_override["lCe9m2"] = {
+				inlineDecl = {
+					m_voice = "speech/voice/story/delilah_copperspoon";
+				}
+			}
+			item_override["sPTHe0"] = {
+				inlineDecl = {
+					m_exitPushedFront = "midnight/gameplay/human/common/powers/possession_exit_pushed_no_vulnerable.midnightscene";
+					m_dizzyToVomitTimeRatio = 1;
+					m_dizzyToVomitDispersion = 1;
+					m_autoReject = true;
+					m_canBeKnockoutAfterPossess = false;
+				}
+			}
+			item_override["-YHQ13"] = {
+				inheritedDecl = "components/characters/npc/base/aiidlebreak_witch.cpntaiidlebreak";
+				inlineDecl = {
+					m_setList = {
+						item_override["vjAo80"] = {
+							m_tag = "empty_toto";
+						}
+					}
+				}
+			}
+			item_override["U66mH3"] = NULL;
+			item_override["bhN-W3"] = {
+				inheritedDecl = "components/characters/npc/delilah_copperspoon/inventory_delilah.cpntinventory";
+			}
+			item_override["qlmRa3"] = {
+				inheritedDecl = "components/characters/npc/delilah_copperspoon/aidelilahskills.cpntaidelilahskills";
+				inlineDecl = {
+					m_teleport = {
+						m_params = {
+							m_timeInvisible = {
+								m_seconds = 0.5;
+							}
+						}
+					}
+					m_bloodBriar = {
+						m_canSummonBloodBriar = false;
+					}
+				}
+			}
+		}
+	}
+}

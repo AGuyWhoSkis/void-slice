@@ -9,7 +9,7 @@ import (
 )
 
 func TestCoverageAudit(t *testing.T) {
-	corpusRoot := filepath.Join("..", "..", "testdata", "corpus-mini")
+	corpusRoot := filepath.Join("..", "..", "testdata", "golden")
 
 	knownCodes := map[string]bool{
 		// T1 — parser (parse_constants.go)
@@ -86,8 +86,7 @@ func TestCoverageAudit(t *testing.T) {
 		})
 	}
 
-	walkDir(filepath.Join(corpusRoot, "doto", "game1"))
-	walkDir(filepath.Join(corpusRoot, "d2", "game1"))
+	walkDir(corpusRoot)
 
 	t.Logf("coverage audit: %d files, %d distinct codes", fileCount, len(codeCount))
 	for code, count := range codeCount {

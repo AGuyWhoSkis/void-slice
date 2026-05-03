@@ -1,0 +1,113 @@
+{
+	inherit = "contactsystem/pr.gagu.electrified_bestiary.fx";
+	edit = {
+		m_groups = {
+			item[0] = {
+				m_particleSystems = {
+					num = 2;
+					item[0] = {
+						m_decls = {
+							item[0] = "models/effects/characters/elders/contact_system/elders_projectile_01.particledt";
+						}
+						m_timings = {
+							m_duration = {
+								m_max = 0.5;
+								m_min = 0.5;
+							}
+						}
+					}
+					item[1] = {
+						m_name = "elec";
+						m_decls = {
+							item[0] = "models/effects/weapons/dlc01/gauss_gun/bolts/bolt_electric.particledt";
+						}
+						m_timings = {
+							m_duration = {
+								m_max = 1;
+								m_min = 1;
+							}
+						}
+					}
+				}
+				m_lights = {
+					item[0] = {
+						m_preset = "LIGHT_PRESET_10W";
+						m_castShadows = true;
+						m_timings = {
+							m_duration = {
+								m_max = 0.1000000015;
+								m_min = 0.1000000015;
+							}
+							m_fadeout = {
+								m_max = 0.0500000007;
+								m_min = 0.0500000007;
+							}
+						}
+						m_attenuation = {
+							m_fallOffDistance = {
+								m_max = 0;
+								m_min = 0;
+							}
+						}
+						m_scattering = {
+							m_value = {
+								m_durationCurve = {
+									m_maxCurve = {
+										m_times = {
+											num = 1;
+										}
+										m_values = {
+											num = 3;
+											item[1] = 1;
+										}
+									}
+								}
+							}
+							m_scatterOnly = true;
+							m_castVolumetricShadows = true;
+						}
+						m_position = {
+							m_offset = {
+								m_max = {
+									x = 0.0500000007;
+								}
+								m_min = {
+									x = 0.0500000007;
+								}
+							}
+						}
+						m_color = {
+							m_durationCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 1;
+									}
+									m_values = {
+										num = 3;
+										item[1] = {
+											x = 1;
+											y = 1;
+											z = 1;
+										}
+									}
+								}
+							}
+							m_baseColor = {
+								r = 0.9254900217;
+								g = 1;
+								b = 0.8901960254;
+							}
+						}
+					}
+				}
+				m_sounds = {
+					item[0] = {
+						m_startSoundEvent = {
+							m_soundEvent = "sound_events/bsp/bsp_physmat/bsp_impact/bsp_imp_bullet/bsp_imp_bullet_on_dirt";
+						}
+					}
+				}
+			}
+		}
+	}
+}

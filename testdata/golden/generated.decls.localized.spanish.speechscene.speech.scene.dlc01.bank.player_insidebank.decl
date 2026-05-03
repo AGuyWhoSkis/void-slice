@@ -1,0 +1,109 @@
+{
+	edit = {
+		m_priority = 0;
+		m_hash = "ES_KFHB2S";
+		m_speechRoles = {
+			num = 1;
+			item[0] = {
+				m_character = "speech/character/dlc01/player/player_billie_lurk";
+				m_friendlyName = "Billie";
+			}
+		}
+		m_speechLines = {
+			num = 5;
+			item[0] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Siempre alcantarillas. Puaj. Al menos estoy dentro.";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Thinking";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "exasperated. muttered to self as to not be heard";
+				}
+				meta_prodState = 0;
+				m_flags = 1;
+				m_roleIndex = 0;
+				m_ID = 1;
+				m_weight = 1;
+			}
+			item[1] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Supongo que lo lógico es entrar con la basura.";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Thinking";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "muttered to self as to not be heard";
+				}
+				meta_prodState = 0;
+				m_flags = 1;
+				m_roleIndex = 0;
+				m_ID = 2;
+				m_weight = 1;
+			}
+			item[2] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Apuesto a que no esperaban que nadie entrase por aquí.";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Thinking";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "muttered to self as to not be heard";
+				}
+				meta_prodState = 0;
+				m_flags = 1;
+				m_roleIndex = 0;
+				m_ID = 4;
+				m_weight = 1;
+			}
+			item[3] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Estoy dentro. Pan comido. Ahora, lo difícil.";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Thinking";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "muttered to self as to not be heard";
+				}
+				meta_prodState = 0;
+				m_flags = 1;
+				m_roleIndex = 0;
+				m_ID = 3;
+				m_weight = 1;
+			}
+			item[4] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Al menos he entrado.";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Thinking";
+				meta_prodState = 0;
+				m_flags = 1;
+				m_roleIndex = 0;
+				m_ID = 5;
+				m_weight = 1;
+			}
+		}
+		meta_prodState = 18;
+		m_faceFxGenPolicy = 0;
+	}
+}

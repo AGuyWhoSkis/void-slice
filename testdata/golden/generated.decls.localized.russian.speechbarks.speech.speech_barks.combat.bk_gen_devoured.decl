@@ -1,0 +1,771 @@
+{
+	edit = {
+		meta_triggerRules = {
+			num = 39;
+			item[0] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/base/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[1] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/base/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[2] = {
+				m_barkID = 3;
+				m_ruleHandlerName = "components/characters/npc/base/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[3] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/base/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[4] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/base/rules/bark_combat.rulehandler";
+				m_ruleName = "Death - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE</Run><LineBreak />";
+			}
+			item[5] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/base/rules/bark_combat.rulehandler";
+				m_ruleName = "Death - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE</Run><LineBreak />";
+			}
+			item[6] = {
+				m_barkID = 2;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[7] = {
+				m_barkID = 10;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[8] = {
+				m_barkID = 3;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[9] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[10] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[11] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[12] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE</Run><LineBreak />";
+			}
+			item[13] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE</Run><LineBreak />";
+			}
+			item[14] = {
+				m_barkID = 1;
+				m_ruleHandlerName = "components/characters/npc/howlers/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[15] = {
+				m_barkID = 2;
+				m_ruleHandlerName = "components/characters/npc/howlers/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[16] = {
+				m_barkID = 3;
+				m_ruleHandlerName = "components/characters/npc/howlers/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[17] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/howlers/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[18] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/howlers/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[19] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/howlers/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>20.00%</Run><LineBreak />";
+			}
+			item[20] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/howlers/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE</Run><LineBreak />";
+			}
+			item[21] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/howlers/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE</Run><LineBreak />";
+			}
+			item[22] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE</Run><LineBreak />";
+			}
+			item[23] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE</Run><LineBreak />";
+			}
+			item[24] = {
+				m_barkID = 1;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[25] = {
+				m_barkID = 2;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[26] = {
+				m_barkID = 3;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[27] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[28] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Bloodflies";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_BLOODFLIES</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[29] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Rats";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_RATBITE</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[30] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Rats";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_RATBITE</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[31] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Rats";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_RATBITE</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[32] = {
+				m_barkID = 7;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Rats";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_RATBITE</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[33] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Dogs";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_HOUNDBITE</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[34] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Dogs";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_HOUNDBITE</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[35] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Dogs";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_HOUNDBITE</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[36] = {
+				m_barkID = 8;
+				m_ruleHandlerName = "components/characters/npc/overseer/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Dogs";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_HOUNDBITE</Run><LineBreak /><Run Foreground=\'Navy\'>health ratio</Run><Run Foreground=\'Blue\'>is greater than</Run><Run Foreground=\'#A31515\'>0.00%</Run><LineBreak />";
+			}
+			item[37] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE</Run><LineBreak />";
+			}
+			item[38] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_combat.rulehandler";
+				m_ruleName = "On Damaged - Immolation";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_DAMAGED</Run><LineBreak /><Run Foreground=\'Navy\'>the type of the last damage received</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE</Run><LineBreak />";
+			}
+		}
+		m_priority = 0;
+		m_hash = "RU_XZZKBJ";
+		m_speechRoles = {
+			num = 7;
+			item[0] = {
+				m_character = "speech/character/generic/generic_shared_allnpc";
+				m_friendlyName = "";
+			}
+			item[1] = {
+				m_character = "speech/character/generic/generic_shared_allnpcnowitch";
+				m_friendlyName = "";
+			}
+			item[2] = {
+				m_character = "speech/character/generic/generic_shared_fighters_nowitch";
+				m_friendlyName = "";
+			}
+			item[3] = {
+				m_character = "speech/character/generic/generic_shared_civilian";
+				m_friendlyName = "";
+			}
+			item[4] = {
+				m_character = "speech/character/generic/cult/witch_female";
+				m_friendlyName = "";
+			}
+			item[5] = {
+				m_character = "speech/character/generic/bloodfly/nestkeeper_male_a";
+				m_friendlyName = "";
+			}
+			item[6] = {
+				m_character = "speech/character/generic/generic_shared_workers";
+				m_friendlyName = "";
+			}
+		}
+		m_speechLines = {
+			num = 16;
+			item[0] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Трупные осы! На помощь!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 16;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "attacked by bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 1;
+				m_weight = 1;
+			}
+			item[1] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "О, нет, нет! Они жалят!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 31;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "attacked by bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 1;
+				m_ID = 2;
+				m_weight = 1;
+			}
+			item[2] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "О, нет! Трупные осы! Кто-нибудь, помогите!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 32;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 3;
+				m_ID = 10;
+				m_weight = 1;
+			}
+			item[3] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Нет! Отцепитесь!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 14;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "attacked by rats or bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 3;
+				m_weight = 1;
+			}
+			item[4] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Кто-нибудь, помогите!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 12;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "attacked by rats or dogs";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 4;
+				m_weight = 1;
+			}
+			item[5] = {
+				m_defaultText = {
+					m_recordingState = 2;
+				}
+				meta_shareset = "Scream";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "screams in pain, being stung by bloodflies or devoured by rats or dogs";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 5;
+				m_weight = 1;
+			}
+			item[6] = {
+				m_defaultText = {
+					m_recordingState = 2;
+				}
+				meta_shareset = "Scream";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "screams in pain, being stung by bloodflies or devoured by rats or dogs";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 6;
+				m_weight = 1;
+			}
+			item[7] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Не-е-ет! Всюду крысы!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 20;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "attacked by rats";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 7;
+				m_weight = 1;
+			}
+			item[8] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Прочь! Убирайтесь!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 30;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "attacked by rats or dogs";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 8;
+				m_weight = 1;
+			}
+			item[9] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Ох! Это ужасно!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 22;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Seeing a corpse devoured by rats";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 11;
+				m_weight = 1;
+			}
+			item[10] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "О, нет! Не давай им кусать тебя!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 31;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Surprised and scared, seeing someone attacked by bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 1;
+				m_ID = 12;
+				m_weight = 1;
+			}
+			item[11] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Ой, зараза! Нет, нет... Я ничем не смогу помочь...";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 43;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Cowardly, seeing someone attacked by bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 3;
+				m_ID = 16;
+				m_weight = 1;
+			}
+			item[12] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Кушайте, дорогие мои, кушайте!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 27;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "#-";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Seeing someone attacked by bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 4;
+				m_ID = 13;
+				m_weight = 1;
+			}
+			item[13] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Кушайте, дорогие мои, кушайте!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 27;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "^^";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Seeing someone attacked by bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 5;
+				m_ID = 14;
+				m_weight = 1;
+			}
+			item[14] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Ох, нет!!! Держись, я иду!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 28;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Seeing someone attacked by bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 15;
+				m_weight = 1;
+			}
+			item[15] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Ох, нет!!! Держись, я иду!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 28;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Seeing someone attacked by bloodflies";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 6;
+				m_ID = 17;
+				m_weight = 1;
+			}
+		}
+		meta_contextDescription = {
+			num = 1;
+			item[0] = "attacked by animals";
+		}
+		meta_prodState = 17;
+		m_faceFxGenPolicy = 0;
+	}
+}

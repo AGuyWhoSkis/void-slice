@@ -1,0 +1,17 @@
+{
+	edit = {
+		m_groups = {
+			num = 1;
+			item[0] = {
+				m_sounds = {
+					num = 1;
+					item[0] = {
+						m_startSoundEvent = {
+							m_soundEvent = "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_wood/bsp_phys_wood_cameo";
+						}
+					}
+				}
+			}
+		}
+	}
+}

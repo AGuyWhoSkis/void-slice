@@ -1,0 +1,328 @@
+{
+	edit = {
+		meta_triggerRules = {
+			num = 12;
+			item[0] = {
+				m_barkID = 1;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - See";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_PLAYER</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[1] = {
+				m_barkID = 2;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - See";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_PLAYER</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[2] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - See";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_PLAYER</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[3] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - See";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_PLAYER</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[4] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - See";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_PLAYER</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[5] = {
+				m_barkID = 1;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - Hear";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_HEARD_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+			item[6] = {
+				m_barkID = 2;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - Hear";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_HEARD_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+			item[7] = {
+				m_barkID = 3;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - Hear";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_HEARD_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+			item[8] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - Hear";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_HEARD_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+			item[9] = {
+				m_barkID = 5;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - Hear";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_HEARD_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+			item[10] = {
+				m_barkID = 6;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - Hear";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_HEARD_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+			item[11] = {
+				m_barkID = 7;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_search.rulehandler";
+				m_ruleName = "Static Search - Ambient - Hear";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>current stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_SEARCH</Run><LineBreak /><Run Foreground=\'Navy\'>previous stable attention state</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTLV_HEADTRACK</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_HEARD_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+		}
+		m_priority = 0;
+		m_hash = "JP_N19EEW";
+		m_speechRoles = {
+			num = 1;
+			item[0] = {
+				m_character = "speech/character/generic/generic_shared_civiliannoworker";
+				m_friendlyName = "";
+			}
+		}
+		m_speechLines = {
+			num = 7;
+			item[0] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "誰か？";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 6;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=\'";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "wondering if there\'s someone in the house";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 1;
+				m_weight = 1;
+			}
+			item[1] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "頭がおかしくなったのか？";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 19;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "muttering to themselves";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 2;
+				m_weight = 1;
+			}
+			item[2] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "ネズミじゃないといいんだが";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 21;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "muttering to themselves, wondering if there\'s someone in the house";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 3;
+				m_weight = 1;
+			}
+			item[3] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "そうか…";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 6;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=\'";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "muttering to themselves, wondering if there\'s someone in the house";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 4;
+				m_weight = 1;
+			}
+			item[4] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "まさか…？";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 8;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=\'";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "muttering to themselves, wondering if there\'s someone in the house";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 5;
+				m_weight = 1;
+			}
+			item[5] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "冗談じゃない！";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 14;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "wondering if there\'s someone in the house";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 6;
+				m_weight = 1;
+			}
+			item[6] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "一体何なんだ？";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 32;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "muttering to themselves, wondering if there\'s someone in the house";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 7;
+				m_weight = 1;
+			}
+		}
+		meta_contextDescription = {
+			num = 1;
+			item[0] = "muttering to themselves, wondering if there\'s someone in the house";
+		}
+		meta_prodState = 17;
+		m_faceFxGenPolicy = 0;
+	}
+}

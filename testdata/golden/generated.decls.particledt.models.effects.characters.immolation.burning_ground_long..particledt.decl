@@ -1,0 +1,1459 @@
+{
+	edit = {
+		m_visibility = {
+			m_localBoundingBox = {
+				m_max = {
+					x = 0.5;
+					y = 0.5;
+					z = 1.75;
+				}
+				m_min = {
+					x = -0.5;
+					y = -0.5;
+					z = -0.25;
+				}
+			}
+			m_fixedBoundingBox = true;
+		}
+		m_velocityInheritance = {
+			m_linearVelocityOverCycle = {
+				m_max = 0.75;
+				m_min = 0.5;
+			}
+			m_angularVelocityOverCycle = {
+				m_max = 0.75;
+				m_min = 0.5;
+			}
+		}
+		m_stages = {
+			num = 3;
+			item[0] = {
+				m_main = {
+					m_name = "big_flames_world";
+				}
+				m_spawn = {
+					m_cycles = 1;
+					m_rate = {
+						m_max = 5;
+						m_min = 5;
+						m_curve = {
+							m_maxCurve = {
+								m_times = {
+									item[0] = 1;
+								}
+							}
+						}
+					}
+					m_life = {
+						m_min = 0.5;
+					}
+					m_initialLocation = {
+						m_value = {
+							m_max = {
+								x = 0.200000003;
+								y = 0.200000003;
+							}
+							m_min = {
+								x = -0.200000003;
+								y = -0.200000003;
+							}
+						}
+					}
+					m_initialVelocity = {
+						m_value = {
+							m_max = {
+								z = 0;
+							}
+							m_min = {
+								z = 0;
+							}
+						}
+						m_worldspace = true;
+					}
+					m_physicsShapesSpawn = {
+						m_normalOffset = {
+							m_max = 0.0099999998;
+							m_min = 0.0049999999;
+						}
+					}
+					m_spawnMesh = {
+						m_scale = {
+							m_max = {
+								x = 0.3000000119;
+								y = 0.3000000119;
+								z = 0.5;
+							}
+							m_min = {
+								x = 0.3000000119;
+								y = 0.3000000119;
+								z = 0.5;
+							}
+						}
+					}
+				}
+				m_velocityOverLife = {
+					m_curve = {
+						m_maxCurve = {
+							m_times = {
+								num = 2;
+								item[1] = 0.4985258281;
+							}
+							m_values = {
+								num = 6;
+								item[3] = {
+									x = 0;
+									y = 0;
+									z = 0;
+								}
+								item[4] = {
+									x = 0.0004044101;
+									y = 0.0004044101;
+									z = 0.0004044101;
+								}
+								item[5] = {
+									x = 0;
+									y = 0;
+									z = 0;
+								}
+							}
+						}
+					}
+				}
+				m_vectorFields = {
+					num = 1;
+					item[0] = {
+						m_textures = {
+							m_xy = {
+								m_texture = "models/effects/gameplay/watchtower/dust_mvt_vf.tga";
+								m_tiling = true;
+							}
+							m_xz = {
+								m_texture = "models/effects/gameplay/watchtower/dust_mvt_vf.tga";
+								m_tiling = true;
+							}
+							m_yz = {
+								m_texture = "models/effects/gameplay/watchtower/dust_mvt_vf.tga";
+								m_tiling = true;
+							}
+						}
+						m_scale = {
+							m_max = {
+								x = 3;
+								y = 3;
+								z = 3;
+							}
+						}
+						m_initialRotation = {
+							m_max = {
+								x = 360;
+								y = 360;
+								z = 360;
+							}
+						}
+						m_rotationRate = {
+							m_max = {
+								x = 7;
+								y = 7;
+								z = 7;
+							}
+							m_min = {
+								x = 3;
+								y = 3;
+								z = 3;
+							}
+						}
+						m_modes = {
+							m_Z = "ABSOLUTE_POSITIVE";
+						}
+						m_strengthOverCycle = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[0] = 0.8000000119;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[3] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+										item[4] = {
+											x = 0.1999999881;
+											y = 0.1999999881;
+											z = 0.1999999881;
+										}
+										item[5] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+									}
+								}
+							}
+						}
+						m_strengthOverLife = {
+							m_max = {
+								x = 0.6000000238;
+								y = 0.6000000238;
+								z = 0.6000000238;
+							}
+							m_min = {
+								x = 0.1000000015;
+								y = 0.1000000015;
+								z = 0.1000000015;
+							}
+						}
+					}
+				}
+				m_attractors = {
+					num = 1;
+					item[0] = {
+						m_position = {
+							m_position = {
+								m_value = {
+									m_max = {
+										z = -0.25;
+									}
+									m_min = {
+										z = -0.25;
+									}
+								}
+							}
+						}
+						m_damping = {
+							m_decelerationFactor = 1;
+						}
+						m_cutOffDistance = {
+							m_max = 10;
+							m_min = 10;
+						}
+						m_targetRadius = {
+							m_max = 0.150000006;
+							m_min = 0.150000006;
+						}
+						m_strength = {
+							m_max = 0;
+							m_min = 0;
+						}
+						m_strengthOverLife = {
+							m_maxCurve = {
+								m_times = {
+									num = 2;
+									item[0] = 0.2723663151;
+									item[1] = 0.8035004139;
+								}
+								m_values = {
+									num = 6;
+									item[1] = 0.0004981756;
+									item[3] = 0;
+									item[4] = 1;
+									item[5] = 0;
+								}
+							}
+						}
+					}
+				}
+				m_sprites = {
+					item[0] = {
+						m_name = "fire";
+						m_orientation = {
+							m_primaryAxis = {
+								m_value = {
+									m_max = {
+										y = 1;
+										z = 1;
+									}
+									m_min = {
+										x = -1;
+										y = -1;
+										z = -1;
+									}
+								}
+							}
+							m_secondaryAxis = {
+								m_value = {
+									m_max = {
+										x = 1;
+										z = 1;
+									}
+									m_min = {
+										x = -1;
+										y = -1;
+										z = -1;
+									}
+								}
+							}
+						}
+						m_material = "models/effects/characters/immolation/fire_flame_01.material";
+						m_spawn = {
+							m_initialColor = {
+								m_curve = {
+									m_maxCurve = {
+										m_times = {
+											num = 6;
+											item[1] = 0.2935209572;
+											item[2] = 0.3113681674;
+											item[3] = 0.3882960081;
+											item[4] = 0.4075057507;
+											item[5] = 0.995339632;
+										}
+										m_values = {
+											num = 18;
+											item[3] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[4] = {
+												x = 1;
+												y = 1;
+												z = 1;
+											}
+											item[5] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[6] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[7] = {
+												x = 8.0191192627;
+												y = 8.0191192627;
+												z = 8.0191192627;
+											}
+											item[8] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[9] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[10] = {
+												x = 8.0191192627;
+												y = 8.0191192627;
+												z = 8.0191192627;
+											}
+											item[11] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[12] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[13] = {
+												x = 1;
+												y = 1;
+												z = 1;
+											}
+											item[14] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[15] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[16] = {
+												x = 1;
+												y = 1;
+												z = 1;
+											}
+											item[17] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+										}
+									}
+								}
+								m_uniform = true;
+							}
+							m_initialAlpha = {
+								m_max = 0.3000000119;
+								m_min = 0.1000000015;
+								m_curve = {
+									m_maxCurve = {
+										m_times = {
+											num = 4;
+											item[1] = 0.2987672091;
+											item[2] = 0.3087671995;
+											item[3] = 0.4278462529;
+										}
+										m_values = {
+											num = 12;
+											item[3] = 0;
+											item[4] = 1;
+											item[5] = 0;
+											item[6] = 0;
+											item[7] = 3.9945850372;
+											item[8] = 0;
+											item[9] = 0;
+											item[10] = 1;
+											item[11] = 0;
+										}
+									}
+								}
+							}
+							m_initialSize = {
+								m_max = {
+									x = 0.5;
+									y = 0.5;
+									z = 0.5;
+								}
+								m_min = {
+									x = 0.3000000119;
+									y = 0.3000000119;
+									z = 0.3000000119;
+								}
+								m_curve = {
+									m_maxCurve = {
+										m_times = {
+											num = 3;
+											item[0] = -0.000808537;
+											item[1] = 0.1504479051;
+											item[2] = 1.2569026947;
+										}
+										m_values = {
+											num = 9;
+											item[1] = {
+												x = 0.501419425;
+												y = 0.501419425;
+												z = 0.501419425;
+											}
+											item[3] = {
+												x = 0.075287573;
+												y = 0.0751785114;
+												z = 0.0750694647;
+											}
+											item[4] = {
+												x = 1.3019572496;
+												y = 1.3019572496;
+												z = 1.3019572496;
+											}
+											item[5] = {
+												x = -0.5507355332;
+												y = -0.5499377251;
+												z = -0.5491400361;
+											}
+											item[6] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[7] = {
+												x = 0.5051645637;
+												y = 0.5051645637;
+												z = 0.5051645637;
+											}
+											item[8] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+										}
+									}
+								}
+								m_uniform = true;
+							}
+							m_initialRotation = {
+								m_max = 20;
+								m_min = -20;
+							}
+						}
+						m_alphaOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										item[1] = 0.0543042794;
+										item[2] = 0.24207443;
+										item[3] = 0.960755825;
+									}
+									m_values = {
+										item[4] = 1.0007975101;
+										item[6] = -0.0001114484;
+										item[7] = 0.6863773465;
+										item[8] = 0.0004265641;
+										item[10] = 0.0020292103;
+									}
+								}
+							}
+						}
+						m_angularFade = {
+							m_max = 7;
+							m_min = 0;
+						}
+						m_sizeOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 3;
+										item[0] = 0.0012969971;
+										item[1] = 0.7215375304;
+										item[2] = 0.9984063506;
+									}
+									m_values = {
+										num = 9;
+										item[0] = {
+											x = -0.0011382307;
+											y = 0.0025755099;
+											z = 0.0075275237;
+										}
+										item[1] = {
+											x = 0.027033329;
+											y = 0.027033329;
+											z = 0.027033329;
+										}
+										item[2] = {
+											x = 0.0011382307;
+											y = -0.0025755099;
+											z = -0.0075275237;
+										}
+										item[3] = {
+											x = 0.0030128027;
+											y = -0.001453497;
+											z = -0.0043147677;
+										}
+										item[4] = {
+											x = 0.9808648825;
+											y = 0.9843571186;
+											z = 0.9818000793;
+										}
+										item[5] = {
+											x = -0.0011344897;
+											y = 0.0005587413;
+											z = 0.0016247517;
+										}
+										item[6] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+										item[7] = {
+											x = 0.7231946588;
+											y = 0.7266868949;
+											z = 0.7241298556;
+										}
+										item[8] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+									}
+								}
+							}
+							m_uniform = true;
+						}
+						m_rotationRateOverLife = {
+							m_max = 40;
+							m_min = -40;
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[3] = 0;
+										item[4] = 0;
+										item[5] = 0;
+									}
+								}
+							}
+						}
+						m_flipBook = {
+							m_textureFlipU = "RANDOM";
+							m_startFrame = {
+								m_framesRounding = 16;
+								m_max = 16;
+							}
+						}
+					}
+				}
+			}
+			item[1] = {
+				m_main = {
+					m_name = "big_flames_world";
+				}
+				m_spawn = {
+					m_cycles = 1;
+					m_rate = {
+						m_max = 10;
+						m_min = 10;
+						m_curve = {
+							m_maxCurve = {
+								m_times = {
+									item[0] = 1;
+								}
+							}
+						}
+					}
+					m_life = {
+						m_min = 0.75;
+					}
+					m_initialLocation = {
+						m_value = {
+							m_max = {
+								x = 0.1000000015;
+								y = 0.1000000015;
+							}
+							m_min = {
+								x = -0.1000000015;
+								y = -0.1000000015;
+							}
+						}
+					}
+					m_initialVelocity = {
+						m_value = {
+							m_max = {
+								z = 0;
+							}
+							m_min = {
+								z = 0;
+							}
+						}
+						m_worldspace = true;
+					}
+					m_physicsShapesSpawn = {
+						m_normalOffset = {
+							m_max = 0.0099999998;
+							m_min = 0.0049999999;
+						}
+					}
+					m_spawnMesh = {
+						m_scale = {
+							m_max = {
+								x = 0.3000000119;
+								y = 0.3000000119;
+								z = 0.5;
+							}
+							m_min = {
+								x = 0.3000000119;
+								y = 0.3000000119;
+								z = 0.5;
+							}
+						}
+					}
+				}
+				m_velocityOverLife = {
+					m_curve = {
+						m_maxCurve = {
+							m_times = {
+								num = 2;
+								item[1] = 0.4985258281;
+							}
+							m_values = {
+								num = 6;
+								item[3] = {
+									x = 0;
+									y = 0;
+									z = 0;
+								}
+								item[4] = {
+									x = 0.0004044101;
+									y = 0.0004044101;
+									z = 0.0004044101;
+								}
+								item[5] = {
+									x = 0;
+									y = 0;
+									z = 0;
+								}
+							}
+						}
+					}
+				}
+				m_vectorFields = {
+					num = 1;
+					item[0] = {
+						m_textures = {
+							m_xy = {
+								m_texture = "models/effects/gameplay/watchtower/dust_mvt_vf.tga";
+								m_tiling = true;
+							}
+							m_xz = {
+								m_texture = "models/effects/gameplay/watchtower/dust_mvt_vf.tga";
+								m_tiling = true;
+							}
+							m_yz = {
+								m_texture = "models/effects/gameplay/watchtower/dust_mvt_vf.tga";
+								m_tiling = true;
+							}
+						}
+						m_scale = {
+							m_max = {
+								x = 3;
+								y = 3;
+								z = 3;
+							}
+						}
+						m_initialRotation = {
+							m_max = {
+								x = 360;
+								y = 360;
+								z = 360;
+							}
+						}
+						m_rotationRate = {
+							m_max = {
+								x = 7;
+								y = 7;
+								z = 7;
+							}
+							m_min = {
+								x = 3;
+								y = 3;
+								z = 3;
+							}
+						}
+						m_modes = {
+							m_Z = "ABSOLUTE_POSITIVE";
+						}
+						m_strengthOverCycle = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[0] = 0.8000000119;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[3] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+										item[4] = {
+											x = 0.1999999881;
+											y = 0.1999999881;
+											z = 0.1999999881;
+										}
+										item[5] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+									}
+								}
+							}
+						}
+						m_strengthOverLife = {
+							m_max = {
+								x = 0.6000000238;
+								y = 0.6000000238;
+								z = 0.6000000238;
+							}
+							m_min = {
+								x = 0.1000000015;
+								y = 0.1000000015;
+								z = 0.1000000015;
+							}
+						}
+					}
+				}
+				m_attractors = {
+					num = 1;
+					item[0] = {
+						m_position = {
+							m_position = {
+								m_value = {
+									m_max = {
+										z = -0.25;
+									}
+									m_min = {
+										z = -0.25;
+									}
+								}
+							}
+						}
+						m_damping = {
+							m_decelerationFactor = 1;
+						}
+						m_cutOffDistance = {
+							m_max = 10;
+							m_min = 10;
+						}
+						m_targetRadius = {
+							m_max = 0.150000006;
+							m_min = 0.150000006;
+						}
+						m_strength = {
+							m_max = 0;
+							m_min = 0;
+						}
+						m_strengthOverLife = {
+							m_maxCurve = {
+								m_times = {
+									num = 2;
+									item[0] = 0.2723663151;
+									item[1] = 0.8035004139;
+								}
+								m_values = {
+									num = 6;
+									item[1] = 0.0004981756;
+									item[3] = 0;
+									item[4] = 1;
+									item[5] = 0;
+								}
+							}
+						}
+					}
+				}
+				m_sprites = {
+					item[0] = {
+						m_name = "fire";
+						m_orientation = {
+							m_primaryAxis = {
+								m_value = {
+									m_max = {
+										y = 1;
+										z = 1;
+									}
+									m_min = {
+										x = -1;
+										y = -1;
+										z = -1;
+									}
+								}
+							}
+							m_secondaryAxis = {
+								m_value = {
+									m_max = {
+										x = 1;
+										z = 1;
+									}
+									m_min = {
+										x = -1;
+										y = -1;
+										z = -1;
+									}
+								}
+							}
+						}
+						m_material = "models/effects/characters/immolation/fire_flame_04.material";
+						m_spawn = {
+							m_initialColor = {
+								m_curve = {
+									m_maxCurve = {
+										m_times = {
+											num = 6;
+											item[1] = 0.2935209572;
+											item[2] = 0.3113681674;
+											item[3] = 0.3882960081;
+											item[4] = 0.4075057507;
+											item[5] = 0.995339632;
+										}
+										m_values = {
+											num = 18;
+											item[3] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[4] = {
+												x = 1;
+												y = 1;
+												z = 1;
+											}
+											item[5] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[6] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[7] = {
+												x = 8.0191192627;
+												y = 8.0191192627;
+												z = 8.0191192627;
+											}
+											item[8] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[9] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[10] = {
+												x = 8.0191192627;
+												y = 8.0191192627;
+												z = 8.0191192627;
+											}
+											item[11] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[12] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[13] = {
+												x = 1;
+												y = 1;
+												z = 1;
+											}
+											item[14] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[15] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[16] = {
+												x = 1;
+												y = 1;
+												z = 1;
+											}
+											item[17] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+										}
+									}
+								}
+								m_uniform = true;
+							}
+							m_initialAlpha = {
+								m_max = 0.3000000119;
+								m_min = 0.1000000015;
+								m_curve = {
+									m_maxCurve = {
+										m_times = {
+											num = 4;
+											item[1] = 0.2987672091;
+											item[2] = 0.3087671995;
+											item[3] = 0.4278462529;
+										}
+										m_values = {
+											num = 12;
+											item[3] = 0;
+											item[4] = 1;
+											item[5] = 0;
+											item[6] = 0;
+											item[7] = 3.9945850372;
+											item[8] = 0;
+											item[9] = 0;
+											item[10] = 1;
+											item[11] = 0;
+										}
+									}
+								}
+							}
+							m_initialSize = {
+								m_max = {
+									x = 0.5;
+									y = 0.5;
+									z = 0.5;
+								}
+								m_min = {
+									x = 0.3000000119;
+									y = 0.3000000119;
+									z = 0.3000000119;
+								}
+								m_curve = {
+									m_maxCurve = {
+										m_times = {
+											num = 3;
+											item[0] = -0.000808537;
+											item[1] = 0.1504479051;
+											item[2] = 1.2569026947;
+										}
+										m_values = {
+											num = 9;
+											item[1] = {
+												x = 0.501419425;
+												y = 0.501419425;
+												z = 0.501419425;
+											}
+											item[3] = {
+												x = 0.075287573;
+												y = 0.0751785114;
+												z = 0.0750694647;
+											}
+											item[4] = {
+												x = 1.3019572496;
+												y = 1.3019572496;
+												z = 1.3019572496;
+											}
+											item[5] = {
+												x = -0.5507355332;
+												y = -0.5499377251;
+												z = -0.5491400361;
+											}
+											item[6] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+											item[7] = {
+												x = 0.5051645637;
+												y = 0.5051645637;
+												z = 0.5051645637;
+											}
+											item[8] = {
+												x = 0;
+												y = 0;
+												z = 0;
+											}
+										}
+									}
+								}
+								m_uniform = true;
+							}
+							m_initialRotation = {
+								m_max = 360;
+							}
+						}
+						m_alphaOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										item[1] = 0.0543042794;
+										item[2] = 0.24207443;
+										item[3] = 0.960755825;
+									}
+									m_values = {
+										item[4] = 1.0007975101;
+										item[6] = -0.0001114484;
+										item[7] = 0.6863773465;
+										item[8] = 0.0004265641;
+										item[10] = 0.0020292103;
+									}
+								}
+							}
+						}
+						m_angularFade = {
+							m_max = 7;
+							m_min = 0;
+						}
+						m_sizeOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 3;
+										item[0] = 0.0012969971;
+										item[1] = 0.7215375304;
+										item[2] = 0.9984063506;
+									}
+									m_values = {
+										num = 9;
+										item[0] = {
+											x = -0.0011382307;
+											y = 0.0025755099;
+											z = 0.0075275237;
+										}
+										item[1] = {
+											x = 0.027033329;
+											y = 0.027033329;
+											z = 0.027033329;
+										}
+										item[2] = {
+											x = 0.0011382307;
+											y = -0.0025755099;
+											z = -0.0075275237;
+										}
+										item[3] = {
+											x = 0.0030128027;
+											y = -0.001453497;
+											z = -0.0043147677;
+										}
+										item[4] = {
+											x = 0.9808648825;
+											y = 0.9843571186;
+											z = 0.9818000793;
+										}
+										item[5] = {
+											x = -0.0011344897;
+											y = 0.0005587413;
+											z = 0.0016247517;
+										}
+										item[6] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+										item[7] = {
+											x = 0.7231946588;
+											y = 0.7266868949;
+											z = 0.7241298556;
+										}
+										item[8] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+									}
+								}
+							}
+							m_uniform = true;
+						}
+						m_rotationRateOverLife = {
+							m_max = 40;
+							m_min = -40;
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[3] = 0;
+										item[4] = 0;
+										item[5] = 0;
+									}
+								}
+							}
+						}
+						m_flipBook = {
+							m_textureFlipU = "RANDOM";
+							m_startFrame = {
+								m_framesRounding = 16;
+								m_max = 16;
+							}
+						}
+					}
+				}
+			}
+			item[2] = {
+				m_main = {
+					m_name = "black_smoke";
+				}
+				m_spawn = {
+					m_cycles = 1;
+					m_rate = {
+						m_max = 5;
+						m_min = 5;
+						m_curve = {
+							m_maxCurve = {
+								m_times = {
+									item[0] = 0.4825834036;
+								}
+								m_values = {
+									item[0] = 0.0006475362;
+									item[1] = 0.9879641533;
+									item[2] = -0.0018024519;
+								}
+							}
+						}
+					}
+					m_life = {
+						m_max = 1.5;
+					}
+					m_initialLocation = {
+						m_value = {
+							m_max = {
+								x = 0.1000000015;
+								y = 0.1000000015;
+							}
+							m_min = {
+								x = -0.1000000015;
+								y = -0.1000000015;
+							}
+						}
+					}
+					m_initialVelocity = {
+						m_value = {
+							m_max = {
+								z = 0.400000006;
+							}
+							m_min = {
+								z = 0.200000003;
+							}
+						}
+						m_worldspace = true;
+					}
+					m_physicsShapesSpawn = {
+						m_normalOffset = {
+							m_max = 0.0099999998;
+							m_min = 0.0049999999;
+						}
+					}
+					m_spawnMesh = {
+						m_scale = {
+							m_max = {
+								x = 0.3000000119;
+								y = 0.3000000119;
+								z = 0.5;
+							}
+							m_min = {
+								x = 0.3000000119;
+								y = 0.3000000119;
+								z = 0.5;
+							}
+						}
+					}
+				}
+				m_velocityOverLife = {
+					m_curve = {
+						m_maxCurve = {
+							m_times = {
+								num = 2;
+								item[1] = 0.4985258281;
+							}
+							m_values = {
+								num = 6;
+								item[3] = {
+									x = 0;
+									y = 0;
+									z = 0;
+								}
+								item[4] = {
+									x = 0.0004044101;
+									y = 0.0004044101;
+									z = 0.0004044101;
+								}
+								item[5] = {
+									x = 0;
+									y = 0;
+									z = 0;
+								}
+							}
+						}
+					}
+				}
+				m_attractors = {
+					num = 1;
+					item[0] = {
+						m_position = {
+							m_position = {
+								m_value = {
+									m_max = {
+										z = -0.25;
+									}
+									m_min = {
+										z = -0.25;
+									}
+								}
+							}
+						}
+						m_damping = {
+							m_decelerationFactor = 1;
+						}
+						m_cutOffDistance = {
+							m_max = 10;
+							m_min = 10;
+						}
+						m_targetRadius = {
+							m_max = 0.150000006;
+							m_min = 0.150000006;
+						}
+						m_strength = {
+							m_max = 0;
+							m_min = 0;
+						}
+						m_strengthOverLife = {
+							m_maxCurve = {
+								m_times = {
+									num = 2;
+									item[0] = 0.2723663151;
+									item[1] = 0.8035004139;
+								}
+								m_values = {
+									num = 6;
+									item[1] = 0.0004981756;
+									item[3] = 0;
+									item[4] = 1;
+									item[5] = 0;
+								}
+							}
+						}
+					}
+				}
+				m_accelerationOverLife = {
+					m_gravity = {
+						m_max = -0.0500000007;
+						m_min = -0.200000003;
+					}
+				}
+				m_sprites = {
+					item[0] = {
+						m_name = "fire";
+						m_orientation = {
+							m_primaryAxis = {
+								m_value = {
+									m_max = {
+										y = 1;
+										z = 1;
+									}
+									m_min = {
+										x = -1;
+										y = -1;
+										z = -1;
+									}
+								}
+							}
+							m_secondaryAxis = {
+								m_value = {
+									m_max = {
+										x = 1;
+										z = 1;
+									}
+									m_min = {
+										x = -1;
+										y = -1;
+										z = -1;
+									}
+								}
+							}
+						}
+						m_material = "models/effects/characters/immolation/fire_black_smoke.material";
+						m_spawn = {
+							m_initialSize = {
+								m_max = {
+									x = 1.25;
+									y = 1.25;
+									z = 1.25;
+								}
+								m_min = {
+									x = 0.5;
+									y = 0.5;
+									z = 0.5;
+								}
+								m_uniform = true;
+							}
+							m_initialRotation = {
+								m_max = 360;
+							}
+						}
+						m_alphaOverLife = {
+							m_max = 0.5;
+							m_min = 0.3000000119;
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 3;
+										item[1] = 0.1795138121;
+										item[2] = 1.0009490252;
+									}
+									m_values = {
+										num = 9;
+										item[4] = 0.5059726238;
+										item[7] = 0.0020292103;
+									}
+								}
+							}
+						}
+						m_angularFade = {
+							m_max = 7;
+							m_min = 0;
+						}
+						m_sizeOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 3;
+										item[0] = -0.000166472;
+										item[1] = 0.3350358307;
+										item[2] = 1.0022814274;
+									}
+									m_values = {
+										num = 9;
+										item[0] = {
+											x = -0.0005297366;
+											y = -0.0002991296;
+											z = -0.0006754156;
+										}
+										item[1] = {
+											x = 0.0080356449;
+											y = 0.0080356449;
+											z = 0.0080356449;
+										}
+										item[2] = {
+											x = 0.0005297366;
+											y = 0.0002991296;
+											z = 0.0006754156;
+										}
+										item[3] = {
+											x = -0.1868596673;
+											y = -0.199378863;
+											z = -0.1970604956;
+										}
+										item[4] = {
+											x = 0.333940506;
+											y = 0.3320923448;
+											z = 0.3301699758;
+										}
+										item[5] = {
+											x = 0.3719586134;
+											y = 0.3968787193;
+											z = 0.3922638297;
+										}
+										item[6] = {
+											x = -0.0006663008;
+											y = -0.0010876548;
+											z = 0.0036238451;
+										}
+										item[7] = {
+											x = 0.7661577463;
+											y = 0.7696499825;
+											z = 0.7670929432;
+										}
+										item[8] = {
+											x = 0.0006663008;
+											y = 0.0010876548;
+											z = -0.0036238451;
+										}
+									}
+								}
+							}
+							m_uniform = true;
+						}
+						m_rotationRateOverLife = {
+							m_max = 40;
+							m_min = -40;
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[3] = 0;
+										item[4] = 0;
+										item[5] = 0;
+									}
+								}
+							}
+						}
+						m_flipBook = {
+							m_textureFlipU = "RANDOM";
+							m_startFrame = {
+								m_framesRounding = 16;
+								m_max = 16;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,79 @@
+{
+	inherit = "models/characters/base/guard";
+	editorVars {
+		placeable = false;
+	}
+	edit = {
+		m_componentDecls = {
+			item_override["uAh4M2"] = {
+				inheritedDecl = "components/characters/npc/elite/health_elite.cpnthealthevolved";
+			}
+			item_override["xjkPm1"] = {
+				inheritedDecl = "components/characters/npc/elite/aidecision_tall.cpntaidecision";
+			}
+			item_override["GQ8xD0"] = {
+				inheritedDecl = "components/characters/npc/elite/aibarks_elite.cpntaibarksnpc";
+			}
+			item_override["uKLll1"] = {
+				inheritedDecl = "components/characters/npc/elite/aireasonercombat_elite.cpntaireasonercombat";
+				inlineDecl = {
+					m_defenseSettings = {
+						m_meleeDefenseChance = {
+							value = 0.5;
+						}
+					}
+				}
+			}
+			item_override["OwZUO3"] = {
+				inlineDecl = {
+					m_carryCorpse = {
+						m_name = "Talk_eliteguard_f";
+					}
+					m_loot = {
+						m_name = "Talk_eliteguard_f";
+					}
+					m_pickpocket = {
+						m_name = "Talk_eliteguard_f";
+					}
+					m_talk = {
+						m_name = "Talk_eliteguard_f";
+					}
+					m_busyTalk = {
+						m_name = "Talk_eliteguard_f";
+					}
+				}
+			}
+			item_override["_OAlJ3"] = {
+				inlineDecl = {
+					m_npcFatality = "midnight/gameplay/player/base/death/npc_fatality_elite.midnightscene";
+				}
+			}
+			item_override["jKdmx1"] = {
+				inheritedDecl = "components/characters/npc/elite/aireflex_elite.cpntaireflex";
+			}
+			item_override["1yBNj2"] = {
+				inlineDecl = {
+					m_socialClass = "SOCIAL_CLASS_ELITE";
+				}
+			}
+			item_override["k4m9q2"] = {
+				inheritedDecl = "components/characters/npc/elite/versus_elite.cpntversus";
+			}
+			item_override["-YHQ13"] = {
+				inheritedDecl = "components/characters/npc/elite/aiidlebreak_elite.cpntaiidlebreak";
+			}
+			item_override["U66mH3"] = {
+				inheritedDecl = "components/characters/npc/elite/aireasonerpanic_elite.cpntaireasonerpanic";
+			}
+			item_override["bhN-W3"] = {
+				inheritedDecl = "components/characters/npc/elite/inventory_elite.cpntinventory";
+			}
+			item_add["9-pT20"] = {
+				inheritedDecl = "components/characters/base/aigunskills_base.cpntaigunskills";
+			}
+			item_add["Gdynn2"] = {
+				inheritedDecl = "components/characters/npc/elite/aicombatleaderskills_elite.cpntaicombatleaderskills";
+			}
+		}
+	}
+}

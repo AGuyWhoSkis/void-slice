@@ -1,0 +1,120 @@
+{
+	inherit = "contactsystem/pr.ar.firy_genericcontact.fx";
+	edit = {
+		m_groups = {
+			item[0] = {
+				m_particleSystems = {
+					num = 1;
+					item[0] = {
+						m_decls = {
+							num = 1;
+							item[0] = "models/effects/phys_mat/projectiles/bolt_incendiary/incendiary_generic.particledt";
+						}
+					}
+				}
+				m_decals = {
+					num = 1;
+					item[0] = {
+						m_decls = {
+							num = 1;
+							item[0] = "models/effects/weapons/bolt_incendiary/incendiary_decal.decal";
+						}
+						m_timings = {
+							m_fadein = {
+								m_max = 1;
+								m_min = 1;
+							}
+							m_duration = {
+								m_max = 10.6999998093;
+								m_min = 10.6999998093;
+							}
+							m_fadeout = {
+								m_max = 8;
+								m_min = 8;
+							}
+						}
+						m_projectionAxis = "X";
+						m_centering = {
+							z = 0.5;
+						}
+						m_size = {
+							m_max = {
+								x = 3;
+								y = 3;
+							}
+							m_min = {
+								x = 3;
+								y = 3;
+							}
+							m_fadeinCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 1;
+										item[0] = 1;
+									}
+									m_values = {
+										num = 3;
+										item[1] = {
+											x = 1;
+											y = 1;
+										}
+									}
+								}
+							}
+							m_fadeoutCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 1;
+									}
+									m_values = {
+										num = 3;
+									}
+								}
+							}
+						}
+						m_initialRotation = {
+							m_max = 360;
+						}
+						m_projectionDepth = {
+							m_max = 2;
+							m_min = 2;
+							m_fadeinCurve = {
+								m_maxCurve = {
+									m_times = {
+										item[0] = 1;
+									}
+								}
+							}
+						}
+						m_alpha = {
+							m_fadeinCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[1] = 0;
+										item[4] = 1;
+									}
+								}
+							}
+							m_fadeoutCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

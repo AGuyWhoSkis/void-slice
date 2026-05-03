@@ -1,0 +1,83 @@
+{
+	previewmd6 "models/weapons/timeshift_device/timeshift_device.md6"
+	skeleton "models/weapons/timeshift_device/timeshift_device.md6skl"
+	groups {
+		"_animations_"
+	}
+	aliases {
+		group 0
+		alias {
+			name "timeshift_scan_loop_add"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_scan_loop_add.md6anim"
+			checksum 574
+		}
+		group 0
+		alias {
+			name "timeshift_idle_add"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_idle_add.md6anim"
+			checksum 573
+		}
+		group 0
+		alias {
+			name "timeshift_scan_teleport"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_scan_teleport.md6anim"
+			checksum 516
+		}
+		group 0
+		alias {
+			name "timeshift_idle"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_idle.md6anim"
+			checksum 1012
+		}
+		group 0
+		alias {
+			name "timeshift_scan_in"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_scan_in.md6anim"
+			checksum 727
+		}
+		group 0
+		alias {
+			name "timeshift_scan_loop"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_scan_loop.md6anim"
+			checksum 552
+		}
+		group 0
+		alias {
+			name "timeshift_scan_out"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_scan_out.md6anim"
+			checksum 488
+		}
+		group 0
+		alias {
+			name "timeshift_add_ref"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_add_ref.md6anim"
+			checksum 1042
+		}
+		group 0
+		alias {
+			name "timeshift_scan_teleport_loop"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_scan_teleport_loop.md6anim"
+			checksum 552
+		}
+		group 0
+		alias {
+			name "timeshift_scan_teleport_fail"
+			anim "models/weapons/timeshift_device/_animations_/timeshift_scan_teleport_fail.md6anim"
+			checksum 515
+		}
+	}
+	generatedFlags {
+		generateFootStepEvents
+	}
+	events {
+		anim "models/weapons/timeshift_device/_animations_/timeshift_scan_teleport.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 0
+				locked 0
+				string "origin"
+				soundevent "sound_events/bsp/bsp_weapon/bsp_gadget_timeshift_device/bsp_timeshift_device_travel"
+			}
+		}
+	}
+}

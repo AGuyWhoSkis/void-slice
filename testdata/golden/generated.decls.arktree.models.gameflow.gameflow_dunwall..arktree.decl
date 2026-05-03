@@ -1,0 +1,1016 @@
+{
+	edit = {
+		root = {
+			m_settings = {
+				m_class = "arkTreeNodeSettings_Decorator_GameflowMission";
+				m_object = {
+					m_stimSettings = {
+						m_handled = "";
+						m_consumed = "";
+					}
+					m_comment = "A LONG DAY IN DUNWALL";
+					m_missionName = "Mission_DW";
+					m_targetsInfo = {
+						num = 1;
+						item[0] = {
+							m_targetName = "Target_DW_MortimerRamsey_name";
+							m_journalImage = "models/guis/target_notification/tgt_ramsey_is.png";
+						}
+					}
+					m_description = "Mission_DW_desc";
+					m_chaos = {
+						m_highChaosThreshold = 28;
+						m_veryHighChaosThreshold = 65;
+					}
+					m_nextMissionMap = "campaign/void/void_01/void_01.mapinfo";
+					m_showResultScreen = true;
+					m_isLastMission = false;
+				}
+			}
+			m_children = {
+				num = 1;
+				item[0] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Decorator_FlipCondition";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 1;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Parallel";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_returnOnFirstFail = true;
+									m_returnOnFirstSuccess = false;
+								}
+							}
+							m_children = {
+								num = 2;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Decorator_FlipCondition";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+										}
+									}
+									m_children = {
+										num = 1;
+										item[0] = {
+											m_settings = {
+												m_class = "arkTreeNodeSettings_Monitor_GameflowTask";
+												m_object = {
+													m_stimSettings = {
+														m_handled = "";
+														m_consumed = "";
+													}
+													m_comment = "Talk to Meagan";
+													m_monitor = false;
+													m_not = false;
+													m_taskName = "Task_DW_TalkToMeagan";
+													m_returnedState = "GAMEFLOW_NODESTATE_COMPLETE";
+												}
+											}
+											m_children = {
+												num = 0;
+											}
+										}
+									}
+								}
+								item[1] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Decorator_FlipCondition";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+										}
+									}
+									m_children = {
+										num = 1;
+										item[0] = {
+											m_settings = {
+												m_class = "arkTreeNodeSettings_Parallel";
+												m_object = {
+													m_stimSettings = {
+														m_handled = "";
+														m_consumed = "";
+													}
+													m_comment = "";
+													m_returnOnFirstFail = false;
+													m_returnOnFirstSuccess = false;
+												}
+											}
+											m_children = {
+												num = 2;
+												item[0] = {
+													m_settings = {
+														m_class = "arkTreeNodeSettings_Parallel";
+														m_object = {
+															m_stimSettings = {
+																m_handled = "";
+																m_consumed = "";
+															}
+															m_comment = "";
+															m_returnOnFirstFail = false;
+															m_returnOnFirstSuccess = false;
+														}
+													}
+													m_children = {
+														num = 2;
+														item[0] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Decorator_GameflowObjective";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "Escape Dunwall Tower";
+																	m_objectiveName = "Obj_DW_EscapeDunwallTower";
+																	m_autoActivate = false;
+																	m_optional = false;
+																	m_objectiveDescription = "Obj_DW_EscapeDunwallTower_desc";
+																	m_showNotification = true;
+																	m_showInJournal = true;
+																	m_journalImage = "models/guis/tasks_illustrations/task_ramsey_is.png";
+																	m_showWhenCanceled = true;
+																}
+															}
+															m_children = {
+																num = 1;
+																item[0] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Sequence";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "";
+																		}
+																	}
+																	m_children = {
+																		num = 2;
+																		item[0] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Parallel";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_returnOnFirstFail = false;
+																					m_returnOnFirstSuccess = false;
+																				}
+																			}
+																			m_children = {
+																				num = 2;
+																				item[0] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Sequence";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																						}
+																					}
+																					m_children = {
+																						num = 2;
+																						item[0] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "Find a way to get out of here";
+																									m_taskName = "Task_DW_FindYourWayOut";
+																									m_autoActivate = true;
+																									m_optional = false;
+																									m_taskDescription = "Task_DW_FindYourWayOut_desc";
+																									m_showNotification = true;
+																									m_showInJournal = true;
+																									m_targetsToMark = {
+																										num = 0;
+																									}
+																									m_lethal = "UI_LETHALSTATUS_NULL";
+																									m_showPortrait = false;
+																									m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																									m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																									m_portraitFemale = false;
+																									m_portraitImage = NULL;
+																									m_portraitName = "";
+																									m_journalImage = NULL;
+																									m_showWhenCanceled = true;
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																						item[1] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "Get Corvo\'s sword";
+																									m_taskName = "Task_DW_GetCorvoSword";
+																									m_autoActivate = true;
+																									m_optional = false;
+																									m_taskDescription = "Task_DW_GetCorvoSword_desc";
+																									m_showNotification = true;
+																									m_showInJournal = true;
+																									m_targetsToMark = {
+																										num = 1;
+																										item[0] = {
+																											m_name = "Mark_DW_Sword";
+																											m_entity = "ld_target_mark_sword";
+																										}
+																									}
+																									m_lethal = "UI_LETHALSTATUS_NULL";
+																									m_showPortrait = false;
+																									m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																									m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																									m_portraitFemale = false;
+																									m_portraitImage = NULL;
+																									m_portraitName = "";
+																									m_journalImage = NULL;
+																									m_showWhenCanceled = true;
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																					}
+																				}
+																				item[1] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Parallel";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																							m_returnOnFirstFail = false;
+																							m_returnOnFirstSuccess = false;
+																						}
+																					}
+																					m_children = {
+																						num = 2;
+																						item[0] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "Get ring";
+																									m_taskName = "Task_DW_GetRing";
+																									m_autoActivate = false;
+																									m_optional = false;
+																									m_taskDescription = "Task_DW_GetRing_desc";
+																									m_showNotification = true;
+																									m_showInJournal = true;
+																									m_targetsToMark = {
+																										num = 0;
+																									}
+																									m_lethal = "UI_LETHALSTATUS_NULL";
+																									m_showPortrait = false;
+																									m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																									m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																									m_portraitFemale = false;
+																									m_portraitImage = NULL;
+																									m_portraitName = "";
+																									m_journalImage = "models/guis/tasks_illustrations/task_emilyring_is.png";
+																									m_showWhenCanceled = true;
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																						item[1] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "Open safe room";
+																									m_taskName = "Task_DW_OpenVault";
+																									m_autoActivate = false;
+																									m_optional = false;
+																									m_taskDescription = "Task_DW_OpenVault_desc";
+																									m_showNotification = true;
+																									m_showInJournal = true;
+																									m_targetsToMark = {
+																										num = 1;
+																										item[0] = {
+																											m_name = "Mark_DW_VaultRoom";
+																											m_entity = "ld_target_mark_openvault";
+																										}
+																									}
+																									m_lethal = "UI_LETHALSTATUS_NULL";
+																									m_showPortrait = false;
+																									m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																									m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																									m_portraitFemale = false;
+																									m_portraitImage = NULL;
+																									m_portraitName = "";
+																									m_journalImage = "models/guis/tasks_illustrations/task_saferoom_is.png";
+																									m_showWhenCanceled = true;
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																		item[1] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "Leave Dunwall Tower";
+																					m_taskName = "Task_DW_LeaveTower";
+																					m_autoActivate = true;
+																					m_optional = false;
+																					m_taskDescription = "Task_DW_LeaveTower_desc";
+																					m_showNotification = true;
+																					m_showInJournal = true;
+																					m_targetsToMark = {
+																						num = 1;
+																						item[0] = {
+																							m_name = "Mark_DW_ExitDoor";
+																							m_entity = "ld_target_mark_vaultexit";
+																						}
+																					}
+																					m_lethal = "UI_LETHALSTATUS_NULL";
+																					m_showPortrait = false;
+																					m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																					m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																					m_portraitFemale = false;
+																					m_portraitImage = NULL;
+																					m_portraitName = "";
+																					m_journalImage = "models/guis/tasks_illustrations/task_dunwalltower_is.png";
+																					m_showWhenCanceled = true;
+																				}
+																			}
+																			m_children = {
+																				num = 0;
+																			}
+																		}
+																	}
+																}
+															}
+														}
+														item[1] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Loop";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "";
+																	m_stopCondition = -1;
+																}
+															}
+															m_children = {
+																num = 1;
+																item[0] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Sequence";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "";
+																		}
+																	}
+																	m_children = {
+																		num = 2;
+																		item[0] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Decorator_GameflowObjective";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "Eliminate Ramsey";
+																					m_objectiveName = "Obj_DW_EliminateRamsey";
+																					m_autoActivate = false;
+																					m_optional = false;
+																					m_objectiveDescription = "Obj_DW_EliminateRamsey_desc";
+																					m_showNotification = true;
+																					m_showInJournal = true;
+																					m_journalImage = "models/guis/tasks_illustrations/task_ramsey_is.png";
+																					m_showWhenCanceled = true;
+																				}
+																			}
+																			m_children = {
+																				num = 1;
+																				item[0] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Sequence";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																						}
+																					}
+																					m_children = {
+																						num = 2;
+																						item[0] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "Find Ramsey";
+																									m_taskName = "Task_DW_FindRamsey";
+																									m_autoActivate = true;
+																									m_optional = false;
+																									m_taskDescription = "Task_DW_FindRamsey_desc";
+																									m_showNotification = true;
+																									m_showInJournal = true;
+																									m_targetsToMark = {
+																										num = 1;
+																										item[0] = {
+																											m_name = "Mark_DW_ThroneRoom";
+																											m_entity = "ld_target_mark_throneroom";
+																										}
+																									}
+																									m_lethal = "UI_LETHALSTATUS_NULL";
+																									m_showPortrait = false;
+																									m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																									m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																									m_portraitFemale = false;
+																									m_portraitImage = NULL;
+																									m_portraitName = "Target_DW_MortimerRamsey_name";
+																									m_journalImage = "models/guis/tasks_illustrations/task_ramsey_is.png";
+																									m_showWhenCanceled = true;
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																						item[1] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Parallel_GameflowOr";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																									m_returnOnFirstFail = false;
+																									m_returnOnFirstSuccess = true;
+																								}
+																							}
+																							m_children = {
+																								num = 2;
+																								item[0] = {
+																									m_settings = {
+																										m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																										m_object = {
+																											m_stimSettings = {
+																												m_handled = "";
+																												m_consumed = "";
+																											}
+																											m_comment = "Kill Ramsey";
+																											m_taskName = "Task_DW_KillRamsey";
+																											m_autoActivate = true;
+																											m_optional = false;
+																											m_taskDescription = "Task_DW_KillRamsey_desc";
+																											m_showNotification = true;
+																											m_showInJournal = true;
+																											m_targetsToMark = {
+																												num = 1;
+																												item[0] = {
+																													m_name = "Mark_DW_Ramsey";
+																													m_entity = "ld_spawner_ramsey_escape";
+																												}
+																											}
+																											m_lethal = "UI_LETHALSTATUS_LETHAL";
+																											m_showPortrait = false;
+																											m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																											m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																											m_portraitFemale = false;
+																											m_portraitImage = "models/guis/target_notification/tgt_ramsey_is.png";
+																											m_portraitName = "Target_DW_MortimerRamsey_name";
+																											m_journalImage = "models/guis/tasks_illustrations/task_ramsey_is.png";
+																											m_showWhenCanceled = true;
+																										}
+																									}
+																									m_children = {
+																										num = 0;
+																									}
+																								}
+																								item[1] = {
+																									m_settings = {
+																										m_class = "arkTreeNodeSettings_Loop";
+																										m_object = {
+																											m_stimSettings = {
+																												m_handled = "";
+																												m_consumed = "";
+																											}
+																											m_comment = "";
+																											m_stopCondition = -1;
+																										}
+																									}
+																									m_children = {
+																										num = 1;
+																										item[0] = {
+																											m_settings = {
+																												m_class = "arkTreeNodeSettings_Sequence";
+																												m_object = {
+																													m_stimSettings = {
+																														m_handled = "";
+																														m_consumed = "";
+																													}
+																													m_comment = "";
+																												}
+																											}
+																											m_children = {
+																												num = 4;
+																												item[0] = {
+																													m_settings = {
+																														m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																														m_object = {
+																															m_stimSettings = {
+																																m_handled = "";
+																																m_consumed = "";
+																															}
+																															m_comment = "Knockout Ramsey";
+																															m_taskName = "Task_DW_NonLethal_KnockoutRamsey";
+																															m_autoActivate = true;
+																															m_optional = false;
+																															m_taskDescription = "Task_DW_NonLethal_KnockoutRamsey_desc";
+																															m_showNotification = true;
+																															m_showInJournal = true;
+																															m_targetsToMark = {
+																																num = 1;
+																																item[0] = {
+																																	m_name = "Mark_DW_Ramsey";
+																																	m_entity = "ld_spawner_ramsey_escape";
+																																}
+																															}
+																															m_lethal = "UI_LETHALSTATUS_NON_LETHAL";
+																															m_showPortrait = false;
+																															m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																															m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																															m_portraitFemale = false;
+																															m_portraitImage = NULL;
+																															m_portraitName = "Target_DW_MortimerRamsey_name";
+																															m_journalImage = "models/guis/tasks_illustrations/task_ramsey_is.png";
+																															m_showWhenCanceled = true;
+																														}
+																													}
+																													m_children = {
+																														num = 0;
+																													}
+																												}
+																												item[1] = {
+																													m_settings = {
+																														m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																														m_object = {
+																															m_stimSettings = {
+																																m_handled = "";
+																																m_consumed = "";
+																															}
+																															m_comment = "Retrieve the Royal Sigil";
+																															m_taskName = "Task_DW_NonLethal_GetRing";
+																															m_autoActivate = true;
+																															m_optional = false;
+																															m_taskDescription = "Task_DW_NonLethal_GetRing_desc";
+																															m_showNotification = true;
+																															m_showInJournal = true;
+																															m_targetsToMark = {
+																																num = 1;
+																																item[0] = {
+																																	m_name = "Mark_DW_SignetRing";
+																																	m_entity = "ld_spawner_ramsey_escape";
+																																}
+																															}
+																															m_lethal = "UI_LETHALSTATUS_NON_LETHAL";
+																															m_showPortrait = false;
+																															m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																															m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																															m_portraitFemale = false;
+																															m_portraitImage = NULL;
+																															m_portraitName = "Target_DW_MortimerRamsey_name";
+																															m_journalImage = "models/guis/tasks_illustrations/task_emilyring_is.png";
+																															m_showWhenCanceled = true;
+																														}
+																													}
+																													m_children = {
+																														num = 0;
+																													}
+																												}
+																												item[2] = {
+																													m_settings = {
+																														m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																														m_object = {
+																															m_stimSettings = {
+																																m_handled = "";
+																																m_consumed = "";
+																															}
+																															m_comment = "Place Ramsey in the Safe room";
+																															m_taskName = "Task_DW_NonLethal_DropRamseyInVault";
+																															m_autoActivate = true;
+																															m_optional = false;
+																															m_taskDescription = "Task_DW_NonLethal_DropRamseyInVault_desc";
+																															m_showNotification = true;
+																															m_showInJournal = true;
+																															m_targetsToMark = {
+																																num = 1;
+																																item[0] = {
+																																	m_name = "Mark_DW_Ramsey";
+																																	m_entity = "ld_spawner_ramsey_escape";
+																																}
+																															}
+																															m_lethal = "UI_LETHALSTATUS_NON_LETHAL";
+																															m_showPortrait = false;
+																															m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																															m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																															m_portraitFemale = false;
+																															m_portraitImage = NULL;
+																															m_portraitName = "Target_DW_MortimerRamsey_name";
+																															m_journalImage = "models/guis/tasks_illustrations/task_saferoom_is.png";
+																															m_showWhenCanceled = true;
+																														}
+																													}
+																													m_children = {
+																														num = 0;
+																													}
+																												}
+																												item[3] = {
+																													m_settings = {
+																														m_class = "arkTreeNodeSettings_Parallel";
+																														m_object = {
+																															m_stimSettings = {
+																																m_handled = "";
+																																m_consumed = "";
+																															}
+																															m_comment = "";
+																															m_returnOnFirstFail = true;
+																															m_returnOnFirstSuccess = true;
+																														}
+																													}
+																													m_children = {
+																														num = 2;
+																														item[0] = {
+																															m_settings = {
+																																m_class = "arkTreeNodeSettings_Decorator_AlwaysFail";
+																																m_object = {
+																																	m_stimSettings = {
+																																		m_handled = "";
+																																		m_consumed = "";
+																																	}
+																																	m_comment = "";
+																																}
+																															}
+																															m_children = {
+																																num = 1;
+																																item[0] = {
+																																	m_settings = {
+																																		m_class = "arkTreeNodeSettings_Monitor_GameflowTask";
+																																		m_object = {
+																																			m_stimSettings = {
+																																				m_handled = "";
+																																				m_consumed = "";
+																																			}
+																																			m_comment = "Place Ramsey in the Safe room";
+																																			m_monitor = false;
+																																			m_not = false;
+																																			m_taskName = "Task_DW_NonLethal_DropRamseyInVault";
+																																			m_returnedState = "GAMEFLOW_NODESTATE_ACTIVE";
+																																		}
+																																	}
+																																	m_children = {
+																																		num = 0;
+																																	}
+																																}
+																															}
+																														}
+																														item[1] = {
+																															m_settings = {
+																																m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																																m_object = {
+																																	m_stimSettings = {
+																																		m_handled = "";
+																																		m_consumed = "";
+																																	}
+																																	m_comment = "Close the Safe Room";
+																																	m_taskName = "Task_DW_NonLethal_CloseTheSafeRoom";
+																																	m_autoActivate = true;
+																																	m_optional = false;
+																																	m_taskDescription = "Task_DW_NonLethal_CloseTheSafeRoom_desc";
+																																	m_showNotification = true;
+																																	m_showInJournal = true;
+																																	m_targetsToMark = {
+																																		num = 1;
+																																		item[0] = {
+																																			m_name = "Mark_DW_VaultDoor";
+																																			m_entity = "ld_target_mark_closevault";
+																																		}
+																																	}
+																																	m_lethal = "UI_LETHALSTATUS_NON_LETHAL";
+																																	m_showPortrait = false;
+																																	m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_NEUTRALIZED";
+																																	m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																																	m_portraitFemale = false;
+																																	m_portraitImage = "models/guis/target_notification/tgt_ramsey_is.png";
+																																	m_portraitName = "Target_DW_MortimerRamsey_name";
+																																	m_journalImage = "models/guis/tasks_illustrations/task_saferoom_is.png";
+																																	m_showWhenCanceled = true;
+																																}
+																															}
+																															m_children = {
+																																num = 0;
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																		item[1] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Decorator_AlwaysFail";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																				}
+																			}
+																			m_children = {
+																				num = 1;
+																				item[0] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Monitor_GameflowTask";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "Close the Safe Room";
+																							m_monitor = false;
+																							m_not = false;
+																							m_taskName = "Task_DW_NonLethal_CloseTheSafeRoom";
+																							m_returnedState = "GAMEFLOW_NODESTATE_ACTIVE";
+																						}
+																					}
+																					m_children = {
+																						num = 0;
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+												item[1] = {
+													m_settings = {
+														m_class = "arkTreeNodeSettings_Decorator_GameflowObjective";
+														m_object = {
+															m_stimSettings = {
+																m_handled = "";
+																m_consumed = "";
+															}
+															m_comment = "Escape Dunwall";
+															m_objectiveName = "Obj_DW_EscapeDunwall";
+															m_autoActivate = false;
+															m_optional = false;
+															m_objectiveDescription = "Obj_DW_EscapeDunwall_desc";
+															m_showNotification = true;
+															m_showInJournal = true;
+															m_journalImage = "models/guis/tasks_illustrations/task_dreadfulwhale_is.png";
+															m_showWhenCanceled = true;
+														}
+													}
+													m_children = {
+														num = 1;
+														item[0] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Sequence";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "";
+																}
+															}
+															m_children = {
+																num = 4;
+																item[0] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "Reach the Streets";
+																			m_taskName = "Task_DW_ReachStreets";
+																			m_autoActivate = true;
+																			m_optional = false;
+																			m_taskDescription = "Task_DW_ReachStreets_desc";
+																			m_showNotification = true;
+																			m_showInJournal = true;
+																			m_targetsToMark = {
+																				num = 0;
+																			}
+																			m_lethal = "UI_LETHALSTATUS_NULL";
+																			m_showPortrait = false;
+																			m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																			m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																			m_portraitFemale = false;
+																			m_portraitImage = NULL;
+																			m_portraitName = "";
+																			m_journalImage = NULL;
+																			m_showWhenCanceled = true;
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+																item[1] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "Reach the boat";
+																			m_taskName = "Task_DW_ReachBoat";
+																			m_autoActivate = true;
+																			m_optional = false;
+																			m_taskDescription = "Task_DW_ReachBoat_desc";
+																			m_showNotification = true;
+																			m_showInJournal = true;
+																			m_targetsToMark = {
+																				num = 0;
+																			}
+																			m_lethal = "UI_LETHALSTATUS_NULL";
+																			m_showPortrait = false;
+																			m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																			m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																			m_portraitFemale = false;
+																			m_portraitImage = NULL;
+																			m_portraitName = "";
+																			m_journalImage = "models/guis/tasks_illustrations/task_dreadfulwhale_is.png";
+																			m_showWhenCanceled = true;
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+																item[2] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "Talk to the boat captain";
+																			m_taskName = "Task_DW_TalkToBoatCaptain";
+																			m_autoActivate = true;
+																			m_optional = false;
+																			m_taskDescription = "Task_DW_TalkToBoatCaptain_desc";
+																			m_showNotification = true;
+																			m_showInJournal = true;
+																			m_targetsToMark = {
+																				num = 1;
+																				item[0] = {
+																					m_name = "Mark_DW_Boat_Captain";
+																					m_entity = "ld_spawner_meagan";
+																				}
+																			}
+																			m_lethal = "UI_LETHALSTATUS_NULL";
+																			m_showPortrait = false;
+																			m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																			m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																			m_portraitFemale = false;
+																			m_portraitImage = NULL;
+																			m_portraitName = "";
+																			m_journalImage = "models/guis/tasks_illustrations/task_meaganfoster_is.png";
+																			m_showWhenCanceled = true;
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+																item[3] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Action_GameflowTask";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "Talk to Meagan";
+																			m_taskName = "Task_DW_TalkToMeagan";
+																			m_autoActivate = false;
+																			m_optional = false;
+																			m_taskDescription = "Task_DW_TalkToMeagan_desc";
+																			m_showNotification = true;
+																			m_showInJournal = true;
+																			m_targetsToMark = {
+																				num = 1;
+																				item[0] = {
+																					m_name = "Mark_DW_Meagan";
+																					m_entity = "ld_spawner_meagan";
+																				}
+																			}
+																			m_lethal = "UI_LETHALSTATUS_NULL";
+																			m_showPortrait = false;
+																			m_portraitStatus = "GAMEFLOW_UI_PORTRAIT_STATE_ASSASSINATED";
+																			m_portraitType = "GAMEFLOW_UI_PORTRAIT_TYPE_TARGET";
+																			m_portraitFemale = false;
+																			m_portraitImage = NULL;
+																			m_portraitName = "";
+																			m_journalImage = "models/guis/tasks_illustrations/task_meaganfoster_is.png";
+																			m_showWhenCanceled = true;
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

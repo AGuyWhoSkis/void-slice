@@ -1,0 +1,836 @@
+{
+	edit = {
+		m_visibility = {
+			m_alwaysSimulate = true;
+		}
+		m_stages = {
+			num = 3;
+			item[0] = {
+				m_worldspace = false;
+				m_main = {
+					m_name = "glow";
+				}
+				m_spawn = {
+					m_rate = {
+						m_max = 15;
+						m_min = 15;
+					}
+					m_life = {
+						m_max = 0.5;
+						m_min = 0.3000000119;
+					}
+					m_initialLocation = {
+						m_value = {
+							m_max = {
+								x = 0.0199999996;
+							}
+							m_min = {
+								x = 0.0199999996;
+							}
+						}
+					}
+					m_initialVelocity = {
+						m_value = {
+							m_max = {
+								x = -0.5;
+								z = 0;
+							}
+							m_min = {
+								x = -1;
+								z = 0;
+							}
+						}
+					}
+				}
+				m_sprites = {
+					item[0] = {
+						m_material = "models/effects/materials/gameplay/powers/phantasmal_link/wick/ad_wick_glow_01.material";
+						m_spawn = {
+							m_baseColor = {
+								r = 0.5647060275;
+								g = 0.2235289961;
+								b = 0.1607840061;
+							}
+							m_initialSize = {
+								m_max = {
+									x = 0.150000006;
+									y = 0.150000006;
+								}
+								m_min = {
+									x = 0.1000000015;
+									y = 0.1000000015;
+								}
+							}
+							m_initialRotation = {
+								m_max = 180;
+								m_min = -180;
+							}
+						}
+						m_alphaOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 3;
+										item[1] = 0.3000000119;
+										item[2] = 1;
+									}
+									m_values = {
+										num = 9;
+										item[7] = 0;
+									}
+								}
+							}
+						}
+						m_sizeOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[0] = {
+											x = -0.3333333433;
+											y = -0.3333333433;
+											z = -0.3333333433;
+										}
+										item[1] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+										item[2] = {
+											x = 0.3333333433;
+											y = 0.3333333433;
+											z = 0.3333333433;
+										}
+										item[4] = {
+											x = 1;
+											y = 1;
+											z = 1;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			item[1] = {
+				m_worldspace = false;
+				m_main = {
+					m_name = "center_glow";
+				}
+				m_spawn = {
+					m_rate = {
+						m_max = 15;
+						m_min = 15;
+					}
+					m_life = {
+						m_max = 0.2099999934;
+						m_min = 0.150000006;
+					}
+					m_initialLocation = {
+						m_value = {
+							m_min = {
+								x = -0.0500000007;
+							}
+						}
+					}
+					m_initialVelocity = {
+						m_value = {
+							m_max = {
+								x = -2;
+								y = 0.200000003;
+								z = 0.200000003;
+							}
+							m_min = {
+								x = -3;
+								y = -0.200000003;
+								z = -0.200000003;
+							}
+						}
+					}
+				}
+				m_sprites = {
+					item[0] = {
+						m_orientation = {
+							m_mode = "VELOCITY_PLANAR";
+						}
+						m_material = "models/effects/materials/gameplay/powers/phantasmal_link/wick/ad_wick_glow_02.material";
+						m_spawn = {
+							m_baseColor = {
+								r = 0.6549019814;
+								g = 0.5254899859;
+								b = 0.2901960015;
+							}
+							m_initialSize = {
+								m_max = {
+									x = 0.200000003;
+									y = 1.2999999523;
+								}
+								m_min = {
+									x = 0.1000000015;
+									y = 0.6999999881;
+								}
+							}
+						}
+						m_alphaOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 3;
+										item[1] = 0.200000003;
+										item[2] = 1;
+									}
+									m_values = {
+										num = 9;
+										item[7] = 0;
+									}
+								}
+							}
+						}
+						m_angularFade = {
+							m_max = 3;
+							m_min = 1;
+						}
+						m_sizeOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[0] = {
+											x = -0.1666666716;
+											y = -0.1666666716;
+											z = -0.1666666716;
+										}
+										item[1] = {
+											x = 0.5;
+											y = 0.5;
+											z = 0.5;
+										}
+										item[2] = {
+											x = 0.1666666716;
+											y = 0.1666666716;
+											z = 0.1666666716;
+										}
+										item[4] = {
+											x = 1;
+											y = 1;
+											z = 1;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			item[2] = {
+				m_main = {
+					m_name = "bloom_dots_01_vfield";
+				}
+				m_spawn = {
+					m_cycles = 1;
+					m_rate = {
+						m_max = 17;
+						m_min = 12;
+					}
+					m_life = {
+						m_max = 3.7000000477;
+						m_min = 1.2999999523;
+					}
+					m_delay = {
+						m_max = 0.1000000015;
+						m_min = 0.1000000015;
+					}
+					m_duration = {
+						m_max = 1.5;
+						m_min = 1.5;
+					}
+					m_initialVelocity = {
+						m_value = {
+							m_max = {
+								z = 0.6999999881;
+							}
+							m_min = {
+								z = 0.1000000015;
+							}
+						}
+					}
+					m_spawnMesh = {
+						m_mesh = "models/effects/meshes/sphere_1m_fx.lwo";
+						m_scale = {
+							m_max = {
+								x = 0.6999999881;
+								y = 0.6999999881;
+								z = 0.6999999881;
+							}
+							m_min = {
+								x = 0.6999999881;
+								y = 0.6999999881;
+								z = 0.6999999881;
+							}
+						}
+						m_normalToVelocity = {
+							m_max = {
+								x = 0.5;
+								y = 0.5;
+							}
+							m_min = {
+								x = 0.1000000015;
+								y = 0.1000000015;
+							}
+						}
+					}
+					m_velocitySprayCone = {
+						m_max = 45;
+						m_min = 35;
+					}
+				}
+				m_velocityOverLife = {
+					m_curve = {
+						m_maxCurve = {
+							m_times = {
+								num = 2;
+								item[1] = 0.6999999881;
+							}
+							m_values = {
+								num = 6;
+								item[0] = {
+									x = 0.4666666687;
+									y = 0.4666666687;
+									z = 0.4666666687;
+								}
+								item[1] = {
+									x = 1.5;
+									y = 1.5;
+									z = 1.5;
+								}
+								item[2] = {
+									x = -0.4666666687;
+									y = -0.4666666687;
+									z = -0.4666666687;
+								}
+								item[4] = {
+									x = 0.1000000015;
+									y = 0.1000000015;
+									z = 0.1000000015;
+								}
+							}
+						}
+					}
+				}
+				m_vectorFields = {
+					num = 1;
+					item[0] = {
+						m_worldspace = true;
+						m_textures = {
+							m_xy = {
+								m_texture = "models/testassets/tguichard/vector_fields/test4_vf.tga";
+								m_tiling = true;
+							}
+							m_xz = {
+								m_texture = "models/testassets/tguichard/vector_fields/test4_vf.tga";
+								m_tiling = true;
+							}
+							m_yz = {
+								m_texture = "models/testassets/tguichard/vector_fields/test4_vf.tga";
+								m_tiling = true;
+							}
+						}
+						m_position = {
+							m_max = {
+								z = 1;
+							}
+							m_min = {
+								z = 1;
+							}
+						}
+						m_scale = {
+							m_max = {
+								x = 3;
+								y = 3;
+								z = 3;
+							}
+							m_min = {
+								x = 3;
+								y = 3;
+								z = 3;
+							}
+						}
+						m_initialRotation = {
+							m_max = {
+								z = 180;
+							}
+							m_min = {
+								z = -180;
+							}
+							m_cycleReset = true;
+						}
+						m_rotationRate = {
+							m_max = {
+								z = 75;
+							}
+							m_min = {
+								z = 75;
+							}
+						}
+						m_strengthOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 0.3000000119;
+									}
+									m_values = {
+										num = 6;
+										item[0] = {
+											x = 0.2333333492;
+											y = 0.2333333492;
+											z = 0.2333333492;
+										}
+										item[2] = {
+											x = -0.2333333492;
+											y = -0.2333333492;
+											z = -0.2333333492;
+										}
+										item[4] = {
+											x = 0.3000000119;
+											y = 0.3000000119;
+											z = 0.3000000119;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				m_accelerationOverLife = {
+					m_worldspace = true;
+					m_gravity = {
+						m_max = 0.0199999996;
+						m_curve = {
+							m_maxCurve = {
+								m_times = {
+									num = 2;
+									item[1] = 0.6000000238;
+								}
+								m_values = {
+									num = 6;
+									item[0] = -0.3000000119;
+									item[1] = 0.1000000015;
+									item[2] = 0.3000000119;
+									item[4] = 1;
+								}
+							}
+						}
+					}
+				}
+				m_sprites = {
+					item[0] = {
+						m_material = "models/effects/materials/gameplay/powers/mesmerize/spawn/ad_mesmerize_glow_bloom_01.material";
+						m_spawn = {
+							m_baseColor = {
+								g = 0.7411760092;
+								b = 0.3333329856;
+							}
+							m_initialColor = {
+								m_min = {
+									y = 0.6999999881;
+								}
+							}
+							m_initialSize = {
+								m_max = {
+									x = 0.0350000001;
+									y = 0.0350000001;
+								}
+								m_min = {
+									x = 0.0149999997;
+									y = 0.0149999997;
+								}
+								m_uniform = true;
+							}
+							m_initialRotation = {
+								m_max = 180;
+								m_min = -180;
+							}
+						}
+						m_colorOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[0] = {
+											y = 0.1000000089;
+											z = 0.0666666627;
+										}
+										item[2] = {
+											y = -0.1000000089;
+											z = -0.0666666627;
+										}
+										item[4] = {
+											x = 1;
+											y = 0.6999999881;
+											z = 0.8000000119;
+										}
+									}
+								}
+							}
+						}
+						m_alphaOverLife = {
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 25;
+										item[1] = 0.0454555228;
+										item[2] = 0.0920163393;
+										item[3] = 0.106241703;
+										item[4] = 0.1560425162;
+										item[5] = 0.1992211044;
+										item[6] = 0.2490331829;
+										item[7] = 0.2590331733;
+										item[8] = 0.3161649406;
+										item[9] = 0.3420222402;
+										item[10] = 0.3884462416;
+										item[11] = 0.4299468696;
+										item[12] = 0.4779142439;
+										item[13] = 0.4935738444;
+										item[14] = 0.5436214805;
+										item[15] = 0.5713761449;
+										item[16] = 0.6095620394;
+										item[17] = 0.6309099793;
+										item[18] = 0.6664880514;
+										item[19] = 0.7212780118;
+										item[20] = 0.7519919872;
+										item[21] = 0.8034528494;
+										item[22] = 0.8731739521;
+										item[23] = 0.9163347483;
+										item[24] = 1;
+									}
+									m_values = {
+										num = 75;
+										item[4] = 0.9605066776;
+										item[7] = 0.1665252;
+										item[9] = -0.0093916683;
+										item[10] = 0.8451398015;
+										item[11] = 0.0328787938;
+										item[12] = 0.0393836349;
+										item[13] = 0.3700510859;
+										item[14] = -0.0341466255;
+										item[16] = 0.6827250719;
+										item[19] = 0.2377659082;
+										item[22] = 0.9493236542;
+										item[25] = 0.3678616881;
+										item[28] = 0.830652833;
+										item[30] = 0.0519358851;
+										item[31] = 0.1738854945;
+										item[32] = -0.0464279577;
+										item[33] = 0.0058561102;
+										item[34] = 0.7475887537;
+										item[35] = -0.0067686262;
+										item[37] = 0.3823102117;
+										item[40] = 0.9406684637;
+										item[43] = 0.2093762308;
+										item[46] = 0.8941943645;
+										item[49] = 0.34658584;
+										item[52] = 0.6632215977;
+										item[55] = 0.1281249821;
+										item[58] = 0.8746328354;
+										item[61] = 0.2363975346;
+										item[63] = 0.017493818;
+										item[64] = 0.7961856723;
+										item[65] = -0.0237012804;
+										item[66] = 0.0941435546;
+										item[67] = 0.2303381264;
+										item[68] = -0.0582795031;
+										item[69] = 0.0261291657;
+										item[70] = 0.6538442969;
+										item[71] = -0.0506502017;
+									}
+								}
+							}
+						}
+						m_sizeOverLife = {
+							m_max = {
+								x = 0.8000000119;
+								y = 0.8000000119;
+							}
+							m_min = {
+								x = 0.5;
+								y = 0.5;
+							}
+							m_curve = {
+								m_maxCurve = {
+									m_times = {
+										num = 19;
+										item[1] = 0.0514248982;
+										item[2] = 0.0951423347;
+										item[3] = 0.1534324884;
+										item[4] = 0.2117226422;
+										item[5] = 0.2732511163;
+										item[6] = 0.3606863618;
+										item[7] = 0.4254531264;
+										item[8] = 0.4481215477;
+										item[9] = 0.5193650723;
+										item[10] = 0.5792743564;
+										item[11] = 0.6213728189;
+										item[12] = 0.6650275588;
+										item[13] = 0.6960433722;
+										item[14] = 0.7637341022;
+										item[15] = 0.8291136622;
+										item[16] = 0.8901551962;
+										item[17] = 0.9403494596;
+										item[18] = 1;
+									}
+									m_values = {
+										num = 57;
+										item[1] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+										item[4] = {
+											x = 0.9387254715;
+											y = 0.9387254715;
+											z = 0.9387254715;
+										}
+										item[7] = {
+											x = 0.4415529966;
+											y = 0.4415529966;
+											z = 0.4415529966;
+										}
+										item[10] = {
+											x = 0.8050624728;
+											y = 0.8050624728;
+											z = 0.8050624728;
+										}
+										item[13] = {
+											x = 0.3698571324;
+											y = 0.3698571324;
+											z = 0.3698571324;
+										}
+										item[16] = {
+											x = 0.7012705803;
+											y = 0.7012705803;
+											z = 0.7012705803;
+										}
+										item[19] = {
+											x = 0.2705842257;
+											y = 0.2705842257;
+											z = 0.2705842257;
+										}
+										item[22] = {
+											x = 0.7306372523;
+											y = 0.7306372523;
+											z = 0.7306372523;
+										}
+										item[25] = {
+											x = 0.3597516418;
+											y = 0.3597516418;
+											z = 0.3597516418;
+										}
+										item[28] = {
+											x = 0.553841114;
+											y = 0.553841114;
+											z = 0.553841114;
+										}
+										item[31] = {
+											x = 0.282155931;
+											y = 0.282155931;
+											z = 0.282155931;
+										}
+										item[34] = {
+											x = 0.6143553257;
+											y = 0.6117547154;
+											z = 0.6117547154;
+										}
+										item[37] = {
+											x = 0.3773489296;
+											y = 0.3773489296;
+											z = 0.3773489296;
+										}
+										item[40] = {
+											x = 0.4970086217;
+											y = 0.4970086217;
+											z = 0.4970086217;
+										}
+										item[43] = {
+											x = 0.2333491445;
+											y = 0.2333491445;
+											z = 0.2333491445;
+										}
+										item[46] = {
+											x = 0.4868162274;
+											y = 0.4868162274;
+											z = 0.4868162274;
+										}
+										item[49] = {
+											x = 0.2142724097;
+											y = 0.2142724097;
+											z = 0.2142724097;
+										}
+										item[52] = {
+											x = 0.3214929104;
+											y = 0.3214929104;
+											z = 0.3214929104;
+										}
+									}
+								}
+							}
+						}
+						m_rotationOverLife = {
+							m_max = 200;
+							m_min = 120;
+						}
+					}
+				}
+			}
+		}
+		m_ribbons = {
+			num = 1;
+			item[0] = {
+				m_main = {
+					m_name = "ADD_small_trails_01";
+				}
+				m_timings = {
+					m_rate = {
+						m_max = 10;
+						m_min = 10;
+					}
+					m_life = {
+						m_max = 0.6999999881;
+						m_min = 0.6999999881;
+					}
+				}
+				m_spawn = {
+					m_initialVelocity = {
+						m_value = {
+							m_max = {
+								z = 0;
+							}
+							m_min = {
+								z = 0;
+							}
+						}
+					}
+				}
+				m_material = "models/effects/materials/gameplay/powers/phantasmal_link/wick/ad_wick_trail_01.material";
+				m_mapping = {
+					m_axis = "V";
+				}
+				m_baseColor = {
+					g = 0.854902029;
+					b = 0.7333329916;
+				}
+				m_cycleLifeCurves = {
+					m_alpha = {
+						m_max = 0.5;
+						m_min = 0.3000000119;
+					}
+					m_width = {
+						m_max = 0.1000000015;
+						m_min = 0.1000000015;
+					}
+				}
+				m_segmentLifeCurves = {
+					m_color = {
+						m_curve = {
+							m_maxCurve = {
+								m_times = {
+									num = 3;
+									item[1] = 0.4798420072;
+									item[2] = 1;
+								}
+								m_values = {
+									num = 9;
+									item[0] = {
+										y = 0.1207792088;
+										z = 0.0599278845;
+									}
+									item[2] = {
+										y = -0.1207792088;
+										z = -0.0599278845;
+									}
+									item[3] = {
+										y = 0.0385028012;
+										z = 0.0266729891;
+									}
+									item[4] = {
+										x = 1.1169220209;
+										y = 0.7407379746;
+										z = 0.8789181709;
+									}
+									item[5] = {
+										y = -0.3002395332;
+										z = -0.3304283917;
+									}
+									item[7] = {
+										x = 1;
+										y = 0.200000003;
+										z = 0.200000003;
+									}
+								}
+							}
+						}
+					}
+					m_alpha = {
+						m_curve = {
+							m_maxCurve = {
+								m_times = {
+									num = 3;
+									item[1] = 0.6999999881;
+									item[2] = 1;
+								}
+								m_values = {
+									num = 9;
+									item[4] = 1;
+									item[6] = 0.3333333135;
+									item[8] = -0.3333333135;
+								}
+							}
+						}
+					}
+					m_width = {
+						m_max = 0.5;
+						m_min = 0.5;
+						m_curve = {
+							m_maxCurve = {
+								m_times = {
+									num = 2;
+									item[1] = 1;
+								}
+								m_values = {
+									num = 6;
+									item[0] = 0.150000006;
+									item[2] = -0.150000006;
+									item[4] = 0.5500000119;
+								}
+							}
+						}
+					}
+				}
+				m_tesselation = {
+					m_segments = 16;
+					m_maxSegments = 16;
+				}
+				m_noise = {
+					m_perlin = {
+						m_octaves = 1;
+						m_frequency = 1;
+					}
+					m_frequency = 1;
+				}
+			}
+		}
+	}
+}

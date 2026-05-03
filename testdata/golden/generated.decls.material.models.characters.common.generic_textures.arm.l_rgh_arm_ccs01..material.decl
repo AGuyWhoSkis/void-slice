@@ -1,0 +1,77 @@
+{
+	m_PhysicsMaterial "contactsystem/flesh"
+
+	options {
+		
+		useSkinning8 			1
+		wrinkles/enable			0
+		
+		hasOcclusionMap 		1
+		translucency_hq/enable	1
+		hasglossmap				1
+		hasdiffuselookup		1
+		translucency/hasmask	1
+		hasbumpmap				1
+		hasdetailbumpmap		1
+		sss/hasskinfresnellookup			1
+		sss/usesecondaryspecular			1
+		rendering/darkVisionLayer			2
+		hasdynamicdecals					1
+
+		// for fx material
+		//***************************************************
+		materialEffects/enable	1
+	}
+		
+	mainProgram			arksssrender
+	sssprogram			arksssblur
+	shadowProgram		arkDefault
+	zPrepassProgram		arkDefault
+	darkvisionprogram	rendering/darkvision
+							
+//textures	
+	//specific					
+	diffusemap				models/characters/common/generic_textures/arm/l_rgh_arm_ccs01_d.tga
+	occlusionMap			models/characters/common/generic_textures/arm/l_rgh_arm_ao.tga
+	glossmap				models/characters/common/generic_textures/arm/l_rgh_arm_g.tga
+	bumpmap					models/characters/common/generic_textures/arm/l_rgh_arm_n.tga
+	translucency/mask		models/characters/common/generic_textures/arm/l_rgh_arm_tr.tga
+	
+	//generic
+	sss/skinfresnellookup	models/characters/common/generic_textures/lut/lut_skin_fresnel_d.tga
+	diffuselookup			models/characters/common/generic_textures/lut/lut_skin_diffuse_d.tga
+	detailbumpmap			models/characters/common/generic_textures/skin/g_skin_detail01_n.tga
+
+//wrinkles
+	
+//settings
+	//spec
+	wardRoughness					{ 0.1, 1, 0, 0 }	
+	wardroughness2					{ 0, 0.9, 0, 0 }
+	wardroughness3					{ 0, 0, 0, 0 }
+	
+	//trans
+	translucency/scale				{ 0.3, 0, 0, 0 }
+	translucency_hq/transmittance	{ 0.3, 0, 0, 0 }
+
+	//sss
+	sss/scale						{ 0.0012, 0.001, 0.001, 0.001 }
+	sss/tweakspecularintensity		{ 0.4, 0.5, 0.6, 0.2 }
+
+	//detail
+	detailbumpmaptiling				{ 7, 2, 2, 2 }
+	detailbumpmapintensity			{ 1.5, 1, 1, 1 }
+
+
+
+
+	// for fx material
+	//***************************************************	
+	materialEffects/immolation		materialEffects/immolation.pblock
+	materialEffects/burnt			materialEffects/burnt.pblock
+	materialEffects/layerchange		materialEffects/layerchange.pblock
+	materialEffects/devouring		materialEffects/devouring.pblock
+	materialEffects/teleportation	materialEffects/teleportation.pblock
+	materialEffects/electrocution	materialEffects/electrocution.pblock
+	materialEffects/shadowkill		materialEffects/shadowkill.pblock
+}

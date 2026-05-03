@@ -1,0 +1,1249 @@
+{
+	edit = {
+		m_groups = {
+			num = 1;
+			item[0] = {
+				m_name = "[UPGRADED]";
+				m_timings = {
+					m_duration = {
+						m_max = 0;
+						m_min = 0;
+					}
+				}
+				m_particleSystems = {
+					num = 2;
+					item[0] = {
+						m_name = "blink_out_sparks_and_dust";
+						m_decls = {
+							num = 1;
+							item[0] = "models/effects/gameplay/powers/blink/blink_out_01_dt.particledt";
+						}
+						m_timings = {
+							m_duration = {
+								m_max = 1;
+								m_min = 1;
+							}
+						}
+						m_position = {
+							m_screenParticle = true;
+						}
+						m_emitterRate = {
+							m_autoStopEmitter = false;
+						}
+					}
+					item[1] = {
+						m_name = "flames";
+						m_decls = {
+							num = 1;
+							item[0] = "models/effects/gameplay/powers/blink/blink_out_02.particledt";
+						}
+						m_timings = {
+							m_duration = {
+								m_max = 8;
+								m_min = 8;
+							}
+						}
+						m_position = {
+							m_screenParticle = true;
+						}
+					}
+				}
+				m_fsDistoParms = {
+					num = 1;
+					item[0] = {
+						m_name = "wobble_out";
+						m_timings = {
+							m_duration = {
+								m_max = 0.1000000015;
+								m_min = 0.1000000015;
+							}
+							m_fadeout = {
+								m_max = 1;
+								m_min = 1;
+							}
+						}
+						m_renderParms = {
+							num = 6;
+							item[0] = {
+								m_renderParm = "fsdisto/opt/use_wobble_disto";
+								m_value = {
+									m_max = {
+										x = 1;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_min = {
+										x = 1;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_durationCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeinCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeoutCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_uniform = false;
+								}
+							}
+							item[1] = {
+								m_renderParm = "fsdisto/wobblehighbound";
+								m_value = {
+									m_max = {
+										x = 1;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_min = {
+										x = 1;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_durationCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeinCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeoutCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_uniform = false;
+								}
+							}
+							item[2] = {
+								m_renderParm = "fsdisto/wobblelowbound";
+								m_value = {
+									m_max = {
+										x = 0;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_min = {
+										x = 0;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_durationCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeinCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeoutCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_uniform = false;
+								}
+							}
+							item[3] = {
+								m_renderParm = "fsdisto/wobbledeadzone";
+								m_value = {
+									m_max = {
+										x = 1;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_min = {
+										x = 1;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_durationCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeinCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeoutCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 2;
+												item[0] = 0.0027866364;
+												item[1] = 1.0014967918;
+											}
+											m_values = {
+												num = 6;
+												item[0] = {
+													x = -12.1893777847;
+													y = -12.1893777847;
+													z = -12.1893777847;
+													w = -12.1893777847;
+												}
+												item[1] = {
+													x = 5.1310806274;
+													y = 5.1310806274;
+													z = 5.1310806274;
+													w = 5.1310806274;
+												}
+												item[2] = {
+													x = 12.1893777847;
+													y = 12.1893777847;
+													z = 12.1893777847;
+													w = 12.1893777847;
+												}
+												item[3] = {
+													x = -12.1893777847;
+													y = -12.1893777847;
+													z = -12.1893777847;
+													w = -12.1893777847;
+												}
+												item[4] = {
+													x = 41.6992111206;
+													y = 41.6992111206;
+													z = 41.6992111206;
+													w = 41.6992111206;
+												}
+												item[5] = {
+													x = 12.1893777847;
+													y = 12.1893777847;
+													z = 12.1893777847;
+													w = 12.1893777847;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_uniform = false;
+								}
+							}
+							item[4] = {
+								m_renderParm = "fsdisto/wobblespeed";
+								m_value = {
+									m_max = {
+										x = 1;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_min = {
+										x = 1;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_durationCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeinCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeoutCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 2;
+												item[0] = 0.0044943094;
+												item[1] = 1.0044181347;
+											}
+											m_values = {
+												num = 6;
+												item[0] = {
+													x = 5.3642506599;
+													y = 5.3642506599;
+													z = 5.3642506599;
+													w = 5.3642506599;
+												}
+												item[1] = {
+													x = 32.1067276001;
+													y = 32.1067276001;
+													z = 32.1067276001;
+													w = 32.1067276001;
+												}
+												item[2] = {
+													x = -5.3642506599;
+													y = -5.3642506599;
+													z = -5.3642506599;
+													w = -5.3642506599;
+												}
+												item[3] = {
+													x = 5.3642506599;
+													y = 5.3642506599;
+													z = 5.3642506599;
+													w = 5.3642506599;
+												}
+												item[4] = {
+													x = 16.0139770508;
+													y = 16.0139770508;
+													z = 16.0139770508;
+													w = 16.0139770508;
+												}
+												item[5] = {
+													x = -5.3642511368;
+													y = -5.3642511368;
+													z = -5.3642511368;
+													w = -5.3642511368;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_uniform = false;
+								}
+							}
+							item[5] = {
+								m_renderParm = "fsdisto/wobblestrength";
+								m_value = {
+									m_max = {
+										x = 0.200000003;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_min = {
+										x = 0.200000003;
+										y = 0;
+										z = 0;
+										w = 0;
+									}
+									m_durationCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeinCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 1;
+												item[0] = 0;
+											}
+											m_values = {
+												num = 3;
+												item[0] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = 0;
+													y = 0;
+													z = 0;
+													w = 0;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_fadeoutCurve = {
+										m_maxCurve = {
+											m_times = {
+												num = 5;
+												item[0] = 0;
+												item[1] = 0.1593587399;
+												item[2] = 0.316362381;
+												item[3] = 0.5557928085;
+												item[4] = 1.0071783066;
+											}
+											m_values = {
+												num = 15;
+												item[0] = {
+													x = 0.1573946476;
+													y = 0.1573946476;
+													z = 0.1573946476;
+													w = 0.1573946476;
+												}
+												item[1] = {
+													x = 1;
+													y = 1;
+													z = 1;
+													w = 1;
+												}
+												item[2] = {
+													x = -0.1573946476;
+													y = -0.1573946476;
+													z = -0.1573946476;
+													w = -0.1573946476;
+												}
+												item[3] = {
+													x = 0.1205978841;
+													y = 0.1205978841;
+													z = 0.1205978841;
+													w = 0.1205978841;
+												}
+												item[4] = {
+													x = 0.5278159976;
+													y = 0.5278159976;
+													z = 0.5278159976;
+													w = 0.5278159976;
+												}
+												item[5] = {
+													x = -0.1188156232;
+													y = -0.1188156232;
+													z = -0.1188156232;
+													w = -0.1188156232;
+												}
+												item[6] = {
+													x = 0.0572251678;
+													y = 0.0572251678;
+													z = 0.0572251678;
+													w = 0.0572251678;
+												}
+												item[7] = {
+													x = 0.2817594707;
+													y = 0.2817594707;
+													z = 0.2817594707;
+													w = 0.2817594707;
+												}
+												item[8] = {
+													x = -0.0872683376;
+													y = -0.0872683376;
+													z = -0.0872683376;
+													w = -0.0872683376;
+												}
+												item[9] = {
+													x = 0.0324882828;
+													y = 0.0324882828;
+													z = 0.0324882828;
+													w = 0.0324882828;
+												}
+												item[10] = {
+													x = 0.0943355262;
+													y = 0.0943355262;
+													z = 0.0943355262;
+													w = 0.0943355262;
+												}
+												item[11] = {
+													x = -0.0612484403;
+													y = -0.0612484403;
+													z = -0.0612484403;
+													w = -0.0612484403;
+												}
+												item[12] = {
+													x = 0.0312620699;
+													y = 0.0312620699;
+													z = 0.0312620699;
+													w = 0.0312620699;
+												}
+												item[13] = {
+													x = 0.0005493164;
+													y = 0.0005493164;
+													z = 0.0005493164;
+													w = 0.0005493164;
+												}
+												item[14] = {
+													x = -0.0312620699;
+													y = -0.0312620699;
+													z = -0.0312620699;
+													w = -0.0312620699;
+												}
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+										m_minCurve = {
+											m_times = {
+												num = 0;
+											}
+											m_values = {
+												num = 0;
+											}
+											m_loopMode = "LOOP_ONCE";
+											m_interpolationMode = "ECI_BEZIER_TANGENT";
+											m_tangentsIn = {
+												num = 0;
+											}
+											m_tangentsOut = {
+												num = 0;
+											}
+										}
+									}
+									m_uniform = false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

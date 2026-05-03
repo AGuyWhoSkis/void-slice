@@ -1,0 +1,206 @@
+{
+	edit = {
+		m_groups = {
+			num = 1;
+			item[0] = {
+				m_name = "[UPGRADED]";
+				m_decals = {
+					num = 1;
+					item[0] = {
+						m_name = "splash";
+						m_decls = {
+							num = 1;
+							item[0] = "models/effects/gameplay/combat/blood/splatter/nestkeeper_blood_splat01.decal";
+						}
+						m_timings = {
+							m_fadein = {
+								m_max = 0.400000006;
+								m_min = 0.3000000119;
+							}
+							m_duration = {
+								m_max = 9;
+								m_min = 9;
+							}
+						}
+						m_centering = {
+							z = 0.5;
+						}
+						m_size = {
+							m_max = {
+								x = 2.5;
+								y = 2.5;
+							}
+							m_min = {
+								x = 1.5;
+								y = 1.5;
+							}
+							m_durationCurve = {
+								m_maxCurve = {
+									m_values = {
+										item[0] = {
+											x = -0.1350943744;
+											y = -0.1272886992;
+										}
+										item[2] = {
+											x = 0.1350943744;
+											y = 0.1272886992;
+										}
+									}
+								}
+							}
+							m_fadeinCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 1;
+										item[0] = 1;
+									}
+									m_values = {
+										num = 3;
+										item[1] = {
+											x = 0.9999999404;
+											y = 1;
+										}
+									}
+								}
+							}
+							m_fadeoutCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 1;
+									}
+									m_values = {
+										num = 3;
+									}
+								}
+							}
+							m_uniform = true;
+						}
+						m_initialRotation = {
+							m_max = 360;
+						}
+						m_color = {
+							m_max = {
+								y = 0.0500000007;
+							}
+							m_min = {
+								y = 0.0099999998;
+							}
+							m_durationCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[0] = 0.5;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[1] = {
+											x = 0.200000003;
+										}
+										item[3] = {
+											x = -0.6000000238;
+											y = 0;
+											z = 0;
+										}
+										item[4] = {
+											x = 1;
+											y = 1;
+											z = 0.0338767767;
+										}
+										item[5] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+									}
+								}
+							}
+							m_fadeinCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[0] = 0.0038548112;
+										item[1] = 0.9998240471;
+									}
+									m_values = {
+										num = 6;
+										item[0] = {
+											x = 3.625431776;
+										}
+										item[1] = {
+											x = 7.3042168617;
+										}
+										item[2] = {
+											x = -3.625431776;
+										}
+										item[3] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+										item[4] = {
+											x = 1;
+											y = 1;
+											z = 1;
+										}
+										item[5] = {
+											x = 0;
+											y = 0;
+											z = 0;
+										}
+									}
+								}
+							}
+							m_uniform = true;
+						}
+						m_alpha = {
+							m_durationCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[0] = 0.75;
+										item[1] = 1;
+									}
+									m_values = {
+										num = 6;
+										item[3] = 0;
+										item[4] = 0;
+										item[5] = 0;
+									}
+								}
+							}
+							m_fadeinCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 0.600912571;
+									}
+									m_values = {
+										num = 6;
+										item[3] = 0;
+										item[4] = 0.9999999404;
+										item[5] = 0;
+									}
+								}
+							}
+							m_fadeoutCurve = {
+								m_maxCurve = {
+									m_times = {
+										num = 2;
+										item[1] = 0.9990704656;
+									}
+									m_values = {
+										num = 6;
+										item[3] = 0;
+										item[4] = 0;
+										item[5] = 0;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

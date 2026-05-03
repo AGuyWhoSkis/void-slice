@@ -8,7 +8,7 @@
 export const FIXTURES = [
   {
     name: "clean",
-    path: "testdata/corpus-mini/d2/game1/generated.decls.gamelogicmanager.ui.gamelogic.manager..gamelogicmanager.decl",
+    path: "testdata/golden/d2/game1/generated.decls.gamelogicmanager.ui.gamelogic.manager..gamelogicmanager.decl",
     reference: "cli",
   },
   {

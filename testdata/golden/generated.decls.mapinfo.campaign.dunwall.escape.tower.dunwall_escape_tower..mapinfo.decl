@@ -1,0 +1,75 @@
+{
+	edit = {
+		m_debugMapName = "01. Dunwall Escape - Tower";
+		prettyMapName = "MapName_Campaign_Death_To_The_Empress_Tower";
+		m_mapPath = "maps/campaign/dunwall/escape/tower/dunwall_escape_tower_p.map";
+		m_monologueVideoIggyOverlay = "ui/narrative.iggyfile";
+		m_doesMonologueBlockAndInstall = true;
+		m_monologueVideoLowChaosCorvo = "video/00_Introduction.bk2";
+		m_monologueVideoHighChaosCorvo = "video/00_Introduction.bk2";
+		m_monologueVideoLowChaosEmily = "video/00_Introduction.bk2";
+		m_monologueVideoHighChaosEmily = "video/00_Introduction.bk2";
+		m_loadingInfo = {
+			m_iggyFile = "ui/loading_screen.iggyfile";
+			m_missionIndex = 1;
+			m_missionName = "Mission_DW";
+			m_missionSummary = "Mission_DW_Tower_desc";
+			m_image = "models/guis/loading_screens/loading_dunwall_escape_tower_is.png";
+			m_tips = {
+				num = 13;
+				item[0] = {
+					m_title = "Hint_combat_10_title";
+					m_description = "Hint_combat_10_desc";
+				}
+				item[1] = {
+					m_title = "Hint_combat_02_title";
+					m_description = "Hint_combat_02_desc";
+				}
+				item[2] = {
+					m_title = "Hint_combat_01_title";
+					m_description = "Hint_combat_01_desc";
+				}
+				item[3] = {
+					m_title = "Hint_gameplay_01_title";
+					m_description = "Hint_gameplay_01_desc";
+				}
+				item[4] = {
+					m_title = "Hint_gameplay_04_title";
+					m_description = "Hint_gameplay_04_desc";
+				}
+				item[5] = {
+					m_title = "Hint_journal_02_title";
+					m_description = "Hint_journal_02_desc";
+				}
+				item[6] = {
+					m_title = "Hint_mobility_01_title";
+					m_description = "Hint_mobility_01_desc";
+				}
+				item[7] = {
+					m_title = "Hint_mobility_03_title";
+					m_description = "Hint_mobility_03_desc";
+				}
+				item[8] = {
+					m_title = "Hint_narrative_09_title";
+					m_description = "Hint_narrative_09_desc";
+				}
+				item[9] = {
+					m_title = "Hint_setting_03_title";
+					m_description = "Hint_setting_03_desc";
+				}
+				item[10] = {
+					m_title = "Hint_setting_02_title";
+					m_description = "Hint_setting_02_desc";
+				}
+				item[11] = {
+					m_title = "Hint_stealth_02_title";
+					m_description = "Hint_stealth_02_desc";
+				}
+				item[12] = {
+					m_title = "Hint_stealth_03_title";
+					m_description = "Hint_stealth_03_desc";
+				}
+			}
+		}
+	}
+}

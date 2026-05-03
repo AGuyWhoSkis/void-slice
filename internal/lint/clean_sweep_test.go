@@ -10,7 +10,7 @@ import (
 )
 
 func TestCleanSweep(t *testing.T) {
-	corpusRoot := filepath.Join("..", "..", "testdata", "corpus-mini")
+	corpusRoot := filepath.Join("..", "..", "testdata", "golden")
 
 	linter := lint.New()
 	count := 0
@@ -82,8 +82,7 @@ func TestCleanSweep(t *testing.T) {
 		})
 	}
 
-	walkDir(filepath.Join(corpusRoot, "doto", "game1"))
-	walkDir(filepath.Join(corpusRoot, "d2", "game1"))
+	walkDir(corpusRoot)
 
 	t.Logf("clean sweep: checked %d files", count)
 	if parseGapFiles > 0 {

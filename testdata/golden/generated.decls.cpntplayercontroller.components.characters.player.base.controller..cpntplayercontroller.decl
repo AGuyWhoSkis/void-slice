@@ -1,0 +1,370 @@
+{
+	edit = {
+		m_entityContext = "ENT_CONTEXT_FLAG_ALIVE";
+		m_statesMapping = {
+			num = 43;
+			item[0] = {
+				m_usage = "BUTTON_DOWN";
+				m_action = "ACTION_SPRINT";
+				m_state = "PLAYER_STATE_SPRINTING";
+			}
+			item[1] = {
+				m_action = "ACTION_JUMP";
+				m_state = "PLAYER_STATE_VAULT";
+			}
+			item[2] = {
+				m_action = "ACTION_JUMP";
+				m_state = "PLAYER_STATE_JUMPING";
+			}
+			item[3] = {
+				m_usage = "BUTTON_TOGGLE_DOWN";
+				m_action = "ACTION_CROUCH";
+				m_state = "PLAYER_STATE_SNEAKING";
+			}
+			item[4] = {
+				m_action = "ACTION_CROUCH";
+				m_state = "PLAYER_STATE_SLIDING";
+			}
+			item[5] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_INTERACT";
+				m_priorityWhenAvailable = 4;
+			}
+			item[6] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_CANCEL";
+				m_priorityWhenAvailable = 6;
+			}
+			item[7] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_DROP_CORPSE";
+				m_priorityWhenAvailable = 2;
+			}
+			item[8] = {
+				m_action = "ACTION_MELEE";
+				m_state = "PLAYER_STATE_DROP_CORPSE";
+			}
+			item[9] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_RELEASE_OBJECT";
+				m_priorityWhenAvailable = 2;
+			}
+			item[10] = {
+				m_action = "ACTION_MELEE";
+				m_state = "PLAYER_STATE_RELEASE_OBJECT";
+			}
+			item[11] = {
+				m_action = "ACTION_MELEE";
+				m_state = "PLAYER_STATE_SLASH";
+			}
+			item[12] = {
+				m_action = "ACTION_POWER_WEAPON";
+				m_state = "PLAYER_STATE_USE_POWER";
+			}
+			item[13] = {
+				m_usage = "BUTTON_DOWN";
+				m_action = "ACTION_JUMP";
+				m_state = "PLAYER_STATE_MANTLE";
+			}
+			item[14] = {
+				m_usage = "BUTTON_DOWN";
+				m_action = "ACTION_POWER_WEAPON";
+				m_state = "PLAYER_STATE_FIRE_WEAPON";
+			}
+			item[15] = {
+				m_action = "ACTION_POWER_WEAPON";
+				m_state = "PLAYER_STATE_PLACE_WEAPON";
+			}
+			item[16] = {
+				m_action = "ACTION_POWER_WEAPON";
+				m_state = "PLAYER_STATE_THROW_WEAPON";
+			}
+			item[17] = {
+				m_action = "ACTION_BLOCK";
+				m_state = "PLAYER_STATE_CHOKE";
+			}
+			item[18] = {
+				m_action = "ACTION_BLOCK";
+				m_state = "PLAYER_STATE_CURE_CHOKE";
+			}
+			item[19] = {
+				m_action = "ACTION_BLOCK";
+				m_state = "PLAYER_STATE_DROP_CHOKE";
+			}
+			item[20] = {
+				m_usage = "BUTTON_DOWN";
+				m_action = "ACTION_BLOCK";
+				m_state = "PLAYER_STATE_BLOCK";
+			}
+			item[21] = {
+				m_action = "ACTION_LEAN";
+				m_state = "PLAYER_STATE_LEANING";
+			}
+			item[22] = {
+				m_action = "ACTION_LEAN_LEFT";
+				m_state = "PLAYER_STATE_LEANING";
+			}
+			item[23] = {
+				m_action = "ACTION_LEAN_RIGHT";
+				m_state = "PLAYER_STATE_LEANING";
+			}
+			item[24] = {
+				m_action = "ACTION_ZOOM";
+				m_state = "PLAYER_STATE_SPYGLASS";
+			}
+			item[25] = {
+				m_usage = "BUTTON_DOWN";
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_UNDRAW";
+			}
+			item[26] = {
+				m_action = "ACTION_MELEE";
+				m_state = "PLAYER_STATE_DRAW_RIGHT_HAND";
+			}
+			item[27] = {
+				m_action = "ACTION_BLOCK";
+				m_state = "PLAYER_STATE_DRAW_RIGHT_HAND";
+			}
+			item[28] = {
+				m_action = "ACTION_POWER_WEAPON";
+				m_state = "PLAYER_STATE_DRAW_LEFT_HAND";
+			}
+			item[29] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_WHISPER";
+			}
+			item[30] = {
+				m_action = "ACTION_JOURNAL";
+				m_state = "PLAYER_STATE_JOURNAL";
+			}
+			item[31] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_DOPPELGANGER_SWAP";
+				m_priorityWhenAvailable = 3;
+			}
+			item[32] = {
+				m_action = "ACTION_POWERWHEEL";
+				m_state = "PLAYER_STATE_POWERWHEEL";
+			}
+			item[33] = {
+				m_action = "ACTION_POWER_WEAPON";
+				m_state = "PLAYER_STATE_PLAY_HEART_BARKS";
+			}
+			item[34] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_LOCK_HEART_TARGET";
+				m_priorityWhenAvailable = 1;
+			}
+			item[35] = {
+				m_action = "ACTION_POWER_WEAPON";
+				m_state = "PLAYER_STATE_USE_TIMESHIFTDEVICE";
+			}
+			item[36] = {
+				m_action = "ACTION_POWER_WEAPON";
+				m_state = "PLAYER_STATE_USE_PHANTASMAL_LINK";
+			}
+			item[37] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_UNFOLD_TIMESHIFTDEVICE";
+				m_priorityWhenAvailable = 1;
+			}
+			item[38] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_REQUEST_RELOAD_WEAPON";
+				m_priorityWhenAvailable = 0;
+			}
+			item[39] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_SPYGLASS_ZOOM";
+				m_priorityWhenAvailable = 5;
+			}
+			item[40] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_CANCEL_FIRE_WEAPON";
+				m_priorityWhenAvailable = 6;
+			}
+			item[41] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_CANCEL_CLIMB";
+				m_priorityWhenAvailable = 6;
+			}
+			item[42] = {
+				m_action = "ACTION_INTERACT";
+				m_state = "PLAYER_STATE_CANCEL_GRAPPLE";
+				m_priorityWhenAvailable = 7;
+			}
+		}
+		m_hitReact = {
+			m_types = {
+				enumItem[PLAYER_HITREACT_SMALL] = {
+					m_animWeight = 0.5;
+					m_impulse = {
+						m_strength = 5;
+						m_duration = {
+							m_seconds = 0.25;
+						}
+					}
+				}
+				enumItem[PLAYER_HITREACT_BIG] = {
+					m_animWeight = 1;
+					m_impulse = {
+						m_strength = 5;
+						m_duration = {
+							m_seconds = 0.5;
+						}
+					}
+					m_stunDuration = {
+						m_seconds = 0.25;
+					}
+					m_midnights = {
+						enumItem[A4DIR_FRONT] = "midnight/gameplay/player/base/hitreact/hit_react_stun_front.midnightscene";
+						enumItem[A4DIR_BACK] = "midnight/gameplay/player/base/hitreact/hit_react_stun_back.midnightscene";
+						enumItem[A4DIR_LEFT] = "midnight/gameplay/player/base/hitreact/hit_react_stun_left.midnightscene";
+						enumItem[A4DIR_RIGHT] = "midnight/gameplay/player/base/hitreact/hit_react_stun_right.midnightscene";
+					}
+				}
+				enumItem[PLAYER_HITREACT_STUMBLE] = {
+					m_midnights = {
+						enumItem[A4DIR_FRONT] = "midnight/gameplay/player/base/hitreact/hit_react_stumble.midnightscene";
+						enumItem[A4DIR_BACK] = "midnight/gameplay/player/base/hitreact/hit_react_stumble.midnightscene";
+						enumItem[A4DIR_LEFT] = "midnight/gameplay/player/base/hitreact/hit_react_stumble.midnightscene";
+						enumItem[A4DIR_RIGHT] = "midnight/gameplay/player/base/hitreact/hit_react_stumble.midnightscene";
+					}
+				}
+				enumItem[PLAYER_HITREACT_KNOCKDOWN] = {
+					m_midnights = {
+						enumItem[A4DIR_FRONT] = "midnight/gameplay/player/base/hitreact/hit_react_knocked_down.midnightscene";
+						enumItem[A4DIR_BACK] = "midnight/gameplay/player/base/hitreact/hit_react_knocked_down.midnightscene";
+						enumItem[A4DIR_LEFT] = "midnight/gameplay/player/base/hitreact/hit_react_knocked_down.midnightscene";
+						enumItem[A4DIR_RIGHT] = "midnight/gameplay/player/base/hitreact/hit_react_knocked_down.midnightscene";
+					}
+				}
+				enumItem[PLAYER_HITREACT_ELECTROCUTED] = {
+					m_stunDuration = {
+						m_seconds = 2;
+					}
+					m_midnights = {
+						enumItem[A4DIR_FRONT] = "midnight/gameplay/player/base/hitreact/hit_react_stun_front.midnightscene";
+						enumItem[A4DIR_BACK] = "midnight/gameplay/player/base/hitreact/hit_react_stun_front.midnightscene";
+						enumItem[A4DIR_LEFT] = "midnight/gameplay/player/base/hitreact/hit_react_stun_front.midnightscene";
+						enumItem[A4DIR_RIGHT] = "midnight/gameplay/player/base/hitreact/hit_react_stun_front.midnightscene";
+					}
+				}
+			}
+			m_debugDamage = {
+				m_damageType = "DAMAGETYPE_MELEE";
+				m_playerHitReaction = "PLAYER_HITREACT_KNOCKDOWN";
+			}
+		}
+		m_inputCombinationMapping = {
+			num = 1;
+			item[0] = {
+				m_keyboardInputCombination = {
+					m_firstAction = "ACTION_BLOCK";
+					m_secondAction = "ACTION_MELEE";
+				}
+				m_padInputCombo = {
+					m_firstAction = "ACTION_LEAN";
+					m_secondAction = "ACTION_LEAN";
+				}
+				m_state = "PLAYER_STATE_BLOODTHIRSTY_FATALITY";
+			}
+		}
+		m_stumbleIgnoredDamages = "DAMAGETYPE_RATBITE DAMAGETYPE_BLOODFLIES DAMAGETYPE_MUSIC_BOX_ALLEGRO";
+		m_cinematicSwitchSettings = {
+			m_switchRules = {
+				num = 6;
+				item[0] = {
+					m_ifInState = "PLAYER_STATE_HOLD_OBJECT_ONE_HAND";
+					m_switchToState = "PLAYER_STATE_RELEASE_OBJECT";
+				}
+				item[1] = {
+					m_ifInState = "PLAYER_STATE_HOLD_OBJECT_TWO_HAND";
+					m_switchToState = "PLAYER_STATE_RELEASE_OBJECT";
+				}
+				item[2] = {
+					m_ifInState = "PLAYER_STATE_GRAPPLE";
+				}
+				item[3] = {
+					m_ifInState = "PLAYER_STATE_BLINKING";
+				}
+				item[4] = {
+					m_ifInState = "PLAYER_STATE_THROW_WEAPON";
+					m_switchToState = "PLAYER_STATE_CANCEL";
+				}
+				item[5] = {
+					m_ifInState = "PLAYER_STATE_SLIDING";
+				}
+			}
+			m_deactivatedStates = {
+				num = 4;
+				item[0] = "PLAYER_STATE_RELEASE_OBJECT";
+				item[1] = "PLAYER_STATE_DROP_CORPSE";
+				item[2] = "PLAYER_STATE_CATFALL";
+				item[3] = "PLAYER_STATE_PEEKING";
+			}
+		}
+		m_blackMarketSettings = {
+			m_powersToCancel = {
+				num = 1;
+				item[0] = "ARK_PLAYER_POWER_BENDTIME";
+			}
+		}
+		m_shortcutsSettings = {
+			enumItem[CONTROLLER_SHORTCUT_1] = {
+				m_weapon = true;
+				m_priority = 10;
+			}
+			enumItem[CONTROLLER_SHORTCUT_2] = {
+				m_weapon = true;
+				m_priority = 9;
+			}
+			enumItem[CONTROLLER_SHORTCUT_3] = {
+				m_weapon = true;
+				m_priority = 8;
+			}
+			enumItem[CONTROLLER_SHORTCUT_4] = {
+				m_weapon = true;
+				m_priority = 7;
+			}
+			enumItem[CONTROLLER_SHORTCUT_5] = {
+				m_heart = true;
+				m_priority = 6;
+			}
+			enumItem[CONTROLLER_SHORTCUT_6] = {
+				m_power = true;
+				m_priority = 5;
+			}
+			enumItem[CONTROLLER_SHORTCUT_7] = {
+				m_power = true;
+				m_priority = 4;
+			}
+			enumItem[CONTROLLER_SHORTCUT_8] = {
+				m_power = true;
+				m_priority = 3;
+			}
+			enumItem[CONTROLLER_SHORTCUT_9] = {
+				m_power = true;
+				m_priority = 2;
+			}
+			enumItem[CONTROLLER_SHORTCUT_0] = {
+				m_power = true;
+			}
+			enumItem[CONTROLLER_QUICK_SHORTCUT_RIGHT] = {
+				m_weapon = true;
+			}
+			enumItem[CONTROLLER_QUICK_SHORTCUT_UP] = {
+				m_weapon = true;
+				m_priority = 2;
+			}
+			enumItem[CONTROLLER_QUICK_SHORTCUT_LEFT] = {
+				m_weapon = true;
+				m_priority = 3;
+			}
+			enumItem[CONTROLLER_QUICK_SHORTCUT_DOWN] = {
+				m_power = true;
+				m_priority = 4;
+			}
+		}
+	}
+}

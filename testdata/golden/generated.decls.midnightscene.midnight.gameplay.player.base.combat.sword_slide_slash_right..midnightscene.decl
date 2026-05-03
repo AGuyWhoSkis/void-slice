@@ -1,0 +1,1059 @@
+{
+	edit = {
+		m_settings = {
+			m_blendOutTime = 0.1000000015;
+			m_type = "EMT_GAMEPLAY";
+		}
+		m_groupsInfo = {
+			num = 3;
+			item[0] = {
+				m_UID = {
+					m_objUID = 3;
+				}
+				m_name = "AIGroup1";
+				m_mandatoryGroup = true;
+				m_motionAxis = "AXIS_WORLD";
+			}
+			item[1] = {
+				m_UID = {
+					m_objUID = 1;
+				}
+				m_name = "PlayerRightArm";
+				m_declsMD6 = {
+					num = 2;
+					item[0] = "models/characters/dlc01/player/billie/player_rightarm_billie.md6";
+					item[1] = "models/characters/dlc01/player/billie/player_rightarm_void_billie.md6";
+				}
+				m_mandatoryGroup = true;
+				m_motionAxis = "AXIS_WORLD";
+			}
+			item[2] = {
+				m_UID = {
+					m_objUID = 2;
+				}
+				m_name = "PlayerRightEquipment";
+				m_declsMD6 = {
+					num = 2;
+					item[0] = "models/weapons/dlc01/player/billie/assassinsword01/ply_billie_assassinsword01.md6";
+					item[1] = "models/weapons/dlc01/player/billie/knife01/ply_billie_knife01.md6";
+				}
+			}
+		}
+		m_scenes = {
+			num = 2;
+			item[0] = {
+				m_class = "arkMidnightScene";
+				m_object = {
+					m_groups = {
+						num = 3;
+						item[0] = {
+							m_class = "arkMidnightGroup";
+							m_object = {
+								m_lTracks = {
+									num = 5;
+									item[0] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 1;
+														groupUID = 1;
+														trackType = "EMTT_ANIM";
+														keyUID = 1;
+													}
+													m_startTime = 0;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 833;
+													m_category = "EMKC_ANIM";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropAnim";
+														m_object = {
+															m_AnimName = "ply_rightarm_sword_slide_attack_right_a";
+															m_startOffset = 0;
+															m_endOffset = 0;
+															m_lMarker = {
+																num = 0;
+															}
+															m_bodyPart = "MD6_WEIGHTGROUP_ANIM_EXPORT_MASK";
+															m_isMainClip = true;
+															m_isStretched = false;
+														}
+													}
+													m_keyCurves = {
+														m_class = "arkMidnightKeyCurve_Float";
+														m_object = {
+															m_interpMode = "ECI_BEZIER_TANGENT";
+															m_floatCurve = {
+																m_times = {
+																	num = 0;
+																}
+																m_values = {
+																	num = 0;
+																}
+																m_interpolationMode = "ECI_CONST";
+															}
+															m_times = {
+																num = 1;
+																item[0] = 0;
+															}
+															m_floatValues = {
+																num = 3;
+																item[0] = 1;
+																item[1] = 0;
+																item[2] = 0;
+															}
+														}
+													}
+												}
+											}
+											m_handle = {
+												sceneUID = 1;
+												groupUID = 1;
+												trackType = "EMTT_ANIM";
+											}
+											m_trackType = "EMTT_ANIM";
+										}
+									}
+									item[1] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 1;
+														groupUID = 1;
+														trackType = "EMTT_EVENT";
+														keyUID = 1;
+													}
+													m_startTime = 583;
+													m_type = "EMKT_POINT";
+													m_priority = 0;
+													m_duration = -1;
+													m_category = "EMKC_EVENT";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropEvent";
+														m_object = {
+															m_event = "ARK_MDNT_MSG_SLASH_CAN_BE_INTERRUPTED";
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 1;
+												groupUID = 1;
+												trackType = "EMTT_EVENT";
+											}
+											m_trackType = "EMTT_EVENT";
+										}
+									}
+									item[2] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 1;
+														groupUID = 1;
+														trackType = "EMTT_TIMEDEVENT";
+														keyUID = 1;
+													}
+													m_startTime = 270;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 158;
+													m_category = "EMKC_NUM";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropTimedEvent_WeaponActiveFrames";
+														m_object = {
+															m_eventType = "MELEE_WEAPON_ACTIVE_FRAMES";
+															m_slot = "WEAPON_SLOT_RIGHT";
+															m_forwardAttack = false;
+															m_triggerHeavyBlock = false;
+															m_damageFactor = 1;
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 1;
+												groupUID = 1;
+												trackType = "EMTT_TIMEDEVENT";
+											}
+											m_trackType = "EMTT_TIMEDEVENT";
+										}
+									}
+									item[3] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 1;
+														groupUID = 1;
+														trackType = "EMTT_FX";
+														keyUID = 1;
+													}
+													m_startTime = 107;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 143;
+													m_category = "EMKC_FX";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropFx";
+														m_object = {
+															m_declFx = "models/effects/gameplay/combat/player_combat/trails/ply_sword_trail_01.fx";
+															m_attachmentSocketName = "weapon_attach_tag";
+															m_attachmentNormalAxis = "Z";
+															m_targetGroupName = "";
+															m_targetTagName = "";
+															m_updateFxPosition = true;
+															m_dontSpawnIfCulled = false;
+															m_stopOnTargetRemoval = false;
+															m_stopOnParentRemoval = true;
+															m_updateFxOnSeveredJoint = true;
+															m_stopMode = "STOP_LOOPING_ONLY";
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 1;
+												groupUID = 1;
+												trackType = "EMTT_FX";
+											}
+											m_trackType = "EMTT_FX";
+										}
+									}
+									item[4] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 2;
+												item[0] = {
+													m_handle = {
+														sceneUID = 1;
+														groupUID = 1;
+														trackType = "EMTT_SFX";
+														keyUID = 2;
+													}
+													m_startTime = 158;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 0;
+													m_category = "EMKC_STORYBOARD";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropSfx";
+														m_object = {
+															m_soundEvent = "sound_events/dishonored/player/snd_p_clothes_mvt_light_01_cue_ak";
+															m_aiPropagationStages = "";
+															m_stopEventOnInterruption = false;
+														}
+													}
+													m_keyCurves = NULL;
+												}
+												item[1] = {
+													m_handle = {
+														sceneUID = 1;
+														groupUID = 1;
+														trackType = "EMTT_SFX";
+														keyUID = 3;
+													}
+													m_startTime = 201;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 0;
+													m_category = "EMKC_STORYBOARD";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropSfx";
+														m_object = {
+															m_soundEvent = "sound_events/bsp/bsp_weapon/bsp_weapon_sword/bsp_weapon_sword_ec_whoosh";
+															m_aiPropagationStages = "";
+															m_stopEventOnInterruption = false;
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 1;
+												groupUID = 1;
+												trackType = "EMTT_SFX";
+											}
+											m_trackType = "EMTT_SFX";
+										}
+									}
+								}
+								m_handle = {
+									sceneUID = 1;
+									groupUID = 1;
+								}
+								m_specificMD6s = {
+									num = 1;
+									item[0] = "models/characters/dlc01/player/billie/player_rightarm_billie.md6";
+								}
+								m_specificMD6 = NULL;
+								m_enabledResources = "EMER_SPEECH_ONLY EMER_OTHER EMER_RETARGETING";
+								m_isDisabled = false;
+							}
+						}
+						item[1] = {
+							m_class = "arkMidnightGroup";
+							m_object = {
+								m_lTracks = {
+									num = 1;
+									item[0] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 2;
+												item[0] = {
+													m_handle = {
+														sceneUID = 1;
+														groupUID = 3;
+														trackType = "EMTT_EVENT";
+														keyUID = 1;
+													}
+													m_startTime = 65;
+													m_type = "EMKT_POINT";
+													m_priority = 0;
+													m_duration = -1;
+													m_category = "EMKC_EVENT";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropEvent";
+														m_object = {
+															m_event = "ARK_MDNT_MSG_AI_DODGE_MIDNIGHT_START";
+														}
+													}
+													m_keyCurves = NULL;
+												}
+												item[1] = {
+													m_handle = {
+														sceneUID = 1;
+														groupUID = 3;
+														trackType = "EMTT_EVENT";
+														keyUID = 2;
+													}
+													m_startTime = 260;
+													m_type = "EMKT_POINT";
+													m_priority = 0;
+													m_duration = -1;
+													m_category = "EMKC_EVENT";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropEvent";
+														m_object = {
+															m_event = "ARK_MDNT_MSG_AI_PARRY_MIDNIGHT_START";
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 1;
+												groupUID = 3;
+												trackType = "EMTT_EVENT";
+											}
+											m_trackType = "EMTT_EVENT";
+										}
+									}
+								}
+								m_handle = {
+									sceneUID = 1;
+									groupUID = 3;
+								}
+								m_specificMD6s = {
+									num = 0;
+								}
+								m_specificMD6 = NULL;
+								m_enabledResources = "EMER_SPEECH_ONLY EMER_OTHER EMER_RETARGETING";
+								m_isDisabled = false;
+							}
+						}
+						item[2] = {
+							m_class = "arkMidnightGroup";
+							m_object = {
+								m_lTracks = {
+									num = 1;
+									item[0] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 0;
+											}
+											m_handle = {
+												sceneUID = 1;
+												groupUID = 2;
+												trackType = "EMTT_ANIM";
+											}
+											m_trackType = "EMTT_ANIM";
+										}
+									}
+								}
+								m_handle = {
+									sceneUID = 1;
+									groupUID = 2;
+								}
+								m_specificMD6s = {
+									num = 1;
+									item[0] = "models/weapons/dlc01/player/billie/assassinsword01/ply_billie_assassinsword01.md6";
+								}
+								m_specificMD6 = NULL;
+								m_enabledResources = "EMER_SPEECH_ONLY EMER_OTHER EMER_RETARGETING";
+								m_isDisabled = false;
+							}
+						}
+					}
+					m_handle = {
+					}
+					m_objUID = {
+						m_objUID = 1;
+					}
+					m_properties = {
+						m_length = 833;
+						m_name = "Scene_1";
+						m_speechChecksum = 0;
+						m_forbidHoldToSkipScene = false;
+					}
+					m_nextElement = {
+						m_nextType = "EAMNT_FINAL";
+						m_nextCPoint = {
+						}
+					}
+				}
+			}
+			item[1] = {
+				m_class = "arkMidnightScene";
+				m_object = {
+					m_groups = {
+						num = 3;
+						item[0] = {
+							m_class = "arkMidnightGroup";
+							m_object = {
+								m_lTracks = {
+									num = 1;
+									item[0] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 2;
+												item[0] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 3;
+														trackType = "EMTT_EVENT";
+														keyUID = 1;
+													}
+													m_startTime = 65;
+													m_type = "EMKT_POINT";
+													m_priority = 0;
+													m_duration = -1;
+													m_category = "EMKC_EVENT";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropEvent";
+														m_object = {
+															m_event = "ARK_MDNT_MSG_AI_DODGE_MIDNIGHT_START";
+														}
+													}
+													m_keyCurves = NULL;
+												}
+												item[1] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 3;
+														trackType = "EMTT_EVENT";
+														keyUID = 2;
+													}
+													m_startTime = 260;
+													m_type = "EMKT_POINT";
+													m_priority = 0;
+													m_duration = -1;
+													m_category = "EMKC_EVENT";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropEvent";
+														m_object = {
+															m_event = "ARK_MDNT_MSG_AI_PARRY_MIDNIGHT_START";
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 2;
+												groupUID = 3;
+												trackType = "EMTT_EVENT";
+											}
+											m_trackType = "EMTT_EVENT";
+										}
+									}
+								}
+								m_handle = {
+									sceneUID = 2;
+									groupUID = 3;
+								}
+								m_specificMD6s = {
+									num = 0;
+								}
+								m_specificMD6 = NULL;
+								m_enabledResources = "EMER_SPEECH_ONLY EMER_OTHER EMER_RETARGETING";
+								m_isDisabled = false;
+							}
+						}
+						item[1] = {
+							m_class = "arkMidnightGroup";
+							m_object = {
+								m_lTracks = {
+									num = 5;
+									item[0] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 1;
+														trackType = "EMTT_ANIM";
+														keyUID = 1;
+													}
+													m_startTime = 0;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 833;
+													m_category = "EMKC_ANIM";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropAnim";
+														m_object = {
+															m_AnimName = "ply_rightarm_dagger_slide_attack_right_a";
+															m_startOffset = 0;
+															m_endOffset = 0;
+															m_lMarker = {
+																num = 0;
+															}
+															m_bodyPart = "MD6_WEIGHTGROUP_ANIM_EXPORT_MASK";
+															m_isMainClip = true;
+															m_isStretched = false;
+														}
+													}
+													m_keyCurves = {
+														m_class = "arkMidnightKeyCurve_Float";
+														m_object = {
+															m_interpMode = "ECI_CONST";
+															m_floatCurve = {
+																m_times = {
+																	num = 0;
+																}
+																m_values = {
+																	num = 0;
+																}
+																m_interpolationMode = "ECI_CONST";
+															}
+															m_times = {
+																num = 1;
+																item[0] = 0;
+															}
+															m_floatValues = {
+																num = 1;
+																item[0] = 1;
+															}
+														}
+													}
+												}
+											}
+											m_handle = {
+												sceneUID = 2;
+												groupUID = 1;
+												trackType = "EMTT_ANIM";
+											}
+											m_trackType = "EMTT_ANIM";
+										}
+									}
+									item[1] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 1;
+														trackType = "EMTT_EVENT";
+														keyUID = 1;
+													}
+													m_startTime = 583;
+													m_type = "EMKT_POINT";
+													m_priority = 0;
+													m_duration = -1;
+													m_category = "EMKC_EVENT";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropEvent";
+														m_object = {
+															m_event = "ARK_MDNT_MSG_SLASH_CAN_BE_INTERRUPTED";
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 2;
+												groupUID = 1;
+												trackType = "EMTT_EVENT";
+											}
+											m_trackType = "EMTT_EVENT";
+										}
+									}
+									item[2] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 1;
+														trackType = "EMTT_TIMEDEVENT";
+														keyUID = 1;
+													}
+													m_startTime = 270;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 158;
+													m_category = "EMKC_NUM";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropTimedEvent_WeaponActiveFrames";
+														m_object = {
+															m_eventType = "MELEE_WEAPON_ACTIVE_FRAMES";
+															m_slot = "WEAPON_SLOT_RIGHT";
+															m_forwardAttack = false;
+															m_triggerHeavyBlock = false;
+															m_damageFactor = 1;
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 2;
+												groupUID = 1;
+												trackType = "EMTT_TIMEDEVENT";
+											}
+											m_trackType = "EMTT_TIMEDEVENT";
+										}
+									}
+									item[3] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 1;
+														trackType = "EMTT_FX";
+														keyUID = 1;
+													}
+													m_startTime = 107;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 143;
+													m_category = "EMKC_FX";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropFx";
+														m_object = {
+															m_declFx = "models/effects/gameplay/combat/player_combat/trails/ply_sword_trail_01.fx";
+															m_attachmentSocketName = "weapon_attach_tag";
+															m_attachmentNormalAxis = "Z";
+															m_targetGroupName = "";
+															m_targetTagName = "";
+															m_updateFxPosition = true;
+															m_dontSpawnIfCulled = false;
+															m_stopOnTargetRemoval = false;
+															m_stopOnParentRemoval = true;
+															m_updateFxOnSeveredJoint = true;
+															m_stopMode = "STOP_LOOPING_ONLY";
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 2;
+												groupUID = 1;
+												trackType = "EMTT_FX";
+											}
+											m_trackType = "EMTT_FX";
+										}
+									}
+									item[4] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 2;
+												item[0] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 1;
+														trackType = "EMTT_SFX";
+														keyUID = 1;
+													}
+													m_startTime = 158;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 0;
+													m_category = "EMKC_STORYBOARD";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropSfx";
+														m_object = {
+															m_soundEvent = "sound_events/dishonored/player/snd_p_clothes_mvt_light_01_cue_ak";
+															m_aiPropagationStages = "";
+															m_stopEventOnInterruption = false;
+														}
+													}
+													m_keyCurves = NULL;
+												}
+												item[1] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 1;
+														trackType = "EMTT_SFX";
+														keyUID = 2;
+													}
+													m_startTime = 201;
+													m_type = "EMKT_CLIP";
+													m_priority = 0;
+													m_duration = 0;
+													m_category = "EMKC_STORYBOARD";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropSfx";
+														m_object = {
+															m_soundEvent = "sound_events/dead_hand/dh_weapon/dh_weapon_sword/bsp_weapon_dagger_whoosh";
+															m_aiPropagationStages = "";
+															m_stopEventOnInterruption = false;
+														}
+													}
+													m_keyCurves = NULL;
+												}
+											}
+											m_handle = {
+												sceneUID = 2;
+												groupUID = 1;
+												trackType = "EMTT_SFX";
+											}
+											m_trackType = "EMTT_SFX";
+										}
+									}
+								}
+								m_handle = {
+									sceneUID = 2;
+									groupUID = 1;
+								}
+								m_specificMD6s = {
+									num = 1;
+									item[0] = "models/characters/dlc01/player/billie/player_rightarm_billie.md6";
+								}
+								m_specificMD6 = NULL;
+								m_enabledResources = "EMER_SPEECH_ONLY EMER_OTHER EMER_RETARGETING";
+								m_isDisabled = false;
+							}
+						}
+						item[2] = {
+							m_class = "arkMidnightGroup";
+							m_object = {
+								m_lTracks = {
+									num = 1;
+									item[0] = {
+										m_class = "arkMidnightTrack";
+										m_object = {
+											m_keys = {
+												num = 1;
+												item[0] = {
+													m_handle = {
+														sceneUID = 2;
+														groupUID = 2;
+														trackType = "EMTT_ANIM";
+														keyUID = 1;
+													}
+													m_startTime = 0;
+													m_type = "EMKT_CLIP";
+													m_priority = 1;
+													m_duration = 833;
+													m_category = "EMKC_ANIM";
+													m_playingDirection = "EMPD_BOTH";
+													m_ignoreWhenSkipping = false;
+													m_keyProp = {
+														m_class = "arkMidnightKeyPropAnim";
+														m_object = {
+															m_AnimName = "dagger_slide_attack_right_a";
+															m_startOffset = 0;
+															m_endOffset = 0;
+															m_lMarker = {
+																num = 0;
+															}
+															m_bodyPart = "MD6_WEIGHTGROUP_ANIM_EXPORT_MASK";
+															m_isMainClip = false;
+															m_isStretched = false;
+														}
+													}
+													m_keyCurves = {
+														m_class = "arkMidnightKeyCurve_Float";
+														m_object = {
+															m_interpMode = "ECI_CONST";
+															m_floatCurve = {
+																m_times = {
+																	num = 0;
+																}
+																m_values = {
+																	num = 0;
+																}
+																m_interpolationMode = "ECI_CONST";
+															}
+															m_times = {
+																num = 1;
+																item[0] = 0;
+															}
+															m_floatValues = {
+																num = 1;
+																item[0] = 1;
+															}
+														}
+													}
+												}
+											}
+											m_handle = {
+												sceneUID = 2;
+												groupUID = 2;
+												trackType = "EMTT_ANIM";
+											}
+											m_trackType = "EMTT_ANIM";
+										}
+									}
+								}
+								m_handle = {
+									sceneUID = 2;
+									groupUID = 2;
+								}
+								m_specificMD6s = {
+									num = 1;
+									item[0] = "models/weapons/dlc01/player/billie/knife01/ply_billie_knife01.md6";
+								}
+								m_specificMD6 = NULL;
+								m_enabledResources = "EMER_SPEECH_ONLY EMER_OTHER EMER_RETARGETING";
+								m_isDisabled = false;
+							}
+						}
+					}
+					m_handle = {
+					}
+					m_objUID = {
+						m_objUID = 2;
+					}
+					m_properties = {
+						m_length = 833;
+						m_name = "Scene_2";
+						m_speechChecksum = 0;
+						m_forbidHoldToSkipScene = false;
+					}
+					m_nextElement = {
+						m_nextType = "EAMNT_FINAL";
+						m_nextCPoint = {
+						}
+					}
+				}
+			}
+		}
+		m_nodes = {
+			num = 2;
+			item[0] = {
+				m_class = "arkMidnightGraphPathNodeCondMD6";
+				m_object = {
+					m_nodeType = "EMNT_CONDMD6";
+					m_uid = {
+						m_objUID = 1;
+					}
+					m_properties = {
+						m_class = "arkMidnightGraphPathNodeCondMD6Prop";
+						m_object = {
+							m_nodeName = "MD6 on PlayerRightArm";
+							m_groupName = "PlayerRightArm";
+						}
+					}
+					m_next = {
+						num = 2;
+						item[0] = {
+							m_nextInfo = {
+								m_nextType = "EAMNT_SCENE";
+								m_nextCPoint = {
+									sceneUID = 1;
+									CPointType = "EMNCPT_INPUT";
+								}
+							}
+							m_md6 = "models/characters/dlc01/player/billie/player_rightarm_billie.md6";
+						}
+						item[1] = {
+							m_nextInfo = {
+								m_nextType = "EAMNT_NODE";
+								m_nextCPoint = {
+									nodeUID = 2;
+									CPointType = "EMNCPT_INPUT";
+								}
+							}
+							m_md6 = "models/characters/dlc01/player/billie/player_rightarm_void_billie.md6";
+						}
+					}
+				}
+			}
+			item[1] = {
+				m_class = "arkMidnightGraphPathNodeCondMD6";
+				m_object = {
+					m_nodeType = "EMNT_CONDMD6";
+					m_uid = {
+						m_objUID = 2;
+					}
+					m_properties = {
+						m_class = "arkMidnightGraphPathNodeCondMD6Prop";
+						m_object = {
+							m_nodeName = "MD6 on PlayerRightEquipment";
+							m_groupName = "PlayerRightEquipment";
+						}
+					}
+					m_next = {
+						num = 2;
+						item[0] = {
+							m_nextInfo = {
+								m_nextType = "EAMNT_SCENE";
+								m_nextCPoint = {
+									sceneUID = 1;
+									CPointType = "EMNCPT_INPUT";
+								}
+							}
+							m_md6 = "models/weapons/dlc01/player/billie/assassinsword01/ply_billie_assassinsword01.md6";
+						}
+						item[1] = {
+							m_nextInfo = {
+								m_nextType = "EAMNT_SCENE";
+								m_nextCPoint = {
+									sceneUID = 2;
+									CPointType = "EMNCPT_INPUT";
+								}
+							}
+							m_md6 = "models/weapons/dlc01/player/billie/knife01/ply_billie_knife01.md6";
+						}
+					}
+				}
+			}
+		}
+		m_fileVersion = "EMFV_MERGE_CURVE_AND_CURVETANGENT";
+		m_firstElement = {
+			m_nextType = "EAMNT_NODE";
+			m_nextCPoint = {
+				nodeUID = 1;
+				CPointType = "EMNCPT_INPUT";
+			}
+		}
+		m_sceneOut = {
+			m_groups = {
+				num = 1;
+				item[0] = {
+					m_class = "arkMidnightGroup";
+					m_object = {
+						m_lTracks = {
+							num = 1;
+							item[0] = {
+								m_class = "arkMidnightTrack";
+								m_object = {
+									m_keys = {
+										num = 0;
+									}
+									m_handle = {
+										sceneUID = 63;
+										groupUID = 2;
+										trackType = "EMTT_ANIM";
+									}
+									m_trackType = "EMTT_ANIM";
+								}
+							}
+						}
+						m_handle = {
+							sceneUID = 63;
+							groupUID = 2;
+						}
+						m_specificMD6s = {
+							num = 0;
+						}
+						m_specificMD6 = NULL;
+						m_enabledResources = "EMER_SPEECH_ONLY EMER_OTHER EMER_RETARGETING";
+						m_isDisabled = false;
+					}
+				}
+			}
+		}
+		m_graphPositions = {
+			num = 4;
+			item[0] = {
+				handle = {
+					sceneUID = 1;
+				}
+				x = 760;
+			}
+			item[1] = {
+				handle = {
+					nodeUID = 1;
+				}
+				x = 100;
+			}
+			item[2] = {
+				handle = {
+					nodeUID = 2;
+				}
+				x = 420;
+				y = 80;
+			}
+			item[3] = {
+				handle = {
+					sceneUID = 2;
+				}
+				x = 860;
+				y = 140;
+			}
+		}
+	}
+}

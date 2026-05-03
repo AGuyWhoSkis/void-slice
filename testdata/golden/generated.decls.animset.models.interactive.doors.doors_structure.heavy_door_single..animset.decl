@@ -1,0 +1,2560 @@
+{
+	previewmd6 "models/interactive/doors/doors_structure/doors.md6"
+	skeleton "models/interactive/doors/doors_structure/doors.md6skl"
+	groups {
+		"animations"
+	}
+	aliases {
+		group 0
+		alias {
+			name "player_changelevel_ccw"
+			anim "models/interactive/doors/animations/player_changelevel_ccw.md6anim"
+			checksum 220
+		}
+		group 0
+		alias {
+			name "player_changelevel_cw"
+			anim "models/interactive/doors/animations/player_changelevel_cw.md6anim"
+			checksum 67
+		}
+		group 0
+		alias {
+			name "player_close_ccw"
+			anim "models/interactive/doors/animations/player_close_ccw.md6anim"
+			checksum 43
+		}
+		group 0
+		alias {
+			name "player_close_cw"
+			anim "models/interactive/doors/animations/player_close_cw.md6anim"
+			checksum 1114
+		}
+		group 0
+		alias {
+			name "player_hit_ccw"
+			anim "models/interactive/doors/animations/player_hit_ccw.md6anim"
+			checksum 4
+		}
+		group 0
+		alias {
+			name "player_hit_cw"
+			anim "models/interactive/doors/animations/player_hit_cw.md6anim"
+			checksum 1
+		}
+		group 0
+		alias {
+			name "player_open_ccw"
+			anim "models/interactive/doors/animations/player_open_ccw.md6anim"
+			checksum 4898
+		}
+		group 0
+		alias {
+			name "player_open_cw"
+			anim "models/interactive/doors/animations/player_open_cw.md6anim"
+			checksum 44
+		}
+		group 0
+		alias {
+			name "player_rattle_ccw"
+			anim "models/interactive/doors/animations/player_rattle_ccw.md6anim"
+			checksum 41
+		}
+		group 0
+		alias {
+			name "player_rattle_cw"
+			anim "models/interactive/doors/animations/player_rattle_cw.md6anim"
+			checksum 41
+		}
+		group 0
+		alias {
+			name "player_windblast_ccw"
+			anim "models/interactive/doors/animations/player_windblast_ccw.md6anim"
+			checksum 6035
+		}
+		group 0
+		alias {
+			name "player_windblast_cw"
+			anim "models/interactive/doors/animations/player_windblast_cw.md6anim"
+			checksum 29
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_openclose_cw_right"
+			anim "models/interactive/doors/animations/door_empty_walk_door_openclose_cw_right.md6anim"
+			checksum 40
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_openclose_cw_left"
+			anim "models/interactive/doors/animations/door_empty_walk_door_openclose_cw_left.md6anim"
+			checksum 1
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_openclose_ccw_right"
+			anim "models/interactive/doors/animations/door_empty_walk_door_openclose_ccw_right.md6anim"
+			checksum 4036
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_openclose_ccw_left"
+			anim "models/interactive/doors/animations/door_empty_walk_door_openclose_ccw_left.md6anim"
+			checksum 1822
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_open_cw_left"
+			anim "models/interactive/doors/animations/door_empty_walk_door_open_cw_left.md6anim"
+			checksum 46
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_open_cw_right"
+			anim "models/interactive/doors/animations/door_empty_walk_door_open_cw_right.md6anim"
+			checksum 43
+		}
+		group 0
+		alias {
+			name "door_on_edge_flee_door_passopen_cw_right"
+			anim "models/interactive/doors/animations/door_on_edge_flee_door_passopen_cw_right.md6anim"
+			checksum 40
+		}
+		group 0
+		alias {
+			name "door_on_edge_flee_door_passopen_cw_left"
+			anim "models/interactive/doors/animations/door_on_edge_flee_door_passopen_cw_left.md6anim"
+			checksum 40
+		}
+		group 0
+		alias {
+			name "door_on_edge_flee_door_passopen_ccw_right"
+			anim "models/interactive/doors/animations/door_on_edge_flee_door_passopen_ccw_right.md6anim"
+			checksum 2917
+		}
+		group 0
+		alias {
+			name "door_on_edge_flee_door_passopen_ccw_left"
+			anim "models/interactive/doors/animations/door_on_edge_flee_door_passopen_ccw_left.md6anim"
+			checksum 2917
+		}
+		group 0
+		alias {
+			name "door_scared_flee_door_passopen_cw_right"
+			anim "models/interactive/doors/animations/door_scared_flee_door_passopen_cw_right.md6anim"
+			checksum 37
+		}
+		group 0
+		alias {
+			name "door_scared_flee_door_passopen_cw_left"
+			anim "models/interactive/doors/animations/door_scared_flee_door_passopen_cw_left.md6anim"
+			checksum 37
+		}
+		group 0
+		alias {
+			name "door_scared_flee_door_passopen_ccw_right"
+			anim "models/interactive/doors/animations/door_scared_flee_door_passopen_ccw_right.md6anim"
+			checksum 2919
+		}
+		group 0
+		alias {
+			name "door_scared_flee_door_passopen_ccw_left"
+			anim "models/interactive/doors/animations/door_scared_flee_door_passopen_ccw_left.md6anim"
+			checksum 2919
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_open_ccw_left"
+			anim "models/interactive/doors/animations/door_empty_walk_door_open_ccw_left.md6anim"
+			checksum 9240
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_open_ccw_right"
+			anim "models/interactive/doors/animations/door_empty_walk_door_open_ccw_right.md6anim"
+			checksum 10089
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_passclose_cw_right_out"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_cw_right_out.md6anim"
+			checksum 11613
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_passclose_cw_right"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_cw_right.md6anim"
+			checksum 17254
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_passclose_cw_left_out"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_cw_left_out.md6anim"
+			checksum 8833
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_passclose_cw_left"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_cw_left.md6anim"
+			checksum 22414
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_passclose_ccw_right_out"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_ccw_right_out.md6anim"
+			checksum 45
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_passclose_ccw_left_out"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_ccw_left_out.md6anim"
+			checksum 45
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_passclose_ccw_left"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_ccw_left.md6anim"
+			checksum 4
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_open_ccw_left"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_open_ccw_left.md6anim"
+			checksum 9240
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_open_ccw_right"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_open_ccw_right.md6anim"
+			checksum 9240
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_open_cw_left"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_open_cw_left.md6anim"
+			checksum 44
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_open_cw_right"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_open_cw_right.md6anim"
+			checksum 43
+		}
+		group 0
+		alias {
+			name "door_sword_walk_door_open_ccw_left"
+			anim "models/interactive/doors/animations/door_sword_walk_door_open_ccw_left.md6anim"
+			checksum 4370
+		}
+		group 0
+		alias {
+			name "door_sword_walk_door_open_ccw_right"
+			anim "models/interactive/doors/animations/door_sword_walk_door_open_ccw_right.md6anim"
+			checksum 4370
+		}
+		group 0
+		alias {
+			name "door_sword_walk_door_open_cw_left"
+			anim "models/interactive/doors/animations/door_sword_walk_door_open_cw_left.md6anim"
+			checksum 27
+		}
+		group 0
+		alias {
+			name "door_sword_walk_door_open_cw_right"
+			anim "models/interactive/doors/animations/door_sword_walk_door_open_cw_right.md6anim"
+			checksum 27
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_openclose_ccw_left"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_openclose_ccw_left.md6anim"
+			checksum 1822
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_openclose_ccw_right"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_openclose_ccw_right.md6anim"
+			checksum 4036
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_openclose_cw_right"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_openclose_cw_right.md6anim"
+			checksum 44
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_openclose_cw_left"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_openclose_cw_left.md6anim"
+			checksum 44
+		}
+		group 0
+		alias {
+			name "door_sword_patrol_walk_door_passclose_ccw_right"
+			anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_ccw_right.md6anim"
+			checksum 43
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_passclose_ccw_left"
+			anim "models/interactive/doors/animations/door_empty_walk_door_passclose_ccw_left.md6anim"
+			checksum 4
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_passclose_ccw_left_out"
+			anim "models/interactive/doors/animations/door_empty_walk_door_passclose_ccw_left_out.md6anim"
+			checksum 37
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_passclose_ccw_right"
+			anim "models/interactive/doors/animations/door_empty_walk_door_passclose_ccw_right.md6anim"
+			checksum 43
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_passclose_ccw_right_out"
+			anim "models/interactive/doors/animations/door_empty_walk_door_passclose_ccw_right_out.md6anim"
+			checksum 37
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_passclose_cw_left"
+			anim "models/interactive/doors/animations/door_empty_walk_door_passclose_cw_left.md6anim"
+			checksum 19756
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_passclose_cw_left_out"
+			anim "models/interactive/doors/animations/door_empty_walk_door_passclose_cw_left_out.md6anim"
+			checksum 8423
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_passclose_cw_right"
+			anim "models/interactive/doors/animations/door_empty_walk_door_passclose_cw_right.md6anim"
+			checksum 19569
+		}
+		group 0
+		alias {
+			name "door_empty_walk_door_passclose_cw_right_out"
+			anim "models/interactive/doors/animations/door_empty_walk_door_passclose_cw_right_out.md6anim"
+			checksum 7628
+		}
+	}
+	generatedFlags {
+		generateFootStepEvents
+		generateLocoData
+	}
+	events {
+		anim "models/interactive/doors/animations/player_open_ccw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 1
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/player_open_cw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 1
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/player_rattle_ccw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_generic_locked"
+			}
+			event "ae_postSoundEvent" {
+				frame 1
+				row 1
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 1
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/player_rattle_cw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_generic_locked"
+			}
+			event "ae_postSoundEvent" {
+				frame 1
+				row 1
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 1
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_walk_door_open_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 21
+				row 1
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 22
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 22
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_walk_door_open_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 21
+				row 1
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 22
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 22
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_walk_door_open_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 21
+				row 1
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 22
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 22
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_walk_door_open_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 21
+				row 1
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 22
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 22
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_openclose_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 37
+				row 4
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 51
+				row 5
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 102
+				row 7
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 129
+				row 6
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_openclose_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 38
+				row 4
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 52
+				row 5
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 123
+				row 7
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 145
+				row 6
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_openclose_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 39
+				row 4
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 53
+				row 5
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 117
+				row 7
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 144
+				row 6
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_passclose_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 87
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 118
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_passclose_ccw_left_out.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 55
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 75
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_passclose_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 101
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 118
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_passclose_ccw_right_out.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 58
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 75
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_passclose_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 86
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 117
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_passclose_cw_left_out.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 54
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 72
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_passclose_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 95
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 118
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_passclose_cw_right_out.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 51
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 70
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_openclose_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 39
+				row 4
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 53
+				row 5
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 108
+				row 7
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 131
+				row 6
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_openclose_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 31
+				row 4
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 45
+				row 5
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 117
+				row 7
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 146
+				row 6
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_openclose_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 37
+				row 4
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 51
+				row 5
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 113
+				row 7
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 140
+				row 6
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_openclose_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 41
+				row 4
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 55
+				row 5
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 120
+				row 7
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 145
+				row 6
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 93
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 116
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_ccw_left_out.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 63
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 85
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 91
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 114
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_ccw_right_out.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 56
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 74
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 96
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 132
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_cw_left_out.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 45
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 73
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 92
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 114
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_passclose_cw_right_out.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 61
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 86
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_open_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 37
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 51
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_open_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 45
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 59
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_open_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 42
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 56
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_open_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 39
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 53
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/door_empty_walk_door_openclose_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 35
+				row 4
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 49
+				row 5
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 109
+				row 7
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 131
+				row 6
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_open_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 42
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 56
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_open_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 38
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 52
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_open_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 38
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 52
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/door_sword_patrol_walk_door_open_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 40
+				row 2
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 54
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+		}
+		anim "models/interactive/doors/animations/player_windblast_ccw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 5
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+			event "ae_postSoundEvent" {
+				frame 5
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_waste_basket"
+			}
+			event "ae_postSoundEvent" {
+				frame 6
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 7
+				row 4
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/player_windblast_cw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 5
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+			event "ae_postSoundEvent" {
+				frame 5
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_waste_basket"
+			}
+			event "ae_postSoundEvent" {
+				frame 6
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 7
+				row 4
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/player_hit_ccw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 0
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+			event "ae_postSoundEvent" {
+				frame 1
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_waste_basket"
+			}
+			event "ae_postSoundEvent" {
+				frame 2
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 3
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/player_hit_cw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+			event "ae_postSoundEvent" {
+				frame 1
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_waste_basket"
+			}
+		}
+		anim "models/interactive/doors/animations/door_scared_flee_door_passopen_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 11
+				row 1
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 11
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 4
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/door_scared_flee_door_passopen_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 11
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 11
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/player_changelevel_ccw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 0
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_ui/bsp_ui_transition_door/bsp_ui_transition_door"
+			}
+		}
+		anim "models/interactive/doors/animations/player_changelevel_cw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 0
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_ui/bsp_ui_transition_door/bsp_ui_transition_door"
+			}
+		}
+		anim "models/interactive/doors/animations/door_on_edge_flee_door_passopen_ccw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 11
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_generic/bsp_fixint_door_kicked"
+			}
+		}
+		anim "models/interactive/doors/animations/player_close_ccw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 16
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/player_close_cw.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 1
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_close"
+			}
+			event "ae_postSoundEvent" {
+				frame 14
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_close"
+			}
+		}
+		anim "models/interactive/doors/animations/door_scared_flee_door_passopen_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 10
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 10
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 11
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 11
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/door_scared_flee_door_passopen_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 11
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 11
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/door_on_edge_flee_door_passopen_cw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 11
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 11
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/door_on_edge_flee_door_passopen_cw_right.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 11
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 11
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+		anim "models/interactive/doors/animations/door_on_edge_flee_door_passopen_ccw_left.md6anim" {
+			event "ae_postSoundEvent" {
+				frame 11
+				row 0
+				locked 0
+				string "handle_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 11
+				row 2
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_physmat/bsp_phys/bsp_phys_metal/bsp_phys_metal_drawers"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 1
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/bsp/bsp_fixint/bsp_fixint_doors/bsp_fixint_door_boat/bsp_fixint_door_boat_hinge_open"
+			}
+			event "ae_postSoundEvent" {
+				frame 12
+				row 3
+				locked 0
+				string "hinge_joint"
+				soundevent "sound_events/dishonored/physmat/impact/imp_fist/imp_fist_on_metal"
+			}
+		}
+	}
+	animGeneratedData {
+		aliasRef "player_changelevel_ccw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+			}
+		}
+		aliasRef "player_changelevel_cw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+			}
+		}
+		aliasRef "player_close_ccw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				ccw
+			}
+		}
+		aliasRef "player_close_cw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				cw
+			}
+		}
+		aliasRef "player_hit_ccw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+			}
+		}
+		aliasRef "player_hit_cw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+			}
+		}
+		aliasRef "player_open_ccw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				ccw
+			}
+		}
+		aliasRef "player_open_cw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				cw
+			}
+		}
+		aliasRef "player_rattle_ccw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+			}
+		}
+		aliasRef "player_rattle_cw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+			}
+		}
+		aliasRef "player_windblast_ccw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+			}
+		}
+		aliasRef "player_windblast_cw" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+			}
+		}
+		aliasRef "door_empty_walk_door_openclose_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				close_pull
+				cw
+				right
+			}
+		}
+		aliasRef "door_empty_walk_door_openclose_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				close_pull
+				cw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_openclose_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				close_pull
+				ccw
+				right
+			}
+		}
+		aliasRef "door_empty_walk_door_openclose_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				close_pull
+				ccw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_open_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				cw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_open_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				cw
+				right
+			}
+		}
+		aliasRef "door_on_edge_flee_door_passopen_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_push
+				cw
+				right
+			}
+		}
+		aliasRef "door_on_edge_flee_door_passopen_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_push
+				cw
+				left
+			}
+		}
+		aliasRef "door_on_edge_flee_door_passopen_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_push
+				ccw
+				right
+			}
+		}
+		aliasRef "door_on_edge_flee_door_passopen_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_push
+				ccw
+				left
+			}
+		}
+		aliasRef "door_scared_flee_door_passopen_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_push
+				cw
+				right
+			}
+		}
+		aliasRef "door_scared_flee_door_passopen_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_push
+				cw
+				left
+			}
+		}
+		aliasRef "door_scared_flee_door_passopen_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_push
+				ccw
+				right
+			}
+		}
+		aliasRef "door_scared_flee_door_passopen_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_push
+				ccw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_open_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				ccw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_open_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				ccw
+				right
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_passclose_cw_right_out" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_push
+				cw
+				right
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_passclose_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				cw
+				right
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_passclose_cw_left_out" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_push
+				cw
+				left
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_passclose_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				cw
+				left
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_passclose_ccw_right_out" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_push
+				ccw
+				right
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_passclose_ccw_left_out" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_push
+				ccw
+				left
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_passclose_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				ccw
+				left
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_open_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				ccw
+				left
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_open_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				ccw
+				right
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_open_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				cw
+				left
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_open_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				cw
+				right
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_walk_door_open_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				ccw
+				left
+				sword
+			}
+		}
+		aliasRef "door_sword_walk_door_open_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				ccw
+				right
+				sword
+			}
+		}
+		aliasRef "door_sword_walk_door_open_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				cw
+				left
+				sword
+			}
+		}
+		aliasRef "door_sword_walk_door_open_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				cw
+				right
+				sword
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_openclose_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				close_pull
+				ccw
+				left
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_openclose_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				close_pull
+				ccw
+				right
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_openclose_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				close_pull
+				cw
+				right
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_openclose_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				open_pull
+				close_pull
+				cw
+				left
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_sword_patrol_walk_door_passclose_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				ccw
+				right
+				sword
+				patrol
+			}
+		}
+		aliasRef "door_empty_walk_door_passclose_ccw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				ccw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_passclose_ccw_left_out" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_push
+				ccw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_passclose_ccw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				ccw
+				right
+			}
+		}
+		aliasRef "door_empty_walk_door_passclose_ccw_right_out" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_push
+				ccw
+				right
+			}
+		}
+		aliasRef "door_empty_walk_door_passclose_cw_left" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				cw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_passclose_cw_left_out" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_push
+				cw
+				left
+			}
+		}
+		aliasRef "door_empty_walk_door_passclose_cw_right" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_pull
+				cw
+				right
+			}
+		}
+		aliasRef "door_empty_walk_door_passclose_cw_right_out" {
+			animMovementProp {
+				startSpeed 0.000000
+				endSpeed 0.000000
+				averageSpeed 0.000000
+				startYaw 0.000000
+				endYaw 0.000000
+				averageTurnSpeed 0.000000
+				strafeYaw 0.000000
+				slopeAngle 0.000000
+				verticalMoveLength 0.000000
+			}
+			animTags {
+				close_push
+				cw
+				right
+			}
+		}
+	}
+}

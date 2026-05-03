@@ -1,0 +1,63 @@
+{
+	m_PhysicsMaterial		"contactsystem/env.stone"
+
+	version	6
+	state {
+	}
+
+	options {
+		hasBumpMap				1
+		hasSpecularMap			0
+		hasGlossMap			1
+		hasMetallicMap			0
+		extralayer		2
+		layer1_vtxcolormaskchannel		0
+		vtxcolormultiply		0
+		layer1_maskmode		2
+		fuzz/enable		0
+		layer1_mask_uvset		1
+		use_layer0_colorconstant		0
+		layer2_diffusereuselayer		0
+		layer2_glossreuselayer		0
+		layer2_vtxcolormaskchannel		1
+		use_layer2_colorconstant		0
+		layer2_mask_uvset		0
+		layer2_maskmode		2
+		hasocclusionmap		0
+		hasdetailbumpmap		1
+		isparticle		0
+	}
+
+	mainProgram				arkDefault
+
+	diffusemap				models/environment/archi/karnaca/nature/rock/cliff_bottom_01_d.tga
+	// bumpmap					#set tangent space normal texture here#
+	// specularmap				#set specular texture here#
+	// glossmap				#set gloss texture here#
+	// metallicmap				#set metallic texture here#
+	wardRoughness			{ 0, 1, 0, 0 }
+	metallicminmax		{ 0, 0, 0, 0 }
+	layer1_diffusemap		models/environment/archi/karnaca/nature/rock/cliff_bottom_02_d.tga
+	layer1_rescalevalues		{ 0.41361, 0.67539, 0, 0 }
+	layer1_maskmap		models/environment/archi/karnaca/nature/rock/cliff_bottom_02_m.tga
+	bumpmap		models/environment/archi/karnaca/nature/rock/cliff_bottom_01_n.tga
+	glossmap		models/environment/archi/karnaca/nature/rock/cliff_bottom_01_g.tga
+	layer1_bumpmap		models/environment/archi/karnaca/nature/rock/cliff_bottom_02_n.tga
+	layer1_glossmap		models/environment/archi/karnaca/nature/rock/cliff_bottom_02_g.tga
+	layer0_scalebias		{ 1, 1, 0, 0 }
+	layer1_scalebias		{ 1, 1, 0, 0 }
+		layer2_bumpmap		models/environment/archi/karnaca/nature/rock/cliff_middle_01_n.tga
+	layer2_diffusemap		models/environment/archi/karnaca/nature/rock/cliff_middle_01_d.tga
+	layer2_glossmap		models/environment/archi/karnaca/nature/rock/cliff_middle_01_g.tga
+	layer2_colorconstant		{ 1, 0.938686, 0.955974, 1 }
+	layer2_rescalevalues		{ 0.17801, 0.31414, 0, 0 }
+	layer2_scalebias		{ 1, 1, 0, 0 }
+	layer2_maskmap		models/environment/archi/karnaca/nature/rock/cliff_middle_01_m.tga
+	layer1_maskscalebias		{ 1, 1, 0, 0 }
+	sheen		{ -0.59596, 0, 0, 0 }
+	sheenimportance		{ 0.65625, 1, 1, 1 }
+	detailbumpmap		models/environment/archi/karnaca/nature/rock/rock_detail_01_n.tga
+	detailbumpmaptiling		{ 2, 2, 2, 2 }
+	detailbumpmapintensity		{ 0.5, 1, 1, 1 }
+	layer2_maskscalebias		{ 1, 1, 0, 0 }
+}
