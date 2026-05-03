@@ -1,6 +1,7 @@
 package lint_test
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"testing"
@@ -75,6 +76,37 @@ component {
 	require.NotEmpty(t, diags)
 	assert.Equal(t, lint.Warning, diags[0].Severity)
 	assert.Equal(t, "LINT_VE_INCONSISTENCY", diags[0].Code)
+}
+
+func TestDiagnosticCap_LintLevelCoversScan(t *testing.T) {
+	// '@' is not a recognized byte in scan — each one emits one VOID_SCAN
+	// "unknown byte" diagnostic. 20 of them with cap=5 proves the lint-level
+	// cap covers scan output (which the parse / validate caps do not).
+	src := bytes.Repeat([]byte{'@'}, 20)
+
+	full, err := lint.New().Lint("input", src)
+	require.NoError(t, err)
+	scanCount := 0
+	for _, d := range full {
+		if d.Code == "VOID_SCAN" {
+			scanCount++
+		}
+		assert.NotEqual(t, "PARSE_DIAGNOSTICS_TRUNCATED", d.Code,
+			"no truncation sentinel when uncapped")
+	}
+	assert.Equal(t, 20, scanCount, "uncapped lint must surface every scan diagnostic")
+
+	const cap = 5
+	capped, err := lint.NewWithOptions(lint.Options{MaxDiagnostics: cap}).Lint("input", src)
+	require.NoError(t, err)
+	require.Len(t, capped, cap)
+	assert.Equal(t, "PARSE_DIAGNOSTICS_TRUNCATED", capped[cap-1].Code,
+		"final entry must be the truncation sentinel")
+	assert.Equal(t, lint.Error, capped[cap-1].Severity)
+	for i := 0; i < cap-1; i++ {
+		assert.NotEqual(t, "PARSE_DIAGNOSTICS_TRUNCATED", capped[i].Code,
+			"non-final entries must be original scan diagnostics")
+	}
 }
 
 func TestBrokenDeclHasDiagnostics(t *testing.T) {

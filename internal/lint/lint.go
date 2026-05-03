@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"fmt"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -91,6 +92,15 @@ func (l *linter) Lint(filename string, src []byte) ([]Diagnostic, error) {
 	sort.Slice(out, func(i, j int) bool {
 		return out[i].Span.Start < out[j].Span.Start
 	})
+	if l.opts.MaxDiagnostics > 0 && len(out) > l.opts.MaxDiagnostics {
+		out = out[:l.opts.MaxDiagnostics]
+		out[len(out)-1] = Diagnostic{
+			Severity: Error,
+			Code:     string(parse.Codes.DIAGNOSTICS_TRUNCATED),
+			Span:     scan.NewSpan(len(src), len(src)),
+			Message:  fmt.Sprintf("diagnostic limit (%d) reached; further diagnostics omitted", l.opts.MaxDiagnostics),
+		}
+	}
 	return out, nil
 }
 
