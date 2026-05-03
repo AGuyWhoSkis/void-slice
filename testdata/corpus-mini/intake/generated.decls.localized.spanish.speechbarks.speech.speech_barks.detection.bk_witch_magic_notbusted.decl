@@ -1,0 +1,306 @@
+{
+	edit = {
+		meta_triggerRules = {
+			num = 15;
+			item[0] = {
+				m_barkID = 1;
+				m_ruleHandlerName = "components/characters/npc/breanna/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[1] = {
+				m_barkID = 2;
+				m_ruleHandlerName = "components/characters/npc/breanna/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[2] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/breanna/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[3] = {
+				m_barkID = 3;
+				m_ruleHandlerName = "components/characters/npc/breanna/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_STABLE_ATTENTION_STATE_CHANGED</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[4] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/breanna/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_STABLE_ATTENTION_STATE_CHANGED</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[5] = {
+				m_barkID = 1;
+				m_ruleHandlerName = "components/characters/npc/delilah_copperspoon/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[6] = {
+				m_barkID = 2;
+				m_ruleHandlerName = "components/characters/npc/delilah_copperspoon/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[7] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/delilah_copperspoon/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[8] = {
+				m_barkID = 3;
+				m_ruleHandlerName = "components/characters/npc/delilah_copperspoon/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_STABLE_ATTENTION_STATE_CHANGED</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[9] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/delilah_copperspoon/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_STABLE_ATTENTION_STATE_CHANGED</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[10] = {
+				m_barkID = 1;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[11] = {
+				m_barkID = 2;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[12] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow - Shudder";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_AMBIENT</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>distance from NPC to player</Run><Run Foreground=\'Blue\'>is lower or equal than</Run><Run Foreground=\'#A31515\'>4</Run><LineBreak /><Run Foreground=\'Navy\'>player is behind</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[13] = {
+				m_barkID = 3;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_STABLE_ATTENTION_STATE_CHANGED</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+			item[14] = {
+				m_barkID = 4;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_patrol.rulehandler";
+				m_ruleName = "Witness Shadow";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_STABLE_ATTENTION_STATE_CHANGED</Run><LineBreak /><Run Foreground=\'Navy\'>player is currently shadow walking</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak /><Run Foreground=\'Navy\'>player in npc\'s fov</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>true</Run><LineBreak />";
+			}
+		}
+		m_priority = 0;
+		m_hash = "ES_SPB6XS";
+		m_speechRoles = {
+			num = 1;
+			item[0] = {
+				m_character = "speech/character/generic/cult/witch_female";
+				m_friendlyName = "";
+			}
+		}
+		m_speechLines = {
+			num = 7;
+			item[0] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¿Qué ha sido ese escalofrío familiar\?";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 28;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "curious, feeling the shadowy player";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 1;
+				m_weight = 1;
+			}
+			item[1] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Mmm, he sentido algo...";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 22;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "^^";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "curious, feeling the shadowy player";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 2;
+				m_weight = 1;
+			}
+			item[2] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¿De verdad he visto...\?";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 17;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=\'";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "not sure she witnessed some magical disappearance or apparition";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 3;
+				m_weight = 1;
+			}
+			item[3] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¿Eh\?";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 3;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=\'";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "not sure she witnessed some magical disappearance or apparition";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 4;
+				m_weight = 1;
+			}
+			item[4] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¿Qué\? ¿De dónde han salido esas ratas\?";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 38;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "=&";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Suddenly sees dangerous rats (spawn by the player)";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 5;
+				m_weight = 1;
+			}
+			item[5] = {
+				m_defaultText = {
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "* shivers *";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 6;
+				m_weight = 1;
+			}
+			item[6] = {
+				m_defaultText = {
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "* shivers *";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 7;
+				m_weight = 1;
+			}
+		}
+		meta_prodState = 17;
+		m_faceFxGenPolicy = 0;
+	}
+}

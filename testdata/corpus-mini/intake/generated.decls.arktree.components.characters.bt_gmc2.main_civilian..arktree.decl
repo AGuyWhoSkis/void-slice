@@ -1,0 +1,437 @@
+{
+	edit = {
+		root = {
+			m_settings = {
+				m_class = "arkTreeNodeSettings_Selector";
+				m_object = {
+					m_stimSettings = {
+						m_handled = "BSP_STIM_BEHAVIOR_GOAL_CHANGED";
+						m_consumed = "";
+					}
+					m_comment = "";
+				}
+			}
+			m_children = {
+				num = 6;
+				item[0] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_monitor = false;
+									m_not = false;
+									m_wantedBehaviorGoal = "BHVG_PANIC";
+									m_operator = "ARK_OP_EQUAL";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_TreeReference";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_subTree = "components/characters/bt_gmc2/sub/civilian/panic.arktree";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+					}
+				}
+				item[1] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_monitor = false;
+									m_not = false;
+									m_wantedBehaviorGoal = "BHVG_BUSTED";
+									m_operator = "ARK_OP_EQUAL";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_TreeReference";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_subTree = "components/characters/bt_gmc2/sub/civilian/warn_player.arktree";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+					}
+				}
+				item[2] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_monitor = false;
+									m_not = false;
+									m_wantedBehaviorGoal = "BHVG_GO_TO_SAFETY";
+									m_operator = "ARK_OP_EQUAL";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Decorator_SetBarkRuleHandlerTag";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_tag = "AI_BARK_RULE_HANDLER_COMBAT";
+								}
+							}
+							m_children = {
+								num = 1;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Activator_LockMidnight";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_lockPriority = "PRIORITY_NPC_SEARCH";
+										}
+									}
+									m_children = {
+										num = 1;
+										item[0] = {
+											m_settings = {
+												m_class = "arkTreeNodeSettings_TreeReference";
+												m_object = {
+													m_stimSettings = {
+														m_handled = "";
+														m_consumed = "";
+													}
+													m_comment = "";
+													m_subTree = "components/characters/bt_gmc2/sub/civilian/gotosafety.arktree";
+												}
+											}
+											m_children = {
+												num = 0;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				item[3] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_monitor = false;
+									m_not = false;
+									m_wantedBehaviorGoal = "BHVG_SEARCH";
+									m_operator = "ARK_OP_EQUAL";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_TreeReference";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_subTree = "components/characters/bt_gmc2/sub/search_fake_interlocutor_missing.arktree";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+					}
+				}
+				item[4] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_monitor = false;
+									m_not = false;
+									m_wantedBehaviorGoal = "BHVG_TURNTOFACE";
+									m_operator = "ARK_OP_EQUAL";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Decorator_SetBarkRuleHandlerTag";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_tag = "AI_BARK_RULE_HANDLER_PATROL";
+								}
+							}
+							m_children = {
+								num = 1;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Decorator_SetBehaviorTag";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_behaviorTag = "BH_TURN_TO_FACE";
+										}
+									}
+									m_children = {
+										num = 1;
+										item[0] = {
+											m_settings = {
+												m_class = "arkTreeNodeSettings_Activator_LockMidnight";
+												m_object = {
+													m_stimSettings = {
+														m_handled = "";
+														m_consumed = "";
+													}
+													m_comment = "";
+													m_lockPriority = "PRIORITY_NPC_SEARCH";
+												}
+											}
+											m_children = {
+												num = 1;
+												item[0] = {
+													m_settings = {
+														m_class = "arkTreeNodeSettings_TreeReference";
+														m_object = {
+															m_stimSettings = {
+																m_handled = "";
+																m_consumed = "";
+															}
+															m_comment = "";
+															m_subTree = "components/characters/bt_gmc2/sub/civilian/suspicious.arktree";
+														}
+													}
+													m_children = {
+														num = 0;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				item[5] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_monitor = false;
+									m_not = false;
+									m_wantedBehaviorGoal = "BHVG_DEFAULT";
+									m_operator = "ARK_OP_GREATER_OR_EQUAL_THAN";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Parallel";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_returnOnFirstFail = false;
+									m_returnOnFirstSuccess = false;
+								}
+							}
+							m_children = {
+								num = 2;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Action_RequestPosture";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_stanceName = "STANCE_RELAXED";
+											m_equipStateName = "EQUIPESTATE_EMPTY";
+											m_delay = {
+												m_seconds = 0;
+											}
+											m_keepRequest = false;
+										}
+									}
+									m_children = {
+										num = 0;
+									}
+								}
+								item[1] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_TreeReference";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_subTree = "components/characters/bt_gmc2/sub/patrol.arktree";
+										}
+									}
+									m_children = {
+										num = 0;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

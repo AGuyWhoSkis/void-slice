@@ -1,0 +1,375 @@
+{
+	edit = {
+		root = {
+			m_settings = {
+				m_class = "arkTreeNodeSettings_Decorator_SetBehaviorTag";
+				m_object = {
+					m_stimSettings = {
+						m_handled = "";
+						m_consumed = "";
+					}
+					m_comment = "ST_COMBAT_FAR_TARGET";
+					m_behaviorTag = "ST_COMBAT_FAR_TARGET";
+				}
+			}
+			m_children = {
+				num = 1;
+				item[0] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Selector";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Sequence";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+								}
+							}
+							m_children = {
+								num = 2;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Action_CrewRequestRoles";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "Assign 30% of flankers at start";
+											m_satisfiedResult = "BTTR_SUCCESS";
+											m_unsatisfiedResult = "BTTR_RUNNING";
+											m_priority = "AI_CREW_ROLE_PRIORITY_REQUIRED_HIGH";
+											m_roleTag = "COMBAT_FAR_TARGET_FLANKER";
+											m_module = "arkCpntAICrewModule_CombatFlank";
+											m_amountType = "AI_CREW_ROLE_AMOUNT_RATIO";
+											m_num = 1;
+											m_ratio = {
+												value = 0.3000000119;
+											}
+											m_numRange = {
+												m_minValue = 0;
+												m_maxValue = 0;
+											}
+										}
+									}
+									m_children = {
+										num = 0;
+									}
+								}
+								item[1] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Parallel";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_returnOnFirstFail = true;
+											m_returnOnFirstSuccess = false;
+										}
+									}
+									m_children = {
+										num = 2;
+										item[0] = {
+											m_settings = {
+												m_class = "arkTreeNodeSettings_Condition_CrewNotification";
+												m_object = {
+													m_stimSettings = {
+														m_handled = "";
+														m_consumed = "";
+													}
+													m_comment = "Keep running until a flanker reached his destination...";
+													m_monitor = true;
+													m_not = false;
+													m_requiredTag = "CN_COMBAT_FLANKER_REACHED_DESTINATION";
+													m_operator = "ARK_OP_EQUAL";
+													m_requiredOccurence = 0;
+												}
+											}
+											m_children = {
+												num = 0;
+											}
+										}
+										item[1] = {
+											m_settings = {
+												m_class = "arkTreeNodeSettings_Parallel";
+												m_object = {
+													m_stimSettings = {
+														m_handled = "";
+														m_consumed = "";
+													}
+													m_comment = "";
+													m_returnOnFirstFail = true;
+													m_returnOnFirstSuccess = false;
+												}
+											}
+											m_children = {
+												num = 2;
+												item[0] = {
+													m_settings = {
+														m_class = "arkTreeNodeSettings_Sequence";
+														m_object = {
+															m_stimSettings = {
+																m_handled = "";
+																m_consumed = "";
+															}
+															m_comment = "";
+														}
+													}
+													m_children = {
+														num = 3;
+														item[0] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Monitor_SimpleTimer";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "";
+																	m_monitor = false;
+																	m_not = false;
+																	m_duration = {
+																		m_seconds = 0;
+																	}
+																	m_durationRange = {
+																		m_minValue = 1;
+																		m_maxValue = 1;
+																	}
+																}
+															}
+															m_children = {
+																num = 0;
+															}
+														}
+														item[1] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Decorator_AlwaysSucceed";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "";
+																}
+															}
+															m_children = {
+																num = 1;
+																item[0] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Condition_CrewRoleCount";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "... or there\'s no flanker anymore.";
+																			m_monitor = true;
+																			m_not = false;
+																			m_roleTag = "COMBAT_FAR_TARGET_FLANKER";
+																			m_operator = "ARK_OP_GREATER_THAN";
+																			m_count = 0;
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+															}
+														}
+														item[2] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Decorator_AlwaysFail";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "";
+																}
+															}
+															m_children = {
+																num = 1;
+																item[0] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Action_CrewCombatMarkTargetUnreachable";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "";
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+															}
+														}
+													}
+												}
+												item[1] = {
+													m_settings = {
+														m_class = "arkTreeNodeSettings_Parallel";
+														m_object = {
+															m_stimSettings = {
+																m_handled = "";
+																m_consumed = "";
+															}
+															m_comment = "";
+															m_returnOnFirstFail = true;
+															m_returnOnFirstSuccess = false;
+														}
+													}
+													m_children = {
+														num = 2;
+														item[0] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Action_CrewRequestRoles";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "Maintain all possible flankers (won\'t grab more)";
+																	m_satisfiedResult = "BTTR_RUNNING";
+																	m_unsatisfiedResult = "BTTR_FAILED";
+																	m_priority = "AI_CREW_ROLE_PRIORITY_OPTIONAL_VERY_HIGH";
+																	m_roleTag = "COMBAT_FAR_TARGET_FLANKER";
+																	m_module = "arkCpntAICrewModule_CombatFlank";
+																	m_amountType = "AI_CREW_ROLE_AMOUNT_RATIO";
+																	m_num = 1;
+																	m_ratio = {
+																		value = 1;
+																	}
+																	m_numRange = {
+																		m_minValue = 0;
+																		m_maxValue = 0;
+																	}
+																}
+															}
+															m_children = {
+																num = 0;
+															}
+														}
+														item[1] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Parallel";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "";
+																	m_returnOnFirstFail = false;
+																	m_returnOnFirstSuccess = false;
+																}
+															}
+															m_children = {
+																num = 2;
+																item[0] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Action_CrewRequestRoles";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "Then assign as many taunters as possible (up to the max)";
+																			m_satisfiedResult = "BTTR_RUNNING";
+																			m_unsatisfiedResult = "BTTR_FAILED";
+																			m_priority = "AI_CREW_ROLE_PRIORITY_OPTIONAL_HIGH";
+																			m_roleTag = "COMBAT_FAR_TARGET_TAUNTER";
+																			m_module = "arkCpntAICrewModule_CombatRanged";
+																			m_amountType = "AI_CREW_ROLE_AMOUNT_RATIO";
+																			m_num = 1;
+																			m_ratio = {
+																				value = 1;
+																			}
+																			m_numRange = {
+																				m_minValue = 0;
+																				m_maxValue = 0;
+																			}
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+																item[1] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Action_CrewRequestRoles";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "The rest are fakers";
+																			m_satisfiedResult = "BTTR_RUNNING";
+																			m_unsatisfiedResult = "BTTR_FAILED";
+																			m_priority = "AI_CREW_ROLE_PRIORITY_OPTIONAL_MEDIUM";
+																			m_roleTag = "COMBAT_FAKER";
+																			m_module = "arkCpntAICrewModule_CombatFake";
+																			m_amountType = "AI_CREW_ROLE_AMOUNT_RATIO";
+																			m_num = 1;
+																			m_ratio = {
+																				value = 1;
+																			}
+																			m_numRange = {
+																				m_minValue = 0;
+																				m_maxValue = 0;
+																			}
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Action_NotifyCrew";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_tag = "CN_COMBAT_FLANKER_REACHED_DESTINATION";
+									m_operation = "CLEAR";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

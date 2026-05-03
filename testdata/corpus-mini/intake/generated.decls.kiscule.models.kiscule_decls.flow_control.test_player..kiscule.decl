@@ -1,0 +1,449 @@
+{
+	edit = {
+		m_kiscule = {
+			m_version = 1;
+			m_lastPosition = {
+				x = 228;
+				y = 65;
+			}
+			m_lastZoomLevel = 1.3478095463;
+			m_nodes = {
+				num = 9;
+				item[0] = {
+					m_id = 1;
+					m_name = "arkKisculeNodeDeclEntry";
+					m_nodePos = {
+						x = 300;
+						y = 160;
+					}
+					m_parameters = {
+						m_class = "arkKisculeNodeDeclEntryParameters";
+						m_object = {
+							m_entryName = "In";
+							m_refreshGlobalVariables = true;
+						}
+					}
+					m_connectionPoints = {
+						num = 3;
+						item[0] = {
+							m_id = 1;
+							m_name = "Decl Entry";
+							m_type = "OutputRegular";
+							m_connections = {
+								num = 2;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 2;
+									m_endConnectionPointID = 1;
+								}
+								item[1] = {
+									m_id = 4;
+									m_endNodeID = 9;
+									m_endConnectionPointID = 2;
+								}
+							}
+						}
+						item[1] = {
+							m_id = 2;
+							m_name = "m_entryName";
+							m_type = "OutputVariable";
+						}
+						item[2] = {
+							m_id = 3;
+							m_name = "m_refreshGlobalVariables";
+							m_type = "OutputVariable";
+						}
+					}
+				}
+				item[1] = {
+					m_id = 2;
+					m_name = "arkKisculeNodeDeclExit";
+					m_nodePos = {
+						x = 880;
+						y = 160;
+					}
+					m_parameters = {
+						m_class = "arkKisculeNodeDeclExitParameters";
+						m_object = {
+							m_exitName = "In";
+						}
+					}
+					m_connectionPoints = {
+						num = 1;
+						item[0] = {
+							m_id = 1;
+							m_name = "Decl Exit";
+							m_type = "InputRegular";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 1;
+									m_endConnectionPointID = 1;
+								}
+							}
+						}
+					}
+				}
+				item[2] = {
+					m_id = 3;
+					m_name = "arkKisculeNodeDeclExit";
+					m_nodePos = {
+						x = 880;
+						y = 400;
+					}
+					m_parameters = {
+						m_class = "arkKisculeNodeDeclExitParameters";
+						m_object = {
+							m_exitName = "Corvo";
+						}
+					}
+					m_connectionPoints = {
+						num = 1;
+						item[0] = {
+							m_id = 1;
+							m_name = "Decl Exit";
+							m_type = "InputRegular";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 9;
+									m_endConnectionPointID = 5;
+								}
+							}
+						}
+					}
+				}
+				item[3] = {
+					m_id = 4;
+					m_name = "arkKisculeNodeDeclExit";
+					m_nodePos = {
+						x = 880;
+						y = 280;
+					}
+					m_parameters = {
+						m_class = "arkKisculeNodeDeclExitParameters";
+						m_object = {
+							m_exitName = "Emily";
+						}
+					}
+					m_connectionPoints = {
+						num = 1;
+						item[0] = {
+							m_id = 1;
+							m_name = "Decl Exit";
+							m_type = "InputRegular";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 9;
+									m_endConnectionPointID = 4;
+								}
+							}
+						}
+					}
+				}
+				item[4] = {
+					m_id = 6;
+					m_name = "arkKisculeNodeCompareEntityDef";
+					m_nodePos = {
+						x = 420;
+						y = 380;
+					}
+					m_parameters = {
+						m_class = "arkKisculeGraphNodeParametersDoubleEntityDef";
+						m_object = {
+							m_a = NULL;
+							m_b = NULL;
+						}
+					}
+					m_connectionPoints = {
+						num = 7;
+						item[0] = {
+							m_id = 1;
+							m_name = "A == B";
+							m_type = "OutputVariable";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 9;
+									m_endConnectionPointID = 6;
+								}
+							}
+						}
+						item[1] = {
+							m_id = 2;
+							m_name = "A != B";
+							m_type = "OutputVariable";
+						}
+						item[2] = {
+							m_id = 3;
+							m_name = "Inherits";
+							m_type = "OutputVariable";
+						}
+						item[3] = {
+							m_id = 4;
+							m_name = "m_a";
+							m_type = "InputVariable";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 8;
+									m_endConnectionPointID = 1;
+								}
+							}
+						}
+						item[4] = {
+							m_id = 5;
+							m_name = "m_a";
+							m_type = "OutputVariable";
+						}
+						item[5] = {
+							m_id = 6;
+							m_name = "m_b";
+							m_type = "InputVariable";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 10;
+									m_endConnectionPointID = 4;
+								}
+							}
+						}
+						item[6] = {
+							m_id = 7;
+							m_name = "m_b";
+							m_type = "OutputVariable";
+						}
+					}
+				}
+				item[5] = {
+					m_id = 7;
+					m_name = "arkKisculeNodePlayer";
+					m_nodePos = {
+						x = -60;
+						y = 460;
+					}
+					m_connectionPoints = {
+						num = 1;
+						item[0] = {
+							m_id = 1;
+							m_name = "Player";
+							m_type = "OutputVariable";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 8;
+									m_endConnectionPointID = 2;
+								}
+							}
+						}
+					}
+				}
+				item[6] = {
+					m_id = 8;
+					m_name = "arkKisculeNodeEntityToEntityDef";
+					m_nodePos = {
+						x = 160;
+						y = 440;
+					}
+					m_parameters = {
+						m_class = "arkKisculeNodeEntityToEntityDefParameters";
+						m_object = {
+							m_entity = "";
+						}
+					}
+					m_connectionPoints = {
+						num = 3;
+						item[0] = {
+							m_id = 1;
+							m_name = "EntityDef";
+							m_type = "OutputVariable";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 6;
+									m_endConnectionPointID = 4;
+								}
+							}
+						}
+						item[1] = {
+							m_id = 2;
+							m_name = "m_entity";
+							m_type = "InputVariable";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 7;
+									m_endConnectionPointID = 1;
+								}
+							}
+						}
+						item[2] = {
+							m_id = 3;
+							m_name = "m_entity";
+							m_type = "OutputVariable";
+						}
+					}
+				}
+				item[7] = {
+					m_id = 9;
+					m_name = "arkKisculeNodeActionTestBool";
+					m_nodePos = {
+						x = 660;
+						y = 260;
+					}
+					m_parameters = {
+						m_class = "arkKisculeGraphNodeParametersBool";
+						m_object = {
+							m_value = false;
+						}
+					}
+					m_connectionPoints = {
+						num = 7;
+						item[0] = {
+							m_id = 1;
+							m_name = "Out";
+							m_type = "OutputNotification";
+						}
+						item[1] = {
+							m_id = 2;
+							m_name = "In";
+							m_type = "InputRegular";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 1;
+									m_endConnectionPointID = 1;
+								}
+							}
+						}
+						item[2] = {
+							m_id = 3;
+							m_name = "In";
+							m_type = "OutputRegular";
+						}
+						item[3] = {
+							m_id = 4;
+							m_name = "True";
+							m_type = "OutputNotification";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 4;
+									m_endConnectionPointID = 1;
+								}
+							}
+						}
+						item[4] = {
+							m_id = 5;
+							m_name = "False";
+							m_type = "OutputNotification";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 3;
+									m_endConnectionPointID = 1;
+								}
+							}
+						}
+						item[5] = {
+							m_id = 6;
+							m_name = "m_value";
+							m_type = "InputVariable";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 6;
+									m_endConnectionPointID = 1;
+								}
+							}
+						}
+						item[6] = {
+							m_id = 7;
+							m_name = "m_value";
+							m_type = "OutputVariable";
+						}
+					}
+				}
+				item[8] = {
+					m_id = 10;
+					m_name = "arkKisculeNodeEntityDef";
+					m_nodePos = {
+						x = 200;
+						y = 520;
+					}
+					m_parameters = {
+						m_class = "arkKisculeVariableNode < idDeclEntityDef * >::arkKisculeVariableNodeParameterInternal";
+						m_object = {
+							m_value = "models/characters/player/dlc01/billy/body.def";
+						}
+					}
+					m_connectionPoints = {
+						num = 4;
+						item[0] = {
+							m_id = 1;
+							m_name = "Set";
+							m_type = "InputRegular";
+							m_visible = false;
+						}
+						item[1] = {
+							m_id = 2;
+							m_name = "Set";
+							m_type = "OutputRegular";
+							m_visible = false;
+						}
+						item[2] = {
+							m_id = 3;
+							m_name = "m_value";
+							m_type = "InputVariable";
+							m_visible = false;
+						}
+						item[3] = {
+							m_id = 4;
+							m_name = "m_value";
+							m_type = "OutputVariable";
+							m_connections = {
+								num = 1;
+								item[0] = {
+									m_id = 1;
+									m_endNodeID = 6;
+									m_endConnectionPointID = 6;
+								}
+							}
+						}
+					}
+				}
+			}
+			m_comments = {
+				num = 1;
+				item[0] = {
+					m_id = 11;
+					m_pos = {
+						x = -100;
+						y = 120;
+					}
+					m_size = {
+						x = 1120;
+						y = 480;
+					}
+					m_parameters = {
+						m_outsideText = "Testing if player is Corvo or Emily";
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,551 @@
+{
+	edit = {
+		meta_triggerRules = {
+			num = 11;
+			item[0] = {
+				m_barkID = 15;
+				m_ruleHandlerName = "components/characters/npc/base/rules/bark_search.rulehandler";
+				m_ruleName = "Special - See Corpse - Luca Abele PUT IN MAP";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_ENTER_BEHAVIOR</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Luca Abele</Run><LineBreak />";
+			}
+			item[1] = {
+				m_barkID = 15;
+				m_ruleHandlerName = "components/characters/npc/base/rules/bark_search_dunwall.rulehandler";
+				m_ruleName = "Special - See Corpse - Luca Abele PUT IN MAP";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_ENTER_BEHAVIOR</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Luca Abele</Run><LineBreak />";
+			}
+			item[2] = {
+				m_barkID = 16;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "Flee - Saw Corpse";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_FLEE</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Aramis Stilton</Run><LineBreak />";
+			}
+			item[3] = {
+				m_barkID = 17;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "Flee - Saw Corpse";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_FLEE</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Luca Abele</Run><LineBreak />";
+			}
+			item[4] = {
+				m_barkID = 30;
+				m_ruleHandlerName = "components/characters/npc/civilian/rules/bark_combat.rulehandler";
+				m_ruleName = "Flee - Saw Corpse";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_FLEE</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Luca Abele</Run><LineBreak />";
+			}
+			item[5] = {
+				m_barkID = 16;
+				m_ruleHandlerName = "components/characters/npc/hypatia/rules/bark_combat_hypatia.rulehandler";
+				m_ruleName = "Flee - Saw Corpse";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_FLEE</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Aramis Stilton</Run><LineBreak />";
+			}
+			item[6] = {
+				m_barkID = 17;
+				m_ruleHandlerName = "components/characters/npc/hypatia/rules/bark_combat_hypatia.rulehandler";
+				m_ruleName = "Flee - Saw Corpse";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_FLEE</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Luca Abele</Run><LineBreak />";
+			}
+			item[7] = {
+				m_barkID = 30;
+				m_ruleHandlerName = "components/characters/npc/hypatia/rules/bark_combat_hypatia.rulehandler";
+				m_ruleName = "Flee - Saw Corpse";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_FLEE</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Luca Abele</Run><LineBreak />";
+			}
+			item[8] = {
+				m_barkID = 13;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_search.rulehandler";
+				m_ruleName = "Spot Corpse - Ashworth";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_ENTER_BEHAVIOR</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Breanna Ashworth</Run><LineBreak /><Run Foreground=\'Navy\'>i witnessed a slaughter</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+			item[9] = {
+				m_barkID = 23;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_search.rulehandler";
+				m_ruleName = "Spot Corpse - Ashworth";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_ENTER_BEHAVIOR</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Breanna Ashworth</Run><LineBreak /><Run Foreground=\'Navy\'>i witnessed a slaughter</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+			item[10] = {
+				m_barkID = 25;
+				m_ruleHandlerName = "components/characters/npc/witch/rules/bark_search.rulehandler";
+				m_ruleName = "Spot Corpse - Ashworth";
+				m_ruleMarkup = "<Run Foreground=\'Navy\'>bark trigger</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>AI_BARK_TRIGGER_ENTER_BEHAVIOR</Run><LineBreak /><Run Foreground=\'Navy\'>last evidence on my primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>ATTEV_SEEING_CORPSE</Run><LineBreak /><Run Foreground=\'Navy\'>name of the primary attention target</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>Breanna Ashworth</Run><LineBreak /><Run Foreground=\'Navy\'>i witnessed a slaughter</Run><Run Foreground=\'Blue\'>is</Run><Run Foreground=\'#A31515\'>false</Run><LineBreak />";
+			}
+		}
+		m_priority = 0;
+		m_hash = "MX_9JGFBC";
+		m_speechRoles = {
+			num = 6;
+			item[0] = {
+				m_character = "speech/character/generic/generic_shared_howler";
+				m_friendlyName = "";
+			}
+			item[1] = {
+				m_character = "speech/character/generic/generic_shared_overseers";
+				m_friendlyName = "";
+			}
+			item[2] = {
+				m_character = "speech/character/generic/generic_shared_guard";
+				m_friendlyName = "";
+			}
+			item[3] = {
+				m_character = "speech/character/generic/guard/clockwork_a";
+				m_friendlyName = "";
+			}
+			item[4] = {
+				m_character = "speech/character/generic/cult/witch_female";
+				m_friendlyName = "";
+			}
+			item[5] = {
+				m_character = "speech/character/generic/generic_shared_civilian";
+				m_friendlyName = "";
+			}
+		}
+		m_speechLines = {
+			num = 25;
+			item[0] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡¿Qué\?! ¡Paolo! ¡¿Paolo está muerto\?!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Discovering the leader\'s body";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 3;
+				m_weight = 1;
+			}
+			item[1] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Alguien mató a Paolo!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Discovering the leader\'s body";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 19;
+				m_weight = 1;
+			}
+			item[2] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Alguien se cargó a Paolo!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 29;
+				m_weight = 1;
+			}
+			item[3] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡¿Qué\?! ¡Hermanos! ¡Alguien asesinó al vicedecano Byrne!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Discovering the leader\'s body";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 1;
+				m_ID = 4;
+				m_weight = 1;
+			}
+			item[4] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡El vicedecano Byrne fue asesinado!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Discovering the leader\'s body";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 1;
+				m_ID = 20;
+				m_weight = 1;
+			}
+			item[5] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Atacaron al vicedecano!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 1;
+				m_ID = 28;
+				m_weight = 1;
+			}
+			item[6] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Alguien mató a la doctora Hypatia!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 11;
+				m_weight = 1;
+			}
+			item[7] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Alguien atacó a la doctora Hypatia!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 24;
+				m_weight = 1;
+			}
+			item[8] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Es divertido de grabar. Esta reproducción se activará si la máquina detecta mi cadáver.";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Amused, distracted";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 3;
+				m_ID = 12;
+				m_weight = 1;
+			}
+			item[9] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡¿Qué\?! ¡Jindosh murió!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 18;
+				m_weight = 1;
+			}
+			item[10] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Jindosh fue asesinado!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 21;
+				m_weight = 1;
+			}
+			item[11] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Atacaron a Jindosh! ¡Alerta!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 27;
+				m_weight = 1;
+			}
+			item[12] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡No! ¡Breanna murió! ¡Delilah, ayúdanos!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "desperate";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 4;
+				m_ID = 13;
+				m_weight = 1;
+			}
+			item[13] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Breanna fue asesinada!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 4;
+				m_ID = 23;
+				m_weight = 1;
+			}
+			item[14] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Hermanas! ¡Atacaron a Breanna!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 4;
+				m_ID = 25;
+				m_weight = 1;
+			}
+			item[15] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡¿Qué\?! ¡Mataron a Stilton!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 14;
+				m_weight = 1;
+			}
+			item[16] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Atacaron al señor Stilton!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 26;
+				m_weight = 1;
+			}
+			item[17] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Ah! ¡El señor Stilton está muerto!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 5;
+				m_ID = 16;
+				m_weight = 1;
+			}
+			item[18] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡¿Qué\?! ¡Atacaron al duque! ¡Alerta!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 15;
+				m_weight = 1;
+			}
+			item[19] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Mataron al duque!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "TYPO";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 22;
+				m_weight = 1;
+			}
+			item[20] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Por el Vacío! ¡Atacaron al duque Luca!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 5;
+				m_ID = 17;
+				m_weight = 1;
+			}
+			item[21] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Alerta! ¡Alguien atacó al duque!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Shout";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "\'HELP\' INSTEAD OF \'ALERT\' IN SOME CASES";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 5;
+				m_ID = 30;
+				m_weight = 1;
+			}
+			item[22] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Tiene a Sokolov!";
+					}
+					m_recordingState = 2;
+				}
+				m_corvoText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Tiene a Sokolov!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Seeing the player carrying Sokolov unconscious and calling for help";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 2;
+				m_ID = 31;
+				m_weight = 1;
+			}
+			item[23] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Tiene a Paolo!";
+					}
+					m_recordingState = 2;
+				}
+				m_corvoText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Tiene a Paolo!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Seeing the player carrying their unconscious leader and calling for help";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 32;
+				m_weight = 1;
+			}
+			item[24] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Tiene al vicedecano!";
+					}
+					m_recordingState = 2;
+				}
+				m_corvoText = {
+					m_lines = {
+						num = 1;
+						item[0] = "¡Tiene al vicedecano!";
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_actorDirections = {
+					num = 1;
+					item[0] = "Seeing the player carrying their unconscious leader and calling for help";
+				}
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 1;
+				m_ID = 33;
+				m_weight = 1;
+			}
+		}
+		meta_contextDescription = {
+			num = 1;
+			item[0] = "Reactions to dead unique targets";
+		}
+		meta_prodState = 18;
+		m_faceFxGenPolicy = 0;
+	}
+}

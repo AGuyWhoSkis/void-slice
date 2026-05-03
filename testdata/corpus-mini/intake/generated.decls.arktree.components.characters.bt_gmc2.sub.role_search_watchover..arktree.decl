@@ -1,0 +1,171 @@
+{
+	edit = {
+		root = {
+			m_settings = {
+				m_class = "arkTreeNodeSettings_Parallel";
+				m_object = {
+					m_stimSettings = {
+						m_handled = "";
+						m_consumed = "";
+					}
+					m_comment = "";
+					m_returnOnFirstFail = true;
+					m_returnOnFirstSuccess = true;
+				}
+			}
+			m_children = {
+				num = 2;
+				item[0] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Condition_SearchTimer";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+							m_monitor = true;
+							m_not = true;
+						}
+					}
+					m_children = {
+						num = 0;
+					}
+				}
+				item[1] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "BSP_STIM_ATTENTION_TARGET_CHANGED";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Impulse";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "BSP_STIM_ATTENTION_TARGET_CHANGED";
+										m_consumed = "";
+									}
+									m_comment = "";
+								}
+							}
+							m_children = {
+								num = 1;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Decorator_AlwaysFail";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+										}
+									}
+									m_children = {
+										num = 1;
+										item[0] = {
+											m_settings = {
+												m_class = "arkTreeNodeSettings_Action_NotifyCrew";
+												m_object = {
+													m_stimSettings = {
+														m_handled = "";
+														m_consumed = "";
+													}
+													m_comment = "";
+													m_tag = "CN_SEARCH_WATCHOVER_SPOTTED";
+													m_operation = "INCREMENT";
+												}
+											}
+											m_children = {
+												num = 0;
+											}
+										}
+									}
+								}
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Parallel";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_returnOnFirstFail = true;
+									m_returnOnFirstSuccess = true;
+								}
+							}
+							m_children = {
+								num = 2;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Action_PlayMdntScene";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_sceneDecl = "midnight/gameplay/human/common/search/watchover.midnightscene";
+											m_fireAndForget = false;
+											m_succeedIfAlreadyPlaying = false;
+											m_waitForFastOut = false;
+											m_conditionSettings = {
+												m_boolConditionSettings = {
+													num = 0;
+												}
+												m_intConditionSettings = {
+													num = 0;
+												}
+											}
+										}
+									}
+									m_children = {
+										num = 0;
+									}
+								}
+								item[1] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Action_DebugLog";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_outputToEntityText = false;
+											m_outputToConsole = true;
+											m_returnImmediately = false;
+											m_displayTime = -1;
+											m_text = "Watching Over";
+											m_textColor = {
+												r = 0.3411760032;
+												g = 1;
+												b = 0.9215689898;
+												a = 1;
+											}
+											m_textScale = 0.150000006;
+										}
+									}
+									m_children = {
+										num = 0;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

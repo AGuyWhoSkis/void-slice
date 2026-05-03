@@ -1,0 +1,2313 @@
+{
+	edit = {
+		m_type = "RULE_TYPE_NPC_BARK";
+		m_rules = {
+			num = 34;
+			item[0] = {
+				m_name = "**********LOCO**********";
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[1] = {
+				m_name = "Loco - Mantle";
+				m_conditions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_CLIMB";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_bool";
+						m_object = {
+							m_variable = "rule.random.coin";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = true;
+						}
+					}
+				}
+				m_actions = {
+					num = 4;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 1;
+							m_lines = "speech/speech_barks/combat/bk_gen_loco";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 2;
+							m_lines = "speech/speech_barks/combat/bk_gen_loco";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 3;
+							m_lines = "speech/speech_barks/combat/bk_gen_loco";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/combat/bk_gen_loco";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[2] = {
+				m_name = "Loco - Vault";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_VAULT";
+						}
+					}
+				}
+				m_actions = {
+					num = 4;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 1;
+							m_lines = "speech/speech_barks/combat/bk_gen_loco";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 2;
+							m_lines = "speech/speech_barks/combat/bk_gen_loco";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 3;
+							m_lines = "speech/speech_barks/combat/bk_gen_loco";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/combat/bk_gen_loco";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[3] = {
+				m_name = "Loco - Fall";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_FALL";
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 19;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+				m_fallback = true;
+			}
+			item[4] = {
+				m_name = "Loco - Ragdoll Fall";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_UNCONTROLLED_FALL";
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 19;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+				m_fallback = true;
+			}
+			item[5] = {
+				m_name = "**********ENTER COMBAT**********";
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[6] = {
+				m_name = "Engage After Warning";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_BEHAVIOR_TAG_CHANGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAIBehaviorTag";
+						m_object = {
+							m_variable = "npc.behaviorTag.current";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "BH_COMBAT_ENGAGE";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkAIBehaviorTag";
+						m_object = {
+							m_variable = "npc.behaviorTag.previous";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "BH_WARN";
+						}
+					}
+				}
+				m_actions = {
+					num = 7;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 1;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 2;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 3;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[4] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[5] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 6;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[6] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[7] = {
+				m_name = "Engage Default";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_ENTER_BEHAVIOR";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAttentionMeterType_t";
+						m_object = {
+							m_variable = "bark.npc.attentionMeter";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATM_PLAYER";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkAIBehaviorTag";
+						m_object = {
+							m_variable = "npc.behaviorTag.current";
+							m_operator = "ARK_OP_DIFFERENT";
+							m_value = "BH_WARN";
+						}
+					}
+				}
+				m_actions = {
+					num = 4;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 1;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[8] = {
+				m_name = "Engage After Hearing Rally";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_BEHAVIOR_TAG_CHANGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAIBehaviorTag";
+						m_object = {
+							m_variable = "npc.behaviorTag.current";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "BH_COMBAT_ENGAGE";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkAttentionEvidence_t";
+						m_object = {
+							m_variable = "bark.npc.attentionTarget.lastEvidence";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATTEV_HEARD_COMBAT_RALLY";
+						}
+					}
+				}
+				m_actions = {
+					num = 4;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/combat/bk_work_entercombat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 13;
+							m_lines = "speech/speech_barks/combat/bk_gen_relationshipchange";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[9] = {
+				m_name = "Engage After Hearing Call for Help";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_BEHAVIOR_TAG_CHANGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAIBehaviorTag";
+						m_object = {
+							m_variable = "npc.behaviorTag.current";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "BH_COMBAT_ENGAGE";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkAttentionEvidence_t";
+						m_object = {
+							m_variable = "bark.npc.attentionTarget.lastEvidence";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATTEV_HEARD_THREATENED";
+						}
+					}
+				}
+				m_actions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 12;
+							m_lines = "speech/speech_barks/combat/bk_gen_relationshipchange";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 13;
+							m_lines = "speech/speech_barks/combat/bk_gen_relationshipchange";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[10] = {
+				m_name = "Engage After Hearing Call for Help";
+				m_conditions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_ENTER_BEHAVIOR";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAttentionEvidence_t";
+						m_object = {
+							m_variable = "bark.npc.attentionTarget.lastEvidence";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATTEV_HEARD_THREATENED";
+						}
+					}
+				}
+				m_actions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 12;
+							m_lines = "speech/speech_barks/combat/bk_gen_relationshipchange";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 13;
+							m_lines = "speech/speech_barks/combat/bk_gen_relationshipchange";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[11] = {
+				m_name = "Engage After Hearing Call for Help";
+				m_conditions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_ENTER_BEHAVIOR";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAttentionEvidence_t";
+						m_object = {
+							m_variable = "bark.npc.attentionTarget.lastEvidence";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATTEV_HEARD_NPC_FLEEING";
+						}
+					}
+				}
+				m_actions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 12;
+							m_lines = "speech/speech_barks/combat/bk_gen_relationshipchange";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 13;
+							m_lines = "speech/speech_barks/combat/bk_gen_relationshipchange";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[12] = {
+				m_name = "**********COMBAT**********";
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[13] = {
+				m_name = "First Attack";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_ATTACKING";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAttentionMeterType_t";
+						m_object = {
+							m_variable = "bark.npc.attentionMeter";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATM_PLAYER";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_int";
+						m_object = {
+							m_variable = "npc.attackCount";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = 1;
+						}
+					}
+				}
+				m_actions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 1;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 3;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[14] = {
+				m_name = "Attacking";
+				m_conditions = {
+					num = 4;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_ATTACKING";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAIAttackFamily_t";
+						m_object = {
+							m_variable = "npc.lastAttackFamily";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_ATTACK_FAMILY_MELEE";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_int";
+						m_object = {
+							m_variable = "npc.attackCount";
+							m_operator = "ARK_OP_GREATER_THAN";
+							m_value = 1;
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleCondition_bool";
+						m_object = {
+							m_variable = "rule.random.coin";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = true;
+						}
+					}
+				}
+				m_actions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 11;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_MEDIUM";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_ALWAYS";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 12;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_MEDIUM";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_ALWAYS";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_MEDIUM";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_player.gamesoundproperties";
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[15] = {
+				m_name = "Damaged - Default";
+				m_conditions = {
+					num = 5;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_DAMAGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAttentionMeterType_t";
+						m_object = {
+							m_variable = "bark.npc.attentionMeter";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATM_PLAYER";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkDamageType_t";
+						m_object = {
+							m_variable = "bark.npc.lastdamage.type";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "DAMAGETYPE_INSTANTKILL DAMAGETYPE_BOLT DAMAGETYPE_FLASH DAMAGETYPE_BLOWDUST DAMAGETYPE_WATER DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE DAMAGETYPE_PRE_SLEEP DAMAGETYPE_SHOVED";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleCondition_arkDamageType_t";
+						m_object = {
+							m_variable = "bark.npc.lastdamage.type";
+							m_operator = "ARK_OP_DIFFERENT";
+							m_value = "DAMAGETYPE_GRAPPLE";
+						}
+					}
+					item[4] = {
+						m_class = "arkRuleCondition_arkRatio";
+						m_object = {
+							m_variable = "bark.base.healthRatio";
+							m_operator = "ARK_OP_GREATER_THAN";
+							m_value = {
+								value = 0;
+							}
+						}
+					}
+				}
+				m_actions = {
+					num = 4;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 30;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_small_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 35;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_small_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 31;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_small_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 34;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_small_vs_player.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[16] = {
+				m_name = "Damaged - Windblast";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_DAMAGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkDamageType_t";
+						m_object = {
+							m_variable = "bark.npc.lastdamage.type";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "DAMAGETYPE_WINDBLAST";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkRatio";
+						m_object = {
+							m_variable = "bark.base.healthRatio";
+							m_operator = "ARK_OP_GREATER_THAN";
+							m_value = {
+								value = 0;
+							}
+						}
+					}
+				}
+				m_actions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 19;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "GRAPPLED";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_SELF";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_underattack.gamesoundproperties";
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 15;
+							m_lines = "speech/speech_barks/detection/bk_gen_surprise";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "GRAPPLED";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_SELF";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_underattack.gamesoundproperties";
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+				m_fallback = true;
+			}
+			item[17] = {
+				m_name = "Damaged - Electric";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_DAMAGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkDamageType_t";
+						m_object = {
+							m_variable = "bark.npc.lastdamage.type";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "DAMAGETYPE_ELECTRIC";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkRatio";
+						m_object = {
+							m_variable = "bark.base.healthRatio";
+							m_operator = "ARK_OP_GREATER_THAN";
+							m_value = {
+								value = 0;
+							}
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 33;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[18] = {
+				m_name = "Damaged - Animals";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_DAMAGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkDamageType_t";
+						m_object = {
+							m_variable = "bark.npc.lastdamage.type";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "DAMAGETYPE_RATBITE DAMAGETYPE_BLOODFLIES DAMAGETYPE_HOUNDBITE DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkRatio";
+						m_object = {
+							m_variable = "bark.base.healthRatio";
+							m_operator = "ARK_OP_GREATER_THAN";
+							m_value = {
+								value = 0.200000003;
+							}
+						}
+					}
+				}
+				m_actions = {
+					num = 4;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 32;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "BLOODFLY_HELP";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_npc.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/combat/bk_gen_devoured";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "BLOODFLY_HELP";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_npc.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/combat/bk_gen_devoured";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "BLOODFLY_HELP";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_npc.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 6;
+							m_lines = "speech/speech_barks/combat/bk_gen_devoured";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "BLOODFLY_HELP";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_combat_rally_vs_npc.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[19] = {
+				m_name = "Damaged - Immolation";
+				m_conditions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_DAMAGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkDamageType_t";
+						m_object = {
+							m_variable = "bark.npc.lastdamage.type";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "DAMAGETYPE_IMMOLATE DAMAGETYPE_FIRE";
+						}
+					}
+				}
+				m_actions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 32;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_burning.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/combat/bk_gen_devoured";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_burning.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 6;
+							m_lines = "speech/speech_barks/combat/bk_gen_devoured";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_burning.gamesoundproperties";
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[20] = {
+				m_name = "Burning Venom";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_DAMAGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkDamageType_t";
+						m_object = {
+							m_variable = "bark.npc.lastdamage.type";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "DAMAGETYPE_BURNING_VENOM";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkRatio";
+						m_object = {
+							m_variable = "bark.base.healthRatio";
+							m_operator = "ARK_OP_GREATER_THAN";
+							m_value = {
+								value = 0;
+							}
+						}
+					}
+				}
+				m_actions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 36;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "DAMAGE_VENOM";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_SELF";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 14;
+							m_lines = "speech/speech_barks/detection/bk_gen_magic_notbusted";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "DAMAGE_VENOM";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_SELF";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[21] = {
+				m_name = "Burning Venom";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_FOLLOWUP";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_idAtomicString";
+						m_object = {
+							m_variable = "bark.base.lastReceivedFollowupTag";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "DAMAGE_VENOM";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkRatio";
+						m_object = {
+							m_variable = "bark.base.healthRatio";
+							m_operator = "ARK_OP_GREATER_THAN";
+							m_value = {
+								value = 0;
+							}
+						}
+					}
+				}
+				m_actions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 32;
+							m_lines = "speech/speech_barks/combat/bk_gen_takingdamage";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/combat/bk_gen_devoured";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 6;
+							m_lines = "speech/speech_barks/combat/bk_gen_devoured";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[22] = {
+				m_name = "Coming to Help";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_FOLLOWUP";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkBarkFollowupTag";
+						m_object = {
+							m_variable = "bark.base.lastReceivedFollowupTag";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "BLOODFLY_HELP";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_arkAttentionMeterType_t";
+						m_object = {
+							m_variable = "bark.npc.attentionMeter";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATM_NPCS";
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 17;
+							m_lines = "speech/speech_barks/combat/bk_gen_devoured";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[23] = {
+				m_name = "Death";
+				m_conditions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_DAMAGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkRatio";
+						m_object = {
+							m_variable = "bark.base.healthRatio";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = {
+								value = 0;
+							}
+						}
+					}
+				}
+				m_actions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 10;
+							m_lines = "speech/speech_barks/combat/bk_gen_death";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_ALWAYS";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 8;
+							m_lines = "speech/speech_barks/combat/bk_gen_death";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_RARELY";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 2;
+							m_lines = "speech/speech_barks/combat/bk_gen_death";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_RARELY";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[24] = {
+				m_name = "Witness Magic";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_WITNESS_MAGIC";
+						}
+					}
+				}
+				m_actions = {
+					num = 6;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 1;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 2;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 3;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[4] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[5] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 6;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[25] = {
+				m_name = "Witness Death";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAttentionEvidence_t";
+						m_object = {
+							m_variable = "bark.npc.crew.searchEvidence";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATTEV_WITNESS_DEATH";
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 8;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_OFTEN";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[26] = {
+				m_name = "Player Killed";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_PLAYER_DIED";
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[27] = {
+				m_name = "Grappled";
+				m_conditions = {
+					num = 3;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_GRAPPLED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkRatio";
+						m_object = {
+							m_variable = "bark.base.healthRatio";
+							m_operator = "ARK_OP_GREATER_THAN";
+							m_value = {
+								value = 0;
+							}
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleCondition_bool";
+						m_object = {
+							m_variable = "lib.true";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = true;
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 19;
+							m_lines = "speech/speech_barks/combat/bk_gen_witnessmagic";
+							m_barkPriority = "PRIORITY_DAMAGED";
+							m_followUpProperties = {
+								m_followupTag = "GRAPPLED";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_SELF";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = "npc/aisoundproperties/aisound_underattack.gamesoundproperties";
+							m_frequency = "BARK_ALMOST_NEVER";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+				m_fallback = true;
+			}
+			item[28] = {
+				m_name = "FollowUp Grappled";
+				m_conditions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_FOLLOWUP";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_idAtomicString";
+						m_object = {
+							m_variable = "bark.base.lastReceivedFollowupTag";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "GRAPPLED";
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 3;
+							m_lines = "speech/speech_barks/detection/bk_gen_surprise";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_OFTEN";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[29] = {
+				m_name = "Player flee";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_PLAYER_FLEE";
+						}
+					}
+				}
+				m_actions = {
+					num = 8;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 9;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 10;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/search/bk_work_search";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 3;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[4] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[5] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[6] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 6;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[7] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[30] = {
+				m_name = "Player flee";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_GIVEUP";
+						}
+					}
+				}
+				m_actions = {
+					num = 8;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 9;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 10;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/search/bk_work_search";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 3;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[4] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[5] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[6] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 6;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[7] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/detection/bk_work_warn_giveup";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[31] = {
+				m_name = "Grenade";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_IN_GRENADE_RANGE";
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 4;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_VERYHIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[32] = {
+				m_name = "Behind Player";
+				m_conditions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_COMBAT_BLIND_SPOT";
+						}
+					}
+				}
+				m_actions = {
+					num = 1;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 2;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_DEFAULT";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_RARELY";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+			item[33] = {
+				m_name = "Lost Player";
+				m_conditions = {
+					num = 2;
+					item[0] = {
+						m_class = "arkRuleCondition_arkAIBarkTrigger_t";
+						m_object = {
+							m_variable = "bark.base.trigger";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "AI_BARK_TRIGGER_ATT_TARGET_CHANGED";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleCondition_arkAttentionEvidence_t";
+						m_object = {
+							m_variable = "bark.npc.attentionTarget.mostRelevantEvidence";
+							m_operator = "ARK_OP_EQUAL";
+							m_value = "ATTEV_LOST_PLAYER";
+						}
+					}
+				}
+				m_actions = {
+					num = 6;
+					item[0] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 6;
+							m_lines = "speech/speech_barks/search/bk_work_search";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[1] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 5;
+							m_lines = "speech/speech_barks/search/bk_work_search";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[2] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 7;
+							m_lines = "speech/speech_barks/search/bk_work_search";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[3] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 9;
+							m_lines = "speech/speech_barks/search/bk_work_search";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[4] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 9;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+					item[5] = {
+						m_class = "arkRuleAction_BarkOutcome";
+						m_object = {
+							m_lineID = 10;
+							m_lines = "speech/speech_barks/combat/bk_work_combat";
+							m_barkPriority = "PRIORITY_HIGH";
+							m_followUpProperties = {
+								m_followupTag = "";
+								m_followupTarget = "ARK_BARK_FOLLOWUP_NEAREST_ALLY";
+								m_followupTargetCount = 1;
+							}
+							m_gameProperties = NULL;
+							m_frequency = "BARK_SOMETIMES";
+						}
+					}
+				}
+				m_executionPolicy = "RULE_EXEC_SHUFFLE";
+			}
+		}
+		m_version = 20;
+	}
+}

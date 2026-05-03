@@ -1,0 +1,456 @@
+{
+	newstyle
+
+	options {
+	}
+
+	state {
+		blend	ONE ONE
+		blendOp	ADD
+		depthfunc EQUAL
+		depthwrite 0
+	}
+
+	hlsl_prefix {
+		#include <vertex>
+		#include <BRDF_skin>			// BRDF model must be included before lighting!
+		#include <lighting>
+		#include <arkDefaultHelpers>
+		#include <materialEffects>
+		#include <fogHelpers>
+
+		// billy.khan - this whole algorithm should be refactored - at the bare minimum a billateral
+		//				blur should be used to bring the number of taps down.  We ran out of time so we 
+		//				are reducing the number of taps down while minimizing the change in look for the consoles
+		//				Because we didn't have direct access to the original equation that computes the tap weights, 
+		//				we are reusing the original tap weights for the new poisson tap uv offsets.
+		//				The difference in look should be marginal.
+		// 16 Taps
+		static const int numSkinProfileSamples16 = 16;
+		static const float2 skinProfileSamples16[16] = {
+			float2( 0.0f, 0.0f ),
+			float2( -0.92189244736f, 0.383776181847f ),
+			float2( 0.615123620969f, -0.77755633665f ),
+			float2( -0.733555886835f, -0.675457857847f ),
+			float2( 0.764136724988f, 0.609827167987f ),
+			float2( -0.149439643212f, 0.956035549263f ),
+			float2( -0.102636064239f, -0.910026781864f ),
+			float2( 0.946464901081f, -0.0996148239935f ),
+			float2( -0.969984234995f, -0.19219689576f ),
+			float2( 0.442960542643f, -0.239244791249f ),
+			float2( -0.337834879456f, 0.401962533405f ),
+			float2( 0.302444897154f, 0.42362702828f ),
+			float2( -0.260241947751f, -0.437158375824f ),
+			float2( -0.421322462721f, -0.0203921297661f ),
+			float2( 0.209219765057f, -0.592766364697f ),
+			float2( 0.402556073114f, 0.867384696673f ),
+		};
+
+#if defined ( PC ) 
+		// For testing purposes - once it is decided which version should be used for PC 
+		// The other arrays should be deleted because of vgpr pressure
+		// The whole algorithm needs to be refactored post ship.  At the bare minimum a billateral blur should be used.
+
+		// 23 taps
+		static const int numSkinProfileSamples23 = 23;
+		static const float2 skinProfileSamples23[23] = {
+			float2( 0.0f, 0.0f ),
+			float2( 0.14831636927f, 0.985186297214f ),
+			float2( 0.317915734014f, -0.94708063259f ),
+			float2( -0.990148203517f, -0.0394431449015f ),
+			float2( 0.966769170792f, -0.213493550956f ),
+			float2( -0.590149996407f, -0.767087670021f ),
+			float2( -0.629033497951f, 0.648047622853f ),
+			float2( 0.749577652481f, 0.530212540775f ),
+			float2( -0.500612761738f, 0.0869523387263f ),
+			float2( -0.0650609467782f, -0.519965457993f ),
+			float2( 0.154750281747f, 0.484459673899f ),
+			float2( 0.525807195778f, -0.466282981231f ),
+			float2( 0.531709037292f, -0.00285860970581f ),
+			float2( -0.0942401372617f, -0.985692894961f ),
+			float2( -0.215248420992f, 0.735803756126f ),
+			float2( -0.924055950806f, 0.35423081207f ),
+			float2( -0.689596370489f, -0.361485182803f ),
+			float2( 0.502201578426f, 0.836021385711f ),
+			float2( 0.955955138267f, 0.220771815778f ),
+			float2( 0.249680883812f, -0.638899353193f ),
+			float2( -0.333112628488f, 0.39528830357f ),
+			float2( 0.500957202285f, 0.313052968113f ),
+			float2( -0.386948828863f, -0.320305351586f ),
+		};
+
+		// 46 taps
+		static const int numSkinProfileSamples46 = 46;
+		static const float2 skinProfileSamples46[46] = {
+			float2( 0.0f, 0.0f ),
+			float2( 0.203516053635f, 0.979018633865f ),
+			float2( -0.573550737615f, -0.816368508313f ),
+			float2( 0.774371561284f, -0.624775421425f ),
+			float2( -0.910972443631f, 0.0625493257918f ),
+			float2( 0.824860106882f, 0.398555746804f ),
+			float2( -0.544195678902f, 0.799575805647f ),
+			float2( 0.201379351794f, -0.970481710497f ),
+			float2( 0.594247985965f, -0.120721126765f ),
+			float2( -0.405307737527f, -0.314275624484f ),
+			float2( -0.084915937535f, 0.495581068847f ),
+			float2( 0.282917905018f, -0.470724136857f ),
+			float2( -0.876101160272f, -0.479263381688f ),
+			float2( 0.312256851369f, 0.329286256308f ),
+			float2( -0.480391728746f, 0.294665488766f ),
+			float2( -0.844959072863f, 0.50463945522f ),
+			float2( -0.157169033722f, 0.891863223507f ),
+			float2( -0.0966408960151f, -0.652120559567f ),
+			float2( 0.561738313087f, 0.777859482504f ),
+			float2( 0.94242585385f, 0.0271556882605f ),
+			float2( -0.580005029395f, -0.00804243461495f ),
+			float2( 0.92736028119f, -0.292484081285f ),
+			float2( -0.0143849496278f, -0.328475015321f ),
+			float2( 0.304831423361f, 0.0132690341757f ),
+			float2( -0.237668907422f, -0.963738815683f ),
+			float2( 0.57890041204f, 0.164567252139f ),
+			float2( 0.249293401918f, 0.60711264675f ),
+			float2( 0.488159664488f, -0.853602804974f ),
+			float2( -0.793536803331f, -0.202170332418f ),
+			float2( -0.248217306854f, 0.107183830838f ),
+			float2( 0.581960050362f, 0.48206583422f ),
+			float2( -0.730990650273f, 0.277542579116f ),
+			float2( -0.497358734518f, -0.555789282788f ),
+			float2( -0.371376912227f, 0.570196110733f ),
+			float2( 0.53602805766f, -0.442197474303f ),
+			float2( 0.0407454178537f, 0.235642843227f ),
+			float2( 0.274689083612f, -0.738346589319f ),
+			float2( -0.611832617827f, 0.491173932407f ),
+			float2( 0.233717777961f, -0.262405940742f ),
+			float2( 0.0636644378346f, 0.766825784043f ),
+			float2( -0.225748133948f, 0.339385942877f ),
+			float2( -0.627761759974f, -0.37555779378f ),
+			float2( -0.217230791974f, -0.427728231269f ),
+			float2( -0.0232203167849f, -0.889440300734f ),
+			float2( -0.251040256392f, -0.143716087785f ),
+			float2( 0.735671656632f, -0.377227044299f ),
+		};
+
+		static const int numSkinProfileSamples92 = 92;
+		static const float2 skinProfileSamples92[92] = {
+			float2( 0.000000, 0.000000 ),
+			float2( 0.261544, -0.214057 ),
+			float2( 0.189276, 0.359203 ),
+			float2( -0.424879, 0.103702 ),
+			float2( -0.249214, -0.458083 ),
+			float2( -0.126163, 0.507767 ),
+			float2( 0.495071, 0.262032 ),
+			float2( 0.556352, -0.066713 ),
+			float2( -0.554277, -0.239570 ),
+			float2( 0.183783, -0.576739 ),
+			float2( 0.165838, 0.702719 ),
+			float2( 0.638386, -0.379589 ),
+			float2( -0.633869, 0.465529 ),
+			float2( -0.082461, -0.808313 ),
+			float2( 0.473953, -0.729209 ),
+			float2( 0.679281, 0.573687 ),
+			float2( -0.225166, 0.865322 ),
+			float2( -0.888882, 0.245308 ),
+			float2( -0.953093, -0.160100 ),
+			float2( 0.966643, 0.027039 ),
+			float2( -0.748131, -0.691977 ),
+			float2( 0.166936, -1.013520 ),
+			float2( 0.975921, 0.401562 ),
+			float2( -0.558306, 0.897183 ),
+			float2( 0.582598, 0.893521 ),
+			float2( 0.959807, -0.475906 ),
+			float2( -0.322581, -1.037080 ),
+			float2( 0.601642, -1.040498 ),
+			float2( 0.270943, 1.193335 ),
+			float2( -1.049409, 0.637654 ),
+			float2( 0.891079, -0.874966 ),
+			float2( -1.255226, -0.025452 ),
+			float2( -1.077364, -0.750694 ),
+			float2( -0.755211, -1.095675 ),
+			float2( 0.144352, -1.341533 ),
+			float2( -0.940153, 0.979217 ),
+			float2( -0.172307, 1.361064 ),
+			float2( -0.513016, 1.280129 ),
+			float2( 1.347636, -0.463820 ),
+			float2( 1.379254, 0.365307 ),
+			float2( -0.505936, -1.336283 ),
+			float2( -1.395612, -0.349071 ),
+			float2( 1.205542, -0.804163 ),
+			float2( 1.004364, 1.045869 ),
+			float2( -1.433699, 0.241035 ),
+			float2( 1.235084, 0.775719 ),
+			float2( 1.503525, -0.101138 ),
+			float2( 0.850917, -1.258400 ),
+			float2( 0.612018, 1.401593 ),
+			float2( -0.191717, -1.562365 ),
+			float2( -1.477279, 0.643879 ),
+			float2( -1.250587, -1.034272 ),
+			float2( -1.463851, -0.729820 ),
+			float2( 1.178198, -1.146947 ),
+			float2( 0.329417, 1.614002 ),
+			float2( -1.024873, -1.292581 ),
+			float2( 0.001892, 1.653798 ),
+			float2( 0.580401, -1.580187 ),
+			float2( 1.681753, -0.388989 ),
+			float2( -1.419660, 0.998749 ),
+			float2( 1.592029, 0.722495 ),
+			float2( -1.693594, -0.474197 ),
+			float2( -0.643635, 1.640736 ),
+			float2( 0.913541, 1.509506 ),
+			float2( -1.085543, 1.395367 ),
+			float2( 1.236915, 1.285134 ),
+			float2( -1.791986, 0.102237 ),
+			float2( -0.699545, -1.688101 ),
+			float2( 1.028779, -1.555773 ),
+			float2( -0.400342, -1.855708 ),
+			float2( 0.128605, -1.908445 ),
+			float2( 1.929563, 0.110782 ),
+			float2( -0.428785, 1.895505 ),
+			float2( 0.697714, 1.819086 ),
+			float2( 1.899777, 0.441847 ),
+			float2( -1.868038, 0.586505 ),
+			float2( -1.426252, -1.348491 ),
+			float2( -0.979949, 1.702139 ),
+			float2( 1.350200, -1.432722 ),
+			float2( 0.456130, -1.915281 ),
+			float2( 0.372631, 1.939207 ),
+			float2( -1.125462, -1.634022 ),
+			float2( -1.737297, -0.964568 ),
+			float2( -0.004089, 1.987426 ),
+			float2( -1.441023, 1.368755 ),
+			float2( 1.791620, -0.866787 ),
+			float2( 0.814051, -1.817499 ),
+			float2( 1.599353, -1.186621 ),
+			float2( 1.630604, 1.145238 ),
+			float2( -1.745476, 0.964568 ),
+			float2( -1.992553, -0.156682 ),
+			float2( 1.981567, -0.264107 ),
+		};
+#endif
+
+#if defined( PC )
+		// on PC we can toggle between quality settings so keep all weights
+		static const float3 skinProfileWeights[92] = {
+#else 
+		static const float3 skinProfileWeights[16] = {
+#endif
+			float3( 4.292275, 8.099651, 10.208315 ), //dist=0.000000
+			float3( 0.884708, 1.110535, 0.740042 ), //dist=0.337972
+			float3( 0.787022, 0.848465, 0.503994 ), //dist=0.406020
+			float3( 0.747689, 0.745830, 0.416359 ), //dist=0.437351
+
+			float3( 0.655842, 0.520428, 0.234269 ), //dist=0.521486
+			float3( 0.654168, 0.516560, 0.231312 ), //dist=0.523206
+			float3( 0.620095, 0.440157, 0.174569 ), //dist=0.560139
+			float3( 0.619921, 0.439779, 0.174298 ), //dist=0.560338
+
+			float3( 0.584093, 0.364954, 0.122639 ), //dist=0.603835
+			float3( 0.582950, 0.362673, 0.121141 ), //dist=0.605313
+			float3( 0.505486, 0.225580, 0.043627 ), //dist=0.722022
+			float3( 0.493907, 0.208311, 0.036235 ), //dist=0.742715
+
+			float3( 0.471036, 0.176735, 0.024630 ), //dist=0.786453
+			float3( 0.458316, 0.160587, 0.019744 ), //dist=0.812509
+			float3( 0.432374, 0.130593, 0.012675 ), //dist=0.869699
+			float3( 0.424106, 0.121810, 0.011097 ), //dist=0.889123
+
+#if defined( ORBIS ) || defined( DURANGO )
+		};
+#else
+			float3( 0.422012, 0.119642, 0.010741 ), //dist=0.894137
+			float3( 0.410618, 0.108234, 0.009070 ), //dist=0.922110
+			float3( 0.393495, 0.092270, 0.007265 ), //dist=0.966446
+			float3( 0.393280, 0.092079, 0.007246 ), //dist=0.967021
+			float3( 0.374511, 0.076147, 0.005962 ), //dist=1.019084
+			float3( 0.371713, 0.073906, 0.005814 ), //dist=1.027176
+			float3( 0.362221, 0.066564, 0.005375 ), //dist=1.055308
+			float3( 0.361757, 0.066215, 0.005355 ), //dist=1.056713
+			float3( 0.358486, 0.063785, 0.005224 ), //dist=1.066677
+			float3( 0.356979, 0.062680, 0.005166 ), //dist=1.071315
+			float3( 0.352238, 0.059274, 0.004993 ), //dist=1.086091
+			float3( 0.318099, 0.037755, 0.004023 ), //dist=1.201919
+			float3( 0.312226, 0.034603, 0.003880 ), //dist=1.223707
+			float3( 0.311100, 0.034018, 0.003853 ), //dist=1.227950
+			float3( 0.305648, 0.031269, 0.003723 ), //dist=1.248834
+			float3( 0.303941, 0.030439, 0.003683 ), //dist=1.255484
+			float3( 0.289711, 0.024065, 0.003349 ), //dist=1.313109
+			float3( 0.285549, 0.022388, 0.003251 ), //dist=1.330732
+			float3( 0.281260, 0.020748, 0.003151 ), //dist=1.349277
+			float3( 0.279391, 0.020061, 0.003107 ), //dist=1.357481
+			float3( 0.276141, 0.018907, 0.003031 ), //dist=1.371928
+			float3( 0.274547, 0.018359, 0.002994 ), //dist=1.379100
+			float3( 0.264589, 0.015207, 0.002761 ), //dist=1.425220
+			float3( 0.264254, 0.015109, 0.002753 ), //dist=1.426811
+			float3( 0.263824, 0.014984, 0.002743 ), //dist=1.428854
+			float3( 0.261789, 0.014403, 0.002696 ), //dist=1.438604
+			float3( 0.259611, 0.013802, 0.002645 ), //dist=1.449141
+			float3( 0.259429, 0.013752, 0.002641 ), //dist=1.450031
+			float3( 0.258652, 0.013544, 0.002623 ), //dist=1.453819
+			float3( 0.257701, 0.013292, 0.002600 ), //dist=1.458483
+			float3( 0.248073, 0.010961, 0.002377 ), //dist=1.506923
+			float3( 0.245725, 0.010451, 0.002324 ), //dist=1.519089
+			float3( 0.243759, 0.010041, 0.002278 ), //dist=1.529388
+			float3( 0.235439, 0.008468, 0.002090 ), //dist=1.574083
+			float3( 0.228725, 0.007379, 0.001940 ), //dist=1.611501
+			float3( 0.226729, 0.007084, 0.001896 ), //dist=1.622864
+			float3( 0.224498, 0.006770, 0.001847 ), //dist=1.635694
+			float3( 0.223020, 0.006569, 0.001815 ), //dist=1.644274
+			float3( 0.222505, 0.006501, 0.001804 ), //dist=1.647276
+			float3( 0.222110, 0.006449, 0.001795 ), //dist=1.649585
+			float3( 0.221391, 0.006356, 0.001780 ), //dist=1.653799
+			float3( 0.216408, 0.005751, 0.001673 ), //dist=1.683406
+			float3( 0.209419, 0.005013, 0.001528 ), //dist=1.726153
+			float3( 0.207877, 0.004865, 0.001497 ), //dist=1.735780
+			float3( 0.205889, 0.004684, 0.001456 ), //dist=1.748300
+			float3( 0.204247, 0.004540, 0.001424 ), //dist=1.758728
+			float3( 0.203662, 0.004490, 0.001412 ), //dist=1.762465
+			float3( 0.203357, 0.004464, 0.001406 ), //dist=1.764417
+			float3( 0.202815, 0.004419, 0.001395 ), //dist=1.767895
+			float3( 0.200371, 0.004222, 0.001347 ), //dist=1.783684
+			float3( 0.198652, 0.004091, 0.001314 ), //dist=1.794900
+			float3( 0.193766, 0.003746, 0.001221 ), //dist=1.827306
+			float3( 0.188204, 0.003401, 0.001119 ), //dist=1.865158
+			float3( 0.183442, 0.003140, 0.001035 ), //dist=1.898401
+			float3( 0.181417, 0.003038, 0.001000 ), //dist=1.912773
+			float3( 0.178639, 0.002905, 0.000954 ), //dist=1.932741
+			float3( 0.177172, 0.002839, 0.000929 ), //dist=1.943398
+			float3( 0.176501, 0.002809, 0.000918 ), //dist=1.948302
+			float3( 0.176203, 0.002796, 0.000914 ), //dist=1.950482
+			float3( 0.175187, 0.002752, 0.000897 ), //dist=1.957946
+			float3( 0.174528, 0.002725, 0.000886 ), //dist=1.962810
+			float3( 0.174357, 0.002717, 0.000884 ), //dist=1.964072
+			float3( 0.173734, 0.002692, 0.000874 ), //dist=1.968688
+			float3( 0.173713, 0.002691, 0.000873 ), //dist=1.968846
+			float3( 0.172928, 0.002659, 0.000861 ), //dist=1.974684
+			float3( 0.171667, 0.002608, 0.000841 ), //dist=1.984110
+			float3( 0.171268, 0.002593, 0.000835 ), //dist=1.987106
+			float3( 0.171225, 0.002591, 0.000834 ), //dist=1.987430
+			float3( 0.171220, 0.002591, 0.000834 ), //dist=1.987470
+			float3( 0.170846, 0.002576, 0.000828 ), //dist=1.990281
+			float3( 0.170687, 0.002570, 0.000826 ), //dist=1.991477
+			float3( 0.170687, 0.002570, 0.000826 ), //dist=1.991482
+			float3( 0.170539, 0.002564, 0.000824 ), //dist=1.992596
+			float3( 0.170318, 0.002556, 0.000820 ), //dist=1.994261
+			float3( 0.169731, 0.002534, 0.000811 ), //dist=1.998704
+			float3( 0.169680, 0.002532, 0.000810 ), //dist=1.999090
+		};
+#endif // PC
+	}
+
+	hlsl_vp_main {
+		#inlinefile <includes/arkVertex.inc>
+
+		VertexInContext victx;
+		INIT_VERTEXIN(victx)
+		VertexOutContext vout = TransformVertex( victx );
+
+		@sv_position = vout._projPosition;
+
+		@SSS_linearDepth.x = -vout._viewPosition.z;
+
+		@texcoords = vout._texcoords;
+	}
+
+	hlsl_fp_attribs {
+		#ifdef ORBIS
+			#if $alphaTest
+				[RE_Z]
+			#endif
+		#endif
+	}
+
+	hlsl_fp_main {
+		#inlinefile <includes/arkPixel.inc>
+		arkPixelContext_t pixelCtx;
+		INIT_PIXELCONTEXT( pixelCtx, 0 );
+		arkMtrEffectContext_t effectCtx;
+		effectCtx.InitMaterialEffect( pixelCtx );
+
+		HQ_FetchMasks( pixelCtx );
+		HQ_FetchDiffuseAlbedo( pixelCtx );
+
+		float2 UV = screenPosToTexcoord( $sv_position.xy + $(subpixelOffset).xy, $positionToViewTexture);
+
+		float linearDepth = $SSS_linearDepth.x;
+		float2 tanFov = $globalViewInfos.xy;
+
+		float2 perspectiveCorrection = float2(0,0);
+
+		float2 blurWidth = $(SSS/Scale).x;
+
+		#if( $(materialeffects/layerchange/enable) != 0 )
+			blurWidth = lerp( blurWidth * (1.0 - effectCtx.rawFxColor.w), blurWidth, $(materialEffects/layerchange/sssFactor).x );
+		#endif
+
+		#if $(SSS/hasMask)
+			blurWidth *= $(SSS/Mask).Sample( $bilinearSampler, $texcoords.xy ).x;
+		#endif
+
+		blurWidth *= $resolutionScale.xy;
+		blurWidth /= ( linearDepth.xx + perspectiveCorrection ) * tanFov;
+
+		float3 diffuse = float3( 0, 0, 0 );
+		float3 weight = float3( 0, 0, 0 );
+
+#if defined ( PC ) 
+		if ( $(SSS/BlurQuality).x == 0 ) {
+			[loop]
+			for( int i=0 ; i < numSkinProfileSamples92 ; ++i ) {
+				float2 dUV = skinProfileSamples92[i].xy * blurWidth;
+				float3 diffuseSample = $textureMap.Sample( $pointSampler, UV + dUV ).rgb;
+				float3 profileWeights = skinProfileWeights[i].xyz;
+
+				diffuse += diffuseSample * profileWeights;
+				weight += profileWeights;
+			}
+		} else if ( $(SSS/BlurQuality).x == 1 ) {
+			[loop]
+			for( int i=0 ; i < numSkinProfileSamples46 ; ++i ) {
+				float2 dUV = skinProfileSamples46[i].xy * blurWidth;
+				float3 diffuseSample = $textureMap.Sample( $bilinearClamp, UV + dUV ).rgb;
+				float3 profileWeights = skinProfileWeights[i].xyz;
+
+				diffuse += diffuseSample * profileWeights;
+				weight += profileWeights;
+			}
+		} else if ( $(SSS/BlurQuality).x == 2 ) {
+			[loop]
+			for( int i=0 ; i < numSkinProfileSamples23 ; ++i ) {
+				float2 dUV = skinProfileSamples23[i].xy * blurWidth;
+				float3 diffuseSample = $textureMap.Sample( $bilinearClamp, UV + dUV ).rgb;
+				float3 profileWeights = skinProfileWeights[i].xyz;
+
+				diffuse += diffuseSample * profileWeights;
+				weight += profileWeights;
+			}
+		} else if ( $(SSS/BlurQuality).x == 3 ) 
+#endif
+		{
+			[loop]
+			for( int i=0 ; i < numSkinProfileSamples16 ; ++i ) {
+				float2 dUV = skinProfileSamples16[i].xy * blurWidth;
+				float3 diffuseSample = $textureMap.Sample( $bilinearClamp, UV + dUV ).rgb;
+				float3 profileWeights = skinProfileWeights[i].xyz;
+
+				diffuse += diffuseSample * profileWeights;
+				weight += profileWeights;
+			}
+		}
+		
+		diffuse /= weight;
+		diffuse.xyz = RangeExpandColorFromR11G11B10( diffuse.xyz ); 
+
+		float3 emissive = HQ_FetchEmissive( pixelCtx );
+		float3 albedo = pixelCtx.m_diffuseAlbedo.xyz;
+
+
+		effectCtx.ApplyMaterialEffect_SSSBlur( pixelCtx, emissive, albedo );
+
+		float3 finalColor = (diffuse * albedo) + emissive;
+
+		BlackAndWhiteOverlay( finalColor.xyz );
+		
+		@sv_target.xyz = RangeCompressColorToR11G11B10( finalColor );
+		@sv_target.w = 1.0;
+		
+	}
+}

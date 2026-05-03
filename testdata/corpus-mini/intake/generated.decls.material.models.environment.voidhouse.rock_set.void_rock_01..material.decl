@@ -1,0 +1,66 @@
+{
+	m_PhysicsMaterial		"contactsystem/env.stone"
+
+	version	5
+	state {
+	}
+
+	options {
+		hasBumpMap				1
+		hasSpecularMap			0
+		hasGlossMap			1
+		hasMetallicMap			1
+		extralayer		2
+		vtxcolormultiply		0
+		layer1_vtxcolormaskchannel		0
+		layer1_maskmode		2
+		hasocclusionmap		0
+		layer2_vtxcolormaskchannel		1
+		layer2_maskmode		2
+		hasdetailbumpmap		0
+		
+		
+		// for fx material
+		//***************************************************
+		materialEffects/enable	1
+				
+	}
+
+	mainProgram				arkDefault
+
+	diffusemap				models/environment/voidhouse/rock_set/void_rock_01_d.tga
+	bumpmap					models/environment/voidhouse/rock_set/void_rock_01_n
+	// //specularmap				#set specular texture here#
+	glossmap				models/environment/voidhouse/rock_set/void_rock_01_g
+	metallicmap				models/environment/voidhouse/rock_set/void_rock_01_mt
+	wardRoughness			{ 0, 1, 0, 0 }
+	layer1_bumpmap		models/environment/voidhouse/rock_set/void_rock_03_n
+	layer1_diffusemap		models/environment/voidhouse/rock_set/void_rock_03_d.tga
+	layer1_glossmap		models/environment/voidhouse/rock_set/void_rock_03_g
+	layer1_metallicmap		models/environment/voidhouse/rock_set/void_rock_03_mt
+	layer1_maskmap		models/environment/voidhouse/rock_set/void_rock_01_m
+	layer1_rescalevalues		{ 0, 0.78 }
+	layer1_maskscalebias		{ 1, 1, 0, 0 }
+	metallicminmax		{ 0, 1, 0, 0 }
+	layer1_scalebias		{ 1, 1, 0, 0 }
+	occlusionmap		models/environment/voidhouse/rock_set/void_rock_03_ao
+	layer2_diffusemap		models/environment/voidhouse/rock_set/void_rock_02_d.tga
+	layer2_bumpmap		models/environment/voidhouse/rock_set/void_rock_02_n
+	layer2_glossmap		models/environment/voidhouse/rock_set/void_rock_02_g
+	layer2_metallicmap		ipr_constantcolor(0.6, 0.6, 0.6, 1)
+	layer2_scalebias		{ 1, 1, 0, 0 }
+	layer2_maskmap		models/environment/voidhouse/rock_set/void_rock_02_m.tga
+	layer2_rescalevalues		{ 0.357, 0.713 }
+	detailbumpmap		models/environment/archi/karnaca/nature/rock/rock_detail_01_n.tga
+	detailbumpmaptiling		{ 2, 2, 2, 2 }
+	detailbumpmapintensity		{ 0.12412, 1, 1, 1 }
+	
+	
+	
+	
+
+
+	// for fx material
+	//***************************************************	
+	materialEffects/devouring		models/effects/map_specific/void_house/rocks/material_fx/rock01_fx.pblock
+}

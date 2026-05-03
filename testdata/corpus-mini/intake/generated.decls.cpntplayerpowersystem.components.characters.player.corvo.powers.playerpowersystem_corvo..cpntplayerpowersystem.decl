@@ -1,0 +1,95 @@
+{
+	inherit = "components/characters/player/base/powers/playerpowersystem.cpntplayerpowersystem";
+	edit = {
+		m_equipmentUpgrades = {
+			item[0] = {
+				m_upgradeTree = {
+					m_childUpgrades = {
+						item[0] = {
+							m_upgrade = "components/characters/player/base/attributes/crossbow_accuracy_corvo.equipmentupgrade";
+						}
+						item[1] = {
+							m_upgrade = "components/characters/player/base/attributes/crossbow_range_corvo.equipmentupgrade";
+						}
+						item[2] = {
+							m_upgrade = "components/characters/player/base/attributes/crossbow_reload_speed_corvo.equipmentupgrade";
+						}
+					}
+				}
+				m_masterWork = {
+					m_upgrade = "components/characters/player/base/attributes/crossbow_nailgun_corvo.equipmentupgrade";
+					m_alternateUpgrade = "components/characters/player/base/attributes/crossbow_firelock_corvo.equipmentupgrade";
+					m_masterWorkDependency = {
+						item[0] = "components/characters/player/base/attributes/crossbow_accuracy_corvo.equipmentupgrade";
+						item[1] = "components/characters/player/base/attributes/crossbow_range_corvo.equipmentupgrade";
+						item[2] = "components/characters/player/base/attributes/crossbow_reload_speed_corvo.equipmentupgrade";
+					}
+				}
+			}
+			item[1] = {
+				m_upgradeTree = {
+					m_childUpgrades = {
+						item[0] = {
+							m_upgrade = "components/characters/player/base/attributes/gun_reload_speed_1_corvo.equipmentupgrade";
+							m_childUpgrades = {
+								item[0] = {
+									m_upgrade = "components/characters/player/base/attributes/gun_reload_speed_2_corvo.equipmentupgrade";
+								}
+							}
+						}
+						item[1] = {
+							m_upgrade = "components/characters/player/base/attributes/gun_accuracy_1_corvo.equipmentupgrade";
+							m_childUpgrades = {
+								item[0] = {
+									m_upgrade = "components/characters/player/base/attributes/gun_accuracy_2_corvo.equipmentupgrade";
+								}
+							}
+						}
+						item[2] = {
+							m_upgrade = "components/characters/player/base/attributes/gun_magazine_1_corvo.equipmentupgrade";
+							m_childUpgrades = {
+								item[0] = {
+									m_upgrade = "components/characters/player/base/attributes/gun_magazine_2_corvo.equipmentupgrade";
+									m_childUpgrades = {
+										item[0] = {
+											m_upgrade = "components/characters/player/base/attributes/gun_magazine_3_corvo.equipmentupgrade";
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				m_masterWork = {
+					m_upgrade = "components/characters/player/base/attributes/gun_snipe_corvo.equipmentupgrade";
+					m_alternateUpgrade = "components/characters/player/base/attributes/gun_shotgun_corvo.equipmentupgrade";
+					m_masterWorkDependency = {
+						item[0] = "components/characters/player/base/attributes/gun_reload_speed_2_corvo.equipmentupgrade";
+						item[1] = "components/characters/player/base/attributes/gun_accuracy_2_corvo.equipmentupgrade";
+						item[2] = "components/characters/player/base/attributes/gun_magazine_3_corvo.equipmentupgrade";
+						item[3] = "components/characters/player/base/attributes/gun_accuracy_1_corvo.equipmentupgrade";
+						item[4] = "components/characters/player/base/attributes/gun_reload_speed_1_corvo.equipmentupgrade";
+						item[5] = "components/characters/player/base/attributes/gun_magazine_2_corvo.equipmentupgrade";
+						item[6] = "components/characters/player/base/attributes/gun_magazine_1_corvo.equipmentupgrade";
+					}
+				}
+			}
+			item[2] = {
+				m_upgradeTree = {
+					m_childUpgrades = {
+						item[0] = {
+							m_upgrade = "components/characters/player/base/attributes/spyglass_extra_zoom_level_corvo.inventoryitem";
+						}
+						item[5] = {
+							m_upgrade = "components/characters/player/base/attributes/silent_running_corvo.inventoryitem";
+						}
+					}
+				}
+				m_masterWork = {
+					m_upgrade = "components/characters/player/base/attributes/armor_corvo.inventoryitem";
+					m_alternateUpgrade = "components/characters/player/base/attributes/camouflage_corvo.inventoryitem";
+				}
+			}
+		}
+	}
+}

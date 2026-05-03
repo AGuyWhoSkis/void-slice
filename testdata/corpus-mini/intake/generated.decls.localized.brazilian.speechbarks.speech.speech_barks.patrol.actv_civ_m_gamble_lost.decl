@@ -1,0 +1,109 @@
+{
+	edit = {
+		m_priority = 0;
+		m_hash = "PB_VPRMCR";
+		m_speechRoles = {
+			num = 1;
+			item[0] = {
+				m_character = "speech/character/generic/generic_shared_civiliannoworker_male";
+				m_friendlyName = "";
+			}
+		}
+		m_speechLines = {
+			num = 3;
+			item[0] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Ai, não, não. Desgraça!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 24;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "#-";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 1;
+				m_weight = 1;
+			}
+			item[1] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Caralho torto do Estranho!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 23;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = "#-";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 2;
+				m_weight = 1;
+			}
+			item[2] = {
+				m_defaultText = {
+					m_lines = {
+						num = 1;
+						item[0] = "Droga!";
+					}
+					m_blocks = {
+						num = 1;
+						item[0] = {
+							m_start = 0;
+							m_end = 6;
+							m_markers = {
+								num = 1;
+								item[0] = {
+									m_provider = "FaceFX Emotes Events";
+									m_value = ":~";
+								}
+							}
+						}
+					}
+					m_recordingState = 2;
+				}
+				meta_shareset = "Talk";
+				meta_prodState = 0;
+				m_flags = 2;
+				m_roleIndex = 0;
+				m_ID = 3;
+				m_weight = 1;
+			}
+		}
+		meta_contextDescription = {
+			num = 1;
+			item[0] = "One-liners for people gambling. Spoken while playing cards, throwing small stones, sticks, coins, glass beads, et al, hoping for winning results. Intense, but room volume; cautious of drawing the attention of nearby Grand Guards or waking the baby. ";
+		}
+		meta_prodState = 2;
+		m_faceFxGenPolicy = 0;
+	}
+}

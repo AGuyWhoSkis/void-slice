@@ -1,0 +1,85 @@
+{
+	inherit = "models/characters/base/human";
+	editorVars {
+		placeable = false;
+	}
+	edit = {
+		m_componentDecls = {
+			item_override["-XrE63"] = {
+				inheritedDecl = "components/base/loddriver_grd.cpntloddriver";
+			}
+			item_override["uAh4M2"] = {
+				inheritedDecl = "components/characters/npc/guard/health_guard.cpnthealthevolved";
+			}
+			item_override["OwZUO3"] = {
+				inlineDecl = {
+					m_carryCorpse = {
+						m_name = "Talk_guard";
+					}
+					m_loot = {
+						m_name = "Talk_guard";
+					}
+					m_pickpocket = {
+						m_name = "Talk_guard";
+					}
+					m_talk = {
+						m_name = "Talk_guard";
+					}
+					m_busyTalk = {
+						m_name = "Talk_guard";
+					}
+					m_assassination = {
+						m_name = "Talk_guard";
+					}
+					m_choke = {
+						m_name = "Talk_guard";
+					}
+					m_chokeToCarry = {
+						m_name = "Talk_guard";
+					}
+					m_cureChoke = {
+						m_name = "Talk_guard";
+					}
+				}
+			}
+			item_override["_OAlJ3"] = {
+				inlineDecl = {
+					m_npcFatality = "midnight/gameplay/player/base/death/npc_fatality_guards.midnightscene";
+				}
+			}
+			item_override["oIlSu0"] = {
+				inheritedDecl = "models/characters/talk/components/generic/guard.cpntnpctalk";
+			}
+			item_override["XnSHK3"] = {
+				inlineDecl = {
+					m_hitReactSettings = {
+						m_ignoredDamageTypes = "DAMAGETYPE_SHOVED";
+					}
+				}
+			}
+			item_override["1yBNj2"] = {
+				inlineDecl = {
+					m_name = "Guard";
+				}
+			}
+			item_override["-YHQ13"] = {
+				inheritedDecl = "components/characters/npc/base/aiidlebreak_guard.cpntaiidlebreak";
+			}
+			item_add["bhN-W3"] = {
+				inheritedDecl = "components/characters/base/inventory_gs_guardsman.cpntinventory";
+			}
+			item_add["-MGeL0"] = {
+				inheritedDecl = "components/characters/npc/base/aisensorcombat_npc.cpntaisensorcombat";
+			}
+			item_add["0Ojgr1"] = {
+				inheritedDecl = "factions/faction_guards.cpntfaction";
+			}
+			item_add["WQ2w80"] = {
+				inheritedDecl = "components/characters/base/aireasonerwalloflight_default.cpntaireasonerwalloflight";
+			}
+			item_add["T8Gz00"] = {
+				inheritedDecl = "components/characters/npc/base/aireasonerflee_fighters.cpntaireasonerflee";
+			}
+		}
+	}
+}

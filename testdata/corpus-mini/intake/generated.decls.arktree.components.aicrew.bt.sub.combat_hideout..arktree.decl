@@ -1,0 +1,87 @@
+{
+	edit = {
+		root = {
+			m_settings = {
+				m_class = "arkTreeNodeSettings_Decorator_SetBehaviorTag";
+				m_object = {
+					m_stimSettings = {
+						m_handled = "";
+						m_consumed = "";
+					}
+					m_comment = "ST_COMBAT_HIDEOUT";
+					m_behaviorTag = "ST_COMBAT_HIDEOUT";
+				}
+			}
+			m_children = {
+				num = 1;
+				item[0] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Parallel";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+							m_returnOnFirstFail = false;
+							m_returnOnFirstSuccess = false;
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Action_CrewRequestRoles";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "As much hideout attacker as possible";
+									m_satisfiedResult = "BTTR_RUNNING";
+									m_unsatisfiedResult = "BTTR_RUNNING";
+									m_priority = "AI_CREW_ROLE_PRIORITY_OPTIONAL_VERY_HIGH";
+									m_roleTag = "COMBAT_HIDEOUT_ATTACKER";
+									m_module = "arkCpntAICrewModule_Spot_Hideout";
+									m_amountType = "AI_CREW_ROLE_AMOUNT_RATIO";
+									m_num = 1;
+									m_ratio = {
+										value = 1;
+									}
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Action_CrewRequestRoles";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "When no spot available, use faker";
+									m_satisfiedResult = "BTTR_RUNNING";
+									m_unsatisfiedResult = "BTTR_RUNNING";
+									m_priority = "AI_CREW_ROLE_PRIORITY_OPTIONAL_HIGH";
+									m_roleTag = "COMBAT_FAKER";
+									m_module = "arkCpntAICrewModule_CombatFake";
+									m_amountType = "AI_CREW_ROLE_AMOUNT_RATIO";
+									m_num = 1;
+									m_ratio = {
+										value = 1;
+									}
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

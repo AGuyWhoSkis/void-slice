@@ -1,0 +1,304 @@
+{
+	newstyle
+	options {
+		tlf/tileDim 16
+		numthreadx 8
+		numthready 4
+		numthreadz 1
+		tlf/depthSampleCount 1
+		isAsyncCompute 1
+	}
+
+	hlsl_prefix {
+		#include <tlf/common>
+
+		#if( $(tlf/depthSampleCount) == 1 )
+			#define DIM_SCALE_X		2
+			#define DIM_SCALE_Y		4
+			#define DIM_X			8
+			#define DIM_Y			4
+		#elif( $(tlf/depthSampleCount) == 2 )
+			#define DIM_SCALE_X		2
+			#define DIM_SCALE_Y		2
+			#define DIM_X			8
+			#define DIM_Y			8
+		#elif( $(tlf/depthSampleCount) == 4 )
+			#define DIM_SCALE_X		1
+			#define DIM_SCALE_Y		2
+			#define DIM_X			16
+			#define DIM_Y			8
+		#endif
+
+		#define THREADS_IN_GROUP		(DIM_X * DIM_Y)
+
+		#define DEPTH_Min				max
+		#define DEPTH_Max				min
+		#define DEPTH_InterlockedMin	InterlockedMax
+		#define DEPTH_InterlockedMax	InterlockedMin
+		#define DEPTH_NEAR				1.0
+		#define DEPTH_FAR				0.0
+
+		#define WARP_SIZE				32
+		#define S_MIN					0
+		#define S_MAX_SKY				1
+		#define S_MAX					2
+		#define S_MASK					3
+		#define S_NUM					4
+
+		groupshared uint	shared_mem[S_NUM];
+
+		#define Depth_to_Z(d)			(-$(tlf/unprojectZ).x / (d + $(tlf/unprojectZ).y))
+		
+		static const int MultiplyDeBruijnBitPosition[32] = 
+		{
+			0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 
+			31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9
+		};
+				
+		int CountConsecutiveZeroBits( uint _Number ) {
+			//Bit Twiddling Hacks
+			//http://graphics.stanford.edu/~seander/bithacks.html#ZerosOnRightMultLookup
+			int r;
+			r = MultiplyDeBruijnBitPosition[((uint)((_Number & (uint)(-(int)_Number)) * 0x077CB531U)) >> 27];			
+			return r;
+		}
+		
+		uint NearestPowerOf2( uint _Number ) {
+			uint v = _Number -1;
+			v |= v >> 1; // first round down to one less than a power of 2 
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			v |= v >> 16;		
+			return v;
+		}
+		
+		uint FillBitField( uint _mask ) {
+			int shift = CountConsecutiveZeroBits( _mask );
+			uint value = _mask >> shift;
+			uint nearest = NearestPowerOf2( value );
+			return nearest << shift;
+		}
+
+		float4 DepthNoInf(float4 d) {
+			return max(d, step(d, DEPTH_FAR.xxxx));
+		}
+
+		void Functor_MinMax(inout float3 v0, float3 v1) {
+			v0.x = DEPTH_Min(v0.x, v1.x);
+			v0.yz = DEPTH_Max(v0.yz, v1.yz);
+		}
+
+		float3 Regs_FindMinmax(float4 d) {
+			float4 t;
+
+			t.xy = DEPTH_Min(d.xy, d.zw);
+			t.x  = DEPTH_Min(t.x, t.y);
+
+			t.yz = DEPTH_Max(d.xy, d.zw);
+			t.y  = DEPTH_Max(t.y, t.z);
+
+			d = DepthNoInf(d);
+			t.zw = DEPTH_Max(d.xy, d.zw);
+			t.z  = DEPTH_Max(t.z, t.w);
+
+			return t.xyz;
+		}
+
+		uint Regs_ConvertToMask(float4 d, float a, float b) {
+			float4 z = Depth_to_Z(d);
+
+			uint4 mask = 1 << uint4( trunc( saturate(z * a + b) * shred ) );
+
+			mask.x = d.x == DEPTH_FAR ? 0 : mask.x;
+			mask.y = d.y == DEPTH_FAR ? 0 : mask.y;
+			mask.z = d.z == DEPTH_FAR ? 0 : mask.z;
+			mask.w = d.w == DEPTH_FAR ? 0 : mask.w;
+
+			mask.xy |= mask.zw;
+			mask.x |= mask.y;
+
+			return mask.x;
+		}
+		
+		uint Regs_ConvertToMaskAlpha(float4 d, float a, float b, uint maskOpaque) {
+			uint mask = Regs_ConvertToMask(d, a, b);			
+			uint fill = FillBitField( mask );
+			return (mask != maskOpaque) ? (~fill) : 0;
+		}
+
+		void ReductionSync() {
+			#if( THREADS_IN_GROUP <= WARP_SIZE )
+				// FIXME: we are inside warp!
+				//GroupMemoryBarrier();
+			#else
+				GroupMemoryBarrierWithGroupSync();
+			#endif
+		}
+
+		void Shared_Clear(uint ind) {
+			if( ind == 0 ) {
+				shared_mem[S_MIN] = asuint(DEPTH_FAR);
+				shared_mem[S_MAX_SKY] = asuint(DEPTH_NEAR);
+				shared_mem[S_MAX] = asuint(DEPTH_NEAR);
+				shared_mem[S_MASK] = 0;
+			}
+			ReductionSync();
+		}
+
+		void Shared_FindMinmax(float3 data) {
+			uint3 i = asuint(data);
+			DEPTH_InterlockedMin(shared_mem[S_MIN], i.x);
+			DEPTH_InterlockedMax(shared_mem[S_MAX_SKY], i.y);
+			DEPTH_InterlockedMax(shared_mem[S_MAX], i.z);
+			ReductionSync();
+		}
+
+		void Shared_MergeMasks(uint data) {
+			InterlockedOr(shared_mem[S_MASK], data);
+			ReductionSync();
+		}
+	}
+	hlsl_cp_main {
+		//--------------------------------
+		// CLEAR
+		//--------------------------------
+		Shared_Clear($sv_groupIndex);
+		
+		//--------------------------------
+		// LOAD
+		//--------------------------------
+		const uint2 DIM_SCALE = uint2(DIM_SCALE_X, DIM_SCALE_Y);
+
+		#if( $(tlf/depthSampleCount) == 1 )
+			//-> FIXME: use invViewportSize if available...
+			uint2 dims;
+			$(tlf/depthBufferOpaque).GetDimensions(dims.x, dims.y);
+			//<- FIXME:
+
+			float2 uvf = (float2($sv_groupID.xy * $(tlf/tileDim) + $sv_groupThreadID.xy * DIM_SCALE_X) + float2(0.5, 0.5)) / float2(dims.x, dims.y);
+			float4  d = $(tlf/depthBufferOpaque).GatherRed($bilinearClamp, uvf);
+			float4 d1 = $(tlf/depthBufferOpaque).GatherRed($bilinearClamp, uvf, int2(0, 8));
+			float4 d2 = $(tlf/depthBufferAlpha).GatherRed($bilinearClamp, uvf);
+			float4 d3 = $(tlf/depthBufferAlpha).GatherRed($bilinearClamp, uvf, int2(0, 8));
+
+		#elif( $(tlf/depthSampleCount) == 2 )
+			int2 uv = int2( $sv_dispatchThreadID.xy * DIM_SCALE );
+
+			float4 d;
+			d.x = $(tlf/msdepthBufferOpaque).Load(uv, 0).x;
+			d.y = $(tlf/msdepthBufferOpaque).Load(uv, 0, int2(0, 1)).x;
+			d.z = $(tlf/msdepthBufferOpaque).Load(uv, 0, int2(1, 0)).x;
+			d.w = $(tlf/msdepthBufferOpaque).Load(uv, 0, int2(1, 1)).x;
+
+			float4 d1;
+			d1.x = $(tlf/msdepthBufferOpaque).Load(uv, 1).x;
+			d1.y = $(tlf/msdepthBufferOpaque).Load(uv, 1, int2(0, 1)).x;
+			d1.z = $(tlf/msdepthBufferOpaque).Load(uv, 1, int2(1, 0)).x;
+			d1.w = $(tlf/msdepthBufferOpaque).Load(uv, 1, int2(1, 1)).x;
+
+			float4 d2;
+			d2.x = $(tlf/msdepthBufferAlpha).Load(uv, 0).x;
+			d2.y = $(tlf/msdepthBufferAlpha).Load(uv, 0, int2(0, 1)).x;
+			d2.z = $(tlf/msdepthBufferAlpha).Load(uv, 0, int2(1, 0)).x;
+			d2.w = $(tlf/msdepthBufferAlpha).Load(uv, 0, int2(1, 1)).x;
+
+			float4 d3;
+			d3.x = $(tlf/msdepthBufferAlpha).Load(uv, 1).x;
+			d3.y = $(tlf/msdepthBufferAlpha).Load(uv, 1, int2(0, 1)).x;
+			d3.z = $(tlf/msdepthBufferAlpha).Load(uv, 1, int2(1, 0)).x;
+			d3.w = $(tlf/msdepthBufferAlpha).Load(uv, 1, int2(1, 1)).x;
+
+		#elif( TLF_DEPTHSAMPLECOUNT == 4 )
+			int2 uv = int2( $sv_dispatchThreadID.xy * DIM_SCALE );
+
+			float4 d;
+			d.x = $(tlf/msdepthBufferOpaque).Load(uv, 0).x;
+			d.y = $(tlf/msdepthBufferOpaque).Load(uv, 1).x;
+			d.z = $(tlf/msdepthBufferOpaque).Load(uv, 2).x;
+			d.w = $(tlf/msdepthBufferOpaque).Load(uv, 3).x;
+
+			float4 d1;
+			d1.x = $(tlf/msdepthBufferOpaque).Load(uv, 0, int2(0, 1)).x;
+			d1.y = $(tlf/msdepthBufferOpaque).Load(uv, 1, int2(0, 1)).x;
+			d1.z = $(tlf/msdepthBufferOpaque).Load(uv, 2, int2(0, 1)).x;
+			d1.w = $(tlf/msdepthBufferOpaque).Load(uv, 3, int2(0, 1)).x;
+
+			float4 d2;
+			d2.x = $(tlf/msdepthBufferAlpha).Load(uv, 0).x;
+			d2.y = $(tlf/msdepthBufferAlpha).Load(uv, 1).x;
+			d2.z = $(tlf/msdepthBufferAlpha).Load(uv, 2).x;
+			d2.w = $(tlf/msdepthBufferAlpha).Load(uv, 3).x;
+
+			float4 d3;
+			d3.x = $(tlf/msdepthBufferAlpha).Load(uv, 0, int2(0, 1)).x;
+			d3.y = $(tlf/msdepthBufferAlpha).Load(uv, 1, int2(0, 1)).x;
+			d3.z = $(tlf/msdepthBufferAlpha).Load(uv, 2, int2(0, 1)).x;
+			d3.w = $(tlf/msdepthBufferAlpha).Load(uv, 3, int2(0, 1)).x;
+
+		#endif
+
+		//--------------------------------
+		// Pre-minmax
+		//--------------------------------
+		float3 minmaxd = Regs_FindMinmax(d);
+
+		Functor_MinMax(minmaxd, Regs_FindMinmax(d1));
+		Functor_MinMax(minmaxd, Regs_FindMinmax(d2));
+		Functor_MinMax(minmaxd, Regs_FindMinmax(d3));
+
+		//--------------------------------
+		// Minmax
+		//--------------------------------
+		Shared_FindMinmax(minmaxd);
+
+		//--------------------------------
+		// Pre-mask
+		//--------------------------------
+		minmaxd.x = asfloat(shared_mem[S_MIN]);
+		minmaxd.y = asfloat(shared_mem[S_MAX_SKY]);
+		minmaxd.z = asfloat(shared_mem[S_MAX]);
+		float3 minmaxz = Depth_to_Z(minmaxd);
+
+		//--------------------------------
+		// IMPORTANT: enlarge by 1 ULP
+		//--------------------------------
+		minmaxz.x = asfloat( asuint(minmaxz.x) - 1 );
+		minmaxz.z = asfloat( asuint(minmaxz.z) + 1 );
+
+		float A = 1.0 / (minmaxz.z - minmaxz.x);
+		float B = -minmaxz.x * A;
+	
+		uint maskOpaque;
+		maskOpaque  = Regs_ConvertToMask(d, A, B);
+		maskOpaque |= Regs_ConvertToMask(d1, A, B);
+		
+		uint mask = maskOpaque;
+		mask |= Regs_ConvertToMaskAlpha(d2, A, B, maskOpaque);
+		mask |= Regs_ConvertToMaskAlpha(d3, A, B, maskOpaque);
+		//mask  = Regs_ConvertToMask(d2, A, B);		
+		//mask |= Regs_ConvertToMask(d3, A, B);		
+
+		//--------------------------------
+		// Mask
+		//--------------------------------
+		Shared_MergeMasks(mask);
+
+		//--------------------------------
+		// Output
+		//--------------------------------
+		if( $sv_groupIndex == 0 ) {
+			//
+			// IMPORTANT: this reduction works with positive z-values, but D2 uses negative,
+			// so return I have to return real signs...
+			//
+			
+			// OPTION #1: TO MATCH ORIGINAL SOLUTION - tlf/depthMinMax format RG32ui 
+			//uint packedMinMax = f32tof16( -minmaxz.y ) | ( f32tof16( -minmaxz.x ) << 16 );
+			//@(tlf/depthMinMax)[$sv_groupID.xy] = uint2( packedMinMax, shared_mem[S_MASK] );
+
+			// OPTION #2: OPTIMIZED - tlf/depthMinMax format RGBA32f or RGBA32ui
+			@(tlf/depthMinMax)[$sv_groupID.xy] = float4(minmaxz, asfloat(shared_mem[S_MASK]));
+		}
+	}
+}

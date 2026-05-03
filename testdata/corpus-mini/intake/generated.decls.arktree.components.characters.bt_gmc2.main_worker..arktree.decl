@@ -1,0 +1,1107 @@
+{
+	edit = {
+		root = {
+			m_settings = {
+				m_class = "arkTreeNodeSettings_Selector";
+				m_object = {
+					m_stimSettings = {
+						m_handled = "BSP_STIM_BEHAVIOR_GOAL_CHANGED";
+						m_consumed = "";
+					}
+					m_comment = "";
+				}
+			}
+			m_children = {
+				num = 3;
+				item[0] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_monitor = false;
+									m_not = false;
+									m_wantedBehaviorGoal = "BHVG_BUSTED";
+									m_operator = "ARK_OP_GREATER_OR_EQUAL_THAN";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_TreeReference";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_subTree = "components/characters/bt_gmc2/sub/combat.arktree";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+					}
+				}
+				item[1] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Activator_LockMidnight";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+							m_lockPriority = "PRIORITY_NPC_SEARCH";
+						}
+					}
+					m_children = {
+						num = 1;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Decorator_SetBehaviorTag";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_behaviorTag = "BH_SEARCH";
+								}
+							}
+							m_children = {
+								num = 1;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Decorator_SetBarkRuleHandlerTag";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_tag = "AI_BARK_RULE_HANDLER_SEARCH";
+										}
+									}
+									m_children = {
+										num = 1;
+										item[0] = {
+											m_settings = {
+												m_class = "arkTreeNodeSettings_Sequence";
+												m_object = {
+													m_stimSettings = {
+														m_handled = "";
+														m_consumed = "";
+													}
+													m_comment = "";
+												}
+											}
+											m_children = {
+												num = 2;
+												item[0] = {
+													m_settings = {
+														m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+														m_object = {
+															m_stimSettings = {
+																m_handled = "";
+																m_consumed = "";
+															}
+															m_comment = "";
+															m_monitor = false;
+															m_not = false;
+															m_wantedBehaviorGoal = "BHVG_SEARCH";
+															m_operator = "ARK_OP_GREATER_OR_EQUAL_THAN";
+														}
+													}
+													m_children = {
+														num = 0;
+													}
+												}
+												item[1] = {
+													m_settings = {
+														m_class = "arkTreeNodeSettings_Selector";
+														m_object = {
+															m_stimSettings = {
+																m_handled = "";
+																m_consumed = "";
+															}
+															m_comment = "";
+														}
+													}
+													m_children = {
+														num = 2;
+														item[0] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Sequence";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "Warn against player";
+																}
+															}
+															m_children = {
+																num = 3;
+																item[0] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Condition_Warn";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "";
+																			m_monitor = false;
+																			m_not = false;
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+																item[1] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Condition_SuspicionStateIs";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "";
+																			m_monitor = false;
+																			m_not = false;
+																			m_suspicionState = "ARK_SUSPICIOUS";
+																			m_operator = "ARK_OP_GREATER_OR_EQUAL_THAN";
+																		}
+																	}
+																	m_children = {
+																		num = 0;
+																	}
+																}
+																item[2] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Parallel";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "";
+																			m_returnOnFirstFail = false;
+																			m_returnOnFirstSuccess = false;
+																		}
+																	}
+																	m_children = {
+																		num = 2;
+																		item[0] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Parallel";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_returnOnFirstFail = false;
+																					m_returnOnFirstSuccess = false;
+																				}
+																			}
+																			m_children = {
+																				num = 2;
+																				item[0] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Condition_Warn";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																							m_monitor = true;
+																							m_not = false;
+																						}
+																					}
+																					m_children = {
+																						num = 0;
+																					}
+																				}
+																				item[1] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Action_PlayMdntScene";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																							m_sceneDecl = "midnight/gameplay/human/common/flee/worker_warn.midnightscene";
+																							m_fireAndForget = false;
+																							m_succeedIfAlreadyPlaying = false;
+																							m_waitForFastOut = false;
+																							m_conditionSettings = {
+																								m_boolConditionSettings = {
+																									num = 0;
+																								}
+																								m_intConditionSettings = {
+																									num = 0;
+																								}
+																							}
+																						}
+																					}
+																					m_children = {
+																						num = 0;
+																					}
+																				}
+																			}
+																		}
+																		item[1] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Action_LookAt";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_targetType = "LAST_EVIDENCE";
+																					m_positionOffset = {
+																						x = 0;
+																						y = 0;
+																						z = 0;
+																					}
+																					m_influence = "ARK_LOOKAT_INFLU_EYES_HEAD";
+																					m_speed = 0.5;
+																					m_position = {
+																						x = 0;
+																						y = 0;
+																						z = 0;
+																					}
+																					m_patternIndex = 0;
+																					m_isStoppable = true;
+																					m_lookatOnHead = true;
+																					m_maxTargetDistance2D = 9m;
+																					m_maxTargetDistanceZ = 3m;
+																				}
+																			}
+																			m_children = {
+																				num = 0;
+																			}
+																		}
+																	}
+																}
+															}
+														}
+														item[1] = {
+															m_settings = {
+																m_class = "arkTreeNodeSettings_Selector";
+																m_object = {
+																	m_stimSettings = {
+																		m_handled = "";
+																		m_consumed = "";
+																	}
+																	m_comment = "";
+																}
+															}
+															m_children = {
+																num = 3;
+																item[0] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Sequence";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "Witness death";
+																		}
+																	}
+																	m_children = {
+																		num = 3;
+																		item[0] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Condition_AttentionEvidenceIs";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_monitor = false;
+																					m_not = false;
+																					m_wantedType = "MOST_RELEVANT";
+																					m_attentionEvidence = "ATTEV_WITNESS_DEATH";
+																					m_otherAttentionEvidences = {
+																						num = 1;
+																						item[0] = "ATTEV_WITNESS_MISSILE_FIRED";
+																					}
+																				}
+																			}
+																			m_children = {
+																				num = 0;
+																			}
+																		}
+																		item[1] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Parallel";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_returnOnFirstFail = true;
+																					m_returnOnFirstSuccess = true;
+																				}
+																			}
+																			m_children = {
+																				num = 2;
+																				item[0] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Sequence";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																						}
+																					}
+																					m_children = {
+																						num = 5;
+																						item[0] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Decorator_AlwaysSucceed";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																								}
+																							}
+																							m_children = {
+																								num = 1;
+																								item[0] = {
+																									m_settings = {
+																										m_class = "arkTreeNodeSettings_Loop";
+																										m_object = {
+																											m_stimSettings = {
+																												m_handled = "";
+																												m_consumed = "";
+																											}
+																											m_comment = "make sure any surprise midnight is done";
+																											m_stopCondition = -1;
+																										}
+																									}
+																									m_children = {
+																										num = 1;
+																										item[0] = {
+																											m_settings = {
+																												m_class = "arkTreeNodeSettings_Decorator_FlipCondition";
+																												m_object = {
+																													m_stimSettings = {
+																														m_handled = "";
+																														m_consumed = "";
+																													}
+																													m_comment = "";
+																												}
+																											}
+																											m_children = {
+																												num = 1;
+																												item[0] = {
+																													m_settings = {
+																														m_class = "arkTreeNodeSettings_Condition_HasMidnightPlaying";
+																														m_object = {
+																															m_stimSettings = {
+																																m_handled = "";
+																																m_consumed = "";
+																															}
+																															m_comment = "";
+																															m_monitor = false;
+																															m_not = false;
+																															m_operator = "ARK_OP_GREATER_OR_EQUAL_THAN";
+																															m_priority = "PRIORITY_NPC_REACTIVITY";
+																														}
+																													}
+																													m_children = {
+																														num = 0;
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																						item[1] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_FaceTo";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																									m_keepFacing = false;
+																									m_targetLocation = "LAST_EVIDENCE";
+																									m_angleTolerance = {
+																										value = 22.5;
+																									}
+																									m_faceToPriority = "AI_REQ_FACETO_PRIORITY_NORMAL";
+																									m_canCancelWhenNearJumpEdge = true;
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																						item[2] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Monitor_Posture";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																									m_monitor = false;
+																									m_not = false;
+																									m_stanceName = "STANCE_COMBAT";
+																									m_equipStateName = "EQUIPESTATE_SWORD";
+																									m_resultSetting = "SUCCESS_WHEN_POSTURE_OK";
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																						item[3] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_PlayMdntScene";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																									m_sceneDecl = "midnight/gameplay/human/common/search/assess_situation.midnightscene";
+																									m_fireAndForget = false;
+																									m_succeedIfAlreadyPlaying = false;
+																									m_waitForFastOut = false;
+																									m_conditionSettings = {
+																										m_boolConditionSettings = {
+																											num = 0;
+																										}
+																										m_intConditionSettings = {
+																											num = 0;
+																										}
+																									}
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																						item[4] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_HandleSource";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																									m_sourceToHandle = "SOURCE_LAST_EVIDENCE";
+																									m_solveSourceAlso = false;
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																					}
+																				}
+																				item[1] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Action_RequestPosture";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																							m_stanceName = "STANCE_COMBAT";
+																							m_equipStateName = "EQUIPESTATE_SWORD";
+																							m_delay = {
+																								m_seconds = 0;
+																							}
+																							m_keepRequest = true;
+																						}
+																					}
+																					m_children = {
+																						num = 0;
+																					}
+																				}
+																			}
+																		}
+																		item[2] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Parallel";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_returnOnFirstFail = false;
+																					m_returnOnFirstSuccess = false;
+																				}
+																			}
+																			m_children = {
+																				num = 2;
+																				item[0] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Action_RequestPosture";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																							m_stanceName = "STANCE_RELAXED";
+																							m_equipStateName = "EQUIPESTATE_SWORD";
+																							m_delay = {
+																								m_seconds = 0;
+																							}
+																							m_keepRequest = true;
+																						}
+																					}
+																					m_children = {
+																						num = 0;
+																					}
+																				}
+																				item[1] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Sequence";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																						}
+																					}
+																					m_children = {
+																						num = 2;
+																						item[0] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Monitor_Posture";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																									m_monitor = false;
+																									m_not = false;
+																									m_stanceName = "STANCE_RELAXED";
+																									m_equipStateName = "EQUIPESTATE_SWORD";
+																									m_resultSetting = "SUCCESS_WHEN_POSTURE_OK";
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																						item[1] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Action_PlayMdntScene";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																									m_sceneDecl = "midnight/gameplay/human/common/search/watchover.midnightscene";
+																									m_fireAndForget = false;
+																									m_succeedIfAlreadyPlaying = false;
+																									m_waitForFastOut = false;
+																									m_conditionSettings = {
+																										m_boolConditionSettings = {
+																											num = 0;
+																										}
+																										m_intConditionSettings = {
+																											num = 0;
+																										}
+																									}
+																								}
+																							}
+																							m_children = {
+																								num = 0;
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+																item[1] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Sequence";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "";
+																		}
+																	}
+																	m_children = {
+																		num = 1;
+																		item[0] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_TreeReference";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_subTree = "components/characters/bt_gmc2/sub/search_fake_interlocutor_missing.arktree";
+																				}
+																			}
+																			m_children = {
+																				num = 0;
+																			}
+																		}
+																	}
+																}
+																item[2] = {
+																	m_settings = {
+																		m_class = "arkTreeNodeSettings_Sequence";
+																		m_object = {
+																			m_stimSettings = {
+																				m_handled = "";
+																				m_consumed = "";
+																			}
+																			m_comment = "Seeing corpse";
+																		}
+																	}
+																	m_children = {
+																		num = 2;
+																		item[0] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Condition_AttentionEvidenceIs";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_monitor = false;
+																					m_not = false;
+																					m_wantedType = "MOST_RELEVANT";
+																					m_attentionEvidence = "ATTEV_SEEING_CORPSE";
+																					m_otherAttentionEvidences = {
+																						num = 2;
+																						item[0] = "ATTEV_SEEING_SLEEPER";
+																						item[1] = "ATTEV_SEEING_SEVERED_LIMB";
+																					}
+																				}
+																			}
+																			m_children = {
+																				num = 0;
+																			}
+																		}
+																		item[1] = {
+																			m_settings = {
+																				m_class = "arkTreeNodeSettings_Parallel";
+																				m_object = {
+																					m_stimSettings = {
+																						m_handled = "";
+																						m_consumed = "";
+																					}
+																					m_comment = "";
+																					m_returnOnFirstFail = false;
+																					m_returnOnFirstSuccess = false;
+																				}
+																			}
+																			m_children = {
+																				num = 2;
+																				item[0] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_Selector";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																						}
+																					}
+																					m_children = {
+																						num = 2;
+																						item[0] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Activator_CoordinationToken";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																									m_tokenType = "COORD_TOKEN_FACETO_INSPECT";
+																								}
+																							}
+																							m_children = {
+																								num = 1;
+																								item[0] = {
+																									m_settings = {
+																										m_class = "arkTreeNodeSettings_Sequence";
+																										m_object = {
+																											m_stimSettings = {
+																												m_handled = "";
+																												m_consumed = "";
+																											}
+																											m_comment = "";
+																										}
+																									}
+																									m_children = {
+																										num = 2;
+																										item[0] = {
+																											m_settings = {
+																												m_class = "arkTreeNodeSettings_Decorator_AlwaysSucceed";
+																												m_object = {
+																													m_stimSettings = {
+																														m_handled = "";
+																														m_consumed = "";
+																													}
+																													m_comment = "";
+																												}
+																											}
+																											m_children = {
+																												num = 1;
+																												item[0] = {
+																													m_settings = {
+																														m_class = "arkTreeNodeSettings_Sequence";
+																														m_object = {
+																															m_stimSettings = {
+																																m_handled = "";
+																																m_consumed = "";
+																															}
+																															m_comment = "";
+																														}
+																													}
+																													m_children = {
+																														num = 4;
+																														item[0] = {
+																															m_settings = {
+																																m_class = "arkTreeNodeSettings_Action_PushKnowledgeToRegistry";
+																																m_object = {
+																																	m_stimSettings = {
+																																		m_handled = "";
+																																		m_consumed = "";
+																																	}
+																																	m_comment = "";
+																																	m_record = "ARK_AI_PUSH_INV_SPOT_FROM_ATT_TARGET";
+																																}
+																															}
+																															m_children = {
+																																num = 0;
+																															}
+																														}
+																														item[1] = {
+																															m_settings = {
+																																m_class = "arkTreeNodeSettings_Action_SetNextGotoSpeed";
+																																m_object = {
+																																	m_stimSettings = {
+																																		m_handled = "";
+																																		m_consumed = "";
+																																	}
+																																	m_comment = "";
+																																	m_wantedSpeed = "ARK_AI_SPEED_RUN";
+																																}
+																															}
+																															m_children = {
+																																num = 0;
+																															}
+																														}
+																														item[2] = {
+																															m_settings = {
+																																m_class = "arkTreeNodeSettings_TreeReference";
+																																m_object = {
+																																	m_stimSettings = {
+																																		m_handled = "";
+																																		m_consumed = "";
+																																	}
+																																	m_comment = "";
+																																	m_subTree = "components/characters/bt_gmc2/sub/go_to_and_use_smart_object.arktree";
+																																}
+																															}
+																															m_children = {
+																																num = 0;
+																															}
+																														}
+																														item[3] = {
+																															m_settings = {
+																																m_class = "arkTreeNodeSettings_Action_PlayMdntScene";
+																																m_object = {
+																																	m_stimSettings = {
+																																		m_handled = "";
+																																		m_consumed = "";
+																																	}
+																																	m_comment = "";
+																																	m_sceneDecl = "midnight/gameplay/human/common/search/watchover.midnightscene";
+																																	m_fireAndForget = false;
+																																	m_succeedIfAlreadyPlaying = false;
+																																	m_waitForFastOut = false;
+																																	m_conditionSettings = {
+																																		m_boolConditionSettings = {
+																																			num = 0;
+																																		}
+																																		m_intConditionSettings = {
+																																			num = 0;
+																																		}
+																																	}
+																																}
+																															}
+																															m_children = {
+																																num = 0;
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																										item[1] = {
+																											m_settings = {
+																												m_class = "arkTreeNodeSettings_Action_HandleSource";
+																												m_object = {
+																													m_stimSettings = {
+																														m_handled = "";
+																														m_consumed = "";
+																													}
+																													m_comment = "";
+																													m_sourceToHandle = "SOURCE_LAST_EVIDENCE";
+																													m_solveSourceAlso = false;
+																												}
+																											}
+																											m_children = {
+																												num = 0;
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																						item[1] = {
+																							m_settings = {
+																								m_class = "arkTreeNodeSettings_Sequence";
+																								m_object = {
+																									m_stimSettings = {
+																										m_handled = "";
+																										m_consumed = "";
+																									}
+																									m_comment = "";
+																								}
+																							}
+																							m_children = {
+																								num = 2;
+																								item[0] = {
+																									m_settings = {
+																										m_class = "arkTreeNodeSettings_Decorator_AlwaysSucceed";
+																										m_object = {
+																											m_stimSettings = {
+																												m_handled = "";
+																												m_consumed = "";
+																											}
+																											m_comment = "";
+																										}
+																									}
+																									m_children = {
+																										num = 1;
+																										item[0] = {
+																											m_settings = {
+																												m_class = "arkTreeNodeSettings_TreeReference";
+																												m_object = {
+																													m_stimSettings = {
+																														m_handled = "";
+																														m_consumed = "";
+																													}
+																													m_comment = "";
+																													m_subTree = "components/characters/bt_gmc2/sub/lookat_checktarget.arktree";
+																												}
+																											}
+																											m_children = {
+																												num = 0;
+																											}
+																										}
+																									}
+																								}
+																								item[1] = {
+																									m_settings = {
+																										m_class = "arkTreeNodeSettings_Action_HandleSource";
+																										m_object = {
+																											m_stimSettings = {
+																												m_handled = "";
+																												m_consumed = "";
+																											}
+																											m_comment = "";
+																											m_sourceToHandle = "SOURCE_LAST_EVIDENCE";
+																											m_solveSourceAlso = false;
+																										}
+																									}
+																									m_children = {
+																										num = 0;
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																				item[1] = {
+																					m_settings = {
+																						m_class = "arkTreeNodeSettings_TreeReference";
+																						m_object = {
+																							m_stimSettings = {
+																								m_handled = "";
+																								m_consumed = "";
+																							}
+																							m_comment = "";
+																							m_subTree = "components/characters/bt_gmc2/sub/posture_worker.arktree";
+																						}
+																					}
+																					m_children = {
+																						num = 0;
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				item[2] = {
+					m_settings = {
+						m_class = "arkTreeNodeSettings_Sequence";
+						m_object = {
+							m_stimSettings = {
+								m_handled = "";
+								m_consumed = "";
+							}
+							m_comment = "";
+						}
+					}
+					m_children = {
+						num = 2;
+						item[0] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Condition_BehaviorGoalIs";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_monitor = false;
+									m_not = false;
+									m_wantedBehaviorGoal = "BHVG_DEFAULT";
+									m_operator = "ARK_OP_GREATER_OR_EQUAL_THAN";
+								}
+							}
+							m_children = {
+								num = 0;
+							}
+						}
+						item[1] = {
+							m_settings = {
+								m_class = "arkTreeNodeSettings_Parallel";
+								m_object = {
+									m_stimSettings = {
+										m_handled = "";
+										m_consumed = "";
+									}
+									m_comment = "";
+									m_returnOnFirstFail = false;
+									m_returnOnFirstSuccess = false;
+								}
+							}
+							m_children = {
+								num = 2;
+								item[0] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_Action_RequestPosture";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_stanceName = "STANCE_RELAXED";
+											m_equipStateName = "EQUIPESTATE_EMPTY";
+											m_delay = {
+												m_seconds = 0;
+											}
+											m_keepRequest = true;
+										}
+									}
+									m_children = {
+										num = 0;
+									}
+								}
+								item[1] = {
+									m_settings = {
+										m_class = "arkTreeNodeSettings_TreeReference";
+										m_object = {
+											m_stimSettings = {
+												m_handled = "";
+												m_consumed = "";
+											}
+											m_comment = "";
+											m_subTree = "components/characters/bt_gmc2/sub/patrol.arktree";
+										}
+									}
+									m_children = {
+										num = 0;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
