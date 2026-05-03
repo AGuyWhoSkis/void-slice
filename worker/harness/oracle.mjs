@@ -75,7 +75,9 @@ function newMiniflare() {
       { type: "CompiledWasm", include: ["**/*.wasm"], fallthrough: true },
     ],
     compatibilityDate: COMPATIBILITY_DATE,
-    bindings: { ALLOWED_ORIGIN: "*" },
+    // Oracle requests omit the Origin header, so the allowlist gate doesn't
+    // fire — bindings are intentionally empty.
+    bindings: {},
   });
 }
 

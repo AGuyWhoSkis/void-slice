@@ -28,6 +28,12 @@ const MAX_BODY_BYTES = 1 << 20;
 const COMPATIBILITY_DATE = "2025-09-01";
 const ORIGIN_BASE = "http://harness.local";
 const SPECIFIC_ORIGIN = "https://example.com";
+const SUFFIX = ".example.com";
+const SUFFIX_ALLOWED_ORIGIN = "https://pr-7.example.com";
+// "evilexample.com" without a leading dot is the label-boundary attack:
+// it endsWith "example.com" but must NOT match suffix ".example.com".
+const SUFFIX_BOUNDARY_ATTACK = "https://evilexample.com";
+const FOREIGN_ORIGIN = "https://evil.example";
 
 // `empty-input` is the cheapest fixture — no disk read, no CLI shell-out.
 // It's the right pick for cases that are about Worker glue, not linter
@@ -49,7 +55,7 @@ function oracle(filename, src) {
 
 // --- Miniflare instance helpers ------------------------------------------
 
-function newMiniflare({ allowedOrigin = "*", rateLimit } = {}) {
+function newMiniflare({ allowedOrigins = "", allowedSuffixes = "", rateLimit } = {}) {
   const opts = {
     scriptPath: workerScriptPath,
     modules: true,
@@ -58,7 +64,10 @@ function newMiniflare({ allowedOrigin = "*", rateLimit } = {}) {
       { type: "CompiledWasm", include: ["**/*.wasm"], fallthrough: true },
     ],
     compatibilityDate: COMPATIBILITY_DATE,
-    bindings: { ALLOWED_ORIGIN: allowedOrigin },
+    bindings: {
+      ALLOWED_ORIGINS: allowedOrigins,
+      ALLOWED_ORIGIN_SUFFIXES: allowedSuffixes,
+    },
   };
   if (rateLimit) {
     opts.ratelimits = {
@@ -116,8 +125,13 @@ function expectJsonBodyEquals(caseName, gotBody, wantBody) {
 
 // --- Cases ---------------------------------------------------------------
 
-async function runDefaultCases(mf) {
-  // 1. health-get
+async function runNoAllowlistCases(mf) {
+  // No allowlist configured. All requests in this family omit the Origin
+  // header (curl/server-to-server style), so the allowlist gate doesn't
+  // fire — they should all proceed normally without any ACAO. Vary: Origin
+  // is still emitted so caches differentiate.
+
+  // 1. health-get — /health is intentionally public; ACAO: * regardless.
   {
     const name = "health-get";
     const r = await mf.dispatchFetch(`${ORIGIN_BASE}/health`, { method: "GET" });
@@ -135,7 +149,7 @@ async function runDefaultCases(mf) {
     await r.text();
   }
 
-  // 3. lint-octet-stream
+  // 3. lint-octet-stream — no Origin → no allowlist gate → 200.
   {
     const name = "lint-octet-stream";
     const url = `${ORIGIN_BASE}/lint?filename=${encodeURIComponent(VALID_FILENAME)}`;
@@ -145,19 +159,21 @@ async function runDefaultCases(mf) {
       body: VALID_SRC,
     });
     expectStatus(name, r, 200);
+    expectHeaderAbsent(name, r, "Access-Control-Allow-Origin");
+    expectHeader(name, r, "Vary", "Origin");
     const body = await r.text();
     expectJsonBodyEquals(name, body, oracle(VALID_FILENAME, VALID_SRC));
   }
 
-  // 5. lint-options-wildcard
+  // 5. lint-options-no-origin — preflight without Origin. Browsers don't
+  // send this shape; covers a misbehaving client. Worker returns 204 with
+  // no permissive ACAO, only Vary.
   {
-    const name = "lint-options-wildcard";
+    const name = "lint-options-no-origin";
     const r = await mf.dispatchFetch(`${ORIGIN_BASE}/lint`, { method: "OPTIONS" });
     expectStatus(name, r, 204);
-    expectHeader(name, r, "Access-Control-Allow-Origin", "*");
-    expectHeader(name, r, "Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-    expectHeader(name, r, "Access-Control-Allow-Headers", "Content-Type");
-    expectHeaderAbsent(name, r, "Vary");
+    expectHeaderAbsent(name, r, "Access-Control-Allow-Origin");
+    expectHeader(name, r, "Vary", "Origin");
   }
 
   // 6. lint-get-rejected
@@ -222,9 +238,11 @@ async function runDefaultCases(mf) {
     await r.text();
   }
 
-  // 14. cors-wildcard-on-200
+  // 14. cors-no-origin-on-200 — POST without Origin succeeds and sends no
+  // permissive ACAO. Vary: Origin is set so a downstream cache that later
+  // sees an Origin'd request doesn't serve this response back.
   {
-    const name = "cors-wildcard-on-200";
+    const name = "cors-no-origin-on-200";
     const url = `${ORIGIN_BASE}/lint?filename=${encodeURIComponent(VALID_FILENAME)}`;
     const r = await mf.dispatchFetch(url, {
       method: "POST",
@@ -232,16 +250,16 @@ async function runDefaultCases(mf) {
       body: VALID_SRC,
     });
     expectStatus(name, r, 200);
-    expectHeader(name, r, "Access-Control-Allow-Origin", "*");
-    expectHeaderAbsent(name, r, "Vary");
+    expectHeaderAbsent(name, r, "Access-Control-Allow-Origin");
+    expectHeader(name, r, "Vary", "Origin");
     await r.text();
   }
 }
 
 async function runSpecificOriginCases(mf) {
-  // 4. lint-options
+  // 4. lint-options-allowed
   {
-    const name = "lint-options";
+    const name = "lint-options-allowed";
     const r = await mf.dispatchFetch(`${ORIGIN_BASE}/lint`, {
       method: "OPTIONS",
       headers: { Origin: SPECIFIC_ORIGIN },
@@ -259,12 +277,122 @@ async function runSpecificOriginCases(mf) {
     const url = `${ORIGIN_BASE}/lint?filename=${encodeURIComponent(VALID_FILENAME)}`;
     const r = await mf.dispatchFetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/octet-stream" },
+      headers: {
+        "Content-Type": "application/octet-stream",
+        Origin: SPECIFIC_ORIGIN,
+      },
       body: VALID_SRC,
     });
     expectStatus(name, r, 200);
     expectHeader(name, r, "Access-Control-Allow-Origin", SPECIFIC_ORIGIN);
     expectHeader(name, r, "Vary", "Origin");
+    await r.text();
+  }
+
+  // 16. lint-options-foreign — disallowed Origin on preflight is rejected
+  // before the 204 path, with no permissive headers. Browser drops it.
+  {
+    const name = "lint-options-foreign";
+    const r = await mf.dispatchFetch(`${ORIGIN_BASE}/lint`, {
+      method: "OPTIONS",
+      headers: { Origin: FOREIGN_ORIGIN },
+    });
+    expectStatus(name, r, 403);
+    expectHeaderAbsent(name, r, "Access-Control-Allow-Origin");
+    await r.text();
+  }
+
+  // 17. cors-foreign-origin — POST with disallowed Origin short-circuits to
+  // 403 *before* any linter or rate-limiter work. This is the budget defense
+  // against "simple" POSTs (Content-Type: text/plain) that skip preflight.
+  {
+    const name = "cors-foreign-origin";
+    const url = `${ORIGIN_BASE}/lint?filename=${encodeURIComponent(VALID_FILENAME)}`;
+    const r = await mf.dispatchFetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/octet-stream",
+        Origin: FOREIGN_ORIGIN,
+      },
+      body: VALID_SRC,
+    });
+    expectStatus(name, r, 403);
+    expectHeaderAbsent(name, r, "Access-Control-Allow-Origin");
+    await r.text();
+  }
+}
+
+async function runSuffixCases(mf) {
+  // 18. suffix-options-allowed — Origin matches a leading-dot suffix.
+  {
+    const name = "suffix-options-allowed";
+    const r = await mf.dispatchFetch(`${ORIGIN_BASE}/lint`, {
+      method: "OPTIONS",
+      headers: { Origin: SUFFIX_ALLOWED_ORIGIN },
+    });
+    expectStatus(name, r, 204);
+    expectHeader(name, r, "Access-Control-Allow-Origin", SUFFIX_ALLOWED_ORIGIN);
+    expectHeader(name, r, "Vary", "Origin");
+  }
+
+  // 19. suffix-post-allowed
+  {
+    const name = "suffix-post-allowed";
+    const url = `${ORIGIN_BASE}/lint?filename=${encodeURIComponent(VALID_FILENAME)}`;
+    const r = await mf.dispatchFetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/octet-stream",
+        Origin: SUFFIX_ALLOWED_ORIGIN,
+      },
+      body: VALID_SRC,
+    });
+    expectStatus(name, r, 200);
+    expectHeader(name, r, "Access-Control-Allow-Origin", SUFFIX_ALLOWED_ORIGIN);
+    expectHeader(name, r, "Vary", "Origin");
+    await r.text();
+  }
+
+  // 20. suffix-options-boundary — leading-dot enforces a label boundary so
+  // "evilexample.com" must NOT match suffix ".example.com".
+  {
+    const name = "suffix-options-boundary";
+    const r = await mf.dispatchFetch(`${ORIGIN_BASE}/lint`, {
+      method: "OPTIONS",
+      headers: { Origin: SUFFIX_BOUNDARY_ATTACK },
+    });
+    expectStatus(name, r, 403);
+    expectHeaderAbsent(name, r, "Access-Control-Allow-Origin");
+    await r.text();
+  }
+
+  // 21. suffix-post-boundary
+  {
+    const name = "suffix-post-boundary";
+    const url = `${ORIGIN_BASE}/lint?filename=${encodeURIComponent(VALID_FILENAME)}`;
+    const r = await mf.dispatchFetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/octet-stream",
+        Origin: SUFFIX_BOUNDARY_ATTACK,
+      },
+      body: VALID_SRC,
+    });
+    expectStatus(name, r, 403);
+    expectHeaderAbsent(name, r, "Access-Control-Allow-Origin");
+    await r.text();
+  }
+
+  // 22. suffix-http-rejected — suffix matching requires https; an http
+  // Origin pointing at a covered host is denied.
+  {
+    const name = "suffix-http-rejected";
+    const r = await mf.dispatchFetch(`${ORIGIN_BASE}/lint`, {
+      method: "OPTIONS",
+      headers: { Origin: "http://pr-7.example.com" },
+    });
+    expectStatus(name, r, 403);
+    expectHeaderAbsent(name, r, "Access-Control-Allow-Origin");
     await r.text();
   }
 }
@@ -312,11 +440,16 @@ async function main() {
   await loadWasm();
 
   const families = [
-    { name: "default", build: () => newMiniflare(), run: runDefaultCases },
+    { name: "no-allowlist", build: () => newMiniflare(), run: runNoAllowlistCases },
     {
       name: "specific-origin",
-      build: () => newMiniflare({ allowedOrigin: SPECIFIC_ORIGIN }),
+      build: () => newMiniflare({ allowedOrigins: SPECIFIC_ORIGIN }),
       run: runSpecificOriginCases,
+    },
+    {
+      name: "suffix",
+      build: () => newMiniflare({ allowedSuffixes: SUFFIX }),
+      run: runSuffixCases,
     },
     {
       name: "rate-limit-blocked",

@@ -2,10 +2,16 @@ name = "voidslice-api"
 main = "worker/index.js"
 compatibility_date = "2025-09-01"
 
-# CORS origin. Custom-domain lockdown (replace "*" with the Pages domain) is
-# tracked in M7 — Production hardening.
+# CORS allowlist. ALLOWED_ORIGINS is comma-separated exact origins
+# (scheme + host). ALLOWED_ORIGIN_SUFFIXES is comma-separated host suffixes,
+# each with a leading dot to enforce a label boundary (".voidslice.pages.dev"
+# matches "pr-42.voidslice.pages.dev" but not "evilvoidslice.pages.dev").
+# A request whose Origin header doesn't match either list is rejected with
+# 403 before any work runs — protects the rate-limit budget against
+# foreign-origin "simple" POSTs that skip preflight.
 [vars]
-ALLOWED_ORIGIN = "*"
+ALLOWED_ORIGINS = "https://voidslice.pages.dev"
+ALLOWED_ORIGIN_SUFFIXES = ".voidslice.pages.dev"
 
 [observability]
 enabled = true
