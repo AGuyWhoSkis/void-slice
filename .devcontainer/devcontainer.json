@@ -10,6 +10,11 @@
 //     git push over SSH works. No rebuild needed if keys change on the host.
 //   - Added: forwardPorts [35519] — forwards OAuth callback port so `claude auth login` inside
 //     the container completes via browser redirect without manual code pasting.
+//   - Added: forwardPorts [5173, 8787] — declarative forwards for the local playground (vite
+//     dev server and wrangler dev worker, see `make playground-web` / `make playground-worker`).
+//     Declarative > auto-detected: avoids stale Windows-side forwards when wrangler/vite are
+//     Ctrl+C'd and restarted, which otherwise present as "connection refused" or "CORS failed"
+//     in the browser despite the Ports panel claiming the port is forwarded.
 //   - Removed: workspaceMount and workspaceFolder fields (devcontainer template format handles this)
 //   - Added: chezmoi via Dockerfile (for dotfiles management)
 //   - Changed: waitFor from postStartCommand to postCreateCommand — VS Code dotfiles (chezmoi apply)
@@ -69,7 +74,7 @@
     "CLAUDE_CONFIG_DIR": "/home/node/.claude",
     "POWERLEVEL9K_DISABLE_GITSTATUS": "true"
   },
-  "forwardPorts": [35519],
+  "forwardPorts": [35519, 5173, 8787],
   "postStartCommand": "sudo /usr/local/bin/init-firewall.sh",
   "waitFor": "postCreateCommand"
 }

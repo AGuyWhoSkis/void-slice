@@ -36,8 +36,8 @@ export function Playground() {
   }, []);
 
   useEffect(() => {
-    if (filename === "" || text === "") return;
-    runLint(filename, text);
+    if (text === "") return;
+    runLint(filename || "untitled", text);
   }, [filename, text, runLint]);
 
   const loadSample = useCallback((sampleFilename: string) => {

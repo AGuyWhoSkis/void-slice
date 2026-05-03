@@ -84,6 +84,12 @@ const (
 	actionSkipBinarySniff // known text types — skip the sniff, just lint
 )
 
+// Convention: the `default` branch handles "unknown / no filetype context"
+// (e.g. the playground, where the file's true extension can't be known) and
+// MUST NOT emit filetype-derived warnings. Warnings whose meaning depends on
+// the file's extension belong on a known-extension branch, not the default.
+// The playground relies on this to suppress filetype-sensitive noise by
+// passing an extensionless filename.
 func classifyFile(filename string) (fileAction, *Diagnostic) {
 	ext := strings.ToLower(filepath.Ext(filename))
 	switch ext {

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { EditorState, Compartment } from "@codemirror/state";
 import { EditorView, lineNumbers, gutter, GutterMarker, keymap } from "@codemirror/view";
-import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import type { Diagnostic } from "../api";
 
 class DiagnosticMarker extends GutterMarker {
@@ -55,7 +55,7 @@ export function Editor({ value, diagnostics, scrollToLine, onChange }: EditorPro
       extensions: [
         lineNumbers(),
         history(),
-        keymap.of([...defaultKeymap, ...historyKeymap]),
+        keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
         diagCompRef.current.of(diagnosticGutter(diagnostics)),
         EditorView.theme({
           "&": { height: "100%", fontSize: "13px" },

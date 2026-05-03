@@ -8,7 +8,7 @@ GO      ?= go
 BIN_DIR ?= bin
 CMD ?=./cmd/voidslice
 
-.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness web-harness layer-harnesses harnesses oracle
+.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness web-harness layer-harnesses harnesses oracle playground-worker playground-web
 
 help:
 	@echo "Targets:"
@@ -28,6 +28,8 @@ help:
 	@echo "  layer-harnesses- run wasm-harness, worker-harness, and web-harness (per-layer pinning, M8.1–M8.3)"
 	@echo "  oracle         - differential oracle (M8.4): run the same fixtures through native, wasm, worker, and frontend-transport, and report the first divergent boundary"
 	@echo "  harnesses      - run all harnesses end-to-end: layer-harnesses + oracle"
+	@echo "  playground-worker - run the Worker locally on :8787 (pair with playground-web)"
+	@echo "  playground-web    - run the frontend locally on :5173, calling localhost:8787"
 	@echo "  clean          - remove build artifacts"
 
 tidy:
@@ -139,3 +141,16 @@ harnesses: layer-harnesses oracle
 # single layer.
 oracle: wasm worker/harness/node_modules
 	node worker/harness/oracle.mjs
+
+# Local playground — Worker half. Boots wrangler dev with the freshly-built
+# wasm on :8787, bound to 0.0.0.0 so VS Code port-forward (and devcontainer
+# host access) can reach it. Pair with `make playground-web` in another
+# terminal. Wrangler version matches the one pinned in .github/workflows/ci.yml.
+playground-worker: wasm
+	npx -y wrangler@4.86.0 dev --local --ip 0.0.0.0
+
+# Local playground — frontend half. Boots vite on :5173 with the API URL
+# pointing at the local Worker. --host binds 0.0.0.0 so the port forwards out
+# of the container. Pair with `make playground-worker`.
+playground-web: web/node_modules
+	VITE_API_URL=http://localhost:8787 npm --prefix web run dev -- --host
