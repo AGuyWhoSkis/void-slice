@@ -58,8 +58,24 @@ export function Editor({ value, diagnostics, scrollToLine, onChange }: EditorPro
         keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
         diagCompRef.current.of(diagnosticGutter(diagnostics)),
         EditorView.theme({
-          "&": { height: "100%", fontSize: "13px" },
+          "&": {
+            height: "100%",
+            fontSize: "13px",
+            backgroundColor: "var(--bg-elev)",
+            color: "var(--fg)",
+          },
           ".cm-scroller": { fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" },
+          ".cm-content": { caretColor: "var(--fg)" },
+          ".cm-cursor, .cm-dropCursor": { borderLeftColor: "var(--fg)" },
+          ".cm-gutters": {
+            backgroundColor: "var(--bg-elev)",
+            color: "var(--fg-muted)",
+            border: "none",
+          },
+          ".cm-activeLine": { backgroundColor: "transparent" },
+          ".cm-activeLineGutter": { backgroundColor: "transparent" },
+          ".cm-selectionBackground, &.cm-focused .cm-selectionBackground, ::selection":
+            { backgroundColor: "var(--bg-hover)" },
         }),
         EditorView.updateListener.of((u) => {
           if (u.docChanged) {

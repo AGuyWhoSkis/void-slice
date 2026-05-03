@@ -1,6 +1,11 @@
+import { ThemeToggle } from "./ThemeToggle";
+
 export function Landing() {
   return (
     <section className="vs-landing">
+      <div className="vs-landing-toggle">
+        <ThemeToggle />
+      </div>
       <div className="vs-landing-inner">
         <h1>void-slice</h1>
         <p className="vs-tagline">
