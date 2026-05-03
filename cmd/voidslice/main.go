@@ -43,13 +43,13 @@ func usage() {
 func runLint(args []string) int {
 	lintFlags := flag.NewFlagSet("lint", flag.ExitOnError)
 	jsonMode := lintFlags.Bool("json", false, "machine-readable JSON output")
-	lintFlags.Parse(args) //nolint
+	positional := parseInterspersed(lintFlags, args)
 
-	if lintFlags.NArg() != 1 {
+	if len(positional) != 1 {
 		fmt.Fprintln(os.Stderr, "usage: voidslice lint <file> [--json]")
 		return 2
 	}
-	filename := lintFlags.Arg(0)
+	filename := positional[0]
 
 	src, err := os.ReadFile(filename)
 	if err != nil {
@@ -114,6 +114,22 @@ func runLSP() int {
 		return 1
 	}
 	return 0
+}
+
+// parseInterspersed parses args allowing flags and positionals to interleave.
+// The stdlib flag package stops at the first non-flag, so `lint <file> --json`
+// would otherwise fail. Loop: parse, peel one positional, continue.
+func parseInterspersed(fs *flag.FlagSet, args []string) []string {
+	var positional []string
+	for {
+		fs.Parse(args) //nolint:errcheck // ExitOnError handles parse failures
+		rest := fs.Args()
+		if len(rest) == 0 {
+			return positional
+		}
+		positional = append(positional, rest[0])
+		args = rest[1:]
+	}
 }
 
 func toScanDiags(ds []lint.Diagnostic) []scan.Diagnostic {

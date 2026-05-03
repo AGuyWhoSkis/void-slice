@@ -51,9 +51,10 @@ Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
 - **Hooks** (`PostToolUse` on Edit/Write):
   - `*.go` → `go test ./...`.
   - `kanban/{todo,in-progress}/*.md` → `git mv` based on `**Status:**`. `kanban/goals/*.md` excluded.
-- **Slash commands:** `/crud-ticket`, `/implement-ticket`, `/define-goal`.
+- **Slash commands:** `/crud-ticket`, `/implement-ticket`, `/goal-define`, `/goal-slice`.
 - **Pre-approved Bash:** `go test`, `go build ./...`, `go vet ./...`, `grep`, `find`, `ls`. Still gated: `rm`, `git reset --hard`, `git push --force`, `git branch -D`.
 - **Lint:** `make lint` runs `golangci-lint` at the version pinned in `Makefile` (self-installs to `$(go env GOPATH)/bin`). Keep `Makefile`'s `GOLANGCI_LINT_VERSION` and the `version:` in [.github/workflows/ci.yml](.github/workflows/ci.yml) in sync.
+- **Harnesses:** `make harnesses` runs the per-layer harnesses (M8.1–M8.3) plus the differential oracle (M8.4); CI gates merges and deploys on it alongside `go test ./...`. Use `make layer-harnesses` to skip the oracle. Keep green when touching `worker/`, `cmd/voidslice-wasm/`, or `internal/report`.
 - **Worktrees:** `claude --worktree <branch>` (auto setup/teardown), or `git worktree add ../void-slice-<branch> <branch>`. `.claude/` is tracked per branch.
 - **Subagents:** ~3× speedup on file-disjoint writes. Self-contained agents only — no shared files, no git ops during parallel phase. Worktrees must live inside `/workspaces/void-slice/` (subagents can't reach `/tmp/`).
 

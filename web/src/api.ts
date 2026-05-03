@@ -16,12 +16,17 @@ export interface LintResponse {
 const API_URL: string =
   (import.meta.env.VITE_API_URL as string | undefined) ?? "http://localhost:8080";
 
-export async function lintFile(filename: string, src: string): Promise<LintResponse> {
+export async function lintFile(
+  filename: string,
+  src: string,
+  signal?: AbortSignal,
+): Promise<LintResponse> {
   const url = `${API_URL}/lint?filename=${encodeURIComponent(filename)}`;
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/octet-stream" },
     body: src,
+    signal,
   });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
