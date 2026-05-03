@@ -1,0 +1,21 @@
+# Cloudflare Pages security-header baseline. Pages reads this file from the
+# deploy root (Vite copies `web/public/` → `web/dist/` verbatim, so editing
+# this file is the only step needed). Format: a path block followed by
+# two-space-indented `Header: value` lines. `/*` matches every served asset.
+#
+# `style-src 'unsafe-inline'` is required for CodeMirror 6: the editor's
+# style-mod runtime injects `<style>` tags at load time, which a static
+# `_headers` file cannot nonce/hash. `script-src` stays strict at `'self'`.
+#
+# `connect-src` is the SPA's allowlist of *outbound* Worker hosts. It pairs
+# with M7.2's `ALLOWED_ORIGINS` / `ALLOWED_ORIGIN_SUFFIXES` in `wrangler.toml`,
+# which is the Worker's allowlist of *inbound* Pages origins — same trust
+# boundary, opposite direction. Adding a Worker host here? Probably needs a
+# matching update there. Adding a third-party API (analytics, error reporting)
+# requires widening connect-src on its own.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.voidslice.workers.dev; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), speaker-selection=(), usb=(), web-share=(), xr-spatial-tracking=()

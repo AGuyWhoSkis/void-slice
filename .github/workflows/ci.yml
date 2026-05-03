@@ -72,9 +72,14 @@ jobs:
           # deploys rebuild the frontend with the right URL.
           VITE_API_URL: ${{ vars.VITE_API_URL || 'http://localhost:8080' }}
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: web-dist
+      - name: Verify security headers shipped
+        # Cloudflare Pages reads `_headers` from the deploy root. Vite copies
+        # `web/public/` → `web/dist/` verbatim, so this should always be
+        # present — but a future Vite config change could silently drop it
+        # and the failure mode (no CSP / no nosniff in prod) is invisible at
+        # build time. Fail fast here instead of post-deploy.
+        run: test -f web/dist/_headers
+
           path: web/dist
           retention-days: 7
 
