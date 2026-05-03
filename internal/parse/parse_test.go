@@ -3,6 +3,7 @@ package parse_test
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -108,7 +109,7 @@ func scanAndWalk(t *testing.T, src []byte) (*recorder, []scan.Diagnostic) {
 	toks, scanDiags, _ := scan.Scan(src)
 	require.Empty(t, scanDiags, "unexpected scan diagnostics")
 	rec := newRecorder(src)
-	parseDiags := parse.WalkEntities(src, toks, rec)
+	parseDiags := parse.WalkEntities(src, toks, rec, parse.Opts{})
 	return rec, parseDiags
 }
 
@@ -369,7 +370,7 @@ component {
 `)
 	toks, _, _ := scan.Scan(src)
 	rec := newRecorder(src)
-	diags := parse.WalkEntities(src, toks, rec)
+	diags := parse.WalkEntities(src, toks, rec, parse.Opts{})
 	assert.NotEmpty(t, diags, "expected diagnostics for unterminated object")
 }
 
@@ -406,7 +407,7 @@ func TestIntegration_EntitiesGoldenFile(t *testing.T) {
 	require.Empty(t, scanDiags, "golden file must be scan-clean")
 
 	rec := newRecorder(src)
-	parseDiags := parse.WalkEntities(src, toks, rec)
+	parseDiags := parse.WalkEntities(src, toks, rec, parse.Opts{})
 	assert.Empty(t, parseDiags,
 		"golden entities file must produce zero parse diagnostics; got %d:\n%v",
 		len(parseDiags), parseDiags)
@@ -414,6 +415,56 @@ func TestIntegration_EntitiesGoldenFile(t *testing.T) {
 	// basic sanity: we should see Version + at least one component
 	assert.NotEmpty(t, filterKind(rec.events, "Version"))
 	assert.NotEmpty(t, filterKind(rec.events, "ComponentBegin"))
+}
+
+// -------------------------
+// Diagnostic-count cap (M7.1)
+// -------------------------
+
+// garbageSrc returns a stream of n top-level identifiers separated by spaces.
+// At top level, each unknown identifier not followed by '{' produces exactly
+// one PARSE_UNEXPECTED_TOKEN diagnostic — so n garbage idents → n diagnostics.
+func garbageSrc(n int) []byte {
+	return []byte(strings.Repeat("garbage ", n))
+}
+
+func TestDiagnosticCap_OptIn(t *testing.T) {
+	const cap = 5
+	src := garbageSrc(20)
+	toks, _, _ := scan.Scan(src)
+	rec := newRecorder(src)
+	diags := parse.WalkEntities(src, toks, rec, parse.Opts{MaxDiagnostics: cap})
+
+	require.Len(t, diags, cap, "diags slice must equal the cap")
+	assert.Equal(t, parse.Codes.DIAGNOSTICS_TRUNCATED, diags[cap-1].Code,
+		"final entry must be the truncation sentinel")
+	for i, d := range diags[:cap-1] {
+		assert.NotEqual(t, parse.Codes.DIAGNOSTICS_TRUNCATED, d.Code,
+			"non-final entries must be original errors (got sentinel at i=%d)", i)
+	}
+
+	// Handler should also have observed exactly one sentinel forwarded via OnDiag.
+	sentinels := 0
+	for _, d := range rec.diags {
+		if d.Code == parse.Codes.DIAGNOSTICS_TRUNCATED {
+			sentinels++
+		}
+	}
+	assert.Equal(t, 1, sentinels, "handler should see the sentinel exactly once")
+}
+
+func TestDiagnosticCap_DefaultUncapped(t *testing.T) {
+	const n = 20
+	src := garbageSrc(n)
+	toks, _, _ := scan.Scan(src)
+	rec := newRecorder(src)
+	diags := parse.WalkEntities(src, toks, rec, parse.Opts{})
+
+	assert.Equal(t, n, len(diags), "default Opts must not cap diagnostics")
+	for _, d := range diags {
+		assert.NotEqual(t, parse.Codes.DIAGNOSTICS_TRUNCATED, d.Code,
+			"no truncation sentinel when uncapped")
+	}
 }
 
 // -------------------------

@@ -1,7 +1,9 @@
 package parse
 
 import (
+	"fmt"
 	"strconv"
+
 	"void-slice/internal/scan"
 )
 
@@ -31,14 +33,28 @@ type Handler interface {
 	OnDiag(diag scan.Diagnostic)
 }
 
+// Opts configures behavior of WalkEntities. The zero value imposes no limits
+// — appropriate for CLI / LSP / native callers that run on end users' machines.
+// The Worker entry point (cmd/voidslice-wasm) sets MaxDiagnostics > 0 to bound
+// memory usage inside its 128 MB isolate.
+type Opts struct {
+	// MaxDiagnostics caps the total number of diagnostics emitted by a single
+	// WalkEntities call. 0 = unlimited. When the cap is reached, parsing
+	// continues internally (cheap) but no more diagnostics flow to either the
+	// returned slice or the Handler; the final entry becomes a sentinel with
+	// code Codes.DIAGNOSTICS_TRUNCATED.
+	MaxDiagnostics int
+}
+
 // WalkEntities walks an entities file emitting events to h.
 // Both the returned diags slice and h.OnDiag carry parse diagnostics; they are identical.
-func WalkEntities(src []byte, toks []scan.Token, h Handler) (diags []scan.Diagnostic) {
+func WalkEntities(src []byte, toks []scan.Token, h Handler, opts Opts) (diags []scan.Diagnostic) {
 	c := &cursor{
-		src:   src,
-		toks:  toks,
-		i:     -1,
-		nToks: len(toks),
+		src:            src,
+		toks:           toks,
+		i:              -1,
+		nToks:          len(toks),
+		maxDiagnostics: opts.MaxDiagnostics,
 	}
 	c.walkEntities(h)
 	return c.diags
@@ -49,11 +65,13 @@ func WalkEntities(src []byte, toks []scan.Token, h Handler) (diags []scan.Diagno
 // -------------------------
 
 type cursor struct {
-	src   []byte
-	toks  []scan.Token
-	i     int // -1 = before first token; i = index of last consumed token
-	nToks int
-	diags []scan.Diagnostic
+	src            []byte
+	toks           []scan.Token
+	i              int // -1 = before first token; i = index of last consumed token
+	nToks          int
+	diags          []scan.Diagnostic
+	maxDiagnostics int  // 0 = unlimited
+	truncated      bool // set once the cap is reached; suppresses further emissions
 }
 
 // eof returns true when there are no more tokens to consume.
@@ -109,9 +127,41 @@ func (c *cursor) diagSpan() scan.Span {
 }
 
 // emitDiag records a diagnostic in c.diags and forwards it to h.
+// Subject to the diagnostic-count cap configured on the cursor.
 func (c *cursor) emitDiag(h Handler, d scan.Diagnostic) {
+	c.recordDiag(h, d)
+}
+
+// appendDiag records a diagnostic in c.diags only — no handler forward.
+// Subject to the diagnostic-count cap configured on the cursor.
+func (c *cursor) appendDiag(d scan.Diagnostic) {
+	c.recordDiag(nil, d)
+}
+
+// recordDiag is the cap-aware diagnostic appender. When the cap is reached it
+// substitutes a single truncation sentinel and silences further calls; with
+// no cap configured it appends unconditionally. Pass h=nil to skip forwarding.
+func (c *cursor) recordDiag(h Handler, d scan.Diagnostic) {
+	if c.truncated {
+		return
+	}
+	if c.maxDiagnostics > 0 && len(c.diags) >= c.maxDiagnostics-1 {
+		sentinel := scan.Diagnostic{
+			Code:    Codes.DIAGNOSTICS_TRUNCATED,
+			Span:    c.diagSpan(),
+			Message: fmt.Sprintf("diagnostic limit (%d) reached; further diagnostics omitted", c.maxDiagnostics),
+		}
+		c.diags = append(c.diags, sentinel)
+		if h != nil {
+			h.OnDiag(sentinel)
+		}
+		c.truncated = true
+		return
+	}
 	c.diags = append(c.diags, d)
-	h.OnDiag(d)
+	if h != nil {
+		h.OnDiag(d)
+	}
 }
 
 // matchKind peeks and, if the next token has kind k, consumes and returns it.
@@ -127,7 +177,7 @@ func (c *cursor) matchKind(k scan.Kind) (scan.Token, bool) {
 func (c *cursor) expectKind(k scan.Kind, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
 	tok, ok := c.matchKind(k)
 	if !ok {
-		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
+		c.appendDiag(scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
 	}
 	return tok, ok
 }
@@ -145,7 +195,7 @@ func (c *cursor) matchSym(ch byte) (scan.Token, bool) {
 func (c *cursor) expectSym(ch byte, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
 	tok, ok := c.matchSym(ch)
 	if !ok {
-		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
+		c.appendDiag(scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
 	}
 	return tok, ok
 }
@@ -362,7 +412,7 @@ func (c *cursor) walkStatement(h Handler) {
 		var idx Indexer
 		idx.LBrackTok = lb
 		if valTok == nil {
-			c.diags = append(c.diags, scan.Diagnostic{
+			c.appendDiag(scan.Diagnostic{
 				Code:    Codes.UNEXPECTED_TOKEN,
 				Span:    c.diagSpan(),
 				Message: "expected index value inside '['",
@@ -399,7 +449,7 @@ func (c *cursor) walkStatement(h Handler) {
 
 	next := c.peek()
 	if next == nil {
-		c.diags = append(c.diags, scan.Diagnostic{
+		c.appendDiag(scan.Diagnostic{
 			Code:    Codes.UNEXPECTED_TOKEN,
 			Span:    c.diagSpan(),
 			Message: "unexpected end of file in statement",
@@ -470,7 +520,7 @@ func (c *cursor) walkStatement(h Handler) {
 func (c *cursor) parseValue(h Handler) Value {
 	tok := c.peek()
 	if tok == nil {
-		c.diags = append(c.diags, scan.Diagnostic{
+		c.appendDiag(scan.Diagnostic{
 			Code:    Codes.UNEXPECTED_TOKEN,
 			Span:    c.diagSpan(),
 			Message: "expected value",

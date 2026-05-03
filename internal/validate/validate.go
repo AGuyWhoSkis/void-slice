@@ -10,12 +10,26 @@ import (
 
 // ValidateEntities runs both the parser and semantic validator over src.
 // Returned diagnostics include parse errors followed by validate warnings.
-func ValidateEntities(src []byte, toks []scan.Token) []scan.Diagnostic {
+//
+// opts.MaxDiagnostics, if > 0, applies uniformly to the combined parse+validate
+// output: once the cap is reached, the final entry is replaced with a
+// PARSE_DIAGNOSTICS_TRUNCATED sentinel. opts.MaxDiagnostics == 0 disables the
+// cap (CLI / LSP / native callers); the Worker entry point sets it.
+func ValidateEntities(src []byte, toks []scan.Token, opts parse.Opts) []scan.Diagnostic {
 	v := &validator{src: src}
-	parseDiags := parse.WalkEntities(src, toks, v)
+	parseDiags := parse.WalkEntities(src, toks, v, opts)
 	all := make([]scan.Diagnostic, 0, len(parseDiags)+len(v.diags))
 	all = append(all, parseDiags...)
 	all = append(all, v.diags...)
+	if opts.MaxDiagnostics <= 0 || len(all) <= opts.MaxDiagnostics {
+		return all
+	}
+	all = all[:opts.MaxDiagnostics]
+	all[opts.MaxDiagnostics-1] = scan.Diagnostic{
+		Code:    parse.Codes.DIAGNOSTICS_TRUNCATED,
+		Span:    scan.NewSpan(len(src), len(src)),
+		Message: fmt.Sprintf("diagnostic limit (%d) reached; further diagnostics omitted", opts.MaxDiagnostics),
+	}
 	return all
 }
 

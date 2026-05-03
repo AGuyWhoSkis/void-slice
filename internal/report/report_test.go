@@ -11,6 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"void-slice/internal/parse"
 	"void-slice/internal/report"
 	"void-slice/internal/scan"
 	"void-slice/internal/validate"
@@ -27,7 +28,7 @@ func TestMain(m *testing.M) {
 func lintFixture(t *testing.T, src []byte) []scan.Diagnostic {
 	t.Helper()
 	toks, scanDiags, _ := scan.Scan(src)
-	validateDiags := validate.ValidateEntities(src, toks)
+	validateDiags := validate.ValidateEntities(src, toks, parse.Opts{})
 	return append(scanDiags, validateDiags...)
 }
 

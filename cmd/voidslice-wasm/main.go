@@ -10,6 +10,11 @@ import (
 	"void-slice/internal/scan"
 )
 
+// workerMaxDiagnostics caps diagnostics from a single /lint call to bound
+// memory usage inside the Worker's 128 MB isolate. CLI, LSP, and local-dev
+// callers set no cap — see internal/parse.Opts.
+const workerMaxDiagnostics = 10_000
+
 func main() {
 	js.Global().Set("voidsliceLint", js.FuncOf(lintFn))
 	select {}
@@ -22,7 +27,7 @@ func lintFn(_ js.Value, args []js.Value) any {
 	filename := args[0].String()
 	src := []byte(args[1].String())
 
-	diags, err := lint.New().Lint(filename, src)
+	diags, err := lint.NewWithOptions(lint.Options{MaxDiagnostics: workerMaxDiagnostics}).Lint(filename, src)
 	if err != nil {
 		return errorJSON(err.Error())
 	}

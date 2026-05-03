@@ -5,6 +5,7 @@ import (
 	"sort"
 	"strings"
 
+	"void-slice/internal/parse"
 	"void-slice/internal/scan"
 	"void-slice/internal/validate"
 )
@@ -27,11 +28,28 @@ type Linter interface {
 	Lint(filename string, src []byte) ([]Diagnostic, error)
 }
 
+// Options configures a Linter. The zero value is "no limits" — the right
+// default for callers running on end users' machines (CLI, LSP / VS Code
+// extension, local dev server). The Worker entry point sets MaxDiagnostics
+// to bound memory usage inside its 128 MB isolate.
+type Options struct {
+	// MaxDiagnostics caps the total number of diagnostics returned by Lint.
+	// 0 = unlimited. When the cap is reached, the final entry is replaced
+	// with a PARSE_DIAGNOSTICS_TRUNCATED sentinel.
+	MaxDiagnostics int
+}
+
 func New() Linter {
 	return &linter{}
 }
 
-type linter struct{}
+func NewWithOptions(opts Options) Linter {
+	return &linter{opts: opts}
+}
+
+type linter struct {
+	opts Options
+}
 
 func (l *linter) Lint(filename string, src []byte) ([]Diagnostic, error) {
 	var out []Diagnostic
@@ -61,7 +79,7 @@ func (l *linter) Lint(filename string, src []byte) ([]Diagnostic, error) {
 	}
 
 	toks, scanDiags, _ := scan.Scan(src)
-	validateDiags := validate.ValidateEntities(src, toks)
+	validateDiags := validate.ValidateEntities(src, toks, parse.Opts{MaxDiagnostics: l.opts.MaxDiagnostics})
 
 	for _, d := range scanDiags {
 		out = append(out, convert(d))
