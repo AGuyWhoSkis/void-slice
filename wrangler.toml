@@ -16,6 +16,12 @@ ALLOWED_ORIGIN_SUFFIXES = ".voidslice.pages.dev"
 [observability]
 enabled = true
 
+# Per-deploy version stamp. Mixed into the /lint cache key so a new
+# Worker version invalidates prior cached lint responses without waiting
+# for TTL expiry.
+[version_metadata]
+binding = "CF_VERSION_METADATA"
+
 # Per-IP rate limit on /lint. 30 requests / 60 s, keyed on cf-connecting-ip.
 # Shared across all versions of the script — preview versions deployed by the
 # CI preview-deploy job (M6.2) use the same bucket as production. Acceptable

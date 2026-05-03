@@ -55,7 +55,12 @@ function oracle(filename, src) {
 
 // --- Miniflare instance helpers ------------------------------------------
 
-function newMiniflare({ allowedOrigins = "", allowedSuffixes = "", rateLimit } = {}) {
+function newMiniflare({
+  allowedOrigins = "",
+  allowedSuffixes = "",
+  rateLimit,
+  workerVersion = "harness-v1",
+} = {}) {
   const opts = {
     scriptPath: workerScriptPath,
     modules: true,
@@ -67,6 +72,7 @@ function newMiniflare({ allowedOrigins = "", allowedSuffixes = "", rateLimit } =
     bindings: {
       ALLOWED_ORIGINS: allowedOrigins,
       ALLOWED_ORIGIN_SUFFIXES: allowedSuffixes,
+      WORKER_VERSION: workerVersion,
     },
   };
   if (rateLimit) {
@@ -420,6 +426,93 @@ async function runRateLimitBlockedCases(mf) {
   await r.text();
 }
 
+async function runCacheCases(mf) {
+  // Repeat-lint cache: same (filename, body) on the same Worker version
+  // hashes to the same cache key, so the second POST short-circuits before
+  // ensureWasm() and returns X-Voidslice-Cache: hit. Different filename or
+  // body on the same version → miss. /health never carries the header.
+  const url = `${ORIGIN_BASE}/lint?filename=${encodeURIComponent(VALID_FILENAME)}`;
+  const init = {
+    method: "POST",
+    headers: { "Content-Type": "application/octet-stream" },
+    body: VALID_SRC,
+  };
+
+  let firstBody;
+  {
+    const name = "cache-first-miss";
+    const r = await mf.dispatchFetch(url, init);
+    expectStatus(name, r, 200);
+    expectHeader(name, r, "X-Voidslice-Cache", "miss");
+    firstBody = await r.text();
+    expectJsonBodyEquals(name, firstBody, oracle(VALID_FILENAME, VALID_SRC));
+  }
+
+  {
+    const name = "cache-second-hit";
+    const r = await mf.dispatchFetch(url, init);
+    expectStatus(name, r, 200);
+    expectHeader(name, r, "X-Voidslice-Cache", "hit");
+    const body = await r.text();
+    if (body !== firstBody) record(name, "body", body.slice(0, 120), firstBody.slice(0, 120));
+  }
+
+  {
+    const name = "cache-different-body";
+    const r = await mf.dispatchFetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/octet-stream" },
+      body: VALID_SRC + "\n",
+    });
+    expectStatus(name, r, 200);
+    expectHeader(name, r, "X-Voidslice-Cache", "miss");
+    await r.text();
+  }
+
+  {
+    const name = "cache-different-filename";
+    const altUrl = `${ORIGIN_BASE}/lint?filename=other.entities`;
+    const r = await mf.dispatchFetch(altUrl, init);
+    expectStatus(name, r, 200);
+    expectHeader(name, r, "X-Voidslice-Cache", "miss");
+    await r.text();
+  }
+
+  {
+    const name = "cache-health-uncached";
+    const a = await mf.dispatchFetch(`${ORIGIN_BASE}/health`, { method: "GET" });
+    expectHeaderAbsent(name, a, "X-Voidslice-Cache");
+    await a.text();
+    const b = await mf.dispatchFetch(`${ORIGIN_BASE}/health`, { method: "GET" });
+    expectHeaderAbsent(name, b, "X-Voidslice-Cache");
+    await b.text();
+  }
+}
+
+async function runCacheRateLimitCases(mf) {
+  // Cache hits do not bypass the rate limiter — rate limit fires before the
+  // cache lookup. First POST primes the cache and drains the limit; the
+  // second POST is what would have been a hit but is blocked at 429 before
+  // any cache work runs.
+  const name = "cache-vs-rate-limit";
+  const url = `${ORIGIN_BASE}/lint?filename=${encodeURIComponent(VALID_FILENAME)}`;
+  const init = {
+    method: "POST",
+    headers: { "Content-Type": "application/octet-stream" },
+    body: VALID_SRC,
+  };
+  const drain = await mf.dispatchFetch(url, init);
+  await drain.text();
+  if (drain.status !== 200) {
+    record(name, "drain.status", drain.status, 200);
+    return;
+  }
+  const r = await mf.dispatchFetch(url, init);
+  expectStatus(name, r, 429);
+  expectHeaderAbsent(name, r, "X-Voidslice-Cache");
+  await r.text();
+}
+
 async function runRateLimitUnboundCases(mf) {
   // 13. rate-limit-200 — RATE_LIMITER unbound: same request as case 12 must
   // succeed. This pins the toggle, not the policy.
@@ -461,6 +554,16 @@ async function main() {
       name: "rate-limit-unbound",
       build: () => newMiniflare(),
       run: runRateLimitUnboundCases,
+    },
+    {
+      name: "cache",
+      build: () => newMiniflare(),
+      run: runCacheCases,
+    },
+    {
+      name: "cache-rate-limit",
+      build: () => newMiniflare({ rateLimit: { limit: 1 } }),
+      run: runCacheRateLimitCases,
     },
   ];
 

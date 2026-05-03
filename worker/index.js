@@ -13,6 +13,8 @@ import voidsliceWasm from "./voidslice.wasm";
 const MAX_BODY_BYTES = 1 << 20; // 1 MiB
 const ALLOW_METHODS = "POST, GET, OPTIONS";
 const ALLOW_HEADERS = "Content-Type";
+const LINT_CACHE_TTL_SECONDS = 300;
+const LINT_CACHE_HEADER = "X-Voidslice-Cache";
 
 let wasmReady = null;
 
@@ -84,12 +86,13 @@ function corsHeaders(req, env) {
   return { Vary: "Origin" };
 }
 
-function jsonResponse(status, body, req, env) {
+function jsonResponse(status, body, req, env, extraHeaders) {
   return new Response(typeof body === "string" ? body : JSON.stringify(body), {
     status,
     headers: {
       "Content-Type": "application/json",
       ...corsHeaders(req, env),
+      ...(extraHeaders || {}),
     },
   });
 }
@@ -150,6 +153,46 @@ async function readWithCap(req) {
   return buf;
 }
 
+// Version stamp folded into every /lint cache key. CF_VERSION_METADATA is the
+// canonical Cloudflare binding; WORKER_VERSION is a plain-string fallback for
+// dev/harness. "dev" is the last-resort default — local `wrangler dev` without
+// a configured binding still gets a stable key, just one that doesn't roll
+// over on edits.
+function workerVersion(env) {
+  return env?.CF_VERSION_METADATA?.id || env?.WORKER_VERSION || "dev";
+}
+
+function u32be(n) {
+  return new Uint8Array([(n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff]);
+}
+
+// SHA-256 of length-prefixed (version, filename, body-bytes). Length prefixes
+// prevent collisions across (filename="a", body="bc") vs (filename="ab",
+// body="c"). Hashing raw body bytes — rather than the decoded string — lets
+// the hit path skip the TextDecoder entirely.
+async function lintCacheKey(req, env, filename, bodyBytes) {
+  const enc = new TextEncoder();
+  const v = enc.encode(workerVersion(env));
+  const f = enc.encode(filename);
+  const total = new Uint8Array(4 + v.length + 4 + f.length + 4 + bodyBytes.byteLength);
+  let off = 0;
+  total.set(u32be(v.length), off);
+  off += 4;
+  total.set(v, off);
+  off += v.length;
+  total.set(u32be(f.length), off);
+  off += 4;
+  total.set(f, off);
+  off += f.length;
+  total.set(u32be(bodyBytes.byteLength), off);
+  off += 4;
+  total.set(new Uint8Array(bodyBytes), off);
+  const digest = await crypto.subtle.digest("SHA-256", total);
+  const hex = Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+  const origin = new URL(req.url).origin;
+  return new Request(`${origin}/__cache/lint/${hex}`, { method: "GET" });
+}
+
 async function handleLint(req, env) {
   // Origin gate runs before the method check, the rate limiter, and any
   // body work. A foreign-origin "simple" POST (e.g. Content-Type:
@@ -169,6 +212,9 @@ async function handleLint(req, env) {
     return textResponse(405, "method not allowed", req, env);
   }
 
+  // Rate limit runs before the cache lookup: cached responses still consume
+  // budget. This is intentional — the cache is a CPU optimization, not a
+  // bypass for abuse controls.
   if (env.RATE_LIMITER) {
     const key = req.headers.get("cf-connecting-ip") || "unknown";
     const { success } = await env.RATE_LIMITER.limit({ key });
@@ -181,7 +227,7 @@ async function handleLint(req, env) {
   }
 
   let filename = "input";
-  let src = "";
+  let bodyBytes;
 
   try {
     if (ct.toLowerCase().startsWith("multipart/form-data")) {
@@ -196,21 +242,39 @@ async function handleLint(req, env) {
       if (!file) return textResponse(400, "missing file part", req, env);
       if (file.size > MAX_BODY_BYTES) return textResponse(413, "file too large", req, env);
       filename = file.name || "input";
-      src = await file.text();
+      bodyBytes = await file.arrayBuffer();
     } else {
       const url = new URL(req.url);
       filename = url.searchParams.get("filename") || "input";
-      const buf = await readWithCap(req);
-      src = new TextDecoder().decode(buf);
+      bodyBytes = await readWithCap(req);
     }
   } catch (e) {
     if (e && e.statusCode === 413) return textResponse(413, "request body too large", req, env);
     return textResponse(400, "could not read body", req, env);
   }
 
+  // Cache lookup. The key mixes (workerVersion, filename, bodyBytes) so a new
+  // deploy invalidates prior entries and multipart/raw paths share one cache.
+  const cache = caches.default;
+  const cacheKey = await lintCacheKey(req, env, filename, bodyBytes);
+  const hit = await cache.match(cacheKey);
+  if (hit) {
+    return jsonResponse(200, await hit.text(), req, env, { [LINT_CACHE_HEADER]: "hit" });
+  }
+
   await ensureWasm();
+  const src = new TextDecoder().decode(bodyBytes);
   const out = globalThis.voidsliceLint(filename, src);
-  return jsonResponse(200, out, req, env);
+  const body = typeof out === "string" ? out : JSON.stringify(out);
+  const cacheable = new Response(body, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": `public, max-age=${LINT_CACHE_TTL_SECONDS}`,
+    },
+  });
+  await cache.put(cacheKey, cacheable);
+  return jsonResponse(200, body, req, env, { [LINT_CACHE_HEADER]: "miss" });
 }
 
 export default {
