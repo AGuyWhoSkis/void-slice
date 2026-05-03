@@ -107,14 +107,14 @@ Single self-closing XML element `<ResourceInfo name="…" classname="…" … />
 
 ## Allowlist inventory for M4.2
 
-Fresh as of 2026-05-02. Total: **754,265 diagnostics across 70 files.** VOID_SCAN row revised post-M4.1.1 (see below).
+Fresh as of 2026-05-03. Total: **754,502 diagnostics across 73 files.** Counts re-taken after M4.1.2 (3 EOF canary fixtures added at the flat root, scanner comment-at-EOF behavior fixed) and M4.1.3 (lint walkers broadened to recursive walk of `testdata/golden/`). Per-shape concentration breakdown below is from the original M4.1.1 audit and is informational only — the seed allowlist is tree-wide.
 
-| Code | Count | Sev | Concentration |
+| Code | Count | Sev | Concentration (from M4.1.1 audit) |
 |------|-------|-----|---------------|
-| PARSE_UNEXPECTED_TOKEN | 751,470 | E | Shape 2: 628,623 · Shape 1: 120,990 · Shape 4: 1,213 · Shape 3: 502 · Sidecar: 120 · Shape 5: 22 |
-| VOID_SCAN | 828 | E | Shape 4: 548 · Shape 3: 244 · Sidecar: 36 (post-M4.1.1; was 2,786) |
-| PARSE_EXPECTED_SYMBOL | 329 | E | Shape 2: 306 · Shape 4: 23 |
-| PARSE_EXPECTED_SEMICOLON | 1 | E | Shape 1 |
+| PARSE_UNEXPECTED_TOKEN | 753,349 | E | Shape 2: 628,623 · Shape 1: 120,990 · Shape 4: 1,213 · Shape 3: 502 · Sidecar: 120 · Shape 5: 22 |
+| VOID_SCAN | 829 | E | Shape 4: 548 · Shape 3: 244 · Sidecar: 36 (post-M4.1.1; was 2,786) |
+| PARSE_EXPECTED_SYMBOL | 315 | E | Shape 2: 306 · Shape 4: 23 |
+| PARSE_EXPECTED_SEMICOLON | 0 | E | drained by M4.1.x scanner work |
 | VALIDATE_ARRAY_COUNT_MISMATCH | 7 | W | existing `.entities` |
 | VALIDATE_ARRAY_MISSING_NUM | 1 | W | existing `.entities` |
 | LINT_VE_INCONSISTENCY | 1 | W | existing `.entities` (correct behavior, *not* in allowlist) |
