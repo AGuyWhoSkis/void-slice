@@ -24,7 +24,7 @@ Ask: which systems, packages, or surfaces does this touch? What adjacent work is
 
 Listen for:
 - Concrete paths or subsystems (e.g. `internal/scan/`, the LSP server, the kanban tree).
-- Explicit exclusions. Look at how M1–M5 handle this — each goal calls out adjacent goals it deliberately doesn't overlap with.
+- Explicit exclusions. Look at how the existing goals handle this — each goal calls out adjacent goals it deliberately doesn't overlap with.
 
 If the user just lists features they want to build, that's not scope, that's a wishlist. Push for the boundary: "what's a reasonable-sounding piece of work that you'd reject as 'no, that belongs to a different goal'?"
 
@@ -63,7 +63,7 @@ Goal file structure (assemble from the conversation, don't fill in a template):
 **Status:** <value from §3, with gating condition if parked>
 ```
 
-Match the tone of M1–M5 — terse, factual, confident about boundaries. Avoid hedging language ("might," "perhaps") in the why and scope; if the goal is uncertain enough that hedging feels right, the answer is to keep working through §1 and §2, not to encode the uncertainty into the file.
+Match the tone of the existing goals — terse, factual, confident about boundaries. Avoid hedging language ("might," "perhaps") in the why and scope; if the goal is uncertain enough that hedging feels right, the answer is to keep working through §1 and §2, not to encode the uncertainty into the file.
 
 ---
 
@@ -82,7 +82,6 @@ Match the tone of M1–M5 — terse, factual, confident about boundaries. Avoid 
 
 ## Out of scope for this command
 
-- **Goal closure.** Handled by the lifecycle in [kanban/README.md § Lifecycle](../../kanban/README.md): flip the goal file's `**Status:**` to `done.` and optionally append a retro (see [goals/M2.md](../../kanban/goals/M2.md), [goals/M6.md](../../kanban/goals/M6.md) as exemplars). Do not bundle that flow in here.
-- **Status updates after creation.** The user edits `**Status:**` directly; the kanban-move hook excludes `goals/`, so there's nothing to automate.
+- **Goal closure.** Handled by the kanban lifecycle (flip `**Status:**` on the goal file, optionally append a retro). Not here.
+- **Status updates after creation.** User edits `**Status:**` directly; kanban-move hook excludes `goals/`, nothing to automate.
 - **Goal deletion.** Rare and case-by-case; not worth a command.
-- **Creating the seed tickets themselves.** That's `/crud-ticket`'s job. Keep this command focused on the goal artifact.
