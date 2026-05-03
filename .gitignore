@@ -33,3 +33,6 @@ go.work.sum
 
 # Node (worker harness)
 node_modules/
+
+# Wrangler local dev cache (created by `wrangler dev`)
+.wrangler/
