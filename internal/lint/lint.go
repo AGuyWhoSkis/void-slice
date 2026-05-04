@@ -61,7 +61,7 @@ func (l *linter) Lint(filename string, src []byte) ([]Diagnostic, error) {
 	}
 
 	toks, scanDiags, _ := scan.Scan(src)
-	validateDiags := validate.ValidateEntities(src, toks)
+	validateDiags := validate.ValidateEntities(filename, src, toks)
 
 	for _, d := range scanDiags {
 		out = append(out, convert(d))

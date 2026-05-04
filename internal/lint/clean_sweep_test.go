@@ -26,10 +26,15 @@ const entitiesFile = "d2/game1/maps.campaign.dunwall.escape.tower.dunwall_escape
 // per-shape grammars and validate rules land. Re-baseline (typically downward)
 // when a draining ticket lands. Counts derived from the inventory in
 // kanban/goals/M4-decl-taxonomy.md § Allowlist inventory for M4.2.
+//
+// Drain history:
+//   - M4.3 (parse-layer dispatch): PARSE_* from shapes 2/3/4/5/sidecar drained
+//     (stub walkers emit no events). Remaining PARSE_UNEXPECTED_TOKEN is
+//     Shape-1-only and drains in M4.4. PARSE_EXPECTED_SYMBOL fully drained.
+//     VOID_SCAN is scan-layer; unaffected by parse dispatch.
 var drainAllowlist = []allowEntry{
-	{Code: "PARSE_UNEXPECTED_TOKEN", Scope: "*", Count: 753349},
+	{Code: "PARSE_UNEXPECTED_TOKEN", Scope: "*", Count: 120990},
 	{Code: "VOID_SCAN", Scope: "*", Count: 829},
-	{Code: "PARSE_EXPECTED_SYMBOL", Scope: "*", Count: 315},
 	{Code: "VALIDATE_ARRAY_COUNT_MISMATCH", Scope: entitiesFile, Count: 7},
 	{Code: "VALIDATE_ARRAY_MISSING_NUM", Scope: entitiesFile, Count: 1},
 }

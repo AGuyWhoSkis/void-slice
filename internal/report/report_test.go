@@ -24,10 +24,10 @@ func TestMain(m *testing.M) {
 }
 
 // lintFixture runs scan + validate and returns all diagnostics.
-func lintFixture(t *testing.T, src []byte) []scan.Diagnostic {
+func lintFixture(t *testing.T, path string, src []byte) []scan.Diagnostic {
 	t.Helper()
 	toks, scanDiags, _ := scan.Scan(src)
-	validateDiags := validate.ValidateEntities(src, toks)
+	validateDiags := validate.ValidateEntities(path, src, toks)
 	return append(scanDiags, validateDiags...)
 }
 
@@ -66,7 +66,7 @@ func checkGolden(t *testing.T, name, got string) {
 func goldenTest(t *testing.T, fixtureName string) {
 	t.Helper()
 	src := loadFixture(t, fixtureName)
-	diags := lintFixture(t, src)
+	diags := lintFixture(t, fixtureName+".decl", src)
 	got := report.Render(fixtureName+".decl", src, diags, report.RenderOptions{})
 	checkGolden(t, fixtureName, got)
 }

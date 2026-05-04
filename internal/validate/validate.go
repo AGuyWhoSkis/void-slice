@@ -8,11 +8,13 @@ import (
 	"void-slice/internal/scan"
 )
 
-// ValidateEntities runs both the parser and semantic validator over src.
-// Returned diagnostics include parse errors followed by validate warnings.
-func ValidateEntities(src []byte, toks []scan.Token) []scan.Diagnostic {
+// ValidateEntities routes (path, src, toks) through parse.Walk and runs the
+// semantic validator over the resulting events. Returned diagnostics include
+// parse errors followed by validate warnings. Shape-stub walkers produce no
+// events, so non-Shape-1 .decl files return only their (empty) parse diags.
+func ValidateEntities(path string, src []byte, toks []scan.Token) []scan.Diagnostic {
 	v := &validator{src: src}
-	parseDiags := parse.WalkEntities(src, toks, v)
+	parseDiags := parse.Walk(path, src, toks, v)
 	all := make([]scan.Diagnostic, 0, len(parseDiags)+len(v.diags))
 	all = append(all, parseDiags...)
 	all = append(all, v.diags...)

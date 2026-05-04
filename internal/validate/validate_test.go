@@ -16,7 +16,7 @@ func scanAndValidate(t *testing.T, src []byte) []scan.Diagnostic {
 	t.Helper()
 	toks, scanDiags, _ := scan.Scan(src)
 	require.Empty(t, scanDiags, "unexpected scan diagnostics")
-	return validate.ValidateEntities(src, toks)
+	return validate.ValidateEntities("test.entities", src, toks)
 }
 
 func loadFixture(t *testing.T, name string) []byte {
@@ -93,7 +93,7 @@ func TestDupIndex(t *testing.T) {
 func TestUnterminatedObject(t *testing.T) {
 	src := loadFixture(t, "unterminated-object.decl")
 	toks, _, _ := scan.Scan(src)
-	diags := validate.ValidateEntities(src, toks)
+	diags := validate.ValidateEntities("test.entities", src, toks)
 	assert.True(t, hasCode(diags, "PARSE_UNTERMINATED_OBJECT"),
 		"expected PARSE_UNTERMINATED_OBJECT, got %v", diagCodes(diags))
 }
