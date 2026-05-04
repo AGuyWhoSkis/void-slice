@@ -25,39 +25,25 @@ const (
 	entitiesExcerptFile = "maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.excerpt.entities"
 )
 
-// drainAllowlist tracks false positives expected to drain over M4.3–M4.8 as
-// per-shape grammars and validate rules land. Re-baseline (typically downward)
-// when a draining ticket lands. Counts derived from the inventory in
-// kanban/goals/M4-decl-taxonomy.md § Allowlist inventory for M4.2.
-//
-// Drain history:
-//   - M4.3 (parse-layer dispatch): PARSE_* from shapes 2/3/4/5/sidecar drained
-//     (stub walkers emit no events). Remaining PARSE_UNEXPECTED_TOKEN is
-//     Shape-1-only and drains in M4.4. PARSE_EXPECTED_SYMBOL fully drained.
-//     VOID_SCAN is scan-layer; unaffected by parse dispatch.
-//   - M4.4–M4.7 (Shape 1/2/3/5 walkers + .decl.xml no-op):
-//     PARSE_UNEXPECTED_TOKEN drains to zero — Shape-1 walker now accepts
-//     bare-`{` top-level + tuple values; Shape-2/5 + Shape-3 walkers replace
-//     stubs. Scanner promotes `.` and `/` to SYMBOL, draining Shape-3 + bulk
-//     of Shape-4 VOID_SCAN. `.decl.xml` becomes a recognized lint-layer
-//     no-op, draining sidecar VOID_SCAN. Residual VOID_SCAN is the Shape-4
-//     renderprog carve-out + the EOF unterminated-comment fixture.
-//   - M4.8 (validate-rule audit): VALIDATE_ARRAY_COUNT_MISMATCH (×96) and
-//     VALIDATE_ARRAY_MISSING_NUM (×51) retired. The corpus revealed `num` is
-//     array capacity, not item count — sparse partial overrides of inherited
-//     arrays are legal. Inheritance-aware re-introduction tracked in G-B.1.
-//     ARRAY_INDEX_OOB and ARRAY_DUP_INDEX survived; both fire zero times on
-//     the corpus.
-var drainAllowlist = []allowEntry{
+// permanentAllowlist pins the M4-terminal state of the corpus harness. M4
+// closed when the original draining allowlist (M4.2 seed → M4.3–M4.8 churn)
+// collapsed to the entries below; see `git log --grep=M4` for the drain
+// history. Each entry is justified — silent regressions still fail. Adding a
+// new entry must come with a `// Justification:` comment and a ticket.
+var permanentAllowlist = []allowEntry{
+	// Justification: Shape 4 (renderprog) carve-out per G-C. The no-op walker
+	// doesn't lex embedded HLSL, so `# $ < > | @ ? ! & ~ * + . /` bytes inside
+	// `hlsl_prefix { … }` surface as VOID_SCAN. Permanent until G-C lands.
 	{Code: "VOID_SCAN", Scope: "generated.decls.renderprog.tlf.gatherdepthminmax.decl", Count: 148},
 	{Code: "VOID_SCAN", Scope: "generated.decls.renderprog.arksssblur.decl", Count: 116},
-	{Code: "VOID_SCAN", Scope: "eof.block-comment-unterminated.decl", Count: 1},
-}
 
-// permanentResidual: documented correct behavior. Per the M4.2 ticket,
-// LINT_VE_INCONSISTENCY stays out of the drain allowlist — it is correct.
-// Counted strictly here so silent regressions still fail.
-var permanentResidual = []allowEntry{
+	// Justification: intentional malformed fixture. The file exists to pin the
+	// scanner's behavior on an unterminated block comment at EOF (M4.1.2).
+	{Code: "VOID_SCAN", Scope: "eof.block-comment-unterminated.decl", Count: 1},
+
+	// Justification: documented correct behavior — Void-Explorer inconsistency
+	// fires on a real inconsistency in the entitydef corpus. Counted strictly
+	// so a regression that masks the true positive still fails.
 	{Code: "LINT_VE_INCONSISTENCY", Scope: entitiesFile, Count: 1},
 	{Code: "LINT_VE_INCONSISTENCY", Scope: entitiesExcerptFile, Count: 1},
 }
@@ -65,9 +51,7 @@ var permanentResidual = []allowEntry{
 func TestGoldenAllowlist(t *testing.T) {
 	corpusRoot := filepath.Join("..", "..", "testdata", "golden")
 
-	expected := append([]allowEntry(nil), drainAllowlist...)
-	expected = append(expected, permanentResidual...)
-
+	expected := permanentAllowlist
 	actual := make([]int, len(expected))
 	type unallow struct {
 		code, file string
