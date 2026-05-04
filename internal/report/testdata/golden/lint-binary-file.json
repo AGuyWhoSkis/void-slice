@@ -1,0 +1,12 @@
+{
+  "file": "sample.bwm",
+  "diagnostics": [
+    {
+      "line": 1,
+      "col": 1,
+      "severity": "error",
+      "code": "LINT_BINARY_FILE",
+      "message": "binary map file — cannot lint"
+    }
+  ]
+}

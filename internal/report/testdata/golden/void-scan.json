@@ -1,0 +1,12 @@
+{
+  "file": "eof.block-comment-unterminated.decl",
+  "diagnostics": [
+    {
+      "line": 1,
+      "col": 1,
+      "severity": "error",
+      "code": "VOID_SCAN",
+      "message": "unterminated block comment"
+    }
+  ]
+}

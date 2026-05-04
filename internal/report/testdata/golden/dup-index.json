@@ -1,0 +1,12 @@
+{
+  "file": "dup-index.decl",
+  "diagnostics": [
+    {
+      "line": 8,
+      "col": 10,
+      "severity": "warning",
+      "code": "VALIDATE_ARRAY_DUP_INDEX",
+      "message": "duplicate array index 0"
+    }
+  ]
+}

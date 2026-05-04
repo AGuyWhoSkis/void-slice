@@ -1,0 +1,3 @@
+map.entities:1:1 warning [LINT_VE_INCONSISTENCY] editing via Void Explorer is inconsistent — results may not reflect in-game
+  1 | Version 1
+      ^

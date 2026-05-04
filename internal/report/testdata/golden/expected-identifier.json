@@ -1,0 +1,33 @@
+{
+  "file": "expected-identifier.decl",
+  "diagnostics": [
+    {
+      "line": 2,
+      "col": 12,
+      "severity": "error",
+      "code": "PARSE_EXPECTED_IDENTIFIER",
+      "message": "expected type identifier in component declaration"
+    },
+    {
+      "line": 2,
+      "col": 12,
+      "severity": "error",
+      "code": "PARSE_EXPECTED_IDENTIFIER",
+      "message": "expected name identifier in component declaration"
+    },
+    {
+      "line": 2,
+      "col": 12,
+      "severity": "error",
+      "code": "PARSE_EXPECTED_SYMBOL",
+      "message": "expected '{' to open component body"
+    },
+    {
+      "line": 8,
+      "col": 1,
+      "severity": "error",
+      "code": "PARSE_UNEXPECTED_TOKEN",
+      "message": "unexpected token at top level"
+    }
+  ]
+}

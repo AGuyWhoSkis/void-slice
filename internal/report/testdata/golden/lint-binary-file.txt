@@ -1,0 +1,3 @@
+sample.bwm:1:1 error [LINT_BINARY_FILE] binary map file — cannot lint
+  1 | placeholder
+      ^

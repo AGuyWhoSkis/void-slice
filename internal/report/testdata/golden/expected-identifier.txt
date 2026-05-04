@@ -1,0 +1,12 @@
+expected-identifier.decl:2:12 error [PARSE_EXPECTED_IDENTIFIER] expected type identifier in component declaration
+  2 | component {
+                 ^
+expected-identifier.decl:2:12 error [PARSE_EXPECTED_IDENTIFIER] expected name identifier in component declaration
+  2 | component {
+                 ^
+expected-identifier.decl:2:12 error [PARSE_EXPECTED_SYMBOL] expected '{' to open component body
+  2 | component {
+                 ^
+expected-identifier.decl:8:1 error [PARSE_UNEXPECTED_TOKEN] unexpected token at top level
+  8 | }
+      ^

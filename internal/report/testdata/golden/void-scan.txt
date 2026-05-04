@@ -1,0 +1,3 @@
+eof.block-comment-unterminated.decl:1:1 error [VOID_SCAN] unterminated block comment
+  1 | /* unterminated block comment, no closing slash-star
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
