@@ -1,6 +1,6 @@
 Slice goal $ARGUMENTS into the minimum set of tickets needed to ship it. `$ARGUMENTS` is a goal-id like `M8`.
 
-Output: a set of ticket files in `kanban/todo/`. The goal file itself is not modified.
+Output: a set of ticket files in `kanban/todo/`.
 
 ---
 
@@ -16,4 +16,4 @@ Output: a set of ticket files in `kanban/todo/`. The goal file itself is not mod
 
 1. **Draft titles first.** Read the goal file. Propose the ticket list as titles + one-line summaries. Show it to the user. Iterate until the seams are clean and minimal.
 2. **Write the files.** Once the list is approved, write each ticket under `kanban/todo/<goal-id>.<n>-<short-name>.md` using the CREATE shape from `/crud-ticket`. Numbering follows the rule there.
-3. **Hand off.** Tell the user: "Ticket files written to `kanban/todo/`. Commit them on `main` before running `/implement-ticket` — the integration-branch flow needs a clean working tree." Do not commit on the user's behalf.
+3. **Hand off.** Tell the user: "Ticket files written to `kanban/todo/`. Commit them on the per-goal integration branch (`m<N>-dev`, branched from `main` if it doesn't exist) before running `/implement-ticket` — that command requires a clean working tree." Do not commit on the user's behalf.

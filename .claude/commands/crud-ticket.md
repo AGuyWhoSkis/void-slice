@@ -4,7 +4,7 @@ Read or manage the kanban ticket $ARGUMENTS. Search kanban/todo/ and kanban/in-p
 
 ## CREATE a new ticket
 
-Pick the goal-id from `kanban/goals/` (one of `M1`, `M2`, `M3`, `M4`, `M5`). Pick the next free `<n>` within that goal:
+Pick the goal-id from `kanban/goals/`. Pick the next free `<n>` within that goal:
 
 ```
 ls kanban/{todo,in-progress}/<goal-id>.* 2>/dev/null | wc -l
@@ -16,7 +16,7 @@ Add 1 to that count to get `<n>`. Then write a new file at `kanban/todo/<goal-id
 # <goal-id>.<n> · <Title>
 
 **Status:** todo
-**Goal:** <M1|M2|M3|M4|M5>
+**Goal:** <M{N}>
 **Size:** <small|medium|large>
 
 ## What
@@ -38,28 +38,10 @@ After creating the file, confirm the ID does not collide with an existing ticket
 
 ## PROPOSE a follow-up ticket (gap discovered during another ticket)
 
-Same as CREATE, with one addition: include an **Origin** field directly under **Size** so the gap-ticket traces back to the ticket that surfaced it.
+Same as CREATE, with two deltas:
 
-```
-# <goal-id>.<n> · <Title>
-
-**Status:** todo
-**Goal:** <M1|M2|M3|M4|M5>
-**Size:** <small|medium|large>
-**Origin:** <originating-ticket-id>
-
-## What
-<one paragraph — include what was observed during <origin> that motivated this ticket>
-
-## Scope
-<bullet list>
-
-## Dependencies
-<ticket IDs, or None>
-
-## Verification
-<how to confirm this ticket is complete>
-```
+- Add `**Origin:** <originating-ticket-id>` directly under `**Size:**`, so the gap traces back to the ticket that surfaced it.
+- The `## What` paragraph names what was observed during `<origin>` that motivated this ticket.
 
 Use this format when the trigger is `/implement-ticket`'s GAPS step or any other "noticed while doing X" situation.
 

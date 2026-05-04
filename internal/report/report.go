@@ -51,8 +51,16 @@ func RenderJSON(filename string, src []byte, diags []scan.Diagnostic) string {
 	return string(out)
 }
 
+// warningCodes lists non-`VALIDATE_*` codes that render as warnings. The
+// `lint` layer owns the severity classification; this set keeps the report
+// layer in sync. Add to it when a new warning-class code lands outside the
+// VALIDATE_ family.
+var warningCodes = map[scan.DiagnosticCode]bool{
+	"LINT_VE_INCONSISTENCY": true,
+}
+
 func severityLabel(code scan.DiagnosticCode) string {
-	if strings.HasPrefix(string(code), "VALIDATE_") {
+	if strings.HasPrefix(string(code), "VALIDATE_") || warningCodes[code] {
 		return "warning"
 	}
 	return "error"

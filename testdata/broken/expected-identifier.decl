@@ -1,0 +1,8 @@
+Version 1
+component {
+	123 myTest {
+		edit = {
+			m_val = "ok";
+		}
+	}
+}

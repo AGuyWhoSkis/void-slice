@@ -77,12 +77,25 @@ component {
 	assert.Equal(t, "LINT_VE_INCONSISTENCY", diags[0].Code)
 }
 
-func TestBrokenDeclHasDiagnostics(t *testing.T) {
-	path := filepath.Join("..", "..", "testdata", "broken", "count-mismatch.decl")
+// TestSidecarXMLIsNoOp — `.decl.xml` is recognized as Void Explorer export
+// metadata. The lint layer skips the text scanner and emits nothing.
+// Covers M4.7's drain of the residual sidecar PARSE+VOID_SCAN hits.
+func TestSidecarXMLIsNoOp(t *testing.T) {
+	path := filepath.Join("..", "..", "testdata", "golden",
+		"generated.decls.animbasic.models.characters.dlc01.player.billie.additives_body..animbasic.decl.xml")
 	src, err := os.ReadFile(path)
 	require.NoError(t, err)
 
-	diags := lintSrc(t, "count-mismatch.decl", src)
+	diags := lintSrc(t, path, src)
+	assert.Empty(t, diags, "expected zero diagnostics on .decl.xml sidecar; got %v", diags)
+}
+
+func TestBrokenDeclHasDiagnostics(t *testing.T) {
+	path := filepath.Join("..", "..", "testdata", "broken", "index-oob.decl")
+	src, err := os.ReadFile(path)
+	require.NoError(t, err)
+
+	diags := lintSrc(t, "index-oob.decl", src)
 	codes := diagCodes(diags)
-	assert.Contains(t, codes, "VALIDATE_ARRAY_COUNT_MISMATCH")
+	assert.Contains(t, codes, "VALIDATE_ARRAY_INDEX_OOB")
 }

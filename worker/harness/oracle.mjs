@@ -149,14 +149,53 @@ function fieldDiff(a, b) {
   return null;
 }
 
-// Walk the chain in order. Names the first boundary where two adjacent
-// layers disagree. Returns null on full agreement, otherwise a string.
-function chainDiff(name, results) {
-  const order = ["native", "wasm", "worker", "frontend"];
+// Strict byte-equality on raw JSON strings. Both layers route through the
+// same report.RenderJSON call, so any divergence is a real wasm/worker drift
+// (whitespace, key order, escape encoding) — exactly what M4.12 corpus
+// parity exists to catch. On mismatch, locate the first differing byte and
+// surface a short window from each side so the diverging file is locatable.
+function byteDiff(a, b) {
+  if (a === b) return null;
+  if (a.length !== b.length) {
+    return `length: ${a.length} vs ${b.length}; ${snippetAround(a, b, firstDiffIndex(a, b))}`;
+  }
+  return `byte mismatch: ${snippetAround(a, b, firstDiffIndex(a, b))}`;
+}
+
+function firstDiffIndex(a, b) {
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i++) {
+    if (a.charCodeAt(i) !== b.charCodeAt(i)) return i;
+  }
+  return n;
+}
+
+function snippetAround(a, b, i) {
+  const start = Math.max(0, i - 30);
+  const end = i + 60;
+  return `at byte ${i}: ${JSON.stringify(a.slice(start, end))} vs ${JSON.stringify(b.slice(start, end))}`;
+}
+
+// Walk the chain in order, restricted to the layers the fixture opted in
+// for. Names the first boundary where two adjacent layers disagree.
+//
+// `raw` carries the unparsed string from each layer; `parsed` carries the
+// JSON-parsed form. Boundaries 1 (native↔wasm) and 2 (wasm↔worker) demand
+// strict byte-equality — both ends emit the same report.RenderJSON string
+// by construction, and the worker passes that string through verbatim.
+// Boundary 3 (worker↔frontend) keeps field-level: runFrontend re-marshals
+// via JSON.stringify(await res.json()), which legitimately changes bytes.
+const ALL_LAYERS = ["native", "wasm", "worker", "frontend"];
+
+function chainDiff(name, raw, parsed, layers) {
+  const order = ALL_LAYERS.filter((l) => layers.includes(l));
   for (let i = 1; i < order.length; i++) {
     const from = order[i - 1];
     const to = order[i];
-    const diff = fieldDiff(results[from], results[to]);
+    const useBytes = to !== "frontend";
+    const diff = useBytes
+      ? byteDiff(raw[from], raw[to])
+      : fieldDiff(parsed[from], parsed[to]);
     if (diff) {
       return `${name}: diverged at boundary ${i} (${from} ↔ ${to}) on ${diff}`;
     }
@@ -202,19 +241,28 @@ async function main() {
         nativeCwd = repoRoot;
       }
 
-      const nativeRaw = runNative(binPath, fx.path, nativeCwd);
-      const wasmRaw = runWasm(fx.path, src);
-      const workerRaw = await runWorker(mf, fx.path, src);
-      const frontendRaw = await runFrontend(mfFetch, ORIGIN_BASE, fx.path, src);
+      const layers = fx.layers || ALL_LAYERS;
+      const raw = {};
+      const parsed = {};
 
-      const results = {
-        native: parseJSON(`${fx.name}/native`, nativeRaw),
-        wasm: parseJSON(`${fx.name}/wasm`, wasmRaw),
-        worker: parseJSON(`${fx.name}/worker`, workerRaw),
-        frontend: parseJSON(`${fx.name}/frontend`, frontendRaw),
-      };
+      if (layers.includes("native")) {
+        raw.native = runNative(binPath, fx.path, nativeCwd);
+        parsed.native = parseJSON(`${fx.name}/native`, raw.native);
+      }
+      if (layers.includes("wasm")) {
+        raw.wasm = runWasm(fx.path, src);
+        parsed.wasm = parseJSON(`${fx.name}/wasm`, raw.wasm);
+      }
+      if (layers.includes("worker")) {
+        raw.worker = await runWorker(mf, fx.path, src);
+        parsed.worker = parseJSON(`${fx.name}/worker`, raw.worker);
+      }
+      if (layers.includes("frontend")) {
+        raw.frontend = await runFrontend(mfFetch, ORIGIN_BASE, fx.path, src);
+        parsed.frontend = parseJSON(`${fx.name}/frontend`, raw.frontend);
+      }
 
-      const diff = chainDiff(fx.name, results);
+      const diff = chainDiff(fx.name, raw, parsed, layers);
       if (diff) {
         failures.push(diff);
         console.log(`FAIL ${fx.name}`);
@@ -229,7 +277,7 @@ async function main() {
 
   console.log("");
   if (failures.length === 0) {
-    console.log(`oracle: all ${FIXTURES.length} inputs agree across native, wasm, worker, frontend`);
+    console.log(`oracle: all ${FIXTURES.length} inputs agree across the layers each fixture exercised`);
     return;
   }
   console.error(`oracle: ${failures.length}/${FIXTURES.length} inputs diverged`);

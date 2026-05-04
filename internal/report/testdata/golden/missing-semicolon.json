@@ -1,0 +1,12 @@
+{
+  "file": "missing-semicolon.decl",
+  "diagnostics": [
+    {
+      "line": 5,
+      "col": 19,
+      "severity": "error",
+      "code": "PARSE_EXPECTED_SEMICOLON",
+      "message": "expected ';' after assignment"
+    }
+  ]
+}

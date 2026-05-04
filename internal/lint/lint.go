@@ -44,6 +44,11 @@ func (l *linter) Lint(filename string, src []byte) ([]Diagnostic, error) {
 			Message:  "binary map file — cannot lint",
 		}}, nil
 	}
+	if action == actionSidecarXML {
+		// Void Explorer export metadata. Not a game artifact, not authored
+		// by hand — recognized purely so the text scanner doesn't lex `<`/`>`.
+		return nil, nil
+	}
 	if warn != nil {
 		out = append(out, *warn)
 	}
@@ -61,7 +66,7 @@ func (l *linter) Lint(filename string, src []byte) ([]Diagnostic, error) {
 	}
 
 	toks, scanDiags, _ := scan.Scan(src)
-	validateDiags := validate.ValidateEntities(src, toks)
+	validateDiags := validate.ValidateEntities(filename, src, toks)
 
 	for _, d := range scanDiags {
 		out = append(out, convert(d))
@@ -82,6 +87,7 @@ const (
 	actionLint fileAction = iota
 	actionBinary
 	actionSkipBinarySniff // known text types — skip the sniff, just lint
+	actionSidecarXML      // .decl.xml — recognized no-op (Void Explorer metadata)
 )
 
 // Convention: the `default` branch handles "unknown / no filetype context"
@@ -91,7 +97,11 @@ const (
 // The playground relies on this to suppress filetype-sensitive noise by
 // passing an extensionless filename.
 func classifyFile(filename string) (fileAction, *Diagnostic) {
-	ext := strings.ToLower(filepath.Ext(filename))
+	lower := strings.ToLower(filename)
+	if strings.HasSuffix(lower, ".decl.xml") {
+		return actionSidecarXML, nil
+	}
+	ext := filepath.Ext(lower)
 	switch ext {
 	case ".decl", ".entitydef":
 		return actionSkipBinarySniff, nil

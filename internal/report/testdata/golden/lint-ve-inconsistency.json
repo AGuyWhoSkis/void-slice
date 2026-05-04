@@ -1,0 +1,12 @@
+{
+  "file": "map.entities",
+  "diagnostics": [
+    {
+      "line": 1,
+      "col": 1,
+      "severity": "warning",
+      "code": "LINT_VE_INCONSISTENCY",
+      "message": "editing via Void Explorer is inconsistent — results may not reflect in-game"
+    }
+  ]
+}

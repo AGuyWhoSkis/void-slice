@@ -101,21 +101,21 @@ func TestLint_ExitCode_Clean(t *testing.T) {
 }
 
 func TestLint_HumanFormat(t *testing.T) {
-	stdout, _, _ := run("lint", "../../testdata/broken/count-mismatch.decl")
-	checkGolden(t, "count-mismatch", stdout)
+	stdout, _, _ := run("lint", "../../testdata/broken/index-oob.decl")
+	checkGolden(t, "index-oob", stdout)
 }
 
 func TestLint_JSONFormat(t *testing.T) {
-	stdout, _, _ := run("lint", "--json", "../../testdata/broken/count-mismatch.decl")
-	checkGolden(t, "count-mismatch-json", stdout)
+	stdout, _, _ := run("lint", "--json", "../../testdata/broken/index-oob.decl")
+	checkGolden(t, "index-oob-json", stdout)
 }
 
 // The usage banner advertises `voidslice lint <file> [--json]`, so the flag
 // must work after the filename too. The stdlib flag package stops at the
 // first non-flag arg by default; parseInterspersed is the workaround.
 func TestLint_JSONFormat_FlagAfterFile(t *testing.T) {
-	stdout, _, _ := run("lint", "../../testdata/broken/count-mismatch.decl", "--json")
-	checkGolden(t, "count-mismatch-json", stdout)
+	stdout, _, _ := run("lint", "../../testdata/broken/index-oob.decl", "--json")
+	checkGolden(t, "index-oob-json", stdout)
 }
 
 func TestLint_Binary(t *testing.T) {

@@ -19,16 +19,13 @@ func TestCoverageAudit(t *testing.T) {
 		"PARSE_EXPECTED_SEMICOLON":  true,
 		"PARSE_UNTERMINATED_OBJECT": true,
 		// T2 — validator (validate_constants.go)
-		"VALIDATE_ARRAY_COUNT_MISMATCH": true,
-		"VALIDATE_ARRAY_INDEX_OOB":      true,
-		"VALIDATE_ARRAY_DUP_INDEX":      true,
-		"VALIDATE_ARRAY_MISSING_NUM":    true,
+		"VALIDATE_ARRAY_INDEX_OOB": true,
+		"VALIDATE_ARRAY_DUP_INDEX": true,
 		// T4 — lint facade
 		"LINT_BINARY_FILE":      true,
 		"LINT_VE_INCONSISTENCY": true,
-		// scan package (scan_constants.go: Codes.SCAN, Codes.SCAN_STRUCTURE)
-		"VOID_SCAN":           true,
-		"VOID_SCAN_STRUCTURE": true,
+		// scan package (scan_constants.go: Codes.SCAN)
+		"VOID_SCAN": true,
 	}
 
 	textExts := map[string]bool{
