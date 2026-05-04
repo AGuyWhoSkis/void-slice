@@ -13,7 +13,7 @@ func main() {
 	root := "testdata/golden"
 	linter := lint.New()
 	counts := map[string]map[string]int{}
-	filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
+	_ = filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return nil
 		}
