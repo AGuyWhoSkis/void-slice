@@ -117,6 +117,23 @@ func TestScanner(t *testing.T) {
 			},
 		},
 		{
+			// `/` and `.` are SYMBOL: shape-3 bare-path values
+			// (`models/foo/bar.tga`) and namespaced keys (`wrinkles/enable`).
+			// Comment forms (`//`, `/*`) take priority over the lone-`/` SYMBOL.
+			name:      "bare-path symbols",
+			bytes:     []byte("models/foo/bar.tga"),
+			wantDiags: []scan.Diagnostic{},
+			wantToks: []scan.Token{
+				{Kind: scan.TokenKind.IDENTIFIER, Span: scan.NewSpan(0, 6)},   // models
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(6, 7)},       // /
+				{Kind: scan.TokenKind.IDENTIFIER, Span: scan.NewSpan(7, 10)},  // foo
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(10, 11)},     // /
+				{Kind: scan.TokenKind.IDENTIFIER, Span: scan.NewSpan(11, 14)}, // bar
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(14, 15)},     // .
+				{Kind: scan.TokenKind.IDENTIFIER, Span: scan.NewSpan(15, 18)}, // tga
+			},
+		},
+		{
 			name:  "unterminated-block-comment",
 			bytes: []byte("/* foo"), // len=6
 			wantDiags: []scan.Diagnostic{

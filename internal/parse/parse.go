@@ -209,12 +209,14 @@ const (
 	ValString
 	ValIdent
 	ValObject
+	ValTuple // ( v1, v2, ... ) — opaque payload, contents not inspected
 )
 
 type Value struct {
 	Kind ValueKind
 	Tok  scan.Token // for number/string/ident
 	Obj  ObjectSpan // for object value
+	Tup  TupleSpan  // for tuple value
 }
 
 type ObjectSpan struct {
@@ -222,11 +224,42 @@ type ObjectSpan struct {
 	RBraceTok scan.Token
 }
 
+type TupleSpan struct {
+	LParenTok scan.Token
+	RParenTok scan.Token
+}
+
 // -------------------------
 // 4) Grammar / walk functions
 // -------------------------
 
 func (c *cursor) walkEntities(h Handler) {
+	// Shape-1 .decl bare-curly form: file is just `{ ...statements... }`.
+	// Skip leading comments to find the first significant token.
+	for {
+		p := c.peek()
+		if p == nil {
+			return
+		}
+		if p.Kind == scan.KindCommentLine || p.Kind == scan.KindCommentBlock {
+			c.next()
+			continue
+		}
+		break
+	}
+	if p := c.peek(); p != nil && p.Kind == scan.KindSymbol && c.src[p.Span.Start] == '{' {
+		lbrace := c.next()
+		h.OnObjectBegin(*lbrace)
+		c.walkObjectBody(h)
+		rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close top-level object")
+		if !ok {
+			c.syncTo('}', 0)
+			rbrace, _ = c.matchSym('}')
+		}
+		h.OnObjectEnd(rbrace)
+		return
+	}
+
 	// Version <number>
 	versionTok, ok := c.matchIdent("Version")
 	if ok {
@@ -495,6 +528,29 @@ func (c *cursor) parseValue(h Handler) Value {
 		}
 		h.OnObjectEnd(rbrace)
 		return Value{Kind: ValObject, Obj: ObjectSpan{LBraceTok: *lbrace, RBraceTok: rbrace}}
+	}
+
+	// Tuple value: ( v1, v2, ... )
+	// Used by Shape-1 grammar: `color = ( 1, 1, 1, 1 );`. Contents are
+	// consumed opaquely — no events, no inner validation.
+	if tok.Kind == scan.KindSymbol && c.src[tok.Span.Start] == '(' {
+		lparen := c.next()
+		for {
+			t := c.peek()
+			if t == nil {
+				c.emitDiag(h, scan.Diagnostic{
+					Code:    Codes.UNEXPECTED_TOKEN,
+					Span:    c.diagSpan(),
+					Message: "unterminated tuple value",
+				})
+				return Value{Kind: ValTuple, Tup: TupleSpan{LParenTok: *lparen}}
+			}
+			if t.Kind == scan.KindSymbol && c.src[t.Span.Start] == ')' {
+				rparen := c.next()
+				return Value{Kind: ValTuple, Tup: TupleSpan{LParenTok: *lparen, RParenTok: *rparen}}
+			}
+			c.next()
+		}
 	}
 
 	if tok.Kind == scan.KindQuoteLiteral {

@@ -27,8 +27,6 @@ func shapeName(s parse.Shape) string {
 		return "Shape4Renderprog"
 	case parse.Shape5Md6def:
 		return "Shape5Md6def"
-	case parse.ShapeSidecarXML:
-		return "ShapeSidecarXML"
 	}
 	return "?"
 }
@@ -64,7 +62,6 @@ func TestClassify_Representatives(t *testing.T) {
 		{"generated.decls.material.models.environment.voidhouse.rock_set.void_rock_01..material.decl", parse.Shape3Material},
 		{"generated.decls.renderprog.arksssblur.decl", parse.Shape4Renderprog},
 		{"doto/game1/generated.decls.md6def.models.characters.small.civ_middle.dockers.docker_01.docker_small_01_head..md6.decl", parse.Shape5Md6def},
-		{"generated.decls.animbasic.models.characters.dlc01.player.billie.additives_body..animbasic.decl.xml", parse.ShapeSidecarXML},
 		// physicsmaterial-named file with Shape-1 content — content-sniff must beat filename.
 		{"doto/game1/generated.decls.physicsmaterial.contactsystem.weapons.decl", parse.Shape1Curly},
 	}
@@ -92,8 +89,10 @@ func TestClassify_ExtensionOnly(t *testing.T) {
 		{"", parse.ShapeEntities},
 		{"foo.entities", parse.ShapeEntities},
 		{"foo.cfg", parse.ShapeEntities},
-		{"foo.decl.xml", parse.ShapeSidecarXML},
-		{"FOO.DECL.XML", parse.ShapeSidecarXML}, // case-insensitive
+		// .decl.xml is owned by the lint layer (no-op); the parser dispatcher
+		// treats it as the default (`.entities`-shaped) since the extension
+		// isn't `.decl`. lint never routes XML files into Walk.
+		{"foo.decl.xml", parse.ShapeEntities},
 	}
 	for _, tc := range cases {
 		got := parse.Classify(tc.path, nil, nil)
@@ -114,31 +113,15 @@ func TestClassify_EmptyDecl(t *testing.T) {
 // Walk: stub shapes produce zero events and zero diagnostics
 // -------------------------
 
-// zeroEventsCases pairs each non-Shape-1 representative with its expected
-// (zero) event count. Stub walkers don't traverse the body, so anything past
-// the dispatch decision should produce nothing.
-var zeroEventsCases = []struct {
-	rel  string
-	name string
-}{
-	{"generated.decls.animset.models.weapons.timeshift_device.timeshift..animset.decl", "shape2"},
-	{"generated.decls.material.models.environment.voidhouse.rock_set.void_rock_01..material.decl", "shape3"},
-	{"generated.decls.renderprog.arksssblur.decl", "shape4"},
-	{"doto/game1/generated.decls.md6def.models.characters.small.civ_middle.dockers.docker_01.docker_small_01_head..md6.decl", "shape5"},
-	{"generated.decls.animbasic.models.characters.dlc01.player.billie.additives_body..animbasic.decl.xml", "sidecar"},
-}
-
-func TestWalk_StubsEmitNoEventsOrDiags(t *testing.T) {
-	for _, tc := range zeroEventsCases {
-		t.Run(tc.name, func(t *testing.T) {
-			path := goldenRel(tc.rel)
-			src, toks := scanFile(t, path)
-			rec := newRecorder(src)
-			diags := parse.Walk(path, src, toks, rec)
-			assert.Empty(t, diags, "%s: stub walker must produce zero diagnostics, got %d", tc.name, len(diags))
-			assert.Empty(t, rec.events, "%s: stub walker must produce zero events, got %d", tc.name, len(rec.events))
-		})
-	}
+// TestWalk_Shape4IsNoOp — renderprog (G-C carve-out) intentionally has no
+// walker. The dispatch routes it to a no-op that emits nothing.
+func TestWalk_Shape4IsNoOp(t *testing.T) {
+	path := goldenRel("generated.decls.renderprog.arksssblur.decl")
+	src, toks := scanFile(t, path)
+	rec := newRecorder(src)
+	diags := parse.Walk(path, src, toks, rec)
+	assert.Empty(t, diags, "shape4 no-op walker must produce zero diagnostics, got %d", len(diags))
+	assert.Empty(t, rec.events, "shape4 no-op walker must produce zero events, got %d", len(rec.events))
 }
 
 // -------------------------

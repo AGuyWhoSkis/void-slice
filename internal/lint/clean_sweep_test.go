@@ -32,11 +32,23 @@ const entitiesFile = "d2/game1/maps.campaign.dunwall.escape.tower.dunwall_escape
 //     (stub walkers emit no events). Remaining PARSE_UNEXPECTED_TOKEN is
 //     Shape-1-only and drains in M4.4. PARSE_EXPECTED_SYMBOL fully drained.
 //     VOID_SCAN is scan-layer; unaffected by parse dispatch.
+//   - M4.4–M4.7 (Shape 1/2/3/5 walkers + .decl.xml no-op):
+//     PARSE_UNEXPECTED_TOKEN drains to zero — Shape-1 walker now accepts
+//     bare-`{` top-level + tuple values; Shape-2/5 + Shape-3 walkers replace
+//     stubs. Scanner promotes `.` and `/` to SYMBOL, draining Shape-3 + bulk
+//     of Shape-4 VOID_SCAN. `.decl.xml` becomes a recognized lint-layer
+//     no-op, draining sidecar VOID_SCAN. Residual VOID_SCAN is the Shape-4
+//     renderprog carve-out + the EOF unterminated-comment fixture.
+//
+//     New residual: validate warnings now fire on real Shape-1 .decl files
+//     (the Shape-1 walker traverses bodies that were previously skipped).
+//     Allowlisted tree-wide pending the array-validation triage in M4.8.
 var drainAllowlist = []allowEntry{
-	{Code: "PARSE_UNEXPECTED_TOKEN", Scope: "*", Count: 120990},
-	{Code: "VOID_SCAN", Scope: "*", Count: 829},
-	{Code: "VALIDATE_ARRAY_COUNT_MISMATCH", Scope: entitiesFile, Count: 7},
-	{Code: "VALIDATE_ARRAY_MISSING_NUM", Scope: entitiesFile, Count: 1},
+	{Code: "VOID_SCAN", Scope: "generated.decls.renderprog.tlf.gatherdepthminmax.decl", Count: 148},
+	{Code: "VOID_SCAN", Scope: "generated.decls.renderprog.arksssblur.decl", Count: 116},
+	{Code: "VOID_SCAN", Scope: "eof.block-comment-unterminated.decl", Count: 1},
+	{Code: "VALIDATE_ARRAY_COUNT_MISMATCH", Scope: "*", Count: 96},
+	{Code: "VALIDATE_ARRAY_MISSING_NUM", Scope: "*", Count: 51},
 }
 
 // permanentResidual: documented correct behavior. Per the M4.2 ticket,

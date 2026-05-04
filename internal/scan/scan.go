@@ -118,7 +118,7 @@ mainLoop:
 			emitDiag(Codes.SCAN, i, n, "unterminated number literal")
 			i = n
 
-		case '{', '}', '[', ']', '=', ';', ',', '(', ')', ':':
+		case '{', '}', '[', ']', '=', ';', ',', '(', ')', ':', '.':
 			emitToken(TokenKind.SYMBOL, i, i+1)
 
 		default:
@@ -157,6 +157,10 @@ mainLoop:
 				// fall-through: line comment reached EOF without '\n' (valid; no diag)
 				emitToken(TokenKind.COMMENT_LINE, i, n)
 				i = n
+			} else if b == '/' {
+				// Lone '/' (not /* or //): bare-path / namespaced-key separator.
+				// e.g. models/foo/bar.tga, materialEffects/enable.
+				emitToken(TokenKind.SYMBOL, i, i+1)
 			} else if IsIdentStart(b) {
 				// scan until IsIdentCont() is false
 				for i_ident := i + 1; i_ident < n; i_ident++ {
