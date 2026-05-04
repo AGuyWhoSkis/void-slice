@@ -150,8 +150,6 @@ func TestGolden_AllCodesCovered(t *testing.T) {
 		"LINT_BINARY_FILE",
 		"LINT_VE_INCONSISTENCY",
 		"VOID_SCAN",
-		// VOID_SCAN_STRUCTURE: declared in scan_constants.go but never emitted.
-		// Intentionally not pinned — see follow-up ticket.
 	}
 
 	matches, err := filepath.Glob(filepath.Join("testdata", "golden", "*.txt"))

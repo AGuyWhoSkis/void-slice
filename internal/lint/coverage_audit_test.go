@@ -24,9 +24,8 @@ func TestCoverageAudit(t *testing.T) {
 		// T4 — lint facade
 		"LINT_BINARY_FILE":      true,
 		"LINT_VE_INCONSISTENCY": true,
-		// scan package (scan_constants.go: Codes.SCAN, Codes.SCAN_STRUCTURE)
-		"VOID_SCAN":           true,
-		"VOID_SCAN_STRUCTURE": true,
+		// scan package (scan_constants.go: Codes.SCAN)
+		"VOID_SCAN": true,
 	}
 
 	textExts := map[string]bool{

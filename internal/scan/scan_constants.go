@@ -47,11 +47,9 @@ func (tk Kind) String() string {
 type DiagnosticCode string
 
 var Codes = struct {
-	SCAN           DiagnosticCode
-	SCAN_STRUCTURE DiagnosticCode
+	SCAN DiagnosticCode
 }{
-	SCAN:           "VOID_SCAN",
-	SCAN_STRUCTURE: "VOID_SCAN_STRUCTURE",
+	SCAN: "VOID_SCAN",
 }
 
 // 	Lexical diagnostics:
