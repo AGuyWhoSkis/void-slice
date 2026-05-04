@@ -1,0 +1,3 @@
+../../testdata/broken/index-oob.decl:8:10 warning [VALIDATE_ARRAY_INDEX_OOB] array index 5 out of bounds [0, 2)
+  8 | 				item[5] = { m_val = "b"; }
+               ^

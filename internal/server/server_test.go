@@ -64,9 +64,9 @@ func TestHealth(t *testing.T) {
 
 func TestLint_OctetStream_Broken(t *testing.T) {
 	srv := newTestServer(t, server.Config{})
-	src := loadFixture(t, "count-mismatch.decl")
+	src := loadFixture(t, "index-oob.decl")
 
-	req, _ := http.NewRequest(http.MethodPost, srv.URL+"/lint?filename=count-mismatch.decl", bytes.NewReader(src))
+	req, _ := http.NewRequest(http.MethodPost, srv.URL+"/lint?filename=index-oob.decl", bytes.NewReader(src))
 	req.Header.Set("Content-Type", "application/octet-stream")
 
 	resp, err := http.DefaultClient.Do(req)
@@ -78,7 +78,7 @@ func TestLint_OctetStream_Broken(t *testing.T) {
 
 	var got lintResp
 	require.NoError(t, json.NewDecoder(resp.Body).Decode(&got))
-	assert.Equal(t, "count-mismatch.decl", got.File)
+	assert.Equal(t, "index-oob.decl", got.File)
 	assert.NotEmpty(t, got.Diagnostics)
 }
 
@@ -130,11 +130,11 @@ func TestLint_RejectsImageContentType(t *testing.T) {
 
 func TestLint_Multipart_UsesPartFilename(t *testing.T) {
 	srv := newTestServer(t, server.Config{})
-	src := loadFixture(t, "count-mismatch.decl")
+	src := loadFixture(t, "index-oob.decl")
 
 	var buf bytes.Buffer
 	mw := multipart.NewWriter(&buf)
-	part, err := mw.CreateFormFile("file", "count-mismatch.decl")
+	part, err := mw.CreateFormFile("file", "index-oob.decl")
 	require.NoError(t, err)
 	_, err = part.Write(src)
 	require.NoError(t, err)
@@ -151,13 +151,13 @@ func TestLint_Multipart_UsesPartFilename(t *testing.T) {
 
 	var got lintResp
 	require.NoError(t, json.NewDecoder(resp.Body).Decode(&got))
-	assert.Equal(t, "count-mismatch.decl", got.File)
+	assert.Equal(t, "index-oob.decl", got.File)
 	assert.NotEmpty(t, got.Diagnostics)
 }
 
 func TestLint_Timeout_504(t *testing.T) {
 	srv := newTestServer(t, server.Config{LintTimeout: 1 * time.Nanosecond})
-	src := loadFixture(t, "count-mismatch.decl")
+	src := loadFixture(t, "index-oob.decl")
 
 	req, _ := http.NewRequest(http.MethodPost, srv.URL+"/lint", bytes.NewReader(src))
 	req.Header.Set("Content-Type", "application/octet-stream")

@@ -1,0 +1,12 @@
+{
+  "file": "../../testdata/broken/index-oob.decl",
+  "diagnostics": [
+    {
+      "line": 8,
+      "col": 10,
+      "severity": "warning",
+      "code": "VALIDATE_ARRAY_INDEX_OOB",
+      "message": "array index 5 out of bounds [0, 2)"
+    }
+  ]
+}

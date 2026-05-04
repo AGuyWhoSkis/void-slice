@@ -13,7 +13,7 @@ export const FIXTURES = [
   },
   {
     name: "validate-warning",
-    path: "testdata/broken/count-mismatch.decl",
+    path: "testdata/broken/index-oob.decl",
     reference: "cli",
   },
   {

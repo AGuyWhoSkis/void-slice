@@ -39,16 +39,16 @@ const entitiesFile = "d2/game1/maps.campaign.dunwall.escape.tower.dunwall_escape
 //     of Shape-4 VOID_SCAN. `.decl.xml` becomes a recognized lint-layer
 //     no-op, draining sidecar VOID_SCAN. Residual VOID_SCAN is the Shape-4
 //     renderprog carve-out + the EOF unterminated-comment fixture.
-//
-//     New residual: validate warnings now fire on real Shape-1 .decl files
-//     (the Shape-1 walker traverses bodies that were previously skipped).
-//     Allowlisted tree-wide pending the array-validation triage in M4.8.
+//   - M4.8 (validate-rule audit): VALIDATE_ARRAY_COUNT_MISMATCH (×96) and
+//     VALIDATE_ARRAY_MISSING_NUM (×51) retired. The corpus revealed `num` is
+//     array capacity, not item count — sparse partial overrides of inherited
+//     arrays are legal. Inheritance-aware re-introduction tracked in G-B.1.
+//     ARRAY_INDEX_OOB and ARRAY_DUP_INDEX survived; both fire zero times on
+//     the corpus.
 var drainAllowlist = []allowEntry{
 	{Code: "VOID_SCAN", Scope: "generated.decls.renderprog.tlf.gatherdepthminmax.decl", Count: 148},
 	{Code: "VOID_SCAN", Scope: "generated.decls.renderprog.arksssblur.decl", Count: 116},
 	{Code: "VOID_SCAN", Scope: "eof.block-comment-unterminated.decl", Count: 1},
-	{Code: "VALIDATE_ARRAY_COUNT_MISMATCH", Scope: "*", Count: 96},
-	{Code: "VALIDATE_ARRAY_MISSING_NUM", Scope: "*", Count: 51},
 }
 
 // permanentResidual: documented correct behavior. Per the M4.2 ticket,

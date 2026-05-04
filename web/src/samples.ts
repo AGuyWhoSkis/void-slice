@@ -1,4 +1,4 @@
-import countMismatch from "./samples/count-mismatch.decl?raw";
+import indexOob from "./samples/index-oob.decl?raw";
 import dupIndex from "./samples/dup-index.decl?raw";
 import missingSemicolon from "./samples/missing-semicolon.decl?raw";
 
@@ -11,10 +11,10 @@ export interface Sample {
 
 export const SAMPLES: Sample[] = [
   {
-    filename: "count-mismatch.decl",
-    label: "count-mismatch",
-    hint: "array num= disagrees with the number of items defined",
-    body: countMismatch,
+    filename: "index-oob.decl",
+    label: "index-oob",
+    hint: "array index is outside the declared num= range",
+    body: indexOob,
   },
   {
     filename: "dup-index.decl",

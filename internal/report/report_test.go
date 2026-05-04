@@ -71,7 +71,6 @@ func goldenTest(t *testing.T, fixtureName string) {
 	checkGolden(t, fixtureName, got)
 }
 
-func TestGolden_CountMismatch(t *testing.T)      { goldenTest(t, "count-mismatch") }
 func TestGolden_DupIndex(t *testing.T)           { goldenTest(t, "dup-index") }
 func TestGolden_IndexOOB(t *testing.T)           { goldenTest(t, "index-oob") }
 func TestGolden_MissingSemicolon(t *testing.T)   { goldenTest(t, "missing-semicolon") }
@@ -82,7 +81,7 @@ func TestGolden_UnterminatedObject(t *testing.T) { goldenTest(t, "unterminated-o
 func TestRenderJSON_RoundTrip(t *testing.T) {
 	src := []byte("num = 3;\nitem[0] { }\n")
 	diags := []scan.Diagnostic{
-		{Code: "VALIDATE_ARRAY_COUNT_MISMATCH", Span: scan.NewSpan(6, 7), Message: "count mismatch"},
+		{Code: "VALIDATE_ARRAY_INDEX_OOB", Span: scan.NewSpan(6, 7), Message: "out of bounds"},
 		{Code: "VOID_SCAN", Span: scan.NewSpan(9, 13), Message: "bad token"},
 	}
 	got := report.RenderJSON("x.decl", src, diags)
@@ -104,7 +103,7 @@ func TestRenderJSON_RoundTrip(t *testing.T) {
 
 	// sorted by Span.Start: VALIDATE diag first (offset 6), VOID_SCAN second (offset 9)
 	assert.Equal(t, "warning", out.Diagnostics[0].Severity)
-	assert.Equal(t, "VALIDATE_ARRAY_COUNT_MISMATCH", out.Diagnostics[0].Code)
+	assert.Equal(t, "VALIDATE_ARRAY_INDEX_OOB", out.Diagnostics[0].Code)
 	assert.Equal(t, 1, out.Diagnostics[0].Line)
 	assert.Equal(t, 7, out.Diagnostics[0].Col)
 
@@ -157,7 +156,7 @@ func TestRenderJSON_EmptyDiagnostics(t *testing.T) {
 func TestRender_SeverityMapping(t *testing.T) {
 	src := []byte("x = 1;\ny = 2;\n")
 	diags := []scan.Diagnostic{
-		{Code: "VALIDATE_ARRAY_COUNT_MISMATCH", Span: scan.NewSpan(0, 1), Message: "count mismatch"},
+		{Code: "VALIDATE_ARRAY_INDEX_OOB", Span: scan.NewSpan(0, 1), Message: "out of bounds"},
 		{Code: "VOID_SCAN", Span: scan.NewSpan(7, 8), Message: "bad byte"},
 	}
 	got := report.Render("x.decl", src, diags, report.RenderOptions{})

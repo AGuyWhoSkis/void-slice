@@ -23,8 +23,7 @@ func ValidateEntities(path string, src []byte, toks []scan.Token) []scan.Diagnos
 
 // objFrame tracks array-shape state for one nested object block.
 type objFrame struct {
-	numTok *scan.Token        // points at the num value token
-	numVal *int64             // parsed value of num = N
+	numVal *int64               // parsed value of num = N (capacity for INDEX_OOB)
 	items  map[int64]scan.Token // index -> anchor token (indexer value tok)
 }
 
@@ -65,10 +64,7 @@ func (v *validator) OnAssignment(key parse.Key, eqTok scan.Token, value parse.Va
 	base := string(v.lexeme(key.BaseTok))
 
 	if base == "num" && value.Kind == parse.ValNumber {
-		n, ok := parseIntLiteral(v.lexeme(value.Tok))
-		if ok {
-			tok := value.Tok
-			f.numTok = &tok
+		if n, ok := parseIntLiteral(v.lexeme(value.Tok)); ok {
 			f.numVal = &n
 		}
 		return
@@ -89,6 +85,12 @@ func (v *validator) OnAssignment(key parse.Key, eqTok scan.Token, value parse.Va
 	}
 }
 
+// OnObjectEnd checks index-bounds against the declared num (if any) and pops
+// the frame. Cross-block invariants between num and the populated indices are
+// not enforced here: idTech inherit/edit semantics let item[i] sparsely
+// override an inherited array, so "items < num" or "items present but no num"
+// are legal partial overrides, not bugs. Inheritance-aware checks are the
+// G-B.1 follow-up.
 func (v *validator) OnObjectEnd(rbrace scan.Token) {
 	f := v.top()
 	if f == nil {
@@ -98,14 +100,6 @@ func (v *validator) OnObjectEnd(rbrace scan.Token) {
 
 	if f.numVal != nil {
 		expected := *f.numVal
-		actual := int64(len(f.items))
-		if actual != expected {
-			v.diags = append(v.diags, scan.Diagnostic{
-				Code:    Codes.ARRAY_COUNT_MISMATCH,
-				Span:    f.numTok.Span,
-				Message: fmt.Sprintf("array count mismatch: num=%d but %d item(s) defined", expected, actual),
-			})
-		}
 		for idx, tok := range f.items {
 			if idx < 0 || idx >= expected {
 				v.diags = append(v.diags, scan.Diagnostic{
@@ -115,20 +109,6 @@ func (v *validator) OnObjectEnd(rbrace scan.Token) {
 				})
 			}
 		}
-	} else if len(f.items) > 0 {
-		var firstTok scan.Token
-		first := true
-		for _, tok := range f.items {
-			if first || tok.Span.Start < firstTok.Span.Start {
-				firstTok = tok
-				first = false
-			}
-		}
-		v.diags = append(v.diags, scan.Diagnostic{
-			Code:    Codes.ARRAY_MISSING_NUM,
-			Span:    firstTok.Span,
-			Message: "item[...] entries found but no num declaration",
-		})
 	}
 }
 

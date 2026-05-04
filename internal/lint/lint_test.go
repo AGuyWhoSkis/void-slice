@@ -91,11 +91,11 @@ func TestSidecarXMLIsNoOp(t *testing.T) {
 }
 
 func TestBrokenDeclHasDiagnostics(t *testing.T) {
-	path := filepath.Join("..", "..", "testdata", "broken", "count-mismatch.decl")
+	path := filepath.Join("..", "..", "testdata", "broken", "index-oob.decl")
 	src, err := os.ReadFile(path)
 	require.NoError(t, err)
 
-	diags := lintSrc(t, "count-mismatch.decl", src)
+	diags := lintSrc(t, "index-oob.decl", src)
 	codes := diagCodes(diags)
-	assert.Contains(t, codes, "VALIDATE_ARRAY_COUNT_MISMATCH")
+	assert.Contains(t, codes, "VALIDATE_ARRAY_INDEX_OOB")
 }
