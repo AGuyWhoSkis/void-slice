@@ -6,9 +6,11 @@
 // comparisons stay meaningful.
 //
 // Optional `layers` restricts which oracle layers a fixture runs through.
-// Default is all four (`native`, `wasm`, `worker`, `frontend`). The corpus
-// `.entities` fixture exceeds the worker's 1 MiB body cap, so it sets
+// Default is all four (`native`, `wasm`, `worker`, `frontend`). The 7.7 MB
+// `corpus-entities` fixture exceeds the worker's 1 MiB body cap, so it sets
 // `["native","wasm"]`; the cap is a real prod constraint, not test-tweakable.
+// `corpus-entities-small` is a sub-1 MiB excerpt of the same golden that
+// covers boundaries 2 and 3 for the `.entities` shape (M4.14).
 
 export const FIXTURES = [
   {
@@ -60,6 +62,11 @@ export const FIXTURES = [
     path: "testdata/golden/d2/game1/maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities",
     reference: "cli",
     layers: ["native", "wasm"],
+  },
+  {
+    name: "corpus-entities-small",
+    path: "testdata/golden/maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.excerpt.entities",
+    reference: "cli",
   },
 ];
 

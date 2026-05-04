@@ -20,7 +20,10 @@ type allowEntry struct {
 	Count int
 }
 
-const entitiesFile = "d2/game1/maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities"
+const (
+	entitiesFile        = "d2/game1/maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities"
+	entitiesExcerptFile = "maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.excerpt.entities"
+)
 
 // drainAllowlist tracks false positives expected to drain over M4.3–M4.8 as
 // per-shape grammars and validate rules land. Re-baseline (typically downward)
@@ -56,6 +59,7 @@ var drainAllowlist = []allowEntry{
 // Counted strictly here so silent regressions still fail.
 var permanentResidual = []allowEntry{
 	{Code: "LINT_VE_INCONSISTENCY", Scope: entitiesFile, Count: 1},
+	{Code: "LINT_VE_INCONSISTENCY", Scope: entitiesExcerptFile, Count: 1},
 }
 
 func TestGoldenAllowlist(t *testing.T) {
