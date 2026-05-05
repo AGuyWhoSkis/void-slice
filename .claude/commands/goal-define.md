@@ -28,6 +28,23 @@ Listen for:
 
 If the user just lists features they want to build, that's not scope, that's a wishlist. Push for the boundary: "what's a reasonable-sounding piece of work that you'd reject as 'no, that belongs to a different goal'?"
 
+Once scope and exclusions are settled, translate the prose into a `**Paths:**` block — a bullet list of repo-relative doublestar globs naming the file surface the goal will edit. Draft the block from the §2 answer (e.g. "touches `internal/scan/` and the worker" → `internal/scan/**`, `worker/**`) and read it back to the user for confirmation. Cross-cutting files (`Makefile`, `go.mod`, `CLAUDE.md`, `kanban/README.md`) must be listed explicitly if the goal will edit them — there's no implicit allowlist. Schema details: see [`kanban/README.md` § `Paths:` field](../../kanban/README.md).
+
+Once the user confirms the `Paths:` block, run the overlap check below before moving on to §3.
+
+#### Overlap check
+
+Before drafting the file body, surface any collision with in-flight goals so the user can redraw scope while it's still cheap:
+
+1. List `kanban/goals/M*.md`.
+2. For each, read `**Status:**` and `**Paths:**`. Filter to goals whose status is `active` or `ongoing` (skip `parked` and closed goals — they don't represent in-flight work, and closed goals don't carry `Paths:` anyway).
+3. For each remaining goal, check whether any concrete file in the working tree matches a glob from both that goal and the new goal. At this scale (a handful of goals, a handful of paths each) inspection is fine — the canonical script lives in `/goal-dispatch`.
+4. Report to chat:
+   - For each overlap: `Overlap with M{N} ({status}): \`<our-glob>\` ↔ \`<their-glob>\` (both match e.g. \`<example-file>\`)`.
+   - If clean: `No overlap with active or ongoing goals.`
+
+The check is informational. The user decides whether to proceed, redraw `Paths:`, or rescope. `/goal-dispatch` is what *blocks* on overlap; `/goal-define` only surfaces.
+
 ### 3. Initial status?
 
 Goals don't sit in `todo`. Valid initial values:
@@ -59,6 +76,10 @@ Goal file structure (assemble from the conversation, don't fill in a template):
 <Paragraph from §1: the why and the success condition. Should read like a brief from someone who deeply understands the project, not like a feature list.>
 
 **Scope:** <Paragraph from §2: in-scope surfaces and explicit exclusions, with references to adjacent goals where relevant.>
+
+**Paths:**
+- <glob>
+- <glob>
 
 **Status:** <value from §3, with gating condition if parked>
 ```
