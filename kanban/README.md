@@ -14,6 +14,7 @@ Goals capture durable intent — the why and the scope of a body of work. Ticket
 | [M6 — Preview environments](goals/M6.md) | `goals/M6.md` |
 | [M7 — Production hardening](goals/M7.md) | `goals/M7.md` |
 | [M8 — Playground bisection ladder](goals/M8.md) | `goals/M8.md` |
+| [M9 — Concurrent agent workflow](goals/M9.md) | `goals/M9.md` |
 
 ## Columns
 
