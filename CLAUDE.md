@@ -50,6 +50,10 @@ Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
 
 Each active goal has a branch `goal/M<N>-<slug>` and a single PR against `main`. Tickets commit onto the goal branch; the goal branch lands as one human-reviewed PR when the goal closes. Agents push the goal branch and stop — they do not merge to `main`. Branch protection on `main` is the hard backstop: 1 non-author approval and green required checks, no agent bypass. See [`.github/rulesets/main.json`](.github/rulesets/main.json).
 
+### CI-feedback loop
+
+After pushing a ticket's work, the agent stays in the loop until CI is green or it hits something it shouldn't fix. Subscribe to the goal PR via `mcp__github__subscribe_pr_activity` and read check status via `mcp__github__pull_request_read` (`method=get_check_runs`). On failure, classify each failing check as **in-scope** (caused by this ticket's diff — fix, re-push, re-read) or **out-of-scope** (pre-existing flake, infra, unrelated regression — surface to the user, do not fix). If the same failure shape recurs twice without progress, stop looping and escalate. The loop is the closing step of `/implement-ticket` — see step 8 there.
+
 ## Tooling
 
 - **Hooks** (`PostToolUse` on Edit/Write):

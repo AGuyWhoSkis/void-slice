@@ -20,7 +20,19 @@ Implement ticket $ARGUMENTS end-to-end. Follow these steps in order:
 
 7. **VERIFY** — run every verification step listed in the ticket. Confirm `go test ./...` passes and `go vet ./...` is clean. If integration tests (T7) exist, confirm they do not regress.
 
-8. **GAPS** — before closing, review the work for gaps between the approved plan and what actually shipped. Propose follow-up tickets to the user; do not auto-create them. Check for, in priority order:
+8. **PUSH & WATCH** — close the inner loop with CI before moving on:
+
+   1. Commit the work and push the goal branch (`git push -u origin goal/M<N>-<slug>`).
+   2. If no PR exists for the branch yet, open one against `main` (via `mcp__github__create_pull_request` or `gh pr create`) and surface the URL to the user. If one already exists, reuse it.
+   3. Subscribe to PR activity (`mcp__github__subscribe_pr_activity`) so check-run failures land in the conversation.
+   4. Read current check status (`mcp__github__pull_request_read` with `method=get_check_runs`).
+   5. **Green** → continue to step 9.
+   6. **Failing** → classify each failure:
+      - **In-scope** (caused by this ticket's diff): fix it, commit, re-push, loop back to (4).
+      - **Out-of-scope** (pre-existing flake, infra, unrelated regression): surface to the user, do not attempt a fix.
+   7. **Stuck-loop guard.** If the same failure shape recurs twice without progress (the second fix attempt produces the same failure), stop looping and surface to the user. Don't burn cycles guessing.
+
+9. **GAPS** — before closing, review the work for gaps between the approved plan and what actually shipped. Propose follow-up tickets to the user; do not auto-create them. Check for, in priority order:
 
    - **Deferred work** — any TODO/FIXME/`.skip`/temporary workaround/feature flag added during this ticket
    - **Out-of-scope discoveries** — bugs, dead code, or broken invariants noticed but not fixed because they sat outside scope
@@ -31,4 +43,4 @@ Implement ticket $ARGUMENTS end-to-end. Follow these steps in order:
 
    Present findings in a single batched prompt: "Found N follow-ups. Create tickets for: [one-line title + 2–3 sentence rationale per item]? (y / pick subset / n)". On approval, scaffold each via the PROPOSE format in `/crud-ticket` (each gets `**Origin:** <this-ticket-id>`). If no gaps, say so explicitly ("No follow-ups found.") so the user knows the step ran.
 
-9. **CLOSE** — `git rm` the ticket file. Use the commit message as the closure record: summarise what was done, key decisions, and any deviations from the original scope. End the message with a `Follow-ups:` line listing the ticket IDs created in step 8 (or `none`).
+10. **CLOSE** — `git rm` the ticket file. Use the commit message as the closure record: summarise what was done, key decisions, and any deviations from the original scope. End the message with a `Follow-ups:` line listing the ticket IDs created in step 9 (or `none`).
