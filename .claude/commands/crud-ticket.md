@@ -30,6 +30,9 @@ Add 1 to that count to get `<n>`. Then write a new file at `kanban/todo/<goal-id
 
 ## Verification
 <how to confirm this ticket is complete>
+
+## Out of scope (intentionally deferred)
+<bullet list of decisions or work considered and explicitly deferred, with reasoning. Names what an implementer should not re-litigate. Not a wishlist.>
 ```
 
 After creating the file, confirm the ID does not collide with an existing ticket.
