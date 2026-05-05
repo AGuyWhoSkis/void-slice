@@ -50,6 +50,16 @@ Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
 
 Each active goal has a branch `goal/M<N>-<slug>` and a single PR against `main`. Tickets commit onto the goal branch; the goal branch lands as one human-reviewed PR when the goal closes. Agents push the goal branch and stop — they do not merge to `main`. Branch protection on `main` is the hard backstop: 1 non-author approval and green required checks, no agent bypass. See [`.github/rulesets/main.json`](.github/rulesets/main.json).
 
+### Nits
+
+A *nit* is a tiny single-edit chore noticed during another goal's work — a CLAUDE.md rule, a typo, a one-line convention update. Nits live on a long-lived `nits` branch with a sibling worktree at `../void-slice-nits/`, bootstrapped via [`tools/nits-bootstrap.sh`](tools/nits-bootstrap.sh). Capture never touches the active goal's branch.
+
+- **File** with `/nit "<description>"`. The command prompts for `Paths:` (required, single glob) and an optional context paragraph, then writes a markdown file at `kanban/nits/<timestamp>-<slug>.md` on the `nits` branch and pushes it.
+- **Surface** is read-only. `/goal-define` lists pending nits and marks each ✓/✗ for "fits this goal's `Paths:`" so the user can see adoption candidates while drawing a new goal.
+- **Adopt** at `/goal-slice`. After the slicer's intentional tickets are written, fitting nits are offered for adoption; each chosen nit is atomically claimed via `git push` to the `nits` branch (race-safe — the push is the claim) and materialized as an ordinary ticket with `**Origin:** nit-<timestamp>`. Adopted tickets ride the goal's PR like any other.
+- **Paths-subset rule.** An adopted nit's `Paths:` must be ⊆ the adopting goal's `Paths:`. No bypass of M9's collision-avoidance contract — non-fitting nits are listed but cannot be adopted unless the goal's `Paths:` is extended (deliberate user step, runs the overlap check again).
+- **Sizing bound.** One file, one conceptual change. Anything bigger files a ticket directly via `/crud-ticket`.
+
 ### CI-feedback loop
 
 After pushing a ticket's work, the agent stays in the loop until CI is green or it hits something it shouldn't fix. Subscribe to the goal PR via `mcp__github__subscribe_pr_activity` and read check status via `mcp__github__pull_request_read` (`method=get_check_runs`). On failure, classify each failing check as **in-scope** (caused by this ticket's diff — fix, re-push, re-read) or **out-of-scope** (pre-existing flake, infra, unrelated regression — surface to the user, do not fix). If the same failure shape recurs twice without progress, stop looping and escalate. The loop is the closing step of `/implement-ticket` — see step 8 there.

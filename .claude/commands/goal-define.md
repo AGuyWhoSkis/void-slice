@@ -45,6 +45,18 @@ Before drafting the file body, surface any collision with in-flight goals so the
 
 The check is informational. The user decides whether to proceed, redraw `Paths:`, or rescope. `/goal-dispatch` is what *blocks* on overlap; `/goal-define` only surfaces.
 
+### Pending nits
+
+Surface what's already filed against the `nits` branch so the user knows whether the new goal can absorb any of them at slice time:
+
+1. `git fetch origin nits 2>/dev/null` — best-effort. If the `nits` branch doesn't exist (pre-M10.1, fresh clone), print `(nits substrate not yet bootstrapped — run tools/nits-bootstrap.sh)` and skip the rest of this step.
+2. `git ls-tree -r --name-only origin/nits kanban/nits/` to enumerate. Skip `kanban/nits/README.md`.
+3. For each nit file, `git show origin/nits:<path>` and parse the `Paths:` block (same shape as a goal's `Paths:`).
+4. For each nit, compute `fits` = ✓ iff every glob in the nit's `Paths:` is a subset of the new goal's `Paths:` (a nit-glob is a subset if every working-tree file matching the nit-glob also matches some goal-glob).
+5. Output as a markdown table with columns `file`, `description` (the first heading line of the nit), `Paths`, `fits`. Header row: `Pending nits (N):` where N is the count. If zero, print `No pending nits.` and skip the table.
+
+Surface only — adoption happens at `/goal-slice`. If a non-fitting nit looks worth adopting, extend this goal's `Paths:` and re-run the overlap check.
+
 ### 3. Initial status?
 
 Goals don't sit in `todo`. Valid initial values:
