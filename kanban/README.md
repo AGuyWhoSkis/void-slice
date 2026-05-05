@@ -32,6 +32,27 @@ Active goals declare a `**Paths:**` block between `**Scope:**` and `**Status:**`
 - **Cross-cutting files always declared.** No implicit allowlist for things like `go.mod`, `Makefile`, `CLAUDE.md`, `kanban/README.md`. If two goals both edit `Makefile`, they overlap and must serialize.
 - **Closed goals stay bare.** Overlap checking only matters for in-flight goals; M1–M8 don't carry `Paths:` retroactively.
 
+## Nits
+
+A nit is a tiny single-edit chore captured during another goal's work — see [CLAUDE.md § Nits](../CLAUDE.md#nits) for the rationale and capture/surface/adopt flow.
+
+Substrate: a long-lived `nits` branch with a sibling worktree at `../void-slice-nits/`, bootstrapped via [`tools/nits-bootstrap.sh`](../tools/nits-bootstrap.sh). Pending nits live on that branch under `kanban/nits/`. Adopted nits are removed from the `nits` branch (the `git push` that removes them is the atomic claim) and re-emerge on the adopting goal branch as ordinary tickets carrying `**Origin:** nit-<timestamp>`.
+
+Lifecycle: `filed → claimed → ticketed → landed`. Closing the materialized ticket follows the standard ticket lifecycle.
+
+Sample nit file:
+
+```markdown
+# never include claude.ai/code/session_* URLs in commit messages or PR bodies
+
+**Captured:** 20260505T143022Z
+**Branch:** goal/M10-nit-capture
+**Paths:**
+- CLAUDE.md
+
+Claude Code's git templates embed `claude.ai/code/session_<id>` URLs by default. Even though they're auth-gated, git history is permanent and access models can change — opt out repo-wide.
+```
+
 ## Columns
 
 | Folder | Meaning |
