@@ -16,6 +16,21 @@ Goals capture durable intent — the why and the scope of a body of work. Ticket
 | [M8 — Playground bisection ladder](goals/M8.md) | `goals/M8.md` |
 | [M9 — Concurrent agent workflow](goals/M9.md) | `goals/M9.md` |
 
+### `Paths:` field
+
+Active goals declare a `**Paths:**` block between `**Scope:**` and `**Status:**` — a bullet list of repo-relative globs naming the surface the goal will edit. Lets the dispatcher refuse to spawn two agents whose surfaces overlap, without parsing prose.
+
+```markdown
+**Paths:**
+- internal/scan/**
+- internal/parse/**
+```
+
+- **Glob syntax.** Doublestar globs (`**`, `*`, `?`), repo-relative, no leading slash. Same conventions as Go tooling (`golangci-lint`, etc.).
+- **Overlap.** Two `Paths:` fields overlap iff some concrete file in the working tree matches a pattern in both — set-intersection of matched paths, not pattern-prefix or shared-directory.
+- **Cross-cutting files always declared.** No implicit allowlist for things like `go.mod`, `Makefile`, `CLAUDE.md`, `kanban/README.md`. If two goals both edit `Makefile`, they overlap and must serialize.
+- **Closed goals stay bare.** Overlap checking only matters for in-flight goals; M1–M8 don't carry `Paths:` retroactively.
+
 ## Columns
 
 | Folder | Meaning |
