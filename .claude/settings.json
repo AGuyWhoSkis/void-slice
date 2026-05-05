@@ -3,6 +3,20 @@
     "allow": []
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__github__merge_pull_request",
+        "hooks": [
+          { "type": "command", "command": "echo 'agents do not merge to main; surface the green PR to the human and stop' >&2; exit 2" }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "cmd=$(jq -r '.tool_input.command'); echo \"$cmd\" | grep -qE '^git push .*\\bmain\\b' && { echo 'agents do not push to main; push the goal branch instead' >&2; exit 2; } || exit 0" }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
