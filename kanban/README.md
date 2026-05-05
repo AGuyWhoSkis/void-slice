@@ -67,3 +67,5 @@ Closing a goal is just flipping its `**Status:**` field. A retrospective on the 
 Each active goal owns a long-lived branch `goal/M<N>-<slug>`, where `<slug>` is the goal file's title lowercased and hyphenated (e.g. M9 "Concurrent agent workflow" → `goal/M9-concurrent-agent-workflow`). The slug is deterministic so `/goal-dispatch` can reproduce the branch name from a goal-id alone.
 
 The branch is created from `main` (manually or by `/goal-dispatch`). Tickets for the goal commit onto it; `/implement-ticket` refuses to run if the working tree isn't on the matching goal branch. A single PR per goal targets `main` and is opened early (the slice itself is a deliverable). The PR is merged by a human when the goal closes — branch protection on `main` enforces the gate.
+
+`/goal-dispatch <goal-id>` is the entry point: it checks Paths overlap against active/ongoing goals, creates the goal branch (from `origin/main` if it doesn't exist), and adds a sibling worktree. Refuses on overlap, missing Paths, or wrong status. See [`.claude/commands/goal-dispatch.md`](../.claude/commands/goal-dispatch.md).
