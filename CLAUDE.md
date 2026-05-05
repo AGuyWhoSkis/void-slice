@@ -46,6 +46,10 @@ To change a ticket's status, edit the `**Status:**` field (`todo` / `in-progress
 
 Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
 
+### Branches and merge protocol
+
+Each active goal has a branch `goal/M<N>-<slug>` and a single PR against `main`. Tickets commit onto the goal branch; the goal branch lands as one human-reviewed PR when the goal closes. Agents push the goal branch and stop — they do not merge to `main`. Branch protection on `main` is the hard backstop: 1 non-author approval and green required checks, no agent bypass. See [`.github/rulesets/main.json`](.github/rulesets/main.json).
+
 ## Tooling
 
 - **Hooks** (`PostToolUse` on Edit/Write):

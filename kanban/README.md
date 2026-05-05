@@ -61,3 +61,9 @@ Add 1 to that count.
 3. **Close** — `git rm` the ticket file. The commit message is the closure record; optionally append a brief retro to the parent goal file. There is no `done` folder or status.
 
 Closing a goal is just flipping its `**Status:**` field. A retrospective on the goal file is optional, not mandatory; [goals/M2.md](goals/M2.md) and [goals/M6.md](goals/M6.md) serve as exemplars.
+
+### Goal branches
+
+Each active goal owns a long-lived branch `goal/M<N>-<slug>`, where `<slug>` is the goal file's title lowercased and hyphenated (e.g. M9 "Concurrent agent workflow" → `goal/M9-concurrent-agent-workflow`). The slug is deterministic so `/goal-dispatch` can reproduce the branch name from a goal-id alone.
+
+The branch is created from `main` (manually or by `/goal-dispatch`). Tickets for the goal commit onto it; `/implement-ticket` refuses to run if the working tree isn't on the matching goal branch. A single PR per goal targets `main` and is opened early (the slice itself is a deliverable). The PR is merged by a human when the goal closes — branch protection on `main` enforces the gate.
