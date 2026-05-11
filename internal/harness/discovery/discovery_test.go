@@ -59,7 +59,7 @@ func TestDiscoverySweep(t *testing.T) {
 	linter := lint.New()
 	var allFindings []discovery.Finding
 	var totalEnumerated, totalSampled int
-	var totalDeletes, totalInserts int
+	var totalDeletes, totalInserts, totalReplaces int
 	var sampledFiles []sampledFile
 
 	for _, path := range files {
@@ -85,10 +85,11 @@ func TestDiscoverySweep(t *testing.T) {
 		findings := discovery.Scan(path, src, opts)
 		allFindings = append(allFindings, findings...)
 
-		d, i := countMutations(src)
+		d, i, r := countMutations(src)
 		totalDeletes += d
 		totalInserts += i
-		enumerated := d + i
+		totalReplaces += r
+		enumerated := d + i + r
 		sampled := enumerated
 		if perFileMutationBudget > 0 && enumerated > perFileMutationBudget {
 			sampled = sampledCount(enumerated, perFileMutationBudget)
@@ -104,7 +105,7 @@ func TestDiscoverySweep(t *testing.T) {
 	}
 
 	discovery.SortFindings(allFindings)
-	report := renderReport(len(files), totalDeletes, totalInserts, totalEnumerated, totalSampled, sampledFiles, allFindings)
+	report := renderReport(len(files), totalDeletes, totalInserts, totalReplaces, totalEnumerated, totalSampled, sampledFiles, allFindings)
 	if err := os.WriteFile(reportPath, []byte(report), 0o644); err != nil {
 		t.Fatalf("write report: %v", err)
 	}
@@ -131,11 +132,13 @@ func sampledCount(n, max int) int {
 	return (n + stride - 1) / stride
 }
 
-// countMutations returns (deletes, inserts) the harness would have produced
-// for src. The exact numbers are for the report header — the production
-// `Scan` already does this work internally, but exposing it here would
-// require a separate enumeration API; an extra pass over src is cheap.
-func countMutations(src []byte) (int, int) {
+// countMutations returns (deletes, inserts, replaces) the harness would
+// have produced for src. The exact numbers are for the report header —
+// the production `Scan` already does this work internally, but exposing
+// it here would require a separate enumeration API; an extra pass over
+// src is cheap. Replace yields 5 mutations per structural byte (six in
+// the set minus the one already present).
+func countMutations(src []byte) (int, int, int) {
 	toks, _, _ := scan.Scan(src)
 	mask := make([]bool, len(src))
 	for _, t := range toks {
@@ -164,10 +167,11 @@ func countMutations(src []byte) (int, int) {
 			inserts += 6
 		}
 	}
-	return deletes, inserts
+	replaces := deletes * 5
+	return deletes, inserts, replaces
 }
 
-func renderReport(filesScanned, totalDeletes, totalInserts, totalEnumerated, totalSampled int, sampledFiles []sampledFile, findings []discovery.Finding) string {
+func renderReport(filesScanned, totalDeletes, totalInserts, totalReplaces, totalEnumerated, totalSampled int, sampledFiles []sampledFile, findings []discovery.Finding) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "# Discovery report — %s\n\n", time.Now().UTC().Format(time.RFC3339))
 
@@ -180,8 +184,8 @@ func renderReport(filesScanned, totalDeletes, totalInserts, totalEnumerated, tot
 
 	fmt.Fprintf(&b, "## Corpus\n")
 	fmt.Fprintf(&b, "- %d files scanned\n", filesScanned)
-	fmt.Fprintf(&b, "- %d mutations enumerated (%d deletes, %d inserts)\n",
-		totalEnumerated, totalDeletes, totalInserts)
+	fmt.Fprintf(&b, "- %d mutations enumerated (%d deletes, %d inserts, %d replaces)\n",
+		totalEnumerated, totalDeletes, totalInserts, totalReplaces)
 	fmt.Fprintf(&b, "- %d mutations applied after per-file budget=%d (%d files stride-sampled — see Sampled section)\n",
 		totalSampled, perFileMutationBudget, len(sampledFiles))
 	fmt.Fprintf(&b, "- %d findings (%d panics, %d silent, %d spikes, %d blowups; a finding can carry multiple signals)\n\n",

@@ -23,14 +23,18 @@ import (
 	"void-slice/internal/scan"
 )
 
-// MutationKind distinguishes single-byte deletions from single-byte
-// insertions. Both are structural-token mutations; the kind drives how
-// `Scan` enumerates positions but the downstream signal logic is shared.
+// MutationKind distinguishes the structural-token edit shapes: a single-
+// byte deletion, a single-byte insertion at a token-pair gap, or a single-
+// byte replacement of an existing structural byte with another one from
+// the same set. All three are structural-token mutations; the kind drives
+// how `Scan` enumerates positions but the downstream signal logic is
+// shared.
 type MutationKind int
 
 const (
 	MutationDelete MutationKind = iota
 	MutationInsert
+	MutationReplace
 )
 
 func (m MutationKind) String() string {
@@ -39,6 +43,8 @@ func (m MutationKind) String() string {
 		return "delete"
 	case MutationInsert:
 		return "insert"
+	case MutationReplace:
+		return "replace"
 	default:
 		return "unknown"
 	}
@@ -50,6 +56,11 @@ func (m MutationKind) String() string {
 // Line is the 1-based line of `Offset` in the *original* source; the
 // discovery harness reports findings relative to that origin line so a
 // reader can compare against the unedited file.
+//
+// Token's meaning depends on Kind: for MutationDelete it is the byte that
+// was removed (== src[Offset]); for MutationInsert it is the byte
+// inserted at Offset; for MutationReplace it is the byte that overwrites
+// src[Offset] (and is by construction != src[Offset]).
 type Mutation struct {
 	Kind   MutationKind
 	Token  byte
@@ -149,6 +160,7 @@ func Scan(path string, src []byte, opts Options) []Finding {
 	var mutations []Mutation
 	mutations = append(mutations, enumerateDeletes(src, skipMask, newlines)...)
 	mutations = append(mutations, enumerateInserts(toks, newlines)...)
+	mutations = append(mutations, enumerateReplaces(src, skipMask, newlines)...)
 	mutations = sampleMutations(mutations, opts.MaxMutations)
 
 	var findings []Finding
@@ -260,11 +272,45 @@ func enumerateDeletes(src []byte, skipMask []bool, newlines []int) []Mutation {
 	return out
 }
 
+// enumerateReplaces returns one Replace mutation per (structural-byte
+// offset, replacement-byte) where replacement-byte ∈ structuralBytes and
+// != src[offset]. Comment- and quote-interior bytes are skipped via the
+// shared mask. Ordered by ascending (offset, replacement-byte position in
+// structuralBytes). Five replacements per qualifying byte.
+func enumerateReplaces(src []byte, skipMask []bool, newlines []int) []Mutation {
+	var out []Mutation
+	for i := 0; i < len(src); i++ {
+		if skipMask[i] {
+			continue
+		}
+		if !isStructuralByte(src[i]) {
+			continue
+		}
+		line := lineAt(newlines, i)
+		for _, b := range structuralBytes {
+			if b == src[i] {
+				continue
+			}
+			out = append(out, Mutation{
+				Kind:   MutationReplace,
+				Token:  b,
+				Offset: i,
+				Line:   line,
+			})
+		}
+	}
+	return out
+}
+
 // silentAllowed reports whether the Silent signal is permitted for this
 // (mode, kind) pair. SilentDeletesOnly suppresses Silent on inserts —
-// M12.9's report showed inserts dominate Silent noise. SilentAll lets any
-// mutation kind fire Silent.
+// M12.9's report showed inserts dominate Silent noise. SilentAll lets
+// delete and insert fire Silent; replace is always gated out pending
+// M12.14's calibration.
 func silentAllowed(mode SilentMode, kind MutationKind) bool {
+	if kind == MutationReplace {
+		return false
+	}
 	if mode == SilentAll {
 		return true
 	}
@@ -347,7 +393,8 @@ func lineAt(newlines []int, offset int) int {
 // lineAtMutated maps a mutated-source offset back to a line in the
 // original source's newline index. Single-byte delete/insert shifts every
 // byte after the mutation point by ±1 — adjust the offset, then run the
-// usual binary search.
+// usual binary search. Replace preserves length, so the mapping is the
+// identity; the case is listed explicitly to keep the switch exhaustive.
 func lineAtMutated(srcNewlines []int, m Mutation, mutOffset int) int {
 	srcOffset := mutOffset
 	switch m.Kind {
@@ -359,12 +406,15 @@ func lineAtMutated(srcNewlines []int, m Mutation, mutOffset int) int {
 		if mutOffset > m.Offset {
 			srcOffset = mutOffset - 1
 		}
+	case MutationReplace:
+		// length-preserving — no offset shift
 	}
 	return lineAt(srcNewlines, srcOffset)
 }
 
-// applyMutation returns the mutated source. Single-byte delete or single-
-// byte insert; the implementation never aliases the input slice.
+// applyMutation returns the mutated source. Single-byte delete, single-
+// byte insert, or single-byte replace; the implementation never aliases
+// the input slice.
 func applyMutation(src []byte, m Mutation) []byte {
 	switch m.Kind {
 	case MutationDelete:
@@ -383,6 +433,14 @@ func applyMutation(src []byte, m Mutation) []byte {
 		out = append(out, src[:m.Offset]...)
 		out = append(out, m.Token)
 		out = append(out, src[m.Offset:]...)
+		return out
+	case MutationReplace:
+		if m.Offset < 0 || m.Offset >= len(src) {
+			return src
+		}
+		out := make([]byte, len(src))
+		copy(out, src)
+		out[m.Offset] = m.Token
 		return out
 	default:
 		return src
