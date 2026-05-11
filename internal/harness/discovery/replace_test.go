@@ -88,11 +88,18 @@ func TestReplaceProducesDiagCountChange(t *testing.T) {
 	}
 }
 
-// TestReplaceCannotFireSilent pins M12.13's placeholder gating:
-// silentAllowed must return false for MutationReplace under either
-// SilentMode. Without this, a structurally-equivalent swap (e.g. `[` ↔
-// `{` in a permissive grammar position) would surface as Silent before
-// M12.14 calibrates the gate empirically.
+// TestReplaceCannotFireSilent pins the M12.14 calibration: silentAllowed
+// must return false for MutationReplace under either SilentMode. The
+// sweep that temporarily permitted replace-Silent surfaced 747 findings
+// across 12 files, all noise — either the file's baseline diag set
+// already dominated and any further mutation registered as Silent, or
+// the grammar was permissive enough that the alternate byte produced
+// identical clean diags. Keep replace excluded; revisit at the token
+// level (see the M13 draft) rather than at single-byte structural shape.
+//
+// Delete-Silent's continued behavior under the chosen default is pinned
+// separately by TestSilentModeDeletesOnly — kept disjoint so a failure
+// here points precisely at replace-gate regression.
 func TestReplaceCannotFireSilent(t *testing.T) {
 	// Permissive shape — `[` and `{` are both accepted as the opener of a
 	// list-or-object value in many positions, so the parser tends to emit
@@ -120,7 +127,8 @@ func TestReplaceCannotFireSilent(t *testing.T) {
 			}
 			for _, s := range f.Signals {
 				if s == discovery.SignalSilent {
-					t.Errorf("mode=%v: MutationReplace fired SignalSilent; should be gated until M12.14", mode)
+					t.Errorf("mode=%v: MutationReplace fired SignalSilent at offset %d (replace=%q); M12.14 gate regressed",
+						mode, f.Mutation.Offset, f.Mutation.Token)
 				}
 			}
 		}

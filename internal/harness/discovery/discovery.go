@@ -305,8 +305,22 @@ func enumerateReplaces(src []byte, skipMask []bool, newlines []int) []Mutation {
 // silentAllowed reports whether the Silent signal is permitted for this
 // (mode, kind) pair. SilentDeletesOnly suppresses Silent on inserts —
 // M12.9's report showed inserts dominate Silent noise. SilentAll lets
-// delete and insert fire Silent; replace is always gated out pending
-// M12.14's calibration.
+// delete and insert fire Silent; replace is gated out under *both* modes.
+//
+// M12.14 calibration: a sweep that temporarily permitted Silent on
+// replace produced 747 findings across 12 files, all noise. The
+// distribution splits three ways: 387 came from a 148-diag baseline
+// (`gatherdepthminmax.decl`) where the file is already dominated by
+// binary-garbage errors and any mutation registers as Silent because
+// the pre-existing diag set swamps the swap; 177 came from a 116-diag
+// baseline (`arksssblur.decl`) with the same shape; the remaining 183
+// were 0-diag baselines (clean grammar files like the animset and
+// material decls) where the parser is permissive enough to accept the
+// alternate byte in that position. None matched the "linter missed a
+// constant-length semantic flip" shape Silent exists to surface, so
+// replace stays excluded. Token-level replacement (see the M13 draft)
+// is the path to that signal — single-byte structural replace is too
+// coarse to distinguish meaning-shift from grammar-permissive.
 func silentAllowed(mode SilentMode, kind MutationKind) bool {
 	if kind == MutationReplace {
 		return false
