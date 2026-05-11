@@ -70,6 +70,17 @@ func TestLocalityHarness(t *testing.T) {
 		totalApplied, totalSkipped)
 }
 
+// skipDirs are corpus subtrees the locality harness deliberately ignores.
+// Locality's invariant ("any new diagnostic from a one-byte mutation lands
+// near mutLine") presumes a clean baseline; fixtures under these paths are
+// intentionally-broken cascade samples meant for harness-specific tests
+// (e.g. M12.15's lex-invariance corpus). Mutating them stacks a second
+// fault onto an existing one and re-anchors cascades to lines other than
+// mutLine — which is the fixture's contract, not a regression.
+var skipDirs = []string{
+	filepath.Join("testdata", "cascades", "lexinvariance"),
+}
+
 // collectCorpus walks corpusRoots and returns paths to text-extension files
 // the lint facade understands. Mirrors lintableExt in clean_sweep_test.go.
 func collectCorpus(t *testing.T) []string {
@@ -81,6 +92,11 @@ func collectCorpus(t *testing.T) []string {
 				return err
 			}
 			if d.IsDir() {
+				for _, skip := range skipDirs {
+					if strings.HasSuffix(filepath.ToSlash(path), filepath.ToSlash(skip)) {
+						return filepath.SkipDir
+					}
+				}
 				return nil
 			}
 			if !lintableExt(d.Name()) {

@@ -6,7 +6,6 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"void-slice/internal/harness/lexinvariance"
@@ -115,12 +114,15 @@ func TestTransformsSkipCommentInteriors(t *testing.T) {
 	}
 }
 
-// TestKnownCaseV1V2Diverges is the spike's anchor test: it pins that
-// the V1 fixture from testdata/cascades/lexinvariance/ produces at least
-// one Finding under TransformReindent or TransformBlankLineJitter. The
-// 8-vs-2-diagnostic divergence motivated this whole ticket, so the
-// harness landing without surfacing it would be a contract failure.
-func TestKnownCaseV1V2Diverges(t *testing.T) {
+// TestKnownCaseV1V2Converges pins M12.16's closure: the fixture under
+// testdata/cascades/lexinvariance/ that originally surfaced F3/F4 (a
+// 7-vs-1-diagnostic indent-gated cascade) must no longer diverge under
+// TransformReindent or TransformInterTokenPadding. M12.15's spike used
+// this fixture as the anchor for "harness can detect divergence"; once
+// the parser stops gating on indent, V1 and V2 converge on a single
+// VOID_SCAN and the only remaining lexinvariance-report findings are
+// the unrelated F1/F2/F5/F6 shapes tracked by M12.17 and M12.18.
+func TestKnownCaseV1V2Converges(t *testing.T) {
 	path := filepath.Join("..", "..", "..", "testdata", "cascades", "lexinvariance", "whitespace-cascade.decl")
 	src, err := os.ReadFile(path)
 	require.NoError(t, err, "read V1 fixture")
@@ -131,19 +133,13 @@ func TestKnownCaseV1V2Diverges(t *testing.T) {
 	baseScan := convertLintDiags(baseDiags)
 
 	findings := lexinvariance.Scan(path, src, lexinvariance.Options{BaseDiags: baseScan})
-	require.NotEmpty(t, findings, "the V1 fixture must produce at least one finding")
-
-	wantKind := false
 	for _, f := range findings {
 		if f.Transform == lexinvariance.TransformReindent ||
-			f.Transform == lexinvariance.TransformBlankLineJitter {
-			wantKind = true
-			break
+			f.Transform == lexinvariance.TransformInterTokenPadding {
+			t.Errorf("M12.16 should have eliminated the indent-gated cascade, but a finding remains under %s: %+v",
+				f.Transform, f)
 		}
 	}
-	assert.True(t, wantKind,
-		"V1 fixture must produce a finding under TransformReindent or TransformBlankLineJitter; got %d findings under other kinds",
-		len(findings))
 }
 
 // assertContractHolds applies (kind, variant) to fixture and asserts that

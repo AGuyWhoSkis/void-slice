@@ -34,11 +34,18 @@ type Handler interface {
 // WalkEntities walks an entities file emitting events to h.
 // Both the returned diags slice and h.OnDiag carry parse diagnostics; they are identical.
 func WalkEntities(src []byte, toks []scan.Token, h Handler) (diags []scan.Diagnostic) {
+	totalCloses := 0
+	for _, t := range toks {
+		if t.Kind == scan.KindSymbol && src[t.Span.Start] == '}' {
+			totalCloses++
+		}
+	}
 	c := &cursor{
-		src:   src,
-		toks:  toks,
-		i:     -1,
-		nToks: len(toks),
+		src:         src,
+		toks:        toks,
+		i:           -1,
+		nToks:       len(toks),
+		totalCloses: totalCloses,
 	}
 	c.walkEntities(h)
 	return c.diags
@@ -59,7 +66,18 @@ type cursor struct {
 	// diagnostic has already fired for this walk. Inner→outer expectSym calls
 	// at EOF (e.g. closing an inner object then the outer top-level) describe
 	// the same missing close — the second emission is a cascade. M12.5.
+	// Also gates closeObjectValue's cascade re-anchor so the inner-anchored
+	// PARSE_UNTERMINATED_OBJECT fires at most once per walk (M12.7/M12.16).
 	eofCascadeEmitted bool
+
+	// consumedOpens counts `{` SYMBOL tokens consumed so far. totalCloses is
+	// the count of `}` SYMBOL tokens in the entire stream (precomputed in
+	// WalkEntities). closeObjectValue compares the two: when totalCloses <
+	// consumedOpens the file cannot possibly close every open `{`, which is
+	// the structural fact M12.7's indent-gated heuristic was approximating —
+	// switched to a layout-invariant count in M12.16.
+	consumedOpens int
+	totalCloses   int
 }
 
 // eof returns true when there are no more tokens to consume.
@@ -81,7 +99,11 @@ func (c *cursor) next() *scan.Token {
 		return nil
 	}
 	c.i++
-	return &c.toks[c.i]
+	t := &c.toks[c.i]
+	if t.Kind == scan.KindSymbol && c.src[t.Span.Start] == '{' {
+		c.consumedOpens++
+	}
+	return t
 }
 
 // lexeme returns the source bytes for tok.
@@ -626,6 +648,10 @@ func (c *cursor) walkStatement(h Handler) {
 					Message: "expected '{' after '='",
 				})
 				c.i-- // un-consume the misread IDENT
+				// Account the virtual `{` toward consumedOpens so the
+				// M12.16 balance gate sees the same depth the user's `}`
+				// tokens are about to satisfy.
+				c.consumedOpens++
 				h.OnObjectBegin(*eqTok)
 				c.walkObjectBody(h)
 				rbrace, _ := c.closeObjectValue(h, *eqTok)
@@ -769,14 +795,16 @@ func (c *cursor) parseValue(h Handler) Value {
 }
 
 // closeObjectValue closes the object opened by lbrace. M12.7: if the next
-// `}` is at strictly lower line-indent than lbrace, treat it as belonging
-// to an outer scope — emit PARSE_UNTERMINATED_OBJECT anchored at lbrace and
-// leave the `}` unconsumed for the outer level to pick up. This re-anchors
-// the mid-file missing-brace cascade onto the actual fault site instead of
-// EOF. On any other failure shape we fall back to expectSym +
-// UNTERMINATED_OBJECT + sync recovery — the M12.5 EOF-cascade behaviour.
+// `}` is at strictly lower line-indent than lbrace AND the file lacks
+// enough `}` tokens to satisfy every open `{` (M12.16's balance gate),
+// treat the `}` as belonging to an outer scope — emit
+// PARSE_UNTERMINATED_OBJECT anchored at lbrace and leave the `}` unconsumed
+// for the outer level to pick up. eofCascadeEmitted scopes the re-anchor
+// to fire at most once per walk so outer levels reuse expectSym rather
+// than emit repeats. On any other failure shape we fall back to expectSym
+// + UNTERMINATED_OBJECT + sync recovery — the M12.5 EOF-cascade behaviour.
 func (c *cursor) closeObjectValue(h Handler, lbrace scan.Token) (scan.Token, bool) {
-	if c.peekBraceBelongsToOuter(lbrace) {
+	if !c.eofCascadeEmitted && c.peekBraceBelongsToOuter(lbrace) {
 		c.emitDiag(h, scan.Diagnostic{
 			Code:    Codes.UNTERMINATED_OBJECT,
 			Span:    scan.NewSpan(lbrace.Span.Start, lbrace.Span.End),
@@ -801,12 +829,21 @@ func (c *cursor) closeObjectValue(h Handler, lbrace scan.Token) (scan.Token, boo
 	return rbrace, ok
 }
 
-// peekBraceBelongsToOuter returns true iff the next token is `}` AND its
-// line-indent is strictly less than lbrace's line-indent. Soft signal — see
-// M12.7 ticket for the brittleness vs coverage trade-off.
+// peekBraceBelongsToOuter returns true iff the next token is `}`, its
+// line-indent is strictly less than lbrace's line-indent (M12.7), AND the
+// file is structurally short of `}` tokens (totalCloses < consumedOpens).
+// The balance gate (M12.16) is what makes the heuristic refuse to fire on
+// a balanced file that merely has a flush-left `}` — same indent signal,
+// but the file doesn't actually need a re-anchor because every open `{`
+// still has a `}` available downstream. Indent alone (M12.7's original
+// form) tripped on F3/F4: a balanced file whose user wrote the inner `}`
+// at column 0 to compensate for a broken line above.
 func (c *cursor) peekBraceBelongsToOuter(lbrace scan.Token) bool {
 	p := c.peek()
 	if p == nil || p.Kind != scan.KindSymbol || c.src[p.Span.Start] != '}' {
+		return false
+	}
+	if c.totalCloses >= c.consumedOpens {
 		return false
 	}
 	return c.lineIndent(p.Span.Start) < c.lineIndent(lbrace.Span.Start)

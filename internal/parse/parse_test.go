@@ -443,6 +443,71 @@ func TestM12_7_MidFileMissingBraceAnchorsAtInner(t *testing.T) {
 	assert.Equal(t, 9, pos.Line, "PARSE_UNTERMINATED_OBJECT must anchor at line 9; got %d:%d (%v)", pos.Line, pos.Col, diags)
 }
 
+// TestM12_16_IndentInvariantCascade pins the M12.16 contract: the
+// whitespace-cascade fixture (a balanced file whose only fault is a
+// mid-line unterminated quote) must produce the same diagnostic-code
+// multiset whether each line carries its committed leading tabs (V1) or
+// every line is flush-left (V2). Before M12.16 the parser's
+// indent-gated close emitted 7 cascade diagnostics for V1 and 1 for V2 —
+// pure layout-dependence on identical logical input. After the fix the
+// balance gate refuses to re-anchor when the file is structurally
+// balanced, so both forms reduce to the single VOID_SCAN at the broken
+// quote.
+func TestM12_16_IndentInvariantCascade(t *testing.T) {
+	v1 := []byte("Version 1\n" +
+		"component {\n" +
+		"\tcpntTest myTest {\n" +
+		"\t\tedit = {\n" +
+		"\t\t\tm_items = {\n" +
+		"\t\t\t\tnum = 2;\n" +
+		"\t\t\t\titem[0] = { m_val = \"a\"; }\n" +
+		"\t\t\t\titem[1] = { x_val = \"b;\n" +
+		"}\n" +
+		"\t\t\t}\n" +
+		"\t\t}\n" +
+		"\t}\n" +
+		"}\n")
+	v2 := stripLeadingWhitespace(v1)
+
+	codes1 := walkAndCount(t, v1)
+	codes2 := walkAndCount(t, v2)
+	assert.Equal(t, codes1, codes2,
+		"V1 and V2 must produce identical diagnostic-code multisets; got V1=%v V2=%v", codes1, codes2)
+	assert.Equal(t, map[scan.DiagnosticCode]int{scan.Codes.SCAN: 1}, codes1,
+		"V1 must reduce to a single VOID_SCAN; got %v", codes1)
+}
+
+// stripLeadingWhitespace produces the lexinvariance V2 form: drop tabs
+// and spaces at the start of every line, leaving inter-token bytes
+// unchanged so the lexical token stream is identical to V1.
+func stripLeadingWhitespace(src []byte) []byte {
+	var out []byte
+	atLineStart := true
+	for _, b := range src {
+		if atLineStart && (b == ' ' || b == '\t') {
+			continue
+		}
+		out = append(out, b)
+		atLineStart = b == '\n'
+	}
+	return out
+}
+
+func walkAndCount(t *testing.T, src []byte) map[scan.DiagnosticCode]int {
+	t.Helper()
+	toks, scanDiags, _ := scan.Scan(src)
+	rec := newRecorder(src)
+	parseDiags := parse.WalkEntities(src, toks, rec)
+	counts := map[scan.DiagnosticCode]int{}
+	for _, d := range scanDiags {
+		counts[d.Code]++
+	}
+	for _, d := range parseDiags {
+		counts[d.Code]++
+	}
+	return counts
+}
+
 // TestM12_8_MissingOpenBraceAfterEqAnchorsAtAssignment pins the parser-layer
 // contract for the M12.8 cascade fixture: `edit =` with the opening `{`
 // forgotten must produce exactly one focused PARSE_EXPECTED_SYMBOL anchored at
