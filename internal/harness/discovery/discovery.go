@@ -84,14 +84,34 @@ type Finding struct {
 	MaxDelta int
 }
 
+// SilentMode controls which mutation kinds can fire the Silent signal.
+// M12.9's corpus sweep showed inserts dominate Silent-mode noise: an
+// insert at a token-pair gap often produces a grammatically-equivalent
+// alternate read with identical diags, which is honest but uninteresting
+// — not the "linter missed a structural change" shape Silent exists to
+// flag. Deletes of `=`, `{`, `}`, etc. are far more likely to be true
+// signal. SilentDeletesOnly is the calibrated default; SilentAll restores
+// M12.9's original behavior for one-off deep scans.
+type SilentMode int
+
+const (
+	// SilentDeletesOnly fires Silent only when the mutation is a Delete.
+	// Zero-value default — picked deliberately so callers leaving Options
+	// at its zero value get the tightened noise floor.
+	SilentDeletesOnly SilentMode = iota
+	// SilentAll fires Silent for any mutation kind that matches baseline.
+	SilentAll
+)
+
 // Options control the triage thresholds and supply the baseline diagnostic
 // set used by the Silent signal. Zero-value defaults are sensible for
 // thresholds; BaseDiags has no default and is required only when the
 // caller cares about the Silent signal.
 type Options struct {
-	KSpike    int               // diag count >= K triggers Spike
-	WBlowup   int               // max line-Δ > W triggers Blowup
-	BaseDiags []scan.Diagnostic // baseline lint of src; required for Silent
+	KSpike     int               // diag count >= K triggers Spike
+	WBlowup    int               // max line-Δ > W triggers Blowup
+	BaseDiags  []scan.Diagnostic // baseline lint of src; required for Silent
+	SilentMode SilentMode        // gates which mutation kinds can fire Silent
 
 	// MaxMutations caps per-call mutation work. 0 (default) enumerates
 	// every structural-byte mutation. K > 0 keeps at most K mutations via
@@ -182,7 +202,7 @@ func evaluate(path string, m Mutation, mutBytes []byte, baseSet map[diagKey]bool
 	if maxDelta > opts.WBlowup {
 		signals = append(signals, SignalBlowup)
 	}
-	if diagsMatchBaseline(scanDiags, baseSet) {
+	if silentAllowed(opts.SilentMode, m.Kind) && diagsMatchBaseline(scanDiags, baseSet) {
 		signals = append(signals, SignalSilent)
 	}
 
@@ -238,6 +258,17 @@ func enumerateDeletes(src []byte, skipMask []bool, newlines []int) []Mutation {
 		})
 	}
 	return out
+}
+
+// silentAllowed reports whether the Silent signal is permitted for this
+// (mode, kind) pair. SilentDeletesOnly suppresses Silent on inserts —
+// M12.9's report showed inserts dominate Silent noise. SilentAll lets any
+// mutation kind fire Silent.
+func silentAllowed(mode SilentMode, kind MutationKind) bool {
+	if mode == SilentAll {
+		return true
+	}
+	return kind == MutationDelete
 }
 
 // sampleMutations applies Options.MaxMutations: if max > 0 and len(in) > max,
