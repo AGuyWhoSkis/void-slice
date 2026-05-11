@@ -400,7 +400,7 @@ func transformInterTokenPadding(src []byte, variantIdx int) ([]byte, bool) {
 	out.Write(src[:toks[0].Span.Start])
 
 	for i := 0; i < len(toks); i++ {
-		tEnd := effectiveTokenEnd(src, toks[i])
+		tEnd := toks[i].Span.End
 		// The token's own bytes.
 		out.Write(src[toks[i].Span.Start:tEnd])
 
@@ -510,18 +510,12 @@ func transformBlankLineJitter(src []byte, variantIdx int) ([]byte, bool) {
 // Identical in shape to discovery's mask helper; duplicated rather than
 // shared to keep the spike self-contained — a future refactor can pull
 // it into a common helper if a third caller appears.
-//
-// Uses effectiveTokenEnd to include the trailing `/` of `*/`, which the
-// scanner omits from COMMENT_BLOCK spans (see internal/scan/scan.go:140).
-// Without that adjustment, transforms that operate on "bytes outside
-// any token" would treat the comment-closing `/` as fair game and
-// silently break the comment when rewritten.
 func buildCommentQuoteMask(src []byte, toks []scan.Token) []bool {
 	mask := make([]bool, len(src))
 	for _, t := range toks {
 		switch t.Kind {
 		case scan.KindCommentLine, scan.KindCommentBlock, scan.KindQuoteLiteral:
-			end := effectiveTokenEnd(src, t)
+			end := t.Span.End
 			for i := t.Span.Start; i < end && i < len(src); i++ {
 				if i >= 0 {
 					mask[i] = true
@@ -530,20 +524,6 @@ func buildCommentQuoteMask(src []byte, toks []scan.Token) []bool {
 		}
 	}
 	return mask
-}
-
-// effectiveTokenEnd returns t.Span.End, plus 1 when t is a COMMENT_BLOCK
-// whose Span.End points at a '/' byte (the closing '/' of '*/'). The
-// scanner emits COMMENT_BLOCK spans ending one byte short of `*/` — the
-// closing '/' is consumed by an outer-loop `i++` but never folded into
-// the token span. Any caller that wants to "skip the whole comment" has
-// to compensate; this helper centralizes that.
-func effectiveTokenEnd(src []byte, t scan.Token) int {
-	end := t.Span.End
-	if t.Kind == scan.KindCommentBlock && end >= 0 && end < len(src) && src[end] == '/' {
-		end++
-	}
-	return end
 }
 
 // safeLint mirrors discovery.safeLint: a recover-wrapped call so a

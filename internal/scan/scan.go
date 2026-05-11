@@ -137,7 +137,7 @@ mainLoop:
 					b_blkQuot := src[i_blkQuot]
 					b_hasNext := i_blkQuot+1 < n
 					if b_blkQuot == '*' && b_hasNext && src[i_blkQuot+1] == '/' {
-						emitToken(TokenKind.COMMENT_BLOCK, i, i_blkQuot+1)
+						emitToken(TokenKind.COMMENT_BLOCK, i, i_blkQuot+2)
 						i = i_blkQuot + 1 // peek-ahead byte '*' adds extra +1 here
 						continue mainLoop
 					}
