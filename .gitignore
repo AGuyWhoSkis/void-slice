@@ -45,3 +45,8 @@ testdata/all-text-files/
 # regenerated each run. Promote a specific report into a kanban artifact
 # manually if a finding turns into a ticket.
 discovery-report.md
+
+# Output of the M12.15 lexinvariance harness — same shape as
+# discovery-report.md: regenerated each run, human-triaged, never
+# committed.
+lexinvariance-report.md
