@@ -35,16 +35,20 @@ var corpusRoots = []string{
 
 const reportPath = "../../../discovery-report.md"
 
-// maxScanBytes caps which corpus files the driver feeds into discovery.Scan.
-// Discovery's per-file cost scales roughly as O(F²): mutation count grows
-// with token count (∝ F) and the linter inside each mutation costs ∝ F.
-// On a 7.7 MB game-corpus file this becomes hours-to-days, which conflicts
-// with the harness's "runs to completion" verification contract. 32 KB
-// keeps the corpus sweep under a few minutes while still covering ~80% of
-// files by count. Larger files are listed in the report header so a
-// reader can tell what was skipped — and a future ticket can opt into a
-// per-file sampling strategy if a finding shape only appears at scale.
-const maxScanBytes = 32 * 1024
+// perFileMutationBudget bounds per-file work so the corpus sweep finishes
+// inside the verification window. Discovery's intrinsic cost is O(F²):
+// mutations grow ∝ F and the linter inside each mutation costs ∝ F. The
+// measured lint rate on this corpus is ~13 µs/KB, so the 7.7 MB
+// `dunwall_escape_tower_p.entities` lints at ~100 ms — unbounded
+// enumeration over its ~5 M structural mutations would take ~140 hours.
+// 2000 caps that file at ~3 min and the full corpus at ~5–6 min, well
+// inside the ticketed 10-min budget. Files whose enumerated mutation
+// count exceeds the budget are stride-sampled (deterministic, source-
+// order preserving) by discovery.Scan; smaller files run exhaustively.
+//
+// Setting this to 0 disables the cap and restores M12.9's exhaustive
+// behavior — useful for one-off deep scans but not viable corpus-wide.
+const perFileMutationBudget = 2000
 
 func TestDiscoverySweep(t *testing.T) {
 	files := collectCorpus(t)
@@ -54,9 +58,9 @@ func TestDiscoverySweep(t *testing.T) {
 
 	linter := lint.New()
 	var allFindings []discovery.Finding
+	var totalEnumerated, totalSampled int
 	var totalDeletes, totalInserts int
-	var scannedFiles int
-	var skippedLarge []string
+	var sampledFiles []sampledFile
 
 	for _, path := range files {
 		src, err := os.ReadFile(path)
@@ -64,11 +68,6 @@ func TestDiscoverySweep(t *testing.T) {
 			t.Errorf("read %s: %v", path, err)
 			continue
 		}
-		if len(src) > maxScanBytes {
-			skippedLarge = append(skippedLarge, fmt.Sprintf("%s (%d bytes)", path, len(src)))
-			continue
-		}
-		scannedFiles++
 
 		baseDiags, err := linter.Lint(path, src)
 		if err != nil {
@@ -78,9 +77,10 @@ func TestDiscoverySweep(t *testing.T) {
 		baseScan := convertLintDiags(baseDiags)
 
 		opts := discovery.Options{
-			KSpike:    5,
-			WBlowup:   2,
-			BaseDiags: baseScan,
+			KSpike:       5,
+			WBlowup:      2,
+			BaseDiags:    baseScan,
+			MaxMutations: perFileMutationBudget,
 		}
 		findings := discovery.Scan(path, src, opts)
 		allFindings = append(allFindings, findings...)
@@ -88,15 +88,47 @@ func TestDiscoverySweep(t *testing.T) {
 		d, i := countMutations(src)
 		totalDeletes += d
 		totalInserts += i
+		enumerated := d + i
+		sampled := enumerated
+		if perFileMutationBudget > 0 && enumerated > perFileMutationBudget {
+			sampled = sampledCount(enumerated, perFileMutationBudget)
+			sampledFiles = append(sampledFiles, sampledFile{
+				Path:       path,
+				Bytes:      len(src),
+				Enumerated: enumerated,
+				Sampled:    sampled,
+			})
+		}
+		totalEnumerated += enumerated
+		totalSampled += sampled
 	}
 
 	discovery.SortFindings(allFindings)
-	report := renderReport(scannedFiles, totalDeletes, totalInserts, skippedLarge, allFindings)
+	report := renderReport(len(files), totalDeletes, totalInserts, totalEnumerated, totalSampled, sampledFiles, allFindings)
 	if err := os.WriteFile(reportPath, []byte(report), 0o644); err != nil {
 		t.Fatalf("write report: %v", err)
 	}
-	t.Logf("discovery: %d files, %d deletes + %d inserts enumerated, %d findings, %d skipped (>%d bytes) → %s",
-		scannedFiles, totalDeletes, totalInserts, len(allFindings), len(skippedLarge), maxScanBytes, reportPath)
+	t.Logf("discovery: %d files, %d enumerated → %d sampled (%d files capped at budget=%d), %d findings → %s",
+		len(files), totalEnumerated, totalSampled, len(sampledFiles), perFileMutationBudget, len(allFindings), reportPath)
+}
+
+// sampledFile holds the per-file sampling stats the report surfaces so a
+// reader can see which files ran exhaustive vs. budgeted.
+type sampledFile struct {
+	Path       string
+	Bytes      int
+	Enumerated int
+	Sampled    int
+}
+
+// sampledCount mirrors discovery.sampleMutations's stride math so the
+// report can show exact post-sampling counts without re-running Scan.
+func sampledCount(n, max int) int {
+	if max <= 0 || n <= max {
+		return n
+	}
+	stride := (n + max - 1) / max
+	return (n + stride - 1) / stride
 }
 
 // countMutations returns (deletes, inserts) the harness would have produced
@@ -135,7 +167,7 @@ func countMutations(src []byte) (int, int) {
 	return deletes, inserts
 }
 
-func renderReport(filesScanned, totalDeletes, totalInserts int, skippedLarge []string, findings []discovery.Finding) string {
+func renderReport(filesScanned, totalDeletes, totalInserts, totalEnumerated, totalSampled int, sampledFiles []sampledFile, findings []discovery.Finding) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "# Discovery report — %s\n\n", time.Now().UTC().Format(time.RFC3339))
 
@@ -147,10 +179,11 @@ func renderReport(filesScanned, totalDeletes, totalInserts int, skippedLarge []s
 	}
 
 	fmt.Fprintf(&b, "## Corpus\n")
-	fmt.Fprintf(&b, "- %d files scanned (skipped %d larger than %d bytes — see Skipped section)\n",
-		filesScanned, len(skippedLarge), maxScanBytes)
-	fmt.Fprintf(&b, "- %d mutations applied (%d deletes, %d inserts)\n",
-		totalDeletes+totalInserts, totalDeletes, totalInserts)
+	fmt.Fprintf(&b, "- %d files scanned\n", filesScanned)
+	fmt.Fprintf(&b, "- %d mutations enumerated (%d deletes, %d inserts)\n",
+		totalEnumerated, totalDeletes, totalInserts)
+	fmt.Fprintf(&b, "- %d mutations applied after per-file budget=%d (%d files stride-sampled — see Sampled section)\n",
+		totalSampled, perFileMutationBudget, len(sampledFiles))
 	fmt.Fprintf(&b, "- %d findings (%d panics, %d silent, %d spikes, %d blowups; a finding can carry multiple signals)\n\n",
 		len(findings),
 		signalCounts[discovery.SignalPanic],
@@ -159,10 +192,18 @@ func renderReport(filesScanned, totalDeletes, totalInserts int, skippedLarge []s
 		signalCounts[discovery.SignalBlowup],
 	)
 
-	if len(skippedLarge) > 0 {
-		fmt.Fprintf(&b, "## Skipped (size > %d bytes)\n\n", maxScanBytes)
-		for _, s := range skippedLarge {
-			fmt.Fprintf(&b, "- %s\n", s)
+	if len(sampledFiles) > 0 {
+		fmt.Fprintf(&b, "## Sampled (mutation budget = %d)\n\n", perFileMutationBudget)
+		fmt.Fprintf(&b, "Files whose enumerated mutation count exceeded the budget are stride-sampled deterministically.\n\n")
+		// Sort by enumerated desc so the heaviest files surface first.
+		sortedSamples := make([]sampledFile, len(sampledFiles))
+		copy(sortedSamples, sampledFiles)
+		sort.SliceStable(sortedSamples, func(i, j int) bool {
+			return sortedSamples[i].Enumerated > sortedSamples[j].Enumerated
+		})
+		for _, s := range sortedSamples {
+			fmt.Fprintf(&b, "- %s (%d bytes): %d enumerated → %d sampled\n",
+				s.Path, s.Bytes, s.Enumerated, s.Sampled)
 		}
 		b.WriteByte('\n')
 	}

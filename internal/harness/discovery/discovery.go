@@ -92,6 +92,18 @@ type Options struct {
 	KSpike    int               // diag count >= K triggers Spike
 	WBlowup   int               // max line-Δ > W triggers Blowup
 	BaseDiags []scan.Diagnostic // baseline lint of src; required for Silent
+
+	// MaxMutations caps per-call mutation work. 0 (default) enumerates
+	// every structural-byte mutation. K > 0 keeps at most K mutations via
+	// deterministic stride sampling (mutations[0], mutations[stride],
+	// mutations[2*stride], …) over the concatenated delete+insert list.
+	// Stride preserves source order and evenly distributes coverage; it
+	// trades exhaustiveness for a linear bound on per-file cost — the
+	// natural fix for the harness's intrinsic O(F²) shape on multi-megabyte
+	// game files. The driver (`discovery_test.go`) is the calibrated caller
+	// and documents the chosen budget; library users with smaller inputs
+	// can leave this 0.
+	MaxMutations int
 }
 
 // Scan applies every structural-token mutation to src and returns the
@@ -117,6 +129,7 @@ func Scan(path string, src []byte, opts Options) []Finding {
 	var mutations []Mutation
 	mutations = append(mutations, enumerateDeletes(src, skipMask, newlines)...)
 	mutations = append(mutations, enumerateInserts(toks, newlines)...)
+	mutations = sampleMutations(mutations, opts.MaxMutations)
 
 	var findings []Finding
 	for _, m := range mutations {
@@ -223,6 +236,22 @@ func enumerateDeletes(src []byte, skipMask []bool, newlines []int) []Mutation {
 			Offset: i,
 			Line:   lineAt(newlines, i),
 		})
+	}
+	return out
+}
+
+// sampleMutations applies Options.MaxMutations: if max > 0 and len(in) > max,
+// returns every stride-th element where stride = ceil(len(in)/max). Result is
+// at most max long, preserves original order, and is deterministic for a
+// given (len(in), max). Passing max <= 0 or len(in) <= max returns in.
+func sampleMutations(in []Mutation, max int) []Mutation {
+	if max <= 0 || len(in) <= max {
+		return in
+	}
+	stride := (len(in) + max - 1) / max
+	out := make([]Mutation, 0, max)
+	for i := 0; i < len(in); i += stride {
+		out = append(out, in[i])
 	}
 	return out
 }
