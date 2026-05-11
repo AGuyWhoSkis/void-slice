@@ -373,6 +373,76 @@ component {
 	assert.NotEmpty(t, diags, "expected diagnostics for unterminated object")
 }
 
+// TestM12_7_QuoteHidesBrace pins that a `}` inside a QUOTE_LITERAL never
+// reaches the parser — the indent-aware close helper added in M12.7 must
+// not be confused by braces hidden inside string values. Regression contract.
+func TestM12_7_QuoteHidesBrace(t *testing.T) {
+	src := []byte(`Version 1
+component {
+	cpntFoo myFoo {
+		edit = {
+			m_x = "}";
+		}
+	}
+}
+`)
+	_, diags := scanAndWalk(t, src)
+	assert.Empty(t, diags, "quote-hidden `}` must not trip indent-aware close")
+}
+
+// TestM12_7_BlockCommentHidesBrace pins that `}` inside COMMENT_BLOCK and
+// COMMENT_LINE tokens never reaches the parser. Same regression contract as
+// the quote case.
+func TestM12_7_BlockCommentHidesBrace(t *testing.T) {
+	src := []byte(`Version 1
+component {
+	cpntFoo myFoo {
+		edit = {
+			m_x = 1; /* } */
+			m_y = 2; // }
+		}
+	}
+}
+`)
+	_, diags := scanAndWalk(t, src)
+	assert.Empty(t, diags, "comment-hidden `}` must not trip indent-aware close")
+}
+
+// TestM12_7_MidFileMissingBraceAnchorsAtInner is the parser-layer mirror of
+// the locality fixture: the ticket's 13-line sample as in-source bytes. The
+// parser must emit exactly one PARSE_UNTERMINATED_OBJECT anchored at the
+// inner `{` on line 9 — the EOF-anchored cascade from greedy brace matching
+// is what M12.7 fixes.
+func TestM12_7_MidFileMissingBraceAnchorsAtInner(t *testing.T) {
+	src := []byte("Version 1\n" +
+		"component {\n" +
+		"\tcpntTest myTest {\n" +
+		"\t\tedit = {\n" +
+		"\t\t\tm_items = {\n" +
+		"\t\t\t\tnum = 2;\n" +
+		"\t\t\t\titem[0] = { m_val = \"a\"; }\n" +
+		"\t\t\t\titem[1] = { m_val = \"b\"; }\n" +
+		"\t\t\t\titem[2] = { m_val = \"c\";\n" +
+		"\t\t\t}\n" +
+		"\t\t}\n" +
+		"\t}\n" +
+		"}\n")
+
+	_, diags := scanAndWalk(t, src)
+
+	var unterm []scan.Diagnostic
+	for _, d := range diags {
+		if d.Code == parse.Codes.UNTERMINATED_OBJECT {
+			unterm = append(unterm, d)
+		}
+	}
+	require.Len(t, unterm, 1, "expected exactly one PARSE_UNTERMINATED_OBJECT, got diags: %v", diags)
+
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(unterm[0].Span.Start)
+	assert.Equal(t, 9, pos.Line, "PARSE_UNTERMINATED_OBJECT must anchor at line 9; got %d:%d (%v)", pos.Line, pos.Col, diags)
+}
+
 func TestUnexpectedTopLevelToken(t *testing.T) {
 	src := []byte(`Version 1
 garbage

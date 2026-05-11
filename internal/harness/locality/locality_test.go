@@ -94,6 +94,11 @@ func TestLocalityCommittedFixturesAtW0(t *testing.T) {
 		// File ends after `b = 1;\n` (line 3) — missing `}` would occupy
 		// line 4 (the empty line just past content).
 		{"unterminated-brace/minimal.decl", 4},
+		// `item[1] = { m_val = "c";` on line 9 — missing `}` between the
+		// value body and the next `}` (line 10). Pre-M12.7 the diagnostic
+		// anchors at EOF (line 14) via greedy-match cascade; the fix re-
+		// anchors it on line 9's `{`.
+		{"missing-mid-file-brace/minimal.decl", 9},
 	}
 	linter := lint.New()
 	for _, tc := range cases {
