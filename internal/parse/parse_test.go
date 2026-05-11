@@ -508,6 +508,41 @@ func walkAndCount(t *testing.T, src []byte) map[scan.DiagnosticCode]int {
 	return counts
 }
 
+// TestM12_17_LayoutInvariantMidFileMissingBrace pins the M12.17 contract:
+// the missing-mid-file-brace fixture (one structurally missing `}`
+// mid-file) must produce the same diagnostic-code multiset whether each
+// line carries its committed leading tabs (V1) or every line is flush-left
+// (V2), and the canonical code is PARSE_UNTERMINATED_OBJECT. Before
+// M12.17 the cascade fell through to walkComponent's outer expectSym
+// under V2 (peekBraceBelongsToOuter's indent gate failed when all lines
+// shared a column), emitting PARSE_EXPECTED_SYMBOL. After M12.17
+// closeComponentBlock re-routes that emission to PARSE_UNTERMINATED_OBJECT
+// whenever the balance gate signals structural shortfall, so both layouts
+// produce {PARSE_UNTERMINATED_OBJECT: 1}.
+func TestM12_17_LayoutInvariantMidFileMissingBrace(t *testing.T) {
+	v1 := []byte("Version 1\n" +
+		"component {\n" +
+		"\tcpntTest myTest {\n" +
+		"\t\tedit = {\n" +
+		"\t\t\tm_items = {\n" +
+		"\t\t\t\tnum = 2;\n" +
+		"\t\t\t\titem[0] = { m_val = \"a\"; }\n" +
+		"\t\t\t\titem[1] = { m_val = \"b\"; }\n" +
+		"\t\t\t\titem[2] = { m_val = \"c\";\n" +
+		"\t\t\t}\n" +
+		"\t\t}\n" +
+		"\t}\n" +
+		"}\n")
+	v2 := stripLeadingWhitespace(v1)
+
+	codes1 := walkAndCount(t, v1)
+	codes2 := walkAndCount(t, v2)
+	assert.Equal(t, codes1, codes2,
+		"V1 and V2 must produce identical diagnostic-code multisets; got V1=%v V2=%v", codes1, codes2)
+	assert.Equal(t, map[scan.DiagnosticCode]int{parse.Codes.UNTERMINATED_OBJECT: 1}, codes1,
+		"V1 must reduce to a single PARSE_UNTERMINATED_OBJECT; got %v", codes1)
+}
+
 // TestM12_8_MissingOpenBraceAfterEqAnchorsAtAssignment pins the parser-layer
 // contract for the M12.8 cascade fixture: `edit =` with the opening `{`
 // forgotten must produce exactly one focused PARSE_EXPECTED_SYMBOL anchored at

@@ -517,18 +517,42 @@ func (c *cursor) walkComponent(h Handler) {
 	c.walkObjectBody(h)
 
 	// close inner decl body
-	if _, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close component body"); !ok {
-		c.syncTo('}', 0)
-		c.matchSym('}')
-	}
+	c.closeComponentBlock(h, declLBrace, "expected '}' to close component body")
 
 	// close outer component block
-	rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close component block")
+	rbrace, _ := c.closeComponentBlock(h, lbrace, "expected '}' to close component block")
+	h.OnComponentEnd(rbrace)
+}
+
+// closeComponentBlock closes a component-level `{...}` block. When the
+// file is structurally short of `}` tokens (balance gate from M12.16) and
+// no inner frame has already re-anchored an UNTERMINATED_OBJECT, route
+// the diagnostic to PARSE_UNTERMINATED_OBJECT instead of
+// PARSE_EXPECTED_SYMBOL — same structural error described two ways under
+// the lexinvariance contract (M12.17). The span runs from lbrace to the
+// current cursor position so the renderer reports a multi-line range
+// (matches closeObjectValue's M12.5 fallback).
+func (c *cursor) closeComponentBlock(h Handler, lbrace scan.Token, missingMsg string) (scan.Token, bool) {
+	if c.totalCloses < c.consumedOpens && !c.eofCascadeEmitted {
+		if rbrace, ok := c.matchSym('}'); ok {
+			return rbrace, true
+		}
+		c.emitDiag(h, scan.Diagnostic{
+			Code:    Codes.UNTERMINATED_OBJECT,
+			Span:    scan.NewSpan(lbrace.Span.Start, c.diagSpan().Start),
+			Message: "unterminated object",
+		})
+		c.eofCascadeEmitted = true
+		c.syncTo('}', 0)
+		rbrace, _ := c.matchSym('}')
+		return rbrace, false
+	}
+	rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, missingMsg)
 	if !ok {
 		c.syncTo('}', 0)
 		rbrace, _ = c.matchSym('}')
 	}
-	h.OnComponentEnd(rbrace)
+	return rbrace, ok
 }
 
 // walkObjectBody parses statements until it sees '}' or EOF.
