@@ -221,13 +221,17 @@ func (c *cursor) matchKind(k scan.Kind) (scan.Token, bool) {
 }
 
 // expectKind is like matchKind but emits a diagnostic if the match fails.
+// expectKind is always an inline-token expectation (a Kind never closes a
+// block — block closers are literal `}` symbols routed through expectSym).
+// At EOF, anchor at the end of the last consumed token (M12.12) so the
+// diagnostic lands where the user typed, not on the trailing-empty line.
 func (c *cursor) expectKind(k scan.Kind, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
 	tok, ok := c.matchKind(k)
 	if !ok {
 		if c.suppressEOFDiag() {
 			return tok, ok
 		}
-		span := c.diagSpan()
+		span := c.lastConsumedEndSpan()
 		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: span, Message: msg})
 		if c.eof() {
 			c.eofCascadeEmitted = true
@@ -246,13 +250,27 @@ func (c *cursor) matchSym(ch byte) (scan.Token, bool) {
 }
 
 // expectSym is like matchSym but emits a diagnostic if the match fails.
+// Anchor policy at EOF differs by symbol (M12.12):
+//   - `}` is a block-closer — anchor on the empty line where the missing
+//     close would have been typed (eofSpan, M12.5).
+//   - Everything else (`{`, `]`, `(`, etc.) is an inline token — anchor at
+//     the end of the last consumed token, where the user's cursor was
+//     when they stopped typing (lastConsumedEndSpan, M12.6).
+//
+// At non-EOF both helpers return the same span, so the dispatch only
+// affects the EOF branch.
 func (c *cursor) expectSym(ch byte, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
 	tok, ok := c.matchSym(ch)
 	if !ok {
 		if c.suppressEOFDiag() {
 			return tok, ok
 		}
-		span := c.diagSpan()
+		var span scan.Span
+		if ch == '}' {
+			span = c.diagSpan()
+		} else {
+			span = c.lastConsumedEndSpan()
+		}
 		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: span, Message: msg})
 		if c.eof() {
 			c.eofCascadeEmitted = true
@@ -535,9 +553,11 @@ func (c *cursor) walkStatement(h Handler) {
 		var idx Indexer
 		idx.LBrackTok = lb
 		if valTok == nil {
+			// Inline-token shape (M12.12): missing index value belongs right
+			// after `[`, not on the trailing-empty line.
 			c.diags = append(c.diags, scan.Diagnostic{
 				Code:    Codes.UNEXPECTED_TOKEN,
-				Span:    c.diagSpan(),
+				Span:    c.lastConsumedEndSpan(),
 				Message: "expected index value inside '['",
 			})
 			break
@@ -573,9 +593,11 @@ func (c *cursor) walkStatement(h Handler) {
 	next := c.peek()
 	if next == nil {
 		if !c.suppressEOFDiag() {
+			// Inline-token shape (M12.12): a mid-statement EOF belongs at
+			// the end of the last consumed token, not on a trailing-empty line.
 			c.diags = append(c.diags, scan.Diagnostic{
 				Code:    Codes.UNEXPECTED_TOKEN,
-				Span:    c.diagSpan(),
+				Span:    c.lastConsumedEndSpan(),
 				Message: "unexpected end of file in statement",
 			})
 			c.eofCascadeEmitted = true
@@ -679,9 +701,11 @@ func (c *cursor) parseValue(h Handler) Value {
 	tok := c.peek()
 	if tok == nil {
 		if !c.suppressEOFDiag() {
+			// Inline-token shape (M12.12): missing RHS value belongs right
+			// after `=`, not on the trailing-empty line.
 			c.diags = append(c.diags, scan.Diagnostic{
 				Code:    Codes.UNEXPECTED_TOKEN,
-				Span:    c.diagSpan(),
+				Span:    c.lastConsumedEndSpan(),
 				Message: "expected value",
 			})
 			c.eofCascadeEmitted = true
@@ -707,9 +731,12 @@ func (c *cursor) parseValue(h Handler) Value {
 		for {
 			t := c.peek()
 			if t == nil {
+				// Inline-token shape (M12.12): a tuple's missing `)` is an
+				// inline-expression close, not a block-closer — anchor at
+				// the last consumed token, not on the trailing-empty line.
 				c.emitDiag(h, scan.Diagnostic{
 					Code:    Codes.UNEXPECTED_TOKEN,
-					Span:    c.diagSpan(),
+					Span:    c.lastConsumedEndSpan(),
 					Message: "unterminated tuple value",
 				})
 				return Value{Kind: ValTuple, Tup: TupleSpan{LParenTok: *lparen}}

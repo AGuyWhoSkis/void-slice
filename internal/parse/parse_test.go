@@ -508,6 +508,97 @@ component {
 }
 
 // -------------------------
+// M12.12: per-call-site EOF anchor routing
+// -------------------------
+//
+// Each test below uses a trailing newline so EOF-anchor and last-consumed-
+// anchor land on different (line, col) coordinates — exposing the routing
+// change. Each test asserts the diagnostic specific to that call site is
+// anchored at the end of the last consumed token, not on the trailing-
+// empty line that eofSpan would produce.
+
+func findDiagByMessage(diags []scan.Diagnostic, want string) (scan.Diagnostic, bool) {
+	for _, d := range diags {
+		if d.Message == want {
+			return d, true
+		}
+	}
+	return scan.Diagnostic{}, false
+}
+
+// Site 1: expectKind for "expected version number after 'Version'".
+func TestM12_12_ExpectKindAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("Version\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "expected version number after 'Version'")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 1, pos.Line, "anchor line")
+	assert.Equal(t, 8, pos.Col, "anchor col (end of 'Version'); diags=%v", diags)
+}
+
+// Site 2: expectSym(']') for "expected ']' to close indexer".
+func TestM12_12_ExpectSymCloseIndexerAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx [ 0\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "expected ']' to close indexer")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 7, pos.Col, "anchor col (end of '0'); diags=%v", diags)
+}
+
+// Site 3: direct emit for "expected index value inside '['".
+func TestM12_12_ExpectedIndexValueAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx [\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "expected index value inside '['")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 5, pos.Col, "anchor col (end of '['); diags=%v", diags)
+}
+
+// Site 4: direct emit for "unexpected end of file in statement".
+func TestM12_12_UnexpectedEOFInStatementAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "unexpected end of file in statement")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 3, pos.Col, "anchor col (end of 'x'); diags=%v", diags)
+}
+
+// Site 5: direct emit for "expected value".
+func TestM12_12_ExpectedValueAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx =\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "expected value")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 5, pos.Col, "anchor col (end of '='); diags=%v", diags)
+}
+
+// Site 6: direct emit for "unterminated tuple value".
+func TestM12_12_UnterminatedTupleAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx = ( a, b\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "unterminated tuple value")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 12, pos.Col, "anchor col (end of 'b'); diags=%v", diags)
+}
+
+// -------------------------
 // Integration test
 // -------------------------
 
