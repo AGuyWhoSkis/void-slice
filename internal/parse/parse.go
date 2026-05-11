@@ -608,16 +608,7 @@ func (c *cursor) parseValue(h Handler) Value {
 		lbrace := c.next()
 		h.OnObjectBegin(*lbrace)
 		c.walkObjectBody(h)
-		rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close object value")
-		if !ok {
-			c.emitDiag(h, scan.Diagnostic{
-				Code:    Codes.UNTERMINATED_OBJECT,
-				Span:    scan.NewSpan(lbrace.Span.Start, c.diagSpan().Start),
-				Message: "unterminated object",
-			})
-			c.syncTo('}', 0)
-			rbrace, _ = c.matchSym('}')
-		}
+		rbrace, _ := c.closeObjectValue(h, *lbrace)
 		h.OnObjectEnd(rbrace)
 		return Value{Kind: ValObject, Obj: ObjectSpan{LBraceTok: *lbrace, RBraceTok: rbrace}}
 	}
@@ -662,6 +653,65 @@ func (c *cursor) parseValue(h Handler) Value {
 	})
 	c.syncTo(';', '}')
 	return Value{}
+}
+
+// closeObjectValue closes the object opened by lbrace. M12.7: if the next
+// `}` is at strictly lower line-indent than lbrace, treat it as belonging
+// to an outer scope — emit PARSE_UNTERMINATED_OBJECT anchored at lbrace and
+// leave the `}` unconsumed for the outer level to pick up. This re-anchors
+// the mid-file missing-brace cascade onto the actual fault site instead of
+// EOF. On any other failure shape we fall back to expectSym +
+// UNTERMINATED_OBJECT + sync recovery — the M12.5 EOF-cascade behaviour.
+func (c *cursor) closeObjectValue(h Handler, lbrace scan.Token) (scan.Token, bool) {
+	if c.peekBraceBelongsToOuter(lbrace) {
+		c.emitDiag(h, scan.Diagnostic{
+			Code:    Codes.UNTERMINATED_OBJECT,
+			Span:    scan.NewSpan(lbrace.Span.Start, lbrace.Span.End),
+			Message: "unterminated object",
+		})
+		// outer expectSym('}') for the same missing close is a cascade —
+		// suppress its EOF re-emission (mirrors M12.5's eofCascadeEmitted
+		// dedupe).
+		c.eofCascadeEmitted = true
+		return scan.Token{}, false
+	}
+	rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close object value")
+	if !ok {
+		c.emitDiag(h, scan.Diagnostic{
+			Code:    Codes.UNTERMINATED_OBJECT,
+			Span:    scan.NewSpan(lbrace.Span.Start, c.diagSpan().Start),
+			Message: "unterminated object",
+		})
+		c.syncTo('}', 0)
+		rbrace, _ = c.matchSym('}')
+	}
+	return rbrace, ok
+}
+
+// peekBraceBelongsToOuter returns true iff the next token is `}` AND its
+// line-indent is strictly less than lbrace's line-indent. Soft signal — see
+// M12.7 ticket for the brittleness vs coverage trade-off.
+func (c *cursor) peekBraceBelongsToOuter(lbrace scan.Token) bool {
+	p := c.peek()
+	if p == nil || p.Kind != scan.KindSymbol || c.src[p.Span.Start] != '}' {
+		return false
+	}
+	return c.lineIndent(p.Span.Start) < c.lineIndent(lbrace.Span.Start)
+}
+
+// lineIndent returns the 1-based byte column of the first non-whitespace
+// byte on the line containing offset. Spaces and tabs count one column each
+// (matches the rest of the linter's column model — see scan.LineIndex).
+func (c *cursor) lineIndent(offset int) int {
+	start := offset
+	for start > 0 && c.src[start-1] != '\n' {
+		start--
+	}
+	i := start
+	for i < len(c.src) && (c.src[i] == ' ' || c.src[i] == '\t') {
+		i++
+	}
+	return i - start + 1
 }
 
 // parseIntLiteral parses a NUMBER_LITERAL lexeme into an int64.
