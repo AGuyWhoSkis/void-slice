@@ -54,6 +54,12 @@ type cursor struct {
 	i     int // -1 = before first token; i = index of last consumed token
 	nToks int
 	diags []scan.Diagnostic
+
+	// eofCascadeEmitted tracks whether an EOF-anchored "expected symbol"
+	// diagnostic has already fired for this walk. Inner→outer expectSym calls
+	// at EOF (e.g. closing an inner object then the outer top-level) describe
+	// the same missing close — the second emission is a cascade. M12.5.
+	eofCascadeEmitted bool
 }
 
 // eof returns true when there are no more tokens to consume.
@@ -99,13 +105,48 @@ func (c *cursor) isIdent(tok scan.Token, lit string) bool {
 	return true
 }
 
-// diagSpan returns a zero-length span positioned just after the last consumed token.
+// diagSpan returns a zero-length span anchored where a missing token should
+// have appeared. When the parser is at EOF, anchor at len(src) so the
+// diagnostic lands on the line the missing closer would have occupied (M12.5,
+// per kanban/goals/M12-cascade-investigation.md §2 row 3). Otherwise anchor
+// just past the last consumed token.
 func (c *cursor) diagSpan() scan.Span {
+	if c.eof() {
+		return c.eofSpan()
+	}
 	if c.i >= 0 && c.i < c.nToks {
 		end := c.toks[c.i].Span.End
 		return scan.NewSpan(end, end)
 	}
 	return scan.NewSpan(0, 0)
+}
+
+// eofSpan returns a zero-length span at len(src) — the position a missing
+// closing token would occupy. Mapped to (line, col) by the renderer, this
+// lands on the line right after the last content, which is where the user
+// would insert the close.
+func (c *cursor) eofSpan() scan.Span {
+	return scan.NewSpan(len(c.src), len(c.src))
+}
+
+// scannerAteEOF returns true when the scanner's last token is an unterminated
+// block comment that consumed bytes to EOF. The parser uses this to suppress
+// "expected '}'" cascade diagnostics for structural tokens lost inside the
+// over-extended comment — the VOID_SCAN already pinpoints the fault (M12.4).
+//
+// The check is local: an unterminated block comment is a COMMENT_BLOCK whose
+// Span.End hits len(src) but whose tail bytes aren't `*/`. No scanDiags
+// plumbing required.
+func (c *cursor) scannerAteEOF() bool {
+	if len(c.toks) == 0 {
+		return false
+	}
+	last := c.toks[len(c.toks)-1]
+	if last.Span.End != len(c.src) || last.Kind != scan.KindCommentBlock {
+		return false
+	}
+	n := last.Span.End - last.Span.Start
+	return !(n >= 4 && c.src[last.Span.End-2] == '*' && c.src[last.Span.End-1] == '/')
 }
 
 // emitDiag records a diagnostic in c.diags and forwards it to h.
@@ -127,7 +168,14 @@ func (c *cursor) matchKind(k scan.Kind) (scan.Token, bool) {
 func (c *cursor) expectKind(k scan.Kind, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
 	tok, ok := c.matchKind(k)
 	if !ok {
-		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
+		if c.suppressEOFDiag() {
+			return tok, ok
+		}
+		span := c.diagSpan()
+		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: span, Message: msg})
+		if c.eof() {
+			c.eofCascadeEmitted = true
+		}
 	}
 	return tok, ok
 }
@@ -145,9 +193,45 @@ func (c *cursor) matchSym(ch byte) (scan.Token, bool) {
 func (c *cursor) expectSym(ch byte, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
 	tok, ok := c.matchSym(ch)
 	if !ok {
-		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
+		if c.suppressEOFDiag() {
+			return tok, ok
+		}
+		span := c.diagSpan()
+		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: span, Message: msg})
+		if c.eof() {
+			c.eofCascadeEmitted = true
+		}
 	}
 	return tok, ok
+}
+
+// suppressEOFDiag returns true if the parser is at EOF and should skip
+// emitting another "expected X" diagnostic. Two cases:
+//   - scannerAteEOF: the scanner already emitted VOID_SCAN for an unterminated
+//     block comment that swallowed structural tokens (M12.4).
+//   - eofCascadeEmitted: an outer expect already emitted at EOF for the same
+//     missing closer (M12.5 dedupe).
+func (c *cursor) suppressEOFDiag() bool {
+	if !c.eof() {
+		return false
+	}
+	return c.scannerAteEOF() || c.eofCascadeEmitted
+}
+
+// tokenIsUnterminatedQuote reports whether tok is a quote literal the scanner
+// emitted as part of a VOID_SCAN unterminated-quote fault — its lexeme starts
+// with `"` but doesn't end with a closing `"`. Used to suppress follow-up
+// parse cascade diagnostics (missing semicolon) on a statement whose value
+// was already reported scan-faulted (M12.3).
+func (c *cursor) tokenIsUnterminatedQuote(t scan.Token) bool {
+	if t.Kind != scan.KindQuoteLiteral {
+		return false
+	}
+	n := t.Span.End - t.Span.Start
+	if n < 2 {
+		return true
+	}
+	return c.src[t.Span.End-1] != '"'
 }
 
 // matchIdent peeks and, if the next token is an IDENTIFIER matching lit, consumes and returns it.
@@ -432,11 +516,14 @@ func (c *cursor) walkStatement(h Handler) {
 
 	next := c.peek()
 	if next == nil {
-		c.diags = append(c.diags, scan.Diagnostic{
-			Code:    Codes.UNEXPECTED_TOKEN,
-			Span:    c.diagSpan(),
-			Message: "unexpected end of file in statement",
-		})
+		if !c.suppressEOFDiag() {
+			c.diags = append(c.diags, scan.Diagnostic{
+				Code:    Codes.UNEXPECTED_TOKEN,
+				Span:    c.diagSpan(),
+				Message: "unexpected end of file in statement",
+			})
+			c.eofCascadeEmitted = true
+		}
 		return
 	}
 
@@ -448,11 +535,13 @@ func (c *cursor) walkStatement(h Handler) {
 		if val.Kind != ValObject {
 			semi, ok := c.matchSym(';')
 			if !ok {
-				c.emitDiag(h, scan.Diagnostic{
-					Code:    Codes.EXPECTED_SEMICOLON,
-					Span:    c.diagSpan(),
-					Message: "expected ';' after assignment",
-				})
+				if !(val.Kind == ValString && c.tokenIsUnterminatedQuote(val.Tok)) {
+					c.emitDiag(h, scan.Diagnostic{
+						Code:    Codes.EXPECTED_SEMICOLON,
+						Span:    c.diagSpan(),
+						Message: "expected ';' after assignment",
+					})
+				}
 				// Don't sync: value was already consumed; let walkObjectBody
 				// handle whatever comes next as a new statement.
 			}
@@ -503,11 +592,14 @@ func (c *cursor) walkStatement(h Handler) {
 func (c *cursor) parseValue(h Handler) Value {
 	tok := c.peek()
 	if tok == nil {
-		c.diags = append(c.diags, scan.Diagnostic{
-			Code:    Codes.UNEXPECTED_TOKEN,
-			Span:    c.diagSpan(),
-			Message: "expected value",
-		})
+		if !c.suppressEOFDiag() {
+			c.diags = append(c.diags, scan.Diagnostic{
+				Code:    Codes.UNEXPECTED_TOKEN,
+				Span:    c.diagSpan(),
+				Message: "expected value",
+			})
+			c.eofCascadeEmitted = true
+		}
 		return Value{}
 	}
 

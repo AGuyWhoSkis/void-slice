@@ -1,12 +1,6 @@
 unterminated-object.decl:4:10 error [PARSE_UNTERMINATED_OBJECT] unterminated object
   4 | 		edit = {
                ^
-unterminated-object.decl:5:16 error [PARSE_EXPECTED_SYMBOL] expected '}' to close object value
-  5 | 			m_val = "a";
-                     ^
-unterminated-object.decl:5:16 error [PARSE_EXPECTED_SYMBOL] expected '}' to close component body
-  5 | 			m_val = "a";
-                     ^
-unterminated-object.decl:5:16 error [PARSE_EXPECTED_SYMBOL] expected '}' to close component block
-  5 | 			m_val = "a";
-                     ^
+unterminated-object.decl:6:1 error [PARSE_EXPECTED_SYMBOL] expected '}' to close object value
+  6 | 
+      ^
