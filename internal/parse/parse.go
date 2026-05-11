@@ -531,6 +531,33 @@ func (c *cursor) walkStatement(h Handler) {
 	if next.Kind == scan.KindSymbol && c.src[next.Span.Start] == '=' {
 		eqTok := c.next()
 		val := c.parseValue(h)
+
+		// M12.8: assignment-as-block typo. If parseValue returned a scalar
+		// IDENT and the next token is `=`, the IDENT was actually the next
+		// statement's key — the opening `{` after the original `=` was
+		// forgotten. Re-anchor a focused diagnostic on the `=`, rewind the
+		// misread IDENT, and treat `eqTok` as a virtual `{` so the inner
+		// statements parse normally and the user's intended `}` closes the
+		// synthetic object. Mirrors M12.7's soft-recovery shape (one call
+		// site, no contract change to parseValue).
+		if val.Kind == ValIdent {
+			if p := c.peek(); p != nil && p.Kind == scan.KindSymbol && c.src[p.Span.Start] == '=' {
+				c.emitDiag(h, scan.Diagnostic{
+					Code:    Codes.EXPECTED_SYMBOL,
+					Span:    eqTok.Span,
+					Message: "expected '{' after '='",
+				})
+				c.i-- // un-consume the misread IDENT
+				h.OnObjectBegin(*eqTok)
+				c.walkObjectBody(h)
+				rbrace, _ := c.closeObjectValue(h, *eqTok)
+				h.OnObjectEnd(rbrace)
+				objVal := Value{Kind: ValObject, Obj: ObjectSpan{LBraceTok: *eqTok, RBraceTok: rbrace}}
+				h.OnAssignment(key, *eqTok, objVal, scan.Token{})
+				return
+			}
+		}
+
 		var semiTok scan.Token
 		if val.Kind != ValObject {
 			semi, ok := c.matchSym(';')
