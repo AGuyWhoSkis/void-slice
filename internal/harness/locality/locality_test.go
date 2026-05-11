@@ -99,6 +99,11 @@ func TestLocalityCommittedFixturesAtW0(t *testing.T) {
 		// anchors at EOF (line 14) via greedy-match cascade; the fix re-
 		// anchors it on line 9's `{`.
 		{"missing-mid-file-brace/minimal.decl", 9},
+		// `edit =` on line 4 with the opening `{` forgotten — the next
+		// statement (`m_items = { ... }`) is misread as the value, and
+		// today's cascade scatters diagnostics across lines 5, 12, 13.
+		// M12.8 re-anchors a single focused diagnostic on line 4's `=`.
+		{"missing-open-brace-after-eq/minimal.decl", 4},
 	}
 	linter := lint.New()
 	for _, tc := range cases {

@@ -443,6 +443,53 @@ func TestM12_7_MidFileMissingBraceAnchorsAtInner(t *testing.T) {
 	assert.Equal(t, 9, pos.Line, "PARSE_UNTERMINATED_OBJECT must anchor at line 9; got %d:%d (%v)", pos.Line, pos.Col, diags)
 }
 
+// TestM12_8_MissingOpenBraceAfterEqAnchorsAtAssignment pins the parser-layer
+// contract for the M12.8 cascade fixture: `edit =` with the opening `{`
+// forgotten must produce exactly one focused PARSE_EXPECTED_SYMBOL anchored at
+// line 4's `=`, not the five-diag scatter through lines 5/12/13 that today's
+// fall-through recovery produces.
+func TestM12_8_MissingOpenBraceAfterEqAnchorsAtAssignment(t *testing.T) {
+	src := []byte("Version 1\n" +
+		"component {\n" +
+		"\tcpntTest myTest {\n" +
+		"\t\tedit =\n" +
+		"\t\t\tm_items = {\n" +
+		"\t\t\t\tnum = 3;\n" +
+		"\t\t\t\titem[0] = { m_val = \"a\"; }\n" +
+		"\t\t\t\titem[1] = { m_val = \"b\"; }\n" +
+		"\t\t\t\titem[2] = { m_val = \"c\"; }\n" +
+		"\t\t\t}\n" +
+		"\t\t}\n" +
+		"\t}\n" +
+		"}\n")
+
+	_, diags := scanAndWalk(t, src)
+
+	require.Len(t, diags, 1, "expected exactly one diagnostic; got: %v", diags)
+	assert.Equal(t, parse.Codes.EXPECTED_SYMBOL, diags[0].Code, "diag code")
+
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(diags[0].Span.Start)
+	assert.Equal(t, 4, pos.Line, "diagnostic must anchor on line 4 (the `=`); got %d:%d (%v)", pos.Line, pos.Col, diags)
+}
+
+// TestM12_8_LegitimateIdentValueDoesNotTrigger is the negative-test mate to
+// the M12.8 anchor test: a legitimate scalar-IDENT assignment followed by
+// another statement (no missing brace anywhere) must not trip the new
+// missing-`{`-after-`=` heuristic.
+func TestM12_8_LegitimateIdentValueDoesNotTrigger(t *testing.T) {
+	src := []byte(`Version 1
+component {
+	cpntFoo myFoo {
+		m_flag = true;
+		m_other = 1;
+	}
+}
+`)
+	_, diags := scanAndWalk(t, src)
+	assert.Empty(t, diags, "legitimate ident-value statement must not trigger M12.8 heuristic")
+}
+
 func TestUnexpectedTopLevelToken(t *testing.T) {
 	src := []byte(`Version 1
 garbage
