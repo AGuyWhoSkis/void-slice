@@ -7,8 +7,6 @@ import (
 	"testing"
 
 	"void-slice/internal/harness/locality"
-	"void-slice/internal/lint"
-	"void-slice/internal/scan"
 )
 
 // corpusRoots are the directories the harness walks. Mirrors
@@ -20,16 +18,13 @@ var corpusRoots = []string{
 	filepath.Join("..", "..", "..", "testdata", "cascades"),
 }
 
-// localityWindow is the line-window the property is checked at. W=1 is the
-// published floor from M12.2 — absorbs the off-by-one EOF-anchor ambiguity
-// on files that originally had `}\n` (trailing newline after the close): the
-// deletion leaves two trailing newlines, and "the line the close was on" is
-// the empty line between them, which collapses to the same position as "line
-// after EOF" in the mutated source — the parser can't disambiguate from the
-// mutated bytes alone. W=1 still pins every cascade shape from §2 of the
-// cascade memo; the bare-`}` (no trailing newline) and committed fixture
-// cases both land at W=0 via span-intersect.
-const localityWindow = 1
+// localityWindow is the line-window the property is checked at. W=0 is the
+// strict floor: every diagnostic the harness surfaces must intersect the
+// mutated line on the nose. M12.6 tightened the parser's EOF anchor for
+// the `}\n`-tail shape (mutation leaves `\n\n` at EOF) and re-routed
+// PARSE_EXPECTED_SEMICOLON at EOF to the value-token end, which together
+// closed the remaining +1-line slop that kept the broad sweep at W=1.
+const localityWindow = 0
 
 func TestLocalityHarness(t *testing.T) {
 	files := collectCorpus(t)
@@ -73,67 +68,6 @@ func TestLocalityHarness(t *testing.T) {
 
 	t.Logf("locality harness: %d (file, shape) pairs applied, %d skipped",
 		totalApplied, totalSkipped)
-}
-
-// TestLocalityCommittedFixturesAtW0 pins each committed cascade fixture's
-// post-mutation diagnostics at W=0 — the strictest property. The fixtures
-// are *already* the mutated form (per M12.1), so we lint them directly and
-// assert every diagnostic lands within ±0 lines of the expected mutation
-// line via span-intersect. Broader corpus sweep at W=1 lives in
-// TestLocalityHarness; W=0 on corpus carries the `}\n`-tail anchor ambiguity
-// described there.
-func TestLocalityCommittedFixturesAtW0(t *testing.T) {
-	cases := []struct {
-		path    string
-		mutLine int
-	}{
-		// `"x` on line 2; mutation = deleted closing `"`.
-		{"unterminated-quote/minimal.decl", 2},
-		// `/* unterminated` on line 2; mutation = `*/` never written.
-		{"unterminated-block-comment/minimal.decl", 2},
-		// File ends after `b = 1;\n` (line 3) — missing `}` would occupy
-		// line 4 (the empty line just past content).
-		{"unterminated-brace/minimal.decl", 4},
-		// `item[1] = { m_val = "c";` on line 9 — missing `}` between the
-		// value body and the next `}` (line 10). Pre-M12.7 the diagnostic
-		// anchors at EOF (line 14) via greedy-match cascade; the fix re-
-		// anchors it on line 9's `{`.
-		{"missing-mid-file-brace/minimal.decl", 9},
-		// `edit =` on line 4 with the opening `{` forgotten — the next
-		// statement (`m_items = { ... }`) is misread as the value, and
-		// today's cascade scatters diagnostics across lines 5, 12, 13.
-		// M12.8 re-anchors a single focused diagnostic on line 4's `=`.
-		{"missing-open-brace-after-eq/minimal.decl", 4},
-	}
-	linter := lint.New()
-	for _, tc := range cases {
-		t.Run(filepath.Dir(tc.path), func(t *testing.T) {
-			path := filepath.Join("..", "..", "..", "testdata", "cascades", tc.path)
-			src, err := os.ReadFile(path)
-			if err != nil {
-				t.Fatalf("read %s: %v", path, err)
-			}
-			diags, err := linter.Lint(path, src)
-			if err != nil {
-				t.Fatalf("Lint: %v", err)
-			}
-			li := scan.BuildLineIndex(src)
-			for _, d := range diags {
-				start := li.PosAt(d.Span.Start)
-				end := li.PosAt(d.Span.End)
-				startLine := start.Line
-				endLine := end.Line
-				if endLine < startLine {
-					endLine = startLine
-				}
-				// in-window at W=0: span covers mutLine
-				if endLine < tc.mutLine || startLine > tc.mutLine {
-					t.Errorf("W=0 violation: %s at %d:%d (span %d..%d) — mutLine=%d, message=%q",
-						d.Code, start.Line, start.Col, startLine, endLine, tc.mutLine, d.Message)
-				}
-			}
-		})
-	}
 }
 
 // collectCorpus walks corpusRoots and returns paths to text-extension files

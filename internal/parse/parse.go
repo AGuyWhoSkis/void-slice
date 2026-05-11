@@ -121,12 +121,68 @@ func (c *cursor) diagSpan() scan.Span {
 	return scan.NewSpan(0, 0)
 }
 
-// eofSpan returns a zero-length span at len(src) — the position a missing
-// closing token would occupy. Mapped to (line, col) by the renderer, this
-// lands on the line right after the last content, which is where the user
-// would insert the close.
+// eofSpan returns a zero-length span at the position a missing closing token
+// would occupy. Mapped to (line, col) by the renderer, this lands on the
+// line the user would edit.
+//
+// Two anchor cases (M12.6, expanding M12.5):
+//
+//   - When src ends with two or more newlines (LF `\n\n` or CRLF
+//     `\r\n\r\n`), anchor right after the first newline of the trailing
+//     pair. This puts the diagnostic on the empty line between the two
+//     newlines — the line the deleted `}` was originally on for files
+//     whose `}\n`-tail was the source of the mutation. PosAt mapping of
+//     `len(src)` would land one line further down, which is past the
+//     user-edit line.
+//   - Otherwise, anchor at `len(src)`. For `}` (no trailing newline) this
+//     lands on the last content line; for `}\n` (single trailing newline,
+//     the committed cascade fixture shape) it lands on the empty line
+//     just past content. Both are correct.
 func (c *cursor) eofSpan() scan.Span {
+	if p := firstTrailingNewlinePairOffset(c.src); p >= 0 {
+		anchor := p + 1
+		return scan.NewSpan(anchor, anchor)
+	}
 	return scan.NewSpan(len(c.src), len(c.src))
+}
+
+// lastConsumedEndSpan returns a zero-length span at the end of the most
+// recently consumed token, or (0,0) if no tokens have been consumed. Used
+// for diagnostics whose user-edit position is "right after the last token I
+// just read" (e.g. a missing `;` after an assignment value). Distinct from
+// eofSpan, which targets the line a missing block-closer would occupy — for
+// statement terminators at EOF, that policy would land one line past the
+// value token, which is not where the user types the `;`.
+func (c *cursor) lastConsumedEndSpan() scan.Span {
+	if c.i >= 0 && c.i < c.nToks {
+		end := c.toks[c.i].Span.End
+		return scan.NewSpan(end, end)
+	}
+	return scan.NewSpan(0, 0)
+}
+
+// firstTrailingNewlinePairOffset returns the offset of the first `\n` of a
+// trailing newline pair in src — i.e. src ends in `\n\n` (LF) or
+// `\r\n\r\n` (CRLF). Returns -1 otherwise. CRLF is handled by stripping a
+// `\r` immediately before either `\n`; the returned offset is always that
+// of a `\n` byte, never a `\r`.
+func firstTrailingNewlinePairOffset(src []byte) int {
+	n := len(src)
+	if n < 2 || src[n-1] != '\n' {
+		return -1
+	}
+	// Skip the trailing newline (and an optional `\r` for CRLF).
+	end := n - 1
+	if end > 0 && src[end-1] == '\r' {
+		end--
+	}
+	if end == 0 {
+		return -1
+	}
+	if src[end-1] != '\n' {
+		return -1
+	}
+	return end - 1
 }
 
 // scannerAteEOF returns true when the scanner's last token is an unterminated
@@ -563,9 +619,12 @@ func (c *cursor) walkStatement(h Handler) {
 			semi, ok := c.matchSym(';')
 			if !ok {
 				if !(val.Kind == ValString && c.tokenIsUnterminatedQuote(val.Tok)) {
+					// Anchor right after the value token, not at the EOF
+					// block-close line — `;` belongs immediately after the
+					// expression the user just wrote, even at EOF (M12.6).
 					c.emitDiag(h, scan.Diagnostic{
 						Code:    Codes.EXPECTED_SEMICOLON,
-						Span:    c.diagSpan(),
+						Span:    c.lastConsumedEndSpan(),
 						Message: "expected ';' after assignment",
 					})
 				}
