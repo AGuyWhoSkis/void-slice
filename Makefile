@@ -8,7 +8,7 @@ GO      ?= go
 BIN_DIR ?= bin
 CMD ?=./cmd/voidslice
 
-.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness web-harness layer-harnesses harnesses oracle playground-worker playground-web
+.PHONY: help tidy fmt vet lint test race cover build run clean wasm wasm-harness worker-harness web-harness layer-harnesses harnesses oracle playground-worker playground-web lexinvariance
 
 help:
 	@echo "Targets:"
@@ -30,6 +30,7 @@ help:
 	@echo "  harnesses      - run all harnesses end-to-end: layer-harnesses + oracle"
 	@echo "  playground-worker - run the Worker locally on :8787 (pair with playground-web)"
 	@echo "  playground-web    - run the frontend locally on :5173, calling localhost:8787"
+	@echo "  lexinvariance  - run the M12.15 lexical-equivalence harness (opt-in; not gated by CI)"
 	@echo "  clean          - remove build artifacts"
 
 tidy:
@@ -154,3 +155,11 @@ playground-worker: wasm
 # of the container. Pair with `make playground-worker`.
 playground-web: web/node_modules
 	VITE_API_URL=http://localhost:8787 npm --prefix web run dev -- --host
+
+# Lexical-equivalence harness (M12.15). Lints each corpus file, applies
+# whitespace/blank-line transforms (4 kinds × 2 variants), and writes
+# lexinvariance-report.md with every (path, transform, variant) where
+# the diagnostic-code multiset diverges from baseline. Triage tool, not
+# a gate — intentionally NOT in the `harnesses` aggregate.
+lexinvariance:
+	$(GO) test -tags=lexinvariance ./internal/harness/lexinvariance/

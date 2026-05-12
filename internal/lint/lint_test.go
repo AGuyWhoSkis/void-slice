@@ -90,6 +90,27 @@ func TestSidecarXMLIsNoOp(t *testing.T) {
 	assert.Empty(t, diags, "expected zero diagnostics on .decl.xml sidecar; got %v", diags)
 }
 
+// TestShaderDeclIsNoOp — `.decl` files whose body is an inline raw-HLSL
+// `hlsl_prefix { ... }` block are auto-generated wrappers around shader
+// source. The HLSL preprocessor bytes (`#include <…>`, `#define`, `#if`)
+// live entirely in inter-token gaps and produce one VOID_SCAN per byte —
+// 148 / 116 hits on these two files. M12.18 routes them away from the
+// scanner via a content sniff; lint returns empty diags.
+func TestShaderDeclIsNoOp(t *testing.T) {
+	paths := []string{
+		filepath.Join("..", "..", "testdata", "golden",
+			"generated.decls.renderprog.tlf.gatherdepthminmax.decl"),
+		filepath.Join("..", "..", "testdata", "golden",
+			"generated.decls.renderprog.arksssblur.decl"),
+	}
+	for _, p := range paths {
+		src, err := os.ReadFile(p)
+		require.NoError(t, err)
+		diags := lintSrc(t, p, src)
+		assert.Empty(t, diags, "expected zero diagnostics on shader-prefix .decl %s; got %v", p, diags)
+	}
+}
+
 func TestBrokenDeclHasDiagnostics(t *testing.T) {
 	path := filepath.Join("..", "..", "testdata", "broken", "index-oob.decl")
 	src, err := os.ReadFile(path)

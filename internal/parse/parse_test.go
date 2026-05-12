@@ -373,6 +373,223 @@ component {
 	assert.NotEmpty(t, diags, "expected diagnostics for unterminated object")
 }
 
+// TestM12_7_QuoteHidesBrace pins that a `}` inside a QUOTE_LITERAL never
+// reaches the parser — the indent-aware close helper added in M12.7 must
+// not be confused by braces hidden inside string values. Regression contract.
+func TestM12_7_QuoteHidesBrace(t *testing.T) {
+	src := []byte(`Version 1
+component {
+	cpntFoo myFoo {
+		edit = {
+			m_x = "}";
+		}
+	}
+}
+`)
+	_, diags := scanAndWalk(t, src)
+	assert.Empty(t, diags, "quote-hidden `}` must not trip indent-aware close")
+}
+
+// TestM12_7_BlockCommentHidesBrace pins that `}` inside COMMENT_BLOCK and
+// COMMENT_LINE tokens never reaches the parser. Same regression contract as
+// the quote case.
+func TestM12_7_BlockCommentHidesBrace(t *testing.T) {
+	src := []byte(`Version 1
+component {
+	cpntFoo myFoo {
+		edit = {
+			m_x = 1; /* } */
+			m_y = 2; // }
+		}
+	}
+}
+`)
+	_, diags := scanAndWalk(t, src)
+	assert.Empty(t, diags, "comment-hidden `}` must not trip indent-aware close")
+}
+
+// TestM12_7_MidFileMissingBraceAnchorsAtInner is the parser-layer mirror of
+// the locality fixture: the ticket's 13-line sample as in-source bytes. The
+// parser must emit exactly one PARSE_UNTERMINATED_OBJECT anchored at the
+// inner `{` on line 9 — the EOF-anchored cascade from greedy brace matching
+// is what M12.7 fixes.
+func TestM12_7_MidFileMissingBraceAnchorsAtInner(t *testing.T) {
+	src := []byte("Version 1\n" +
+		"component {\n" +
+		"\tcpntTest myTest {\n" +
+		"\t\tedit = {\n" +
+		"\t\t\tm_items = {\n" +
+		"\t\t\t\tnum = 2;\n" +
+		"\t\t\t\titem[0] = { m_val = \"a\"; }\n" +
+		"\t\t\t\titem[1] = { m_val = \"b\"; }\n" +
+		"\t\t\t\titem[2] = { m_val = \"c\";\n" +
+		"\t\t\t}\n" +
+		"\t\t}\n" +
+		"\t}\n" +
+		"}\n")
+
+	_, diags := scanAndWalk(t, src)
+
+	var unterm []scan.Diagnostic
+	for _, d := range diags {
+		if d.Code == parse.Codes.UNTERMINATED_OBJECT {
+			unterm = append(unterm, d)
+		}
+	}
+	require.Len(t, unterm, 1, "expected exactly one PARSE_UNTERMINATED_OBJECT, got diags: %v", diags)
+
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(unterm[0].Span.Start)
+	assert.Equal(t, 9, pos.Line, "PARSE_UNTERMINATED_OBJECT must anchor at line 9; got %d:%d (%v)", pos.Line, pos.Col, diags)
+}
+
+// TestM12_16_IndentInvariantCascade pins the M12.16 contract: the
+// whitespace-cascade fixture (a balanced file whose only fault is a
+// mid-line unterminated quote) must produce the same diagnostic-code
+// multiset whether each line carries its committed leading tabs (V1) or
+// every line is flush-left (V2). Before M12.16 the parser's
+// indent-gated close emitted 7 cascade diagnostics for V1 and 1 for V2 —
+// pure layout-dependence on identical logical input. After the fix the
+// balance gate refuses to re-anchor when the file is structurally
+// balanced, so both forms reduce to the single VOID_SCAN at the broken
+// quote.
+func TestM12_16_IndentInvariantCascade(t *testing.T) {
+	v1 := []byte("Version 1\n" +
+		"component {\n" +
+		"\tcpntTest myTest {\n" +
+		"\t\tedit = {\n" +
+		"\t\t\tm_items = {\n" +
+		"\t\t\t\tnum = 2;\n" +
+		"\t\t\t\titem[0] = { m_val = \"a\"; }\n" +
+		"\t\t\t\titem[1] = { x_val = \"b;\n" +
+		"}\n" +
+		"\t\t\t}\n" +
+		"\t\t}\n" +
+		"\t}\n" +
+		"}\n")
+	v2 := stripLeadingWhitespace(v1)
+
+	codes1 := walkAndCount(t, v1)
+	codes2 := walkAndCount(t, v2)
+	assert.Equal(t, codes1, codes2,
+		"V1 and V2 must produce identical diagnostic-code multisets; got V1=%v V2=%v", codes1, codes2)
+	assert.Equal(t, map[scan.DiagnosticCode]int{scan.Codes.SCAN: 1}, codes1,
+		"V1 must reduce to a single VOID_SCAN; got %v", codes1)
+}
+
+// stripLeadingWhitespace produces the lexinvariance V2 form: drop tabs
+// and spaces at the start of every line, leaving inter-token bytes
+// unchanged so the lexical token stream is identical to V1.
+func stripLeadingWhitespace(src []byte) []byte {
+	var out []byte
+	atLineStart := true
+	for _, b := range src {
+		if atLineStart && (b == ' ' || b == '\t') {
+			continue
+		}
+		out = append(out, b)
+		atLineStart = b == '\n'
+	}
+	return out
+}
+
+func walkAndCount(t *testing.T, src []byte) map[scan.DiagnosticCode]int {
+	t.Helper()
+	toks, scanDiags, _ := scan.Scan(src)
+	rec := newRecorder(src)
+	parseDiags := parse.WalkEntities(src, toks, rec)
+	counts := map[scan.DiagnosticCode]int{}
+	for _, d := range scanDiags {
+		counts[d.Code]++
+	}
+	for _, d := range parseDiags {
+		counts[d.Code]++
+	}
+	return counts
+}
+
+// TestM12_17_LayoutInvariantMidFileMissingBrace pins the M12.17 contract:
+// the missing-mid-file-brace fixture (one structurally missing `}`
+// mid-file) must produce the same diagnostic-code multiset whether each
+// line carries its committed leading tabs (V1) or every line is flush-left
+// (V2), and the canonical code is PARSE_UNTERMINATED_OBJECT. Before
+// M12.17 the cascade fell through to walkComponent's outer expectSym
+// under V2 (peekBraceBelongsToOuter's indent gate failed when all lines
+// shared a column), emitting PARSE_EXPECTED_SYMBOL. After M12.17
+// closeComponentBlock re-routes that emission to PARSE_UNTERMINATED_OBJECT
+// whenever the balance gate signals structural shortfall, so both layouts
+// produce {PARSE_UNTERMINATED_OBJECT: 1}.
+func TestM12_17_LayoutInvariantMidFileMissingBrace(t *testing.T) {
+	v1 := []byte("Version 1\n" +
+		"component {\n" +
+		"\tcpntTest myTest {\n" +
+		"\t\tedit = {\n" +
+		"\t\t\tm_items = {\n" +
+		"\t\t\t\tnum = 2;\n" +
+		"\t\t\t\titem[0] = { m_val = \"a\"; }\n" +
+		"\t\t\t\titem[1] = { m_val = \"b\"; }\n" +
+		"\t\t\t\titem[2] = { m_val = \"c\";\n" +
+		"\t\t\t}\n" +
+		"\t\t}\n" +
+		"\t}\n" +
+		"}\n")
+	v2 := stripLeadingWhitespace(v1)
+
+	codes1 := walkAndCount(t, v1)
+	codes2 := walkAndCount(t, v2)
+	assert.Equal(t, codes1, codes2,
+		"V1 and V2 must produce identical diagnostic-code multisets; got V1=%v V2=%v", codes1, codes2)
+	assert.Equal(t, map[scan.DiagnosticCode]int{parse.Codes.UNTERMINATED_OBJECT: 1}, codes1,
+		"V1 must reduce to a single PARSE_UNTERMINATED_OBJECT; got %v", codes1)
+}
+
+// TestM12_8_MissingOpenBraceAfterEqAnchorsAtAssignment pins the parser-layer
+// contract for the M12.8 cascade fixture: `edit =` with the opening `{`
+// forgotten must produce exactly one focused PARSE_EXPECTED_SYMBOL anchored at
+// line 4's `=`, not the five-diag scatter through lines 5/12/13 that today's
+// fall-through recovery produces.
+func TestM12_8_MissingOpenBraceAfterEqAnchorsAtAssignment(t *testing.T) {
+	src := []byte("Version 1\n" +
+		"component {\n" +
+		"\tcpntTest myTest {\n" +
+		"\t\tedit =\n" +
+		"\t\t\tm_items = {\n" +
+		"\t\t\t\tnum = 3;\n" +
+		"\t\t\t\titem[0] = { m_val = \"a\"; }\n" +
+		"\t\t\t\titem[1] = { m_val = \"b\"; }\n" +
+		"\t\t\t\titem[2] = { m_val = \"c\"; }\n" +
+		"\t\t\t}\n" +
+		"\t\t}\n" +
+		"\t}\n" +
+		"}\n")
+
+	_, diags := scanAndWalk(t, src)
+
+	require.Len(t, diags, 1, "expected exactly one diagnostic; got: %v", diags)
+	assert.Equal(t, parse.Codes.EXPECTED_SYMBOL, diags[0].Code, "diag code")
+
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(diags[0].Span.Start)
+	assert.Equal(t, 4, pos.Line, "diagnostic must anchor on line 4 (the `=`); got %d:%d (%v)", pos.Line, pos.Col, diags)
+}
+
+// TestM12_8_LegitimateIdentValueDoesNotTrigger is the negative-test mate to
+// the M12.8 anchor test: a legitimate scalar-IDENT assignment followed by
+// another statement (no missing brace anywhere) must not trip the new
+// missing-`{`-after-`=` heuristic.
+func TestM12_8_LegitimateIdentValueDoesNotTrigger(t *testing.T) {
+	src := []byte(`Version 1
+component {
+	cpntFoo myFoo {
+		m_flag = true;
+		m_other = 1;
+	}
+}
+`)
+	_, diags := scanAndWalk(t, src)
+	assert.Empty(t, diags, "legitimate ident-value statement must not trigger M12.8 heuristic")
+}
+
 func TestUnexpectedTopLevelToken(t *testing.T) {
 	src := []byte(`Version 1
 garbage
@@ -388,6 +605,97 @@ component {
 	// component after the garbage token should still parse
 	decls := filterKind(rec.events, "ComponentDecl")
 	assert.NotEmpty(t, decls, "parser should recover and parse valid component")
+}
+
+// -------------------------
+// M12.12: per-call-site EOF anchor routing
+// -------------------------
+//
+// Each test below uses a trailing newline so EOF-anchor and last-consumed-
+// anchor land on different (line, col) coordinates — exposing the routing
+// change. Each test asserts the diagnostic specific to that call site is
+// anchored at the end of the last consumed token, not on the trailing-
+// empty line that eofSpan would produce.
+
+func findDiagByMessage(diags []scan.Diagnostic, want string) (scan.Diagnostic, bool) {
+	for _, d := range diags {
+		if d.Message == want {
+			return d, true
+		}
+	}
+	return scan.Diagnostic{}, false
+}
+
+// Site 1: expectKind for "expected version number after 'Version'".
+func TestM12_12_ExpectKindAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("Version\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "expected version number after 'Version'")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 1, pos.Line, "anchor line")
+	assert.Equal(t, 8, pos.Col, "anchor col (end of 'Version'); diags=%v", diags)
+}
+
+// Site 2: expectSym(']') for "expected ']' to close indexer".
+func TestM12_12_ExpectSymCloseIndexerAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx [ 0\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "expected ']' to close indexer")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 7, pos.Col, "anchor col (end of '0'); diags=%v", diags)
+}
+
+// Site 3: direct emit for "expected index value inside '['".
+func TestM12_12_ExpectedIndexValueAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx [\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "expected index value inside '['")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 5, pos.Col, "anchor col (end of '['); diags=%v", diags)
+}
+
+// Site 4: direct emit for "unexpected end of file in statement".
+func TestM12_12_UnexpectedEOFInStatementAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "unexpected end of file in statement")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 3, pos.Col, "anchor col (end of 'x'); diags=%v", diags)
+}
+
+// Site 5: direct emit for "expected value".
+func TestM12_12_ExpectedValueAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx =\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "expected value")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 5, pos.Col, "anchor col (end of '='); diags=%v", diags)
+}
+
+// Site 6: direct emit for "unterminated tuple value".
+func TestM12_12_UnterminatedTupleAnchorsAtLastConsumed(t *testing.T) {
+	src := []byte("foo {\n\tx = ( a, b\n")
+	_, diags := scanAndWalk(t, src)
+	d, ok := findDiagByMessage(diags, "unterminated tuple value")
+	require.True(t, ok, "missing diagnostic; got: %v", diags)
+	li := scan.BuildLineIndex(src)
+	pos := li.PosAt(d.Span.Start)
+	assert.Equal(t, 2, pos.Line, "anchor line")
+	assert.Equal(t, 12, pos.Col, "anchor col (end of 'b'); diags=%v", diags)
 }
 
 // -------------------------

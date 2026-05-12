@@ -78,6 +78,28 @@ func TestScanner(t *testing.T) {
 			},
 		},
 		{
+			// M12.3: an unterminated quote that runs into a newline terminates
+			// at the newline so downstream structural tokens stay visible to
+			// the parser. The token spans `"x`, the VOID_SCAN covers the same
+			// span, and the scanner resumes normally on the next line.
+			name:  "unterminated-quote-newline-terminated",
+			bytes: []byte("{ a = \"x\n b = 1; }"), // len=18
+			wantDiags: []scan.Diagnostic{
+				{Code: scan.Codes.SCAN, Span: scan.NewSpan(6, 8), Message: "unterminated quote"},
+			},
+			wantToks: []scan.Token{
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(0, 1)},          // {
+				{Kind: scan.TokenKind.IDENTIFIER, Span: scan.NewSpan(2, 3)},      // a
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(4, 5)},          // =
+				{Kind: scan.TokenKind.QUOTE_LITERAL, Span: scan.NewSpan(6, 8)},   // "x (newline-terminated)
+				{Kind: scan.TokenKind.IDENTIFIER, Span: scan.NewSpan(10, 11)},    // b
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(12, 13)},        // =
+				{Kind: scan.TokenKind.NUMBER_LITERAL, Span: scan.NewSpan(14, 15)}, // 1
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(15, 16)},        // ;
+				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(17, 18)},        // }
+			},
+		},
+		{
 			name:  "unteriminated-number",
 			bytes: []byte("{ edit = -123.0f"), // len=16
 			wantDiags: []scan.Diagnostic{

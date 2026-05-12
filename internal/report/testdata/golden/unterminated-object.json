@@ -9,25 +9,11 @@
       "message": "unterminated object"
     },
     {
-      "line": 5,
-      "col": 16,
+      "line": 6,
+      "col": 1,
       "severity": "error",
       "code": "PARSE_EXPECTED_SYMBOL",
       "message": "expected '}' to close object value"
-    },
-    {
-      "line": 5,
-      "col": 16,
-      "severity": "error",
-      "code": "PARSE_EXPECTED_SYMBOL",
-      "message": "expected '}' to close component body"
-    },
-    {
-      "line": 5,
-      "col": 16,
-      "severity": "error",
-      "code": "PARSE_EXPECTED_SYMBOL",
-      "message": "expected '}' to close component block"
     }
   ]
 }

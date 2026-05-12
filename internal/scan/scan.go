@@ -92,6 +92,14 @@ mainLoop:
 					emitToken(TokenKind.QUOTE_LITERAL, i, j+1)
 					i = j
 					continue mainLoop
+				} else if j_b == '\n' {
+					// Newline-terminate unterminated quotes (M12.3). Letting the quote
+					// run to EOF deceives the parser about every structural token in
+					// between — corpus confirms zero legitimate multi-line quotes.
+					emitToken(TokenKind.QUOTE_LITERAL, i, j)
+					emitDiag(Codes.SCAN, i, j, "unterminated quote")
+					i = j - 1
+					continue mainLoop
 				}
 			}
 			// fall-through case: at this point, quote literal has reached EOF
@@ -129,7 +137,7 @@ mainLoop:
 					b_blkQuot := src[i_blkQuot]
 					b_hasNext := i_blkQuot+1 < n
 					if b_blkQuot == '*' && b_hasNext && src[i_blkQuot+1] == '/' {
-						emitToken(TokenKind.COMMENT_BLOCK, i, i_blkQuot+1)
+						emitToken(TokenKind.COMMENT_BLOCK, i, i_blkQuot+2)
 						i = i_blkQuot + 1 // peek-ahead byte '*' adds extra +1 here
 						continue mainLoop
 					}

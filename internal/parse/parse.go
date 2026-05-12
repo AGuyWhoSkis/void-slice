@@ -34,11 +34,18 @@ type Handler interface {
 // WalkEntities walks an entities file emitting events to h.
 // Both the returned diags slice and h.OnDiag carry parse diagnostics; they are identical.
 func WalkEntities(src []byte, toks []scan.Token, h Handler) (diags []scan.Diagnostic) {
+	totalCloses := 0
+	for _, t := range toks {
+		if t.Kind == scan.KindSymbol && src[t.Span.Start] == '}' {
+			totalCloses++
+		}
+	}
 	c := &cursor{
-		src:   src,
-		toks:  toks,
-		i:     -1,
-		nToks: len(toks),
+		src:         src,
+		toks:        toks,
+		i:           -1,
+		nToks:       len(toks),
+		totalCloses: totalCloses,
 	}
 	c.walkEntities(h)
 	return c.diags
@@ -54,6 +61,23 @@ type cursor struct {
 	i     int // -1 = before first token; i = index of last consumed token
 	nToks int
 	diags []scan.Diagnostic
+
+	// eofCascadeEmitted tracks whether an EOF-anchored "expected symbol"
+	// diagnostic has already fired for this walk. Inner→outer expectSym calls
+	// at EOF (e.g. closing an inner object then the outer top-level) describe
+	// the same missing close — the second emission is a cascade. M12.5.
+	// Also gates closeObjectValue's cascade re-anchor so the inner-anchored
+	// PARSE_UNTERMINATED_OBJECT fires at most once per walk (M12.7/M12.16).
+	eofCascadeEmitted bool
+
+	// consumedOpens counts `{` SYMBOL tokens consumed so far. totalCloses is
+	// the count of `}` SYMBOL tokens in the entire stream (precomputed in
+	// WalkEntities). closeObjectValue compares the two: when totalCloses <
+	// consumedOpens the file cannot possibly close every open `{`, which is
+	// the structural fact M12.7's indent-gated heuristic was approximating —
+	// switched to a layout-invariant count in M12.16.
+	consumedOpens int
+	totalCloses   int
 }
 
 // eof returns true when there are no more tokens to consume.
@@ -75,7 +99,11 @@ func (c *cursor) next() *scan.Token {
 		return nil
 	}
 	c.i++
-	return &c.toks[c.i]
+	t := &c.toks[c.i]
+	if t.Kind == scan.KindSymbol && c.src[t.Span.Start] == '{' {
+		c.consumedOpens++
+	}
+	return t
 }
 
 // lexeme returns the source bytes for tok.
@@ -99,13 +127,104 @@ func (c *cursor) isIdent(tok scan.Token, lit string) bool {
 	return true
 }
 
-// diagSpan returns a zero-length span positioned just after the last consumed token.
+// diagSpan returns a zero-length span anchored where a missing token should
+// have appeared. When the parser is at EOF, anchor at len(src) so the
+// diagnostic lands on the line the missing closer would have occupied (M12.5,
+// per kanban/goals/M12-cascade-investigation.md §2 row 3). Otherwise anchor
+// just past the last consumed token.
 func (c *cursor) diagSpan() scan.Span {
+	if c.eof() {
+		return c.eofSpan()
+	}
 	if c.i >= 0 && c.i < c.nToks {
 		end := c.toks[c.i].Span.End
 		return scan.NewSpan(end, end)
 	}
 	return scan.NewSpan(0, 0)
+}
+
+// eofSpan returns a zero-length span at the position a missing closing token
+// would occupy. Mapped to (line, col) by the renderer, this lands on the
+// line the user would edit.
+//
+// Two anchor cases (M12.6, expanding M12.5):
+//
+//   - When src ends with two or more newlines (LF `\n\n` or CRLF
+//     `\r\n\r\n`), anchor right after the first newline of the trailing
+//     pair. This puts the diagnostic on the empty line between the two
+//     newlines — the line the deleted `}` was originally on for files
+//     whose `}\n`-tail was the source of the mutation. PosAt mapping of
+//     `len(src)` would land one line further down, which is past the
+//     user-edit line.
+//   - Otherwise, anchor at `len(src)`. For `}` (no trailing newline) this
+//     lands on the last content line; for `}\n` (single trailing newline,
+//     the committed cascade fixture shape) it lands on the empty line
+//     just past content. Both are correct.
+func (c *cursor) eofSpan() scan.Span {
+	if p := firstTrailingNewlinePairOffset(c.src); p >= 0 {
+		anchor := p + 1
+		return scan.NewSpan(anchor, anchor)
+	}
+	return scan.NewSpan(len(c.src), len(c.src))
+}
+
+// lastConsumedEndSpan returns a zero-length span at the end of the most
+// recently consumed token, or (0,0) if no tokens have been consumed. Used
+// for diagnostics whose user-edit position is "right after the last token I
+// just read" (e.g. a missing `;` after an assignment value). Distinct from
+// eofSpan, which targets the line a missing block-closer would occupy — for
+// statement terminators at EOF, that policy would land one line past the
+// value token, which is not where the user types the `;`.
+func (c *cursor) lastConsumedEndSpan() scan.Span {
+	if c.i >= 0 && c.i < c.nToks {
+		end := c.toks[c.i].Span.End
+		return scan.NewSpan(end, end)
+	}
+	return scan.NewSpan(0, 0)
+}
+
+// firstTrailingNewlinePairOffset returns the offset of the first `\n` of a
+// trailing newline pair in src — i.e. src ends in `\n\n` (LF) or
+// `\r\n\r\n` (CRLF). Returns -1 otherwise. CRLF is handled by stripping a
+// `\r` immediately before either `\n`; the returned offset is always that
+// of a `\n` byte, never a `\r`.
+func firstTrailingNewlinePairOffset(src []byte) int {
+	n := len(src)
+	if n < 2 || src[n-1] != '\n' {
+		return -1
+	}
+	// Skip the trailing newline (and an optional `\r` for CRLF).
+	end := n - 1
+	if end > 0 && src[end-1] == '\r' {
+		end--
+	}
+	if end == 0 {
+		return -1
+	}
+	if src[end-1] != '\n' {
+		return -1
+	}
+	return end - 1
+}
+
+// scannerAteEOF returns true when the scanner's last token is an unterminated
+// block comment that consumed bytes to EOF. The parser uses this to suppress
+// "expected '}'" cascade diagnostics for structural tokens lost inside the
+// over-extended comment — the VOID_SCAN already pinpoints the fault (M12.4).
+//
+// The check is local: an unterminated block comment is a COMMENT_BLOCK whose
+// Span.End hits len(src) but whose tail bytes aren't `*/`. No scanDiags
+// plumbing required.
+func (c *cursor) scannerAteEOF() bool {
+	if len(c.toks) == 0 {
+		return false
+	}
+	last := c.toks[len(c.toks)-1]
+	if last.Span.End != len(c.src) || last.Kind != scan.KindCommentBlock {
+		return false
+	}
+	n := last.Span.End - last.Span.Start
+	return !(n >= 4 && c.src[last.Span.End-2] == '*' && c.src[last.Span.End-1] == '/')
 }
 
 // emitDiag records a diagnostic in c.diags and forwards it to h.
@@ -124,10 +243,21 @@ func (c *cursor) matchKind(k scan.Kind) (scan.Token, bool) {
 }
 
 // expectKind is like matchKind but emits a diagnostic if the match fails.
+// expectKind is always an inline-token expectation (a Kind never closes a
+// block — block closers are literal `}` symbols routed through expectSym).
+// At EOF, anchor at the end of the last consumed token (M12.12) so the
+// diagnostic lands where the user typed, not on the trailing-empty line.
 func (c *cursor) expectKind(k scan.Kind, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
 	tok, ok := c.matchKind(k)
 	if !ok {
-		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
+		if c.suppressEOFDiag() {
+			return tok, ok
+		}
+		span := c.lastConsumedEndSpan()
+		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: span, Message: msg})
+		if c.eof() {
+			c.eofCascadeEmitted = true
+		}
 	}
 	return tok, ok
 }
@@ -142,12 +272,62 @@ func (c *cursor) matchSym(ch byte) (scan.Token, bool) {
 }
 
 // expectSym is like matchSym but emits a diagnostic if the match fails.
+// Anchor policy at EOF differs by symbol (M12.12):
+//   - `}` is a block-closer — anchor on the empty line where the missing
+//     close would have been typed (eofSpan, M12.5).
+//   - Everything else (`{`, `]`, `(`, etc.) is an inline token — anchor at
+//     the end of the last consumed token, where the user's cursor was
+//     when they stopped typing (lastConsumedEndSpan, M12.6).
+//
+// At non-EOF both helpers return the same span, so the dispatch only
+// affects the EOF branch.
 func (c *cursor) expectSym(ch byte, code scan.DiagnosticCode, msg string) (scan.Token, bool) {
 	tok, ok := c.matchSym(ch)
 	if !ok {
-		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: c.diagSpan(), Message: msg})
+		if c.suppressEOFDiag() {
+			return tok, ok
+		}
+		var span scan.Span
+		if ch == '}' {
+			span = c.diagSpan()
+		} else {
+			span = c.lastConsumedEndSpan()
+		}
+		c.diags = append(c.diags, scan.Diagnostic{Code: code, Span: span, Message: msg})
+		if c.eof() {
+			c.eofCascadeEmitted = true
+		}
 	}
 	return tok, ok
+}
+
+// suppressEOFDiag returns true if the parser is at EOF and should skip
+// emitting another "expected X" diagnostic. Two cases:
+//   - scannerAteEOF: the scanner already emitted VOID_SCAN for an unterminated
+//     block comment that swallowed structural tokens (M12.4).
+//   - eofCascadeEmitted: an outer expect already emitted at EOF for the same
+//     missing closer (M12.5 dedupe).
+func (c *cursor) suppressEOFDiag() bool {
+	if !c.eof() {
+		return false
+	}
+	return c.scannerAteEOF() || c.eofCascadeEmitted
+}
+
+// tokenIsUnterminatedQuote reports whether tok is a quote literal the scanner
+// emitted as part of a VOID_SCAN unterminated-quote fault — its lexeme starts
+// with `"` but doesn't end with a closing `"`. Used to suppress follow-up
+// parse cascade diagnostics (missing semicolon) on a statement whose value
+// was already reported scan-faulted (M12.3).
+func (c *cursor) tokenIsUnterminatedQuote(t scan.Token) bool {
+	if t.Kind != scan.KindQuoteLiteral {
+		return false
+	}
+	n := t.Span.End - t.Span.Start
+	if n < 2 {
+		return true
+	}
+	return c.src[t.Span.End-1] != '"'
 }
 
 // matchIdent peeks and, if the next token is an IDENTIFIER matching lit, consumes and returns it.
@@ -337,18 +517,42 @@ func (c *cursor) walkComponent(h Handler) {
 	c.walkObjectBody(h)
 
 	// close inner decl body
-	if _, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close component body"); !ok {
-		c.syncTo('}', 0)
-		c.matchSym('}')
-	}
+	c.closeComponentBlock(h, declLBrace, "expected '}' to close component body")
 
 	// close outer component block
-	rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close component block")
+	rbrace, _ := c.closeComponentBlock(h, lbrace, "expected '}' to close component block")
+	h.OnComponentEnd(rbrace)
+}
+
+// closeComponentBlock closes a component-level `{...}` block. When the
+// file is structurally short of `}` tokens (balance gate from M12.16) and
+// no inner frame has already re-anchored an UNTERMINATED_OBJECT, route
+// the diagnostic to PARSE_UNTERMINATED_OBJECT instead of
+// PARSE_EXPECTED_SYMBOL — same structural error described two ways under
+// the lexinvariance contract (M12.17). The span runs from lbrace to the
+// current cursor position so the renderer reports a multi-line range
+// (matches closeObjectValue's M12.5 fallback).
+func (c *cursor) closeComponentBlock(h Handler, lbrace scan.Token, missingMsg string) (scan.Token, bool) {
+	if c.totalCloses < c.consumedOpens && !c.eofCascadeEmitted {
+		if rbrace, ok := c.matchSym('}'); ok {
+			return rbrace, true
+		}
+		c.emitDiag(h, scan.Diagnostic{
+			Code:    Codes.UNTERMINATED_OBJECT,
+			Span:    scan.NewSpan(lbrace.Span.Start, c.diagSpan().Start),
+			Message: "unterminated object",
+		})
+		c.eofCascadeEmitted = true
+		c.syncTo('}', 0)
+		rbrace, _ := c.matchSym('}')
+		return rbrace, false
+	}
+	rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, missingMsg)
 	if !ok {
 		c.syncTo('}', 0)
 		rbrace, _ = c.matchSym('}')
 	}
-	h.OnComponentEnd(rbrace)
+	return rbrace, ok
 }
 
 // walkObjectBody parses statements until it sees '}' or EOF.
@@ -395,9 +599,11 @@ func (c *cursor) walkStatement(h Handler) {
 		var idx Indexer
 		idx.LBrackTok = lb
 		if valTok == nil {
+			// Inline-token shape (M12.12): missing index value belongs right
+			// after `[`, not on the trailing-empty line.
 			c.diags = append(c.diags, scan.Diagnostic{
 				Code:    Codes.UNEXPECTED_TOKEN,
-				Span:    c.diagSpan(),
+				Span:    c.lastConsumedEndSpan(),
 				Message: "expected index value inside '['",
 			})
 			break
@@ -432,11 +638,16 @@ func (c *cursor) walkStatement(h Handler) {
 
 	next := c.peek()
 	if next == nil {
-		c.diags = append(c.diags, scan.Diagnostic{
-			Code:    Codes.UNEXPECTED_TOKEN,
-			Span:    c.diagSpan(),
-			Message: "unexpected end of file in statement",
-		})
+		if !c.suppressEOFDiag() {
+			// Inline-token shape (M12.12): a mid-statement EOF belongs at
+			// the end of the last consumed token, not on a trailing-empty line.
+			c.diags = append(c.diags, scan.Diagnostic{
+				Code:    Codes.UNEXPECTED_TOKEN,
+				Span:    c.lastConsumedEndSpan(),
+				Message: "unexpected end of file in statement",
+			})
+			c.eofCascadeEmitted = true
+		}
 		return
 	}
 
@@ -444,15 +655,51 @@ func (c *cursor) walkStatement(h Handler) {
 	if next.Kind == scan.KindSymbol && c.src[next.Span.Start] == '=' {
 		eqTok := c.next()
 		val := c.parseValue(h)
+
+		// M12.8: assignment-as-block typo. If parseValue returned a scalar
+		// IDENT and the next token is `=`, the IDENT was actually the next
+		// statement's key — the opening `{` after the original `=` was
+		// forgotten. Re-anchor a focused diagnostic on the `=`, rewind the
+		// misread IDENT, and treat `eqTok` as a virtual `{` so the inner
+		// statements parse normally and the user's intended `}` closes the
+		// synthetic object. Mirrors M12.7's soft-recovery shape (one call
+		// site, no contract change to parseValue).
+		if val.Kind == ValIdent {
+			if p := c.peek(); p != nil && p.Kind == scan.KindSymbol && c.src[p.Span.Start] == '=' {
+				c.emitDiag(h, scan.Diagnostic{
+					Code:    Codes.EXPECTED_SYMBOL,
+					Span:    eqTok.Span,
+					Message: "expected '{' after '='",
+				})
+				c.i-- // un-consume the misread IDENT
+				// Account the virtual `{` toward consumedOpens so the
+				// M12.16 balance gate sees the same depth the user's `}`
+				// tokens are about to satisfy.
+				c.consumedOpens++
+				h.OnObjectBegin(*eqTok)
+				c.walkObjectBody(h)
+				rbrace, _ := c.closeObjectValue(h, *eqTok)
+				h.OnObjectEnd(rbrace)
+				objVal := Value{Kind: ValObject, Obj: ObjectSpan{LBraceTok: *eqTok, RBraceTok: rbrace}}
+				h.OnAssignment(key, *eqTok, objVal, scan.Token{})
+				return
+			}
+		}
+
 		var semiTok scan.Token
 		if val.Kind != ValObject {
 			semi, ok := c.matchSym(';')
 			if !ok {
-				c.emitDiag(h, scan.Diagnostic{
-					Code:    Codes.EXPECTED_SEMICOLON,
-					Span:    c.diagSpan(),
-					Message: "expected ';' after assignment",
-				})
+				if !(val.Kind == ValString && c.tokenIsUnterminatedQuote(val.Tok)) {
+					// Anchor right after the value token, not at the EOF
+					// block-close line — `;` belongs immediately after the
+					// expression the user just wrote, even at EOF (M12.6).
+					c.emitDiag(h, scan.Diagnostic{
+						Code:    Codes.EXPECTED_SEMICOLON,
+						Span:    c.lastConsumedEndSpan(),
+						Message: "expected ';' after assignment",
+					})
+				}
 				// Don't sync: value was already consumed; let walkObjectBody
 				// handle whatever comes next as a new statement.
 			}
@@ -503,11 +750,16 @@ func (c *cursor) walkStatement(h Handler) {
 func (c *cursor) parseValue(h Handler) Value {
 	tok := c.peek()
 	if tok == nil {
-		c.diags = append(c.diags, scan.Diagnostic{
-			Code:    Codes.UNEXPECTED_TOKEN,
-			Span:    c.diagSpan(),
-			Message: "expected value",
-		})
+		if !c.suppressEOFDiag() {
+			// Inline-token shape (M12.12): missing RHS value belongs right
+			// after `=`, not on the trailing-empty line.
+			c.diags = append(c.diags, scan.Diagnostic{
+				Code:    Codes.UNEXPECTED_TOKEN,
+				Span:    c.lastConsumedEndSpan(),
+				Message: "expected value",
+			})
+			c.eofCascadeEmitted = true
+		}
 		return Value{}
 	}
 
@@ -516,16 +768,7 @@ func (c *cursor) parseValue(h Handler) Value {
 		lbrace := c.next()
 		h.OnObjectBegin(*lbrace)
 		c.walkObjectBody(h)
-		rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close object value")
-		if !ok {
-			c.emitDiag(h, scan.Diagnostic{
-				Code:    Codes.UNTERMINATED_OBJECT,
-				Span:    scan.NewSpan(lbrace.Span.Start, c.diagSpan().Start),
-				Message: "unterminated object",
-			})
-			c.syncTo('}', 0)
-			rbrace, _ = c.matchSym('}')
-		}
+		rbrace, _ := c.closeObjectValue(h, *lbrace)
 		h.OnObjectEnd(rbrace)
 		return Value{Kind: ValObject, Obj: ObjectSpan{LBraceTok: *lbrace, RBraceTok: rbrace}}
 	}
@@ -538,9 +781,12 @@ func (c *cursor) parseValue(h Handler) Value {
 		for {
 			t := c.peek()
 			if t == nil {
+				// Inline-token shape (M12.12): a tuple's missing `)` is an
+				// inline-expression close, not a block-closer — anchor at
+				// the last consumed token, not on the trailing-empty line.
 				c.emitDiag(h, scan.Diagnostic{
 					Code:    Codes.UNEXPECTED_TOKEN,
-					Span:    c.diagSpan(),
+					Span:    c.lastConsumedEndSpan(),
 					Message: "unterminated tuple value",
 				})
 				return Value{Kind: ValTuple, Tup: TupleSpan{LParenTok: *lparen}}
@@ -570,6 +816,76 @@ func (c *cursor) parseValue(h Handler) Value {
 	})
 	c.syncTo(';', '}')
 	return Value{}
+}
+
+// closeObjectValue closes the object opened by lbrace. M12.7: if the next
+// `}` is at strictly lower line-indent than lbrace AND the file lacks
+// enough `}` tokens to satisfy every open `{` (M12.16's balance gate),
+// treat the `}` as belonging to an outer scope — emit
+// PARSE_UNTERMINATED_OBJECT anchored at lbrace and leave the `}` unconsumed
+// for the outer level to pick up. eofCascadeEmitted scopes the re-anchor
+// to fire at most once per walk so outer levels reuse expectSym rather
+// than emit repeats. On any other failure shape we fall back to expectSym
+// + UNTERMINATED_OBJECT + sync recovery — the M12.5 EOF-cascade behaviour.
+func (c *cursor) closeObjectValue(h Handler, lbrace scan.Token) (scan.Token, bool) {
+	if !c.eofCascadeEmitted && c.peekBraceBelongsToOuter(lbrace) {
+		c.emitDiag(h, scan.Diagnostic{
+			Code:    Codes.UNTERMINATED_OBJECT,
+			Span:    scan.NewSpan(lbrace.Span.Start, lbrace.Span.End),
+			Message: "unterminated object",
+		})
+		// outer expectSym('}') for the same missing close is a cascade —
+		// suppress its EOF re-emission (mirrors M12.5's eofCascadeEmitted
+		// dedupe).
+		c.eofCascadeEmitted = true
+		return scan.Token{}, false
+	}
+	rbrace, ok := c.expectSym('}', Codes.EXPECTED_SYMBOL, "expected '}' to close object value")
+	if !ok {
+		c.emitDiag(h, scan.Diagnostic{
+			Code:    Codes.UNTERMINATED_OBJECT,
+			Span:    scan.NewSpan(lbrace.Span.Start, c.diagSpan().Start),
+			Message: "unterminated object",
+		})
+		c.syncTo('}', 0)
+		rbrace, _ = c.matchSym('}')
+	}
+	return rbrace, ok
+}
+
+// peekBraceBelongsToOuter returns true iff the next token is `}`, its
+// line-indent is strictly less than lbrace's line-indent (M12.7), AND the
+// file is structurally short of `}` tokens (totalCloses < consumedOpens).
+// The balance gate (M12.16) is what makes the heuristic refuse to fire on
+// a balanced file that merely has a flush-left `}` — same indent signal,
+// but the file doesn't actually need a re-anchor because every open `{`
+// still has a `}` available downstream. Indent alone (M12.7's original
+// form) tripped on F3/F4: a balanced file whose user wrote the inner `}`
+// at column 0 to compensate for a broken line above.
+func (c *cursor) peekBraceBelongsToOuter(lbrace scan.Token) bool {
+	p := c.peek()
+	if p == nil || p.Kind != scan.KindSymbol || c.src[p.Span.Start] != '}' {
+		return false
+	}
+	if c.totalCloses >= c.consumedOpens {
+		return false
+	}
+	return c.lineIndent(p.Span.Start) < c.lineIndent(lbrace.Span.Start)
+}
+
+// lineIndent returns the 1-based byte column of the first non-whitespace
+// byte on the line containing offset. Spaces and tabs count one column each
+// (matches the rest of the linter's column model — see scan.LineIndex).
+func (c *cursor) lineIndent(offset int) int {
+	start := offset
+	for start > 0 && c.src[start-1] != '\n' {
+		start--
+	}
+	i := start
+	for i < len(c.src) && (c.src[i] == ' ' || c.src[i] == '\t') {
+		i++
+	}
+	return i - start + 1
 }
 
 // parseIntLiteral parses a NUMBER_LITERAL lexeme into an int64.

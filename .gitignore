@@ -36,3 +36,17 @@ node_modules/
 
 # Wrangler local dev cache (created by `wrangler dev`)
 .wrangler/
+
+# Local-only working corpus for M12 cascade investigation (~2 GB).
+# Never committed; available on dev machines for harness work.
+testdata/all-text-files/
+
+# Output of the M12.9 discovery harness — human-read report at repo root,
+# regenerated each run. Promote a specific report into a kanban artifact
+# manually if a finding turns into a ticket.
+discovery-report.md
+
+# Output of the M12.15 lexinvariance harness — same shape as
+# discovery-report.md: regenerated each run, human-triaged, never
+# committed.
+lexinvariance-report.md

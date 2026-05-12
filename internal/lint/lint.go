@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"bytes"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -36,7 +37,7 @@ type linter struct{}
 func (l *linter) Lint(filename string, src []byte) ([]Diagnostic, error) {
 	var out []Diagnostic
 
-	action, warn := classifyFile(filename)
+	action, warn := classifyFile(filename, src)
 	if action == actionBinary {
 		return []Diagnostic{{
 			Severity: Error,
@@ -47,6 +48,13 @@ func (l *linter) Lint(filename string, src []byte) ([]Diagnostic, error) {
 	if action == actionSidecarXML {
 		// Void Explorer export metadata. Not a game artifact, not authored
 		// by hand — recognized purely so the text scanner doesn't lex `<`/`>`.
+		return nil, nil
+	}
+	if action == actionShaderDecl {
+		// Auto-generated .decl wrapping a raw-HLSL `hlsl_prefix { ... }`
+		// block. The preprocessor bytes (`#include <…>`, `#define`, `#if`)
+		// live entirely in inter-token gaps the scanner already discards;
+		// per-byte VOID_SCAN on them is noise the user can't act on.
 		return nil, nil
 	}
 	if warn != nil {
@@ -88,6 +96,7 @@ const (
 	actionBinary
 	actionSkipBinarySniff // known text types — skip the sniff, just lint
 	actionSidecarXML      // .decl.xml — recognized no-op (Void Explorer metadata)
+	actionShaderDecl      // .decl with inline raw HLSL — recognized no-op (auto-generated)
 )
 
 // Convention: the `default` branch handles "unknown / no filetype context"
@@ -96,7 +105,7 @@ const (
 // the file's extension belong on a known-extension branch, not the default.
 // The playground relies on this to suppress filetype-sensitive noise by
 // passing an extensionless filename.
-func classifyFile(filename string) (fileAction, *Diagnostic) {
+func classifyFile(filename string, src []byte) (fileAction, *Diagnostic) {
 	lower := strings.ToLower(filename)
 	if strings.HasSuffix(lower, ".decl.xml") {
 		return actionSidecarXML, nil
@@ -104,6 +113,9 @@ func classifyFile(filename string) (fileAction, *Diagnostic) {
 	ext := filepath.Ext(lower)
 	switch ext {
 	case ".decl", ".entitydef":
+		if hasShaderPrefix(src) {
+			return actionShaderDecl, nil
+		}
 		return actionSkipBinarySniff, nil
 	case ".entities", ".cfg":
 		w := &Diagnostic{
@@ -118,6 +130,20 @@ func classifyFile(filename string) (fileAction, *Diagnostic) {
 	default:
 		return actionLint, nil
 	}
+}
+
+// hasShaderPrefix sniffs the first 1 KiB for the `hlsl_prefix` identifier —
+// the marker for a `.decl` whose body is an inline raw-HLSL block. Both
+// corpus shader files (`generated.decls.renderprog.*.decl`) start the wrapper
+// well inside this window; the cap keeps the sniff constant-time on large
+// files.
+func hasShaderPrefix(src []byte) bool {
+	const window = 1024
+	n := len(src)
+	if n > window {
+		n = window
+	}
+	return bytes.Contains(src[:n], []byte("hlsl_prefix"))
 }
 
 func isBinary(data []byte) bool {

@@ -16,6 +16,7 @@ Goals capture durable intent — the why and the scope of a body of work. Ticket
 | [M8 — Playground bisection ladder](goals/M8.md) | `goals/M8.md` |
 | [M9 — Concurrent agent workflow](goals/M9.md) | `goals/M9.md` |
 | [M10 — Nit capture](goals/M10.md) | `goals/M10.md` |
+| [M12 — Lint engine hardening](goals/M12.md) | `goals/M12.md` |
 
 ### `Paths:` field
 
