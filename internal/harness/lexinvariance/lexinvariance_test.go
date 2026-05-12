@@ -211,18 +211,6 @@ func collectCorpus(t *testing.T) []string {
 	return paths
 }
 
-func lintableExt(name string) bool {
-	lower := strings.ToLower(name)
-	if strings.HasSuffix(lower, ".decl.xml") {
-		return false
-	}
-	switch filepath.Ext(lower) {
-	case ".decl", ".entitydef", ".entities", ".cfg":
-		return true
-	}
-	return false
-}
-
-// convertLintDiags lives in lexinvariance_unit_test.go; it's shared
-// between the build-tagged driver and the unit tests when both compile
-// together under `-tags=lexinvariance`.
+// lintableExt and convertLintDiags live in lexinvariance_unit_test.go
+// (no build tag); they're shared between the build-tagged driver, the
+// unit tests, and the no-tag hard-gate test in lexinvariance_gate_test.go.

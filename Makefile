@@ -30,7 +30,7 @@ help:
 	@echo "  harnesses      - run all harnesses end-to-end: layer-harnesses + oracle"
 	@echo "  playground-worker - run the Worker locally on :8787 (pair with playground-web)"
 	@echo "  playground-web    - run the frontend locally on :5173, calling localhost:8787"
-	@echo "  lexinvariance  - run the M12.15 lexical-equivalence harness (opt-in; not gated by CI)"
+	@echo "  lexinvariance  - run the M12.15 report-writing sweep (BlankLineJitter + triage; the inter-token-gap gate runs under \`go test ./...\`)"
 	@echo "  clean          - remove build artifacts"
 
 tidy:
@@ -159,7 +159,10 @@ playground-web: web/node_modules
 # Lexical-equivalence harness (M12.15). Lints each corpus file, applies
 # whitespace/blank-line transforms (4 kinds × 2 variants), and writes
 # lexinvariance-report.md with every (path, transform, variant) where
-# the diagnostic-code multiset diverges from baseline. Triage tool, not
-# a gate — intentionally NOT in the `harnesses` aggregate.
+# the diagnostic-code multiset diverges from baseline. Triage tool for
+# BlankLineJitter findings (the remaining report-only invariant); the
+# inter-token-gap hard gate (Reindent, TabSpace, InterTokenPadding) is
+# M13.1's no-tag test and rides `go test ./...`. Intentionally NOT in
+# the `harnesses` aggregate.
 lexinvariance:
 	$(GO) test -tags=lexinvariance ./internal/harness/lexinvariance/
