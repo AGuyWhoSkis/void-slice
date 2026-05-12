@@ -12,10 +12,19 @@
 // two whitespace layouts of the same logical source are not single-byte
 // mutations of each other.
 //
-// Like discovery, this harness is a prospecting tool: it emits a
-// human-read report (`lexinvariance-report.md`) sorted by divergence
-// size. Adoption of any finding into a fix ticket is manual judgment.
-// The package itself files no fixes.
+// The harness now has two postures, split on TransformKind.IsHardGate:
+//
+//   - Hard-gate kinds (Reindent, TabSpace, InterTokenPadding) mutate
+//     bytes inside the inter-token gap. Per M13's invariant, those
+//     bytes must not affect the diagnostic-code multiset. The no-tag
+//     test in `lexinvariance_gate_test.go` walks `testdata/golden/`
+//     and fails `go test ./...` on any finding of these kinds.
+//
+//   - The remaining kind (BlankLineJitter) mutates newlines, which
+//     M13 explicitly parks as a separate invariant. The build-tagged
+//     sweep below stays a prospecting tool: it emits
+//     `lexinvariance-report.md` sorted by divergence size, and
+//     adoption of any finding into a fix ticket is manual judgment.
 //
 // The build-tagged driver (`lexinvariance_test.go`) is excluded from
 // the default `go test ./...` run; invoke via:
@@ -65,6 +74,18 @@ func (k TransformKind) String() string {
 	default:
 		return "unknown"
 	}
+}
+
+// IsHardGate reports whether this transform mutates inter-token-gap
+// bytes that, per M13's invariant, must not affect the diagnostic-code
+// multiset. True for Reindent, TabSpace, and InterTokenPadding; false
+// for BlankLineJitter (newline mutation, parked as a separate invariant).
+func (k TransformKind) IsHardGate() bool {
+	switch k {
+	case TransformReindent, TransformTabSpace, TransformInterTokenPadding:
+		return true
+	}
+	return false
 }
 
 // variantsPerKind is the fixed count of deterministic variants each kind

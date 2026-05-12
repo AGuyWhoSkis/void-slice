@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -180,6 +181,22 @@ func itoa(n int) string {
 		n /= 10
 	}
 	return string(buf[i:])
+}
+
+// lintableExt is the extension filter shared by the build-tagged sweep
+// driver and the no-tag hard-gate test: include `.decl`, `.entitydef`,
+// `.entities`, `.cfg`; skip `.decl.xml` (XML payload, not the `.decl`
+// grammar). Lives here so both callers see one source of truth.
+func lintableExt(name string) bool {
+	lower := strings.ToLower(name)
+	if strings.HasSuffix(lower, ".decl.xml") {
+		return false
+	}
+	switch filepath.Ext(lower) {
+	case ".decl", ".entitydef", ".entities", ".cfg":
+		return true
+	}
+	return false
 }
 
 func convertLintDiags(diags []lint.Diagnostic) []scan.Diagnostic {
