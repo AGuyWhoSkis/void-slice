@@ -1,6 +1,6 @@
 # M14 — Declared-typing investigation
 
-**TL;DR:** _<filled by M14.3>_
+**TL;DR:** Audit A's filename→declared-name recipe round-trips **12/12** of the `.decl.xml` `<ResourceInfo>` records, and audit B resolves **0/3,364** of the corpus's `inheritedDecl`/`inherit` references against that 12-record table — the table is structurally vacant for the cited kinds, not approximately broken. Audit C surveyed five intra-file type-suffix rule shapes and found **none qualifies** under the FP=0 + non-zero TP bar; no diagnostic shipped.
 
 ## 1. Filename ↔ declared-name round-trip (audit A)
 
@@ -104,4 +104,11 @@ Across both forms: **0/3,364 references resolve** against the 12-record table. T
 
 ---
 
-_<footer filled by M14.3: methodology footnote, gameN-bucket gap, named next-goal proposal>_
+<a id="methodology"></a>
+**Methodology footnote.** Audits A and B were run by `/tmp/m14-audit/audit.go` (~234 lines of Go, not committed): walks `testdata/golden/` for `.decl.xml` records, applies §1's six-step filename→declared-name transform, then walks every `.decl`/`.entities`/`.entitydef` file for `inheritedDecl = "..."` and line-anchored `inherit = "..."` references and tabulates resolution against the declared-name set. Audit C's rule-survey and FP measurement were run by `/tmp/m14-audit-c/audit.py` (~187 lines) and `/tmp/m14-audit-c/audit2.py` (~148 lines), not committed: the first measures the four originally-enumerated rule shapes file-wide; the second adds the per-`m_componentDecls`-block-scoped variant. Both audit harnesses are reproducible on a dev machine with the golden corpus in place — they only read `testdata/golden/`.
+
+**gameN-bucket gap.** The corpus under [`testdata/golden/`](../../testdata/golden/) covers `d2/game1` and `doto/game1` only — the `gameN` bucket beyond N=1 is absent for both titles. Extending audits A and B to a wider declared-name set would require acquiring per-bucket `.decl.xml` `<ResourceInfo>` files for the top-10 cited kinds from §2 (`cpnthealth`, `cpntmidnightproxy`, `cpntaudio`, `cpntaiattentionsource`, `cpntloddriver`, `cpntloot`, `cpntreferenceframe`, `cpntanimbase`, `cpnttrigger`, `cpntpatrolwaypoint`) plus their corresponding `.def`/`.entities`/`.entitydef` siblings to verify that the round-trip and resolution rates measured here generalise. The spike does not commit to that acquisition — it states the gap so a follow-up goal can scope it deliberately.
+
+## Next goal
+
+**M15 (proposed): Acquire `.decl.xml` fixtures for the top-N cited kinds and re-measure audits A and B at scale.** §1 establishes that the filename→declared-name forward transform is byte-exact on every `.decl.xml` record present (12/12), and §2 establishes that the 12-record table covers 3 of the 52 cited kinds — so a resolver built today against the current corpus would return zero hits on 100% of corpus references. The bottleneck measured by M14 is not engine capability (the transform works) and not rule design (every intra-file shape we surveyed is either zero-TP or zero-FP-violating, per §3); it is **declared-name coverage**. M15 would acquire `.decl.xml` `<ResourceInfo>` records and matching reference files for the top-10 cited kinds from §2's per-kind table, re-run the audit-A round-trip on the wider record set, and re-run audit B's resolution-rate measurement to learn whether the structural-vacancy finding is an artifact of the 12-record sample size or a deeper property of how declared names and references coexist across buckets. Diagnostic shippability is not in M15's scope — it is gated on what the re-measurement shows. The parked G-A (schema-synthesis) and G-B (cross-file-refs) candidate-goal framings from [`kanban/goals/M14.md`](M14.md) are **retired** by this proposal: §1 already invalidates G-A's synthesis trap (declared names are recorded, not synthesised), and §2 invalidates G-B's "ship a resolver today" framing (the resolver target is empty at corpus scale); both are superseded by the corpus-acquisition question M15 isolates.
