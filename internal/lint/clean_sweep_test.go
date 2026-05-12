@@ -31,11 +31,10 @@ const (
 // history. Each entry is justified — silent regressions still fail. Adding a
 // new entry must come with a `// Justification:` comment and a ticket.
 var permanentAllowlist = []allowEntry{
-	// Justification: Shape 4 (renderprog) carve-out per G-C. The no-op walker
-	// doesn't lex embedded HLSL, so `# $ < > | @ ? ! & ~ * + . /` bytes inside
-	// `hlsl_prefix { … }` surface as VOID_SCAN. Permanent until G-C lands.
-	{Code: "VOID_SCAN", Scope: "generated.decls.renderprog.tlf.gatherdepthminmax.decl", Count: 148},
-	{Code: "VOID_SCAN", Scope: "generated.decls.renderprog.arksssblur.decl", Count: 116},
+	// Note: Shape 4 (renderprog) carve-out was per-byte allowlisted at 148+116
+	// VOID_SCAN entries. M12.18 routes shader-prefix `.decl` files away from
+	// the scanner via a content sniff for `hlsl_prefix` — both files now lint
+	// to zero diags, so no allowlist entries are needed.
 
 	// Justification: intentional malformed fixture. The file exists to pin the
 	// scanner's behavior on an unterminated block comment at EOF (M4.1.2).
