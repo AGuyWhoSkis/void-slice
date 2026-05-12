@@ -78,7 +78,29 @@ Across both forms: **0/3,364 references resolve** against the 12-record table. T
 
 ## 3. Type-suffix check (audit C)
 
-_<filled by M14.2>_
+**Rule survey.** `inheritedDecl` in the corpus always appears as the immediate child of an `item_<verb>["HASH"] = { ... }` body — 1,635 of 1,635 entries match the two-line pattern `item_<verb>["HASH"] = {\n[ \t]*inheritedDecl = "...\.<suffix>"` — and every value's last-dot suffix is a `cpnt<X>` identifier (46 distinct, headed by `cpnthealth` × 377, `cpntmidnightproxy` × 271, `cpntaudio` × 186). The original goal framing assumed an enclosing `component { cpntFoo … }` block (M14.md §1); the corpus places these `item_*[H]` bodies inside `entity { entityDef name { ... m_componentDecls = { ... } } }` blocks, so "enclosing component" admits more than one definition. Five candidate rules were enumerated and measured.
+
+| ID | Rule shape | Pros | Cons |
+|----|------------|------|------|
+| A  | same `item_*["H"]` hash → same `.cpnt<X>` suffix, **file-wide** | matches the hash-as-component-slot mental model | conflates hashes across entities |
+| A1 | same `item_<verb>["H"]` hash → same suffix, **file-wide, per-verb** | tighter than A | same scope-collision risk |
+| A2 | same `item_*["H"]` hash → same suffix, **scoped to enclosing `m_componentDecls = {}` block** | the verb's actual semantic boundary | depends on the corpus exercising the pattern |
+| B  | inside `component { cpntFoo … }`: `inheritedDecl` suffix must equal `cpntFoo` | matches the original M14.md framing | frame doesn't apply — `inheritedDecl` doesn't live in `component {}` bodies in the corpus |
+| C  | `inheritedDecl = "X.<suffix>"` where `<suffix>` appears as an identifier sibling key in the same object | structural, no scope state | siblings of `inheritedDecl` in the corpus are never `cpnt<X>` keys |
+
+**Per-candidate measurement** (62 `.decl` / `.entities` / `.entitydef` files under [`testdata/golden/`](../../testdata/golden/), 1,635 `inheritedDecl` entries; scripts at `/tmp/m14-audit-c/audit.py` and `/tmp/m14-audit-c/audit2.py`):
+
+| Rule | Fires on golden | TPs (real bugs) | FPs (legitimate constructs) | Sample |
+|------|----------------:|----------------:|----------------------------:|--------|
+| A    |              63 |               0 |                          63 | `maps.campaign.dunwall.escape.tower.dunwall_escape_tower_p.entities:182775` — `item_add["100000"]` is reused across 216 `entity { entityDef … }` blocks in one file, legitimately mapping to `cpntpatrolroute` in one entity and `cpntpatrolwaypoint` in another |
+| A1   |              63 |               0 |                          63 | same |
+| A2   |               0 |               0 |                           0 | corpus has zero duplicate hashes within any single `m_componentDecls = {}` block; rule is structurally empty against this corpus |
+| B    |           1,635 |               0 |                       1,635 | every `inheritedDecl` in the corpus lives in an `entity { entityDef name { … m_componentDecls = { item_*[H] = { inheritedDecl } } } }` chain — no enclosing `component { cpnt<X> … }` block exists |
+| C    |           1,635 |               0 |                       1,635 | siblings of `inheritedDecl` in `item_*[H]` bodies are `inlineDecl`, `mapComponentDecl`, etc. — never `cpnt<X>` identifiers |
+
+**Verdict — none qualifies.** Two threshold checks: (1) **FP=0 against golden** is met only by A2 (and the unlisted D variant "duplicate hash within block, regardless of suffix" — same shape, also 0). (2) **Non-zero TP against golden**: zero for every candidate. The corpus is empirically clean of intra-file `inheritedDecl` type-suffix inconsistency; the rule shapes that survive the FP filter (A2, D) survive only by firing nowhere — they have no observable signal on real game files. Partial-context-graceful was a non-issue here — all five rules are pure functions of the parsed token stream — but it stops mattering once TP=0 forces the verdict.
+
+**Ship outcome — no diagnostic shipped.** Precise blocker: **zero-TP across all candidates** on [`testdata/golden/`](../../testdata/golden/). No `VALIDATE_INHERITED_DECL_TYPE_SUFFIX` code added; no `internal/`, `cmd/`, `worker/`, or `testdata/broken/` files touched. The "type-suffix check" candidate that survived M14's original filter as the only intra-file-shippable rule does not survive contact with the corpus. What would change that: corpus acquisition of a file with a hand-edit bug of the A2 shape (duplicate `item_*[H]` with mismatched `cpnt<X>` suffix within one `m_componentDecls` block), or a different intra-file rule shape sourced from a class of construct this audit didn't enumerate.
 
 ---
 
