@@ -1,0 +1,63 @@
+# M17 — Root causes + B2 boundary
+
+**TL;DR:** Of [M17.1](M17-edit-delta-taxonomy.md)'s four surprise classes, **two are cascade-shaped and share a single fixable root cause** (SC-1 and SC-3 both fall into the same ungated top-level parser loop at [`internal/parse/parse.go:453-489`](../../internal/parse/parse.go#L453-L489), with M12.16/M12.17 as direct precedent), **one is the durable B2 inherent limit** (SC-4: a context-free linter cannot infer that a non-ASCII byte was author-intended UTF-8 that became uncommented), **one needs more probing** (SC-2: M12.3's existing unterminated-quote suppression already catches part of the cluster, but the remaining `VOID_SCAN×2 + UNEXPECTED_TOKEN×1-7` shape needs a deeper read of the scanner's orphan-quote forward-scan before classification). Phase 3 = 3 tickets.
+
+## 1. Root-cause analysis
+
+### SC-1. Root-brace flip cascades to O(N) parse errors
+
+**Code citation:** [`internal/parse/parse.go:453-489`](../../internal/parse/parse.go#L453-L489) (the top-level for-loop in `walkEntities`).
+
+**Mechanism.** `walkEntities` at [parse.go:416](../../internal/parse/parse.go#L416) checks the first significant token at line 430. If it's `{`, it enters shape-1 (`walkObjectBody`). If not, it falls through to the `Version` check at line 444 and then into an unconditional `for !c.eof()` loop at line 453. Inside that loop, every IDENTIFIER token that isn't the keyword `component` flows through the line 475 branch — `emitDiag(UNEXPECTED_TOKEN, "expected 'component'")` — and every non-IDENTIFIER token flows through the line 482-486 branch — `emitDiag(UNEXPECTED_TOKEN, "unexpected token at top level")`. Neither branch has a stop condition: both `emitDiag` and `c.next()` advance and continue. When `{` at offset 0 is flipped to `(`, the file's *entire remaining token stream* runs through this loop, producing one `UNEXPECTED_TOKEN` per token — 223,305 on the largest animset, scaling linearly with file size.
+
+The M12 frame's two existing balance gates ([parse.go:536](../../internal/parse/parse.go#L536) `closeComponentBlock` and [parse.go:866-872](../../internal/parse/parse.go#L866-L872) `peekBraceBelongsToOuter`) sit *inside* the walking machinery — they prevent depth-tracking cascades once the parser is inside a body. The top-level entry point at parse.go:430 has no analogous gate: a non-`{` first significant token simply falls through into the for-loop with no abort condition.
+
+**Verdict: cascade-shaped (fixable).** Direct precedent in M12.16/M12.17. Fix shape: gate the top-level entry so that a first significant token that is *neither* `{` *nor* the `Version` identifier *nor* `component` emits exactly one structural diagnostic (e.g. `EXPECTED_SYMBOL` at offset 0) and returns from `walkEntities` without entering the for-loop.
+
+### SC-2. Quote-byte flip emits bounded VOID_SCAN+PARSE cluster
+
+**Code citation span:** scanner emission at [`internal/scan/scan.go:80-108`](../../internal/scan/scan.go#L80-L108) (the `'"'` case) and [`internal/scan/scan.go:187`](../../internal/scan/scan.go#L187) (the `default` unknown-byte case); parser suppression at [`internal/parse/parse.go:317-331`](../../internal/parse/parse.go#L317-L331) (`tokenIsUnterminatedQuote`) and [`internal/parse/parse.go:689-705`](../../internal/parse/parse.go#L689-L705) (the M12.3 semicolon-suppression site).
+
+**Mechanism (partial).** The parser already suppresses one term of the cascade: `tokenIsUnterminatedQuote` at parse.go:322-330 detects a `QUOTE_LITERAL` whose lexeme starts but doesn't end with `"`, and the check at parse.go:693 skips the follow-up `EXPECTED_SEMICOLON` for that statement (M12.3). What remains in the SC-2 cluster:
+
+- One `VOID_SCAN` from the rejected `'` byte at scan.go:187 (correct — `'` is not in the scanner's accepted set).
+- A second `VOID_SCAN` from somewhere in the scanner's orphan-quote forward-scan path — the previous closing `"` of the original literal becomes an opener and runs forward to the next `"`. Whether this emits a *separate* `VOID_SCAN` for an unterminated-at-EOF state, or whether the orphan run swallows a byte the scanner subsequently rejects, is not pinned by reading the code alone.
+- One to seven `PARSE_UNEXPECTED_TOKEN`s from the assignments that were structurally swallowed into the new orphan literal — these are real structural errors, proportional to the run length.
+
+The "did the existing M12.3 gate catch what it should have, and is the residual proportional or cascade-shaped?" question can't be answered without running each of the 38 SC-2 repros through a paths-traced debug print of the scanner's `'"'` case and the parser's value-walking path.
+
+**Verdict: needs-more-probing.** Magnitude is bounded (3-9 codes per file across 38 repros) — not a UX emergency — but the fix shape isn't determined: one possibility is a scanner-side hint ("byte `'` is not accepted; did you mean `\"`?"), one is a parser-side extension of the M12.3 unterminated-quote suppression to cover the orphan-forward-scan span, one is "this is proportional to real damage; document as B2." Named follow-up: **SC-2 probe — orphan-quote path** (one read-only investigation ticket, sized small).
+
+### SC-3. Line-comment unwrap on no-trailing-newline fixture cascades
+
+**Code citation:** [`internal/parse/parse.go:453-489`](../../internal/parse/parse.go#L453-L489) (same site as SC-1).
+
+**Mechanism.** [`testdata/golden/eof.line-comment-no-newline.decl`](../../testdata/golden/eof.line-comment-no-newline.decl) contains the literal text `// normal line comment, no newline at EOF`. Stripping the leading `// ` produces a 38-byte file consisting of 8 bare IDENTIFIER tokens separated by spaces and commas. At [parse.go:430](../../internal/parse/parse.go#L430) the first significant token is `normal` (an IDENTIFIER, not `{`), so the shape-1 branch is skipped. At line 444 the `matchIdent("Version")` returns false. The parser falls into the same for-loop SC-1 falls into; each of the 8 IDENTIFIER tokens flows through the line 475 branch (`"expected 'component'"`), and the commas flow through the line 482-486 branch. Exact same root cause, exact same code site.
+
+**Verdict: cascade-shaped (fixable) — folds into SC-1's fix.** The gate proposed for SC-1 (abort if first significant token isn't `{`/`Version`/`component`) will produce a single structural diagnostic on this fixture instead of 8. No separate engine fix ticket.
+
+### SC-4. Comment unwrap surfaces hidden non-ASCII bytes
+
+**Code citation:** scanner emission at [`internal/scan/scan.go:187`](../../internal/scan/scan.go#L187); accepted-byte set is implicitly defined by the dispatch in [`internal/scan/scan.go:73-171`](../../internal/scan/scan.go#L73-L171) plus the ASCII-only `IsIdentStart` / `IsAlpha` at [`internal/scan/scan_util.go:28-40`](../../internal/scan/scan_util.go#L28-L40).
+
+**Mechanism.** [`testdata/golden/generated.decls.material.models.environment.archi.karnaca.nature.rock.cliff_bottom_01..material.decl`](../../testdata/golden/generated.decls.material.models.environment.archi.karnaca.nature.rock.cliff_bottom_01..material.decl) contains a comment at offset 694 whose body includes two non-ASCII bytes (likely UTF-8 multi-byte sequences for accented characters in author commentary). While inside the comment those bytes are skipped by the comment-line case at scan.go (untokenised). When `// ` is stripped, the bytes become top-level: the scanner's main loop falls through every case at lines 73-171 (none accept bytes >127) and hits the `default` at line 187, emitting one `VOID_SCAN` per offending byte. Magnitude = 2, proportional to the two exposed bytes.
+
+**Verdict: inherent limit (B2).** The scanner is operating correctly: bytes outside the grammar's ASCII-only accepted set are reported. A context-free linter has no way to know that those bytes were author-intended UTF-8 in a comment that was deliberately not-meant-to-be-uncommented. The surprise is real (the user removed 3 ASCII bytes and got 2 errors on unrelated bytes), but the resolution is on the *user's* side — uncomment carefully, or the linter could document the principle.
+
+## 2. B2 boundary
+
+The B2 boundary names what a context-free linter operating on one file cannot reasonably do. Each `inherent limit (B2)` verdict from §1 maps to one of these principles:
+
+- **SC-4 → P-AcceptedByteSet.** *A linter cannot infer that bytes outside its declared character set were author-intended in a context that previously shielded them.* The scanner's accepted-byte set is part of the grammar's contract; the scanner has no model of "this byte was UTF-8 inside a comment that the author once put there for a reason." Operating on the post-edit byte stream alone, the only honest response is to report the bytes the grammar rejects. Closing this would require either expanding the grammar's character set (a language-design change, not a lint fix) or modeling author-intent across comment boundaries (out of B2 scope for a single-file context-free linter).
+
+(SC-2 deferred to its follow-up probe — if that probe resolves the cluster to "proportional to real structural damage from a quote-byte flip," it will map here under a second principle: **P-ProportionalToStructuralReach** — *a small textual edit can have a large structural footprint when it changes the file's parse shape, and the linter's diagnostic count reflects the actual structural reach, not the textual edit's byte count.* Whether SC-2 lands under that principle or in the cascade-shaped column is the probe's call.)
+
+## 3. Phase 3 re-pin
+
+Three phase-3 tickets:
+
+- **Phase-3 ticket 1 — engine fix: top-level cascade gate.** Add a structural gate at the entry of [`internal/parse/parse.go:453`](../../internal/parse/parse.go#L453) so that when the first significant token in `walkEntities` is neither `{` nor the `Version` identifier nor the `component` identifier, the parser emits exactly one diagnostic at offset 0 and returns. Closes **SC-1** and **SC-3** with a single fix; per the M12.16/M12.17 precedent. Verification rides on M17.1's punctuation probe (re-run after the fix and confirm the 41 SC-1 rows collapse from O(N) codes to O(1)).
+- **Phase-3 ticket 2 — follow-up investigation: SC-2 orphan-quote path.** Read-only ticket. Trace the 38 SC-2 repros through [scan.go:80-108](../../internal/scan/scan.go#L80-L108) and [parse.go:317-331](../../internal/parse/parse.go#L317-L331). Output is one of: a third engine-fix ticket (cascade-shaped, extends M12.3), a verdict that the residual is proportional (folds into §2 under **P-ProportionalToStructuralReach**), or a classifier-router fix (M12.18 precedent) if the orphan-quote path can be short-circuited at a higher level.
+- **Phase-3 ticket 3 — user-facing doc: B2 boundary.** Surface the inherent-limit principles from §2 in user-facing copy (README and/or `voidslice --help` and/or the WASM playground's diagnostic-rendering area). At minimum: **P-AcceptedByteSet** (SC-4), plus whatever SC-2's probe resolves to. This is the *"document what can't be fixed"* half of M17's framing — it closes the user-perceived UX gap by setting expectations rather than by changing the engine.
+
+Phase-3 ticket count: **3.** Sliced in a follow-up `/goal-slice M17` run.
