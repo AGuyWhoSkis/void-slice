@@ -14,11 +14,24 @@ type RenderOptions struct {
 	UseColor     bool // TODO: apply ANSI escapes when opt.UseColor (for T5)
 }
 
+// MaxRenderedDiagnostics caps both pretty and JSON output. Defense-in-depth
+// against any future cascade (engine fixes close known ones at the parser
+// layer; this constant guarantees the user-visible surface stays bounded
+// regardless of emitter behavior). 500 was chosen as "enough to surface the
+// earliest problems on a screenful per render iteration, small enough that
+// a corrupted file's JSON stays kilobyte-scale crossing the WASM boundary."
+const MaxRenderedDiagnostics = 500
+
 func Render(filename string, src []byte, diags []scan.Diagnostic, opt RenderOptions) string {
 	if len(diags) == 0 {
 		return ""
 	}
 	sorted := sortDiags(diags)
+	truncated := 0
+	if len(sorted) > MaxRenderedDiagnostics {
+		truncated = len(sorted) - MaxRenderedDiagnostics
+		sorted = sorted[:MaxRenderedDiagnostics]
+	}
 	li := scan.BuildLineIndex(src)
 
 	var b strings.Builder
@@ -28,12 +41,25 @@ func Render(filename string, src []byte, diags []scan.Diagnostic, opt RenderOpti
 		}
 		b.WriteString(renderOne(filename, src, li, d))
 	}
+	if truncated > 0 {
+		b.WriteByte('\n')
+		b.WriteString("... and ")
+		b.WriteString(strconv.Itoa(truncated))
+		b.WriteString(" more diagnostics suppressed (render cap: ")
+		b.WriteString(strconv.Itoa(MaxRenderedDiagnostics))
+		b.WriteString(")")
+	}
 	return b.String()
 }
 
 func RenderJSON(filename string, src []byte, diags []scan.Diagnostic) string {
 	li := scan.BuildLineIndex(src)
 	sorted := sortDiags(diags)
+	truncated := 0
+	if len(sorted) > MaxRenderedDiagnostics {
+		truncated = len(sorted) - MaxRenderedDiagnostics
+		sorted = sorted[:MaxRenderedDiagnostics]
+	}
 
 	jd := make([]jsonDiag, len(sorted))
 	for i, d := range sorted {
@@ -47,7 +73,7 @@ func RenderJSON(filename string, src []byte, diags []scan.Diagnostic) string {
 		}
 	}
 
-	out, _ := json.MarshalIndent(jsonReport{File: filename, Diagnostics: jd}, "", "  ")
+	out, _ := json.MarshalIndent(jsonReport{File: filename, Diagnostics: jd, Truncated: truncated}, "", "  ")
 	return string(out)
 }
 
@@ -138,4 +164,5 @@ type jsonDiag struct {
 type jsonReport struct {
 	File        string     `json:"file"`
 	Diagnostics []jsonDiag `json:"diagnostics"`
+	Truncated   int        `json:"truncated,omitempty"`
 }
