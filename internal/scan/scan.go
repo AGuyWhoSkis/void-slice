@@ -97,14 +97,14 @@ mainLoop:
 					// run to EOF deceives the parser about every structural token in
 					// between — corpus confirms zero legitimate multi-line quotes.
 					emitToken(TokenKind.QUOTE_LITERAL, i, j)
-					emitDiag(Codes.SCAN, i, j, "unterminated quote")
+					emitDiag(Codes.SCAN, i, j, "unterminated string literal — check for a missing '\"'")
 					i = j - 1
 					continue mainLoop
 				}
 			}
 			// fall-through case: at this point, quote literal has reached EOF
 			emitToken(TokenKind.QUOTE_LITERAL, i, n)
-			emitDiag(Codes.SCAN, i, n, "unterminated quote")
+			emitDiag(Codes.SCAN, i, n, "unterminated string literal — check for a missing '\"'")
 			i = n
 		case '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
 			if i+1 >= n {
