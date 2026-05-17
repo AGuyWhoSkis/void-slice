@@ -440,6 +440,40 @@ func (c *cursor) walkEntities(h Handler) {
 		return
 	}
 
+	// M17.3: top-level cascade gate. The for-loop below has no abort
+	// condition — every off-grammar top-level token emits one diagnostic and
+	// advances. On a file whose root `{` was flipped to `(`, that's one diag
+	// per token for the whole file (up to 223,305 PARSE_UNEXPECTED_TOKEN on
+	// a 1.78 MB animset; SC-1 in M17.1). The for-loop has three valid entry
+	// shapes: `Version`, `component`, and an unknown IDENT followed by `{`
+	// (anonymous top-level block, e.g. `entity { ... }`). Anything else —
+	// a non-IDENT first token (SC-1) or a bare IDENT not followed by `{`
+	// (SC-3) — drives the cascade. Emit one EXPECTED_SYMBOL at the offender
+	// and return. Precedents: M12.16 brace-count gate, M12.17 component-
+	// close cascade — same fix shape (one structural gate at the entry).
+	if p := c.peek(); p != nil {
+		allow := c.isIdent(*p, "Version") || c.isIdent(*p, "component")
+		if !allow && p.Kind == scan.KindIdentifier {
+			// Unknown IDENT is only a valid entry if followed by `{` (the
+			// for-loop's unknown-block branch). Otherwise it's the SC-3
+			// shape — a bare-ident stream that would cascade.
+			if c.i+2 < c.nToks {
+				n := &c.toks[c.i+2]
+				if n.Kind == scan.KindSymbol && c.src[n.Span.Start] == '{' {
+					allow = true
+				}
+			}
+		}
+		if !allow {
+			c.emitDiag(h, scan.Diagnostic{
+				Code:    Codes.EXPECTED_SYMBOL,
+				Span:    p.Span,
+				Message: "expected '{' at top level",
+			})
+			return
+		}
+	}
+
 	// Version <number>
 	versionTok, ok := c.matchIdent("Version")
 	if ok {
