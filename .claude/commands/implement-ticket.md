@@ -9,10 +9,10 @@ Implement ticket $ARGUMENTS end-to-end. Follow these steps in order:
 4. **START** — confirm the goal branch is checked out, then mark the ticket in-progress:
 
    1. Confirm the working tree is clean (`git status --porcelain` empty). If not, stop and surface to the user — do not auto-stash.
-   2. Confirm the current branch matches `goal/M<N>-*` for the ticket's goal. If not, stop and tell the user to switch via `/goal-dispatch <goal-id>` (which creates the branch if it doesn't exist) or `git checkout goal/M<N>-<slug>`. Do **not** auto-create or check out the goal branch.
+   2. Confirm the current branch matches `goal/M<N>-*` for the ticket's goal. If not, stop and tell the user to switch (`git checkout goal/M<N>-<slug>`, or create with `git checkout -b goal/M<N>-<slug> origin/main`). Do **not** auto-create or check out the goal branch.
    3. Edit the ticket's `**Status:**` field to `in-progress`. The kanban-move hook will move the file automatically.
 
-   The goal branch (`goal/M<N>-<slug>`, e.g. `goal/M9-concurrent-agent-workflow`) accumulates every ticket for that goal; a single PR against `main` covers the whole goal. Branch creation, push, and PR-opening are `/goal-dispatch`'s job; `/implement-ticket` only commits onto an already-checked-out goal branch.
+   The goal branch (`goal/M<N>-<slug>`, e.g. `goal/M9-concurrent-agent-workflow`) accumulates every ticket for that goal; a single PR against `main` covers the whole goal. `/implement-ticket` only commits onto an already-checked-out goal branch.
 
 5. **PLAN** — enter plan mode. Explore the codebase to understand what exists and what needs to change. Surface all ambiguous requirements as questions for the user. Write a concrete implementation plan. Do not write code until the user approves the plan.
 

@@ -24,49 +24,13 @@ Output: a set of contract-grade ticket files in `kanban/todo/` — tickets sharp
 
 3. **Write the files.** Once decisions are baked, write each ticket under `kanban/todo/<goal-id>.<n>-<short-name>.md` using the CREATE shape from `/crud-ticket`. Numbering follows the rule there.
 
-4. **Adopt nits.** Run after the slicer's intentional tickets are written so the goal's own seams are settled first.
-
-   1. `git fetch origin nits 2>/dev/null`. If the branch doesn't exist, print `(no nits substrate)` and skip the rest of this step.
-   2. List pending nits in the same table format as `/goal-define`'s **Pending nits** step, marking each with ✓/✗ for "fits this goal" — i.e. every glob in the nit's `Paths:` is a subset of the adopting goal's `Paths:`.
-   3. Prompt: `Adopt fitting nits? (all / none / pick subset)`. Non-fitting nits are listed for context but not offered.
-   4. For each adopted nit, call `tools/nit-claim.sh <goal-id> <nit-filename>` (filename is the basename, no path).
-      - Exit 0 (win): write a ticket at `kanban/todo/<goal-id>.<n>-<slug>.md` using the materialized ticket format below. `<n>` is the next free number per `/crud-ticket`'s rule, computed *after* the slicer's own tickets are on disk so adopted nits get numbers past them. `<slug>` is the same slug used in the nit's filename.
-      - Exit 2 (race lost): print `<file> already claimed by another goal; skipping` and continue with the next nit.
-      - Exit 3 (network failure): surface to the user and stop the adoption step. Already-won claims stay won; remaining adoptions can be retried by re-running `/goal-slice`.
-
-   **Materialized ticket format** (literal, copyable):
-
-   ```markdown
-   # <goal-id>.<n> · <description from nit>
-
-   **Status:** todo
-   **Goal:** <goal-id>
-   **Size:** small
-   **Origin:** nit-<timestamp>
-
-   ## What
-   <captured prose from nit body — context paragraph if present, else just restate the description. Always include `Originating branch: <branch>` line.>
-
-   ## Scope
-   - <captured Paths from nit file, repeated as concrete deliverables>
-
-   ## Dependencies
-   None.
-
-   ## Verification
-   <fill this in during the disambiguation pass; if no clear verification can be named, the nit's adoption is reverted (`git -C ../void-slice-nits revert <claim-commit>`) rather than shipping a ticket without a check>
-
-   ## Out of scope (intentionally deferred)
-   None.
-   ```
-
-5. **Hand off.** Tell the user: "Ticket files written to `kanban/todo/`. Commit them on the goal branch (`goal/M<N>-<slug>`, created via `/goal-dispatch` if it doesn't exist) before running `/implement-ticket` — that command requires a clean working tree." Do not commit on the user's behalf.
+4. **Hand off.** Tell the user: "Ticket files written to `kanban/todo/`. Commit them on the goal branch (`goal/M<N>-<slug>`; create with `git checkout -b goal/M<N>-<slug> origin/main` if it doesn't exist) before running `/implement-ticket` — that command requires a clean working tree." Do not commit on the user's behalf.
 
 ---
 
 ## What "contract-grade" looks like
 
-- **Concrete file paths in `## Scope`.** Not "the dispatcher script" — `tools/goal-dispatch.sh`. Not "the slash-command file" — `.claude/commands/goal-dispatch.md`.
+- **Concrete file paths in `## Scope`.** Not "the lint engine" — `internal/lint/lint.go`. Not "the slash-command file" — `.claude/commands/goal-slice.md`.
 - **Format examples in code blocks.** If the ticket adds a new field, show the field's literal markdown / JSON. If it adds a CLI flag, show the invocation. The implementer copies, doesn't infer.
 - **Mechanically checkable verification.** "`grep -rn 'foo'` returns zero hits" is checkable. "It feels clean" is not. Each verification bullet should map to a command or a file inspection a third party could run.
 - **Out-of-scope section names what's deferred and why.** "Auto-rebasing — surface only, never silent rewrite" is reasoned deferral. A blank `## Out of scope` invites scope creep.

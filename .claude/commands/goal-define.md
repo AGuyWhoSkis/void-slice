@@ -38,24 +38,12 @@ Before drafting the file body, surface any collision with in-flight goals so the
 
 1. List `kanban/goals/M*.md`.
 2. For each, read `**Status:**` and `**Paths:**`. Filter to goals whose status is `active` or `ongoing` (skip `parked` and closed goals — they don't represent in-flight work, and closed goals don't carry `Paths:` anyway).
-3. For each remaining goal, check whether any concrete file in the working tree matches a glob from both that goal and the new goal. At this scale (a handful of goals, a handful of paths each) inspection is fine — the canonical script lives in `/goal-dispatch`.
+3. For each remaining goal, check whether any concrete file in the working tree matches a glob from both that goal and the new goal. At this scale (a handful of goals, a handful of paths each) inspection is fine.
 4. Report to chat:
    - For each overlap: `Overlap with M{N} ({status}): \`<our-glob>\` ↔ \`<their-glob>\` (both match e.g. \`<example-file>\`)`.
    - If clean: `No overlap with active or ongoing goals.`
 
-The check is informational. The user decides whether to proceed, redraw `Paths:`, or rescope. `/goal-dispatch` is what *blocks* on overlap; `/goal-define` only surfaces.
-
-### Pending nits
-
-Surface what's already filed against the `nits` branch so the user knows whether the new goal can absorb any of them at slice time:
-
-1. `git fetch origin nits 2>/dev/null` — best-effort. If the `nits` branch doesn't exist (pre-M10.1, fresh clone), print `(nits substrate not yet bootstrapped — run tools/nits-bootstrap.sh)` and skip the rest of this step.
-2. `git ls-tree -r --name-only origin/nits kanban/nits/` to enumerate. Skip `kanban/nits/README.md`.
-3. For each nit file, `git show origin/nits:<path>` and parse the `Paths:` block (same shape as a goal's `Paths:`).
-4. For each nit, compute `fits` = ✓ iff every glob in the nit's `Paths:` is a subset of the new goal's `Paths:` (a nit-glob is a subset if every working-tree file matching the nit-glob also matches some goal-glob).
-5. Output as a markdown table with columns `file`, `description` (the first heading line of the nit), `Paths`, `fits`. Header row: `Pending nits (N):` where N is the count. If zero, print `No pending nits.` and skip the table.
-
-Surface only — adoption happens at `/goal-slice`. If a non-fitting nit looks worth adopting, extend this goal's `Paths:` and re-run the overlap check.
+The check is informational. The user decides whether to proceed, redraw `Paths:`, or rescope.
 
 ### 3. Initial status?
 

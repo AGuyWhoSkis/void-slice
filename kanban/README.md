@@ -36,27 +36,6 @@ Active goals declare a `**Paths:**` block between `**Scope:**` and `**Status:**`
 - **Cross-cutting files always declared.** No implicit allowlist for things like `go.mod`, `Makefile`, `CLAUDE.md`, `kanban/README.md`. If two goals both edit `Makefile`, they overlap and must serialize.
 - **Closed goals stay bare.** Overlap checking only matters for in-flight goals; M1–M8 don't carry `Paths:` retroactively.
 
-## Nits
-
-A nit is a tiny single-edit chore captured during another goal's work — see [CLAUDE.md § Nits](../CLAUDE.md#nits) for the rationale and capture/surface/adopt flow.
-
-Substrate: a long-lived `nits` branch with a sibling worktree at `../void-slice-nits/`, bootstrapped via [`tools/nits-bootstrap.sh`](../tools/nits-bootstrap.sh). Pending nits live on that branch under `kanban/nits/`. Adopted nits are removed from the `nits` branch (the `git push` that removes them is the atomic claim) and re-emerge on the adopting goal branch as ordinary tickets carrying `**Origin:** nit-<timestamp>`.
-
-Lifecycle: `filed → claimed → ticketed → landed`. Closing the materialized ticket follows the standard ticket lifecycle.
-
-Sample nit file:
-
-```markdown
-# never include claude.ai/code/session_* URLs in commit messages or PR bodies
-
-**Captured:** 20260505T143022Z
-**Branch:** goal/M10-nit-capture
-**Paths:**
-- CLAUDE.md
-
-Claude Code's git templates embed `claude.ai/code/session_<id>` URLs by default. Even though they're auth-gated, git history is permanent and access models can change — opt out repo-wide.
-```
-
 ## Columns
 
 | Folder | Meaning |
@@ -90,8 +69,8 @@ Closing a goal is just flipping its `**Status:**` field. A retrospective on the 
 
 ### Goal branches
 
-Each active goal owns a long-lived branch `goal/M<N>-<slug>`, where `<slug>` is the goal file's title lowercased and hyphenated (e.g. M9 "Concurrent agent workflow" → `goal/M9-concurrent-agent-workflow`). The slug is deterministic so `/goal-dispatch` can reproduce the branch name from a goal-id alone.
+Each active goal owns a long-lived branch `goal/M<N>-<slug>`, where `<slug>` is the goal file's title lowercased and hyphenated (e.g. M9 "Concurrent agent workflow" → `goal/M9-concurrent-agent-workflow`).
 
-The branch is created from `main` (manually or by `/goal-dispatch`). Tickets for the goal commit onto it; `/implement-ticket` refuses to run if the working tree isn't on the matching goal branch. A single PR per goal targets `main` and is opened early (the slice itself is a deliverable). The PR is merged by a human when the goal closes — branch protection on `main` enforces the gate.
+The branch is created from `main` (`git checkout -b goal/M<N>-<slug> origin/main`). Tickets for the goal commit onto it; `/implement-ticket` refuses to run if the working tree isn't on the matching goal branch. A single PR per goal targets `main` and is opened early (the slice itself is a deliverable). The PR is merged by a human when the goal closes — branch protection on `main` enforces the gate.
 
-`/goal-dispatch <goal-id>` is the entry point: it checks Paths overlap against active/ongoing goals, creates the goal branch (from `origin/main` if it doesn't exist), and adds a sibling worktree. Refuses on overlap, missing Paths, or wrong status. See [`.claude/commands/goal-dispatch.md`](../.claude/commands/goal-dispatch.md).
+`Paths:` overlap against active/ongoing goals is surfaced informationally at `/goal-define` and `/goal-slice`. The user decides whether to redraw scope; there is no automated gate.

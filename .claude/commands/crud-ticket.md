@@ -43,10 +43,10 @@ After creating the file, confirm the ID does not collide with an existing ticket
 
 Same as CREATE, with two deltas:
 
-- Add `**Origin:** <originating-ticket-id>` directly under `**Size:**`, so the gap traces back to the ticket that surfaced it. `**Origin:** nit-<timestamp>` is also valid, used by `/goal-slice` when a ticket materializes from an adopted nit (timestamp matches the nit's filename prefix).
+- Add `**Origin:** <originating-ticket-id>` directly under `**Size:**`, so the gap traces back to the ticket that surfaced it.
 - The `## What` paragraph names what was observed during `<origin>` that motivated this ticket.
 
-Use this format when the trigger is `/implement-ticket`'s GAPS step, `/goal-slice`'s adopt-nits step, or any other "noticed while doing X" situation.
+Use this format when the trigger is `/implement-ticket`'s GAPS step or any other "noticed while doing X" situation.
 
 ---
 
