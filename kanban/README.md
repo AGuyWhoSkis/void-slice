@@ -1,8 +1,6 @@
-# Kanban Board
+# Goals
 
-## Goals
-
-Goals capture durable intent — the why and the scope of a body of work. Tickets are disposable execution units that reference a goal by ID-prefix in their filename.
+Goals capture durable intent — the why and the scope of a body of work. They live at `kanban/goals/M<N>.md`, drafted via the `/goal-define` skill. Goals are the only persistent cross-session artifact; small and medium work runs from conversation context without a goal file.
 
 | Goal | File |
 |------|------|
@@ -21,9 +19,9 @@ Goals capture durable intent — the why and the scope of a body of work. Ticket
 | [M14 — Declared-typing spike](goals/M14.md) | `goals/M14.md` |
 | [M17 — Edit→lint surprise](goals/M17.md) | `goals/M17.md` |
 
-### `Paths:` field
+## `Paths:` field
 
-Active goals declare a `**Paths:**` block between `**Scope:**` and `**Status:**` — a bullet list of repo-relative globs naming the surface the goal will edit. Lets the dispatcher refuse to spawn two agents whose surfaces overlap, without parsing prose.
+Active goals declare a `**Paths:**` block between `**Scope:**` and `**Status:**` — a bullet list of repo-relative globs naming the surface the goal will edit. Lets `/goal-define` surface overlap with in-flight goals at definition time.
 
 ```markdown
 **Paths:**
@@ -31,46 +29,11 @@ Active goals declare a `**Paths:**` block between `**Scope:**` and `**Status:**`
 - internal/parse/**
 ```
 
-- **Glob syntax.** Doublestar globs (`**`, `*`, `?`), repo-relative, no leading slash. Same conventions as Go tooling (`golangci-lint`, etc.).
+- **Glob syntax.** Doublestar globs (`**`, `*`, `?`), repo-relative, no leading slash. Same conventions as Go tooling.
 - **Overlap.** Two `Paths:` fields overlap iff some concrete file in the working tree matches a pattern in both — set-intersection of matched paths, not pattern-prefix or shared-directory.
-- **Cross-cutting files always declared.** No implicit allowlist for things like `go.mod`, `Makefile`, `CLAUDE.md`, `kanban/README.md`. If two goals both edit `Makefile`, they overlap and must serialize.
+- **Cross-cutting files always declared.** No implicit allowlist for things like `go.mod`, `Makefile`, `CLAUDE.md`, `kanban/README.md`. If two goals both edit `Makefile`, they overlap.
 - **Closed goals stay bare.** Overlap checking only matters for in-flight goals; M1–M8 don't carry `Paths:` retroactively.
-
-## Columns
-
-| Folder | Meaning |
-|--------|---------|
-| `todo/` | Prioritized and ready to start |
-| `in-progress/` | Being worked on right now |
-
-Status folders are flat. Goal-membership is encoded in the filename prefix. Closed tickets are deleted (`git rm`) — there is no `done` folder or status; `git log` is the closure record.
-
-## Ticket format
-
-Filename: `<goal-id>.<n>-short-name.md`. Examples: `M1.10-cli-polish.md`, `M5.7-subagents-eval.md`, `M3.4-lsp-followups.md`.
-
-Edit the `**Status:**` field (`todo` / `in-progress`) — the kanban-move hook moves the file into the matching folder. Do not rename or `git mv` manually.
-
-New tickets pick the next free `<n>` within their goal:
-
-```
-ls kanban/{todo,in-progress}/<goal-id>.* 2>/dev/null | wc -l
-```
-
-Add 1 to that count.
 
 ## Lifecycle
 
-1. **Create** — write `kanban/todo/M<N>.<n>-name.md` with `**Status:** todo`. No other file is touched.
-2. **Pick up** — edit `**Status:** in-progress`. The hook moves the file to `kanban/in-progress/`.
-3. **Close** — `git rm` the ticket file. The commit message is the closure record; optionally append a brief retro to the parent goal file. There is no `done` folder or status.
-
-Closing a goal is just flipping its `**Status:**` field. A retrospective on the goal file is optional, not mandatory; [goals/M2.md](goals/M2.md) and [goals/M6.md](goals/M6.md) serve as exemplars.
-
-### Goal branches
-
-Each active goal owns a long-lived branch `goal/M<N>-<slug>`, where `<slug>` is the goal file's title lowercased and hyphenated (e.g. M9 "Concurrent agent workflow" → `goal/M9-concurrent-agent-workflow`).
-
-The branch is created from `main` (`git checkout -b goal/M<N>-<slug> origin/main`). Tickets for the goal commit onto it; `/implement-ticket` refuses to run if the working tree isn't on the matching goal branch. A single PR per goal targets `main` and is opened early (the slice itself is a deliverable). The PR is merged by a human when the goal closes — branch protection on `main` enforces the gate.
-
-`Paths:` overlap against active/ongoing goals is surfaced informationally at `/goal-define` and `/goal-slice`. The user decides whether to redraw scope; there is no automated gate.
+A goal opens with `**Status:** active` (or `parked` / `ongoing`). Work commits onto the goal branch (`goal/M<N>-<slug>`, created with `git checkout -b goal/M<N>-<slug> origin/main`). A single PR per goal targets `main` and is opened early. The PR is merged by a human when the goal closes; branch protection on `main` enforces the gate. Closing a goal is just flipping its `**Status:**` field. A retrospective on the goal file is optional, not mandatory; [goals/M2.md](goals/M2.md) and [goals/M6.md](goals/M6.md) serve as exemplars.

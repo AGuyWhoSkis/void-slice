@@ -1,4 +1,4 @@
-Define a new project goal. Goals are durable artifacts that capture *why a body of work exists* — distinct from tickets, which are disposable execution units. A goal is rare (a handful per project), articulates intent and boundaries, and lives at `kanban/goals/M{N}.md`.
+Define a new project goal. Goals are durable artifacts that capture *why a body of work exists* and the boundaries it should stay within. A goal is rare (a handful per project), lives at `kanban/goals/M{N}.md`, and is the only persistent context across sessions for large bodies of work.
 
 Do **not** treat this as a template fill-in. The value of this command is the conversation that pressure-tests the goal *before* it gets written. A goal file is only as useful as the thinking behind it.
 
@@ -54,14 +54,6 @@ Goals don't sit in `todo`. Valid initial values:
 
 Ask which fits. If `parked`, ask what the gating condition is so the status line can name it.
 
-### 4. Seed tickets?
-
-Ask: are there tickets already in mind? Or does the goal exist primarily as a container that'll grow?
-
-The answer doesn't change the goal file — goal files do not list tickets (the kanban folders are the source of truth). It only shapes whether the user's next step is `/goal-slice` (break the goal into a minimal ticket set) or just sitting on the goal until it's ready.
-
-Do **not** create tickets as part of this command. Direct the user to `/goal-slice <goal-id>` after the goal is written, when they're ready to break it down.
-
 ---
 
 ## Drafting the goal file
@@ -97,12 +89,12 @@ Match the tone of the existing goals — terse, factual, confident about boundar
    | [M{N} — <short name>](goals/M{N}.md) | `goals/M{N}.md` |
    ```
    Insert in numerical order.
-4. Confirm to the user where the file landed and remind them: seed tickets, if any, get created via `/crud-ticket`.
+4. Confirm to the user where the file landed. Next step is a session against the goal — create the goal branch with `git checkout -b goal/M{N}-<slug> origin/main` when work begins.
 
 ---
 
 ## Out of scope for this command
 
-- **Goal closure.** Handled by the kanban lifecycle (flip `**Status:**` on the goal file, optionally append a retro). Not here.
-- **Status updates after creation.** User edits `**Status:**` directly; kanban-move hook excludes `goals/`, nothing to automate.
+- **Goal closure.** Flip `**Status:**` on the goal file when the work lands; optionally append a retro. Not here.
+- **Status updates after creation.** User edits `**Status:**` directly. Nothing to automate.
 - **Goal deletion.** Rare and case-by-case; not worth a command.

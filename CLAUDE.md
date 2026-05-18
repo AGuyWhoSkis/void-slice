@@ -12,7 +12,7 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 | `internal/validate/` | Semantic validator: implements `parse.Handler`, emits `VALIDATE_*` |
 | `internal/report/` | Renderer: human-pretty + JSON |
 | `internal/lint/` | Lint facade |
-| `kanban/` | Markdown task board — see § Kanban |
+| `kanban/goals/` | Durable goal files — see § Goals |
 | `testdata/` | Fixtures; binaries under `binary/`, real game files under `golden/` |
 
 ## Key abstractions
@@ -36,30 +36,23 @@ Linter for Dishonored 2 / DOTO game files (`.entities`, `.decl`, `.entitydef`). 
 
 - `testdata/binary/` — committed binary fixtures. Replace only when updating expected scanner output for a known change.
 
-## Kanban
+## Goals
 
-Tickets live in `kanban/{todo,in-progress}/`. Each ticket's filename starts with its goal ID. Status folders are flat. Goal index in [`kanban/goals/`](kanban/goals/).
-
-Tickets are self-contained: creating, editing, or deleting a ticket should never require updating any other file — including the goal file. Goal files do not maintain ticket tables; the kanban folder listing is the source of truth.
-
-To change a ticket's status, edit the `**Status:**` field (`todo` / `in-progress`) using Edit/Write. The kanban-move hook runs `git mv` to the matching folder. Bash writes bypass the hook. Closed tickets are deleted (`git rm`); `git log` is the closure record.
-
-Use `/crud-ticket <ticket>` and `/implement-ticket <ticket>`.
+Goal files at `kanban/goals/M<N>.md` are the only durable cross-session artifact. They capture *why* a body of work exists and the boundaries it stays within — drafted via `/goal-define`, the user lives at this layer. Small and medium tasks don't need a goal; work directly from conversation. A goal is warranted when work won't fit in a single session and needs the same `why` re-established next time.
 
 ### Branches and merge protocol
 
-Each active goal has a branch `goal/M<N>-<slug>` and a single PR against `main`. Tickets commit onto the goal branch; the goal branch lands as one human-reviewed PR when the goal closes. Agents push the goal branch and stop — they do not merge to `main`. Branch protection on `main` is the hard backstop: 1 non-author approval and green required checks, no agent bypass. See [`.github/rulesets/main.json`](.github/rulesets/main.json).
+Each active goal has a branch `goal/M<N>-<slug>` and a single PR against `main`. Create the branch with `git checkout -b goal/M<N>-<slug> origin/main` when work begins. Work commits onto the goal branch; the goal lands as one human-reviewed PR when it closes. Agents push the goal branch and stop — they do not merge to `main`. Branch protection on `main` is the hard backstop: 1 non-author approval and green required checks, no agent bypass. See [`.github/rulesets/main.json`](.github/rulesets/main.json).
 
 ### CI-feedback loop
 
-After pushing a ticket's work, the agent stays in the loop until CI is green or it hits something it shouldn't fix. Subscribe to the goal PR via `mcp__github__subscribe_pr_activity` and read check status via `mcp__github__pull_request_read` (`method=get_check_runs`). On failure, classify each failing check as **in-scope** (caused by this ticket's diff — fix, re-push, re-read) or **out-of-scope** (pre-existing flake, infra, unrelated regression — surface to the user, do not fix). If the same failure shape recurs twice without progress, stop looping and escalate. The loop is the closing step of `/implement-ticket` — see step 8 there.
+After pushing, stay in the loop until CI is green or you hit something out of scope. Subscribe to the PR via `mcp__github__subscribe_pr_activity` and read check status via `mcp__github__pull_request_read` (`method=get_check_runs`). On failure, classify each failing check as **in-scope** (caused by this session's diff — fix, re-push, re-read) or **out-of-scope** (pre-existing flake, infra, unrelated regression — surface to the user, do not fix). If the same failure shape recurs twice without progress, stop looping and escalate.
 
 ## Tooling
 
 - **Hooks** (`PostToolUse` on Edit/Write):
   - `*.go` → `go test ./...`.
-  - `kanban/{todo,in-progress}/*.md` → `git mv` based on `**Status:**`. `kanban/goals/*.md` excluded.
-- **Slash commands:** `/crud-ticket`, `/implement-ticket`, `/goal-define`, `/goal-slice`.
+- **Slash commands:** `/goal-define`.
 - **Pre-approved Bash:** `go test`, `go build ./...`, `go vet ./...`, `grep`, `find`, `ls`. Still gated: `rm`, `git reset --hard`, `git push --force`, `git branch -D`.
 - **Lint:** `make lint` runs `golangci-lint` at the version pinned in `Makefile` (self-installs to `$(go env GOPATH)/bin`). Keep `Makefile`'s `GOLANGCI_LINT_VERSION` and the `version:` in [.github/workflows/ci.yml](.github/workflows/ci.yml) in sync.
 - **Harnesses:** `make harnesses` runs the per-layer harnesses (M8.1–M8.3) plus the differential oracle (M8.4); CI gates merges and deploys on it alongside `go test ./...`. Use `make layer-harnesses` to skip the oracle. Keep green when touching `worker/`, `cmd/voidslice-wasm/`, or `internal/report`.
