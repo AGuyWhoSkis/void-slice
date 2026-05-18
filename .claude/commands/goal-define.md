@@ -82,14 +82,18 @@ Match the tone of the existing goals — terse, factual, confident about boundar
 
 ## Mechanical steps (after user confirms the draft)
 
-1. Pick the next `M{N}` by listing `kanban/goals/`. The highest existing N plus 1.
-2. Write the file at `kanban/goals/M{N}.md`.
-3. Add a row to the Goals table in `kanban/README.md`:
+1. Confirm the working tree is clean (`git status --porcelain` empty). If not, stop and surface — do not auto-stash.
+2. Pick the next `M{N}` by listing `kanban/goals/`. The highest existing N plus 1.
+3. Create the goal branch from `origin/main`: `git fetch origin && git checkout -b goal/M{N}-<slug> origin/main`. `<slug>` is the goal title lowercased, hyphenated, punctuation stripped.
+4. Write the goal file at `kanban/goals/M{N}.md`.
+5. Add a row to the Goals table in `kanban/README.md` (insert in numerical order):
    ```
    | [M{N} — <short name>](goals/M{N}.md) | `goals/M{N}.md` |
    ```
-   Insert in numerical order.
-4. Confirm to the user where the file landed. Next step is a session against the goal — create the goal branch with `git checkout -b goal/M{N}-<slug> origin/main` when work begins.
+6. Commit: `git add kanban/goals/M{N}.md kanban/README.md && git commit -m "M{N}: open goal — <short name>"`.
+7. Push: `git push -u origin goal/M{N}-<slug>`.
+8. Open a draft PR `goal/M{N}-<slug>` → main via `mcp__github__create_pull_request` with `draft: true`. Title: `M{N}: <short name>`. Body: a one-line summary of the goal's why + a link to the goal file. This PR stays open for the life of the goal — it's the standing integration PR you watch CI on, and the diff that lands on main when the goal closes.
+9. Confirm to the user: goal file at `kanban/goals/M{N}.md`, branch `goal/M{N}-<slug>` pushed, standing PR at `<URL>`.
 
 ---
 

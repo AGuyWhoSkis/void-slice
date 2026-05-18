@@ -42,7 +42,11 @@ Goal files at `kanban/goals/M<N>.md` are the only durable cross-session artifact
 
 ### Branches and merge protocol
 
-Each active goal has a branch `goal/M<N>-<slug>` and a single PR against `main`. Create the branch with `git checkout -b goal/M<N>-<slug> origin/main` when work begins. Work commits onto the goal branch; the goal lands as one human-reviewed PR when it closes. Agents push the goal branch and stop — they do not merge to `main`. Branch protection on `main` is the hard backstop: 1 non-author approval and green required checks, no agent bypass. See [`.github/rulesets/main.json`](.github/rulesets/main.json).
+Each active goal has a branch `goal/M<N>-<slug>` and a single standing draft PR against `main`, both created by `/goal-define` when the goal opens. Work commits onto the goal branch; the standing PR's diff updates with each push, runs full CI on every update, and lands as one human-reviewed PR when the goal closes. Agents push the goal branch and stop — they do not merge to `main`. Branch protection on `main` is the hard backstop: 1 non-author approval and green required checks, no agent bypass. See [`.github/rulesets/main.json`](.github/rulesets/main.json).
+
+**Starting work on a goal from a fresh web session.** Claude Code on the web spawns the agent on a `claude/<id>` branch — that's a workspace, not a contribution path. If the work is goal-scoped, the agent's first move is to fetch and switch to the goal branch: `git fetch origin && git checkout goal/M<N>-<slug>`. Commits land on the goal branch; the session branch is discarded.
+
+**Multi-attempt execution on a goal (opt-in).** When you want parallel exploration on a goal — multiple agents attempting the same slice independently — each attempt branches off the goal branch as `attempt/M<N>-<descriptor>` and opens a PR back to the goal branch (not main). CI fires on the attempt PR; each attempt gets its own preview deploy URL. Compare attempts at the PR level, merge the winner into the goal branch, close the rest unmerged. The standing goal-branch → main PR's diff updates with whatever lands on the goal branch. This pattern is decoupled from ordinary goal execution — single-agent goal work doesn't use it.
 
 ### CI-feedback loop
 
