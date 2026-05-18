@@ -137,7 +137,7 @@ export function Playground() {
               {status.kind === "error" && status.message}
               {status.kind === "ok" &&
                 (diagnostics.length === 0
-                  ? "clean"
+                  ? "clean — try breaking it"
                   : `${diagnostics.length} diagnostic${diagnostics.length === 1 ? "" : "s"}`)}
               {status.kind === "empty" && "drop a file or click a sample"}
             </span>

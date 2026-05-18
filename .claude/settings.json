@@ -21,8 +21,7 @@
       {
         "matcher": "Edit|Write",
         "hooks": [
-          { "type": "command", "command": "bash .claude/hooks/test-runner.sh" },
-          { "type": "command", "command": "bash .claude/hooks/kanban-move.sh" }
+          { "type": "command", "command": "bash .claude/hooks/test-runner.sh" }
         ]
       }
     ]

@@ -1,0 +1,13 @@
+Version 1
+component {
+	cpntInventory loadout {
+		edit = {
+			m_label = "Carnegie";
+			m_items = {
+				num = 2;
+				item[0] = { m_id = "blade"; }
+				item[1] = { m_id = "pistol"; }
+			}
+		}
+	}
+}
