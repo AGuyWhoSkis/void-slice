@@ -65,7 +65,7 @@ func TestScanner(t *testing.T) {
 			name:  "unterminated-quote",
 			bytes: []byte(`{ edit = { m_max = "missing-right-quote ; } }`), // len=45
 			wantDiags: []scan.Diagnostic{
-				{Code: scan.Codes.SCAN, Span: scan.NewSpan(19, 45), Message: "unterminated quote"},
+				{Code: scan.Codes.SCAN, Span: scan.NewSpan(19, 45), Message: "unterminated string literal — check for a missing '\"'"},
 			},
 			wantToks: []scan.Token{
 				{Kind: 0, Span: scan.NewSpan(0, 1)},   // spans `{`
@@ -85,7 +85,7 @@ func TestScanner(t *testing.T) {
 			name:  "unterminated-quote-newline-terminated",
 			bytes: []byte("{ a = \"x\n b = 1; }"), // len=18
 			wantDiags: []scan.Diagnostic{
-				{Code: scan.Codes.SCAN, Span: scan.NewSpan(6, 8), Message: "unterminated quote"},
+				{Code: scan.Codes.SCAN, Span: scan.NewSpan(6, 8), Message: "unterminated string literal — check for a missing '\"'"},
 			},
 			wantToks: []scan.Token{
 				{Kind: scan.TokenKind.SYMBOL, Span: scan.NewSpan(0, 1)},          // {
@@ -456,4 +456,31 @@ func Test_findTokensAtOffsets_panicsOnNoOffsets(t *testing.T) {
 	require.Panics(t, func() {
 		_ = scan.FindTokensAtOffsets(tokens)
 	})
+}
+
+func TestM17_5_UnterminatedQuoteMessage(t *testing.T) {
+	const want = "unterminated string literal — check for a missing '\"'"
+
+	cases := []struct {
+		name string
+		src  string
+	}{
+		{name: "newline-terminated", src: "\"abc\n"},
+		{name: "eof-terminated", src: "\"abc"},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			_, diags, _ := scan.Scan([]byte(tc.src))
+
+			var scanDiags []scan.Diagnostic
+			for _, d := range diags {
+				if d.Code == scan.Codes.SCAN {
+					scanDiags = append(scanDiags, d)
+				}
+			}
+			require.Len(t, scanDiags, 1, "expected exactly one VOID_SCAN diagnostic, got %d (all=%v)", len(scanDiags), diags)
+			assert.Equal(t, want, scanDiags[0].Message)
+		})
+	}
 }

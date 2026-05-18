@@ -257,6 +257,71 @@ func TestRender_SeverityMapping(t *testing.T) {
 	assert.Contains(t, got, "error")
 }
 
+// --- Render-layer diagnostic cap (M17.4) ---
+//
+// Defense-in-depth: the cap lives in the render layer so any future cascade
+// (parser regression, new emitter, an unknown surprise class) hits a bounded
+// surface even if the engine over-emits. The 500 limit is a compile-time
+// constant, not a config knob — see [report.MaxRenderedDiagnostics].
+
+func synthDiags(n int) []scan.Diagnostic {
+	out := make([]scan.Diagnostic, n)
+	for i := 0; i < n; i++ {
+		out[i] = scan.Diagnostic{Code: "VOID_SCAN", Span: scan.NewSpan(i, i+1), Message: "synth"}
+	}
+	return out
+}
+
+func TestRender_CapAt500(t *testing.T) {
+	src := make([]byte, 600)
+	for i := range src {
+		src[i] = 'a'
+	}
+	got := report.Render("x.decl", src, synthDiags(501), report.RenderOptions{})
+
+	assert.Equal(t, 500, strings.Count(got, "[VOID_SCAN]"),
+		"pretty output should render exactly 500 diagnostic entries")
+	assert.Contains(t, got, "... and 1 more diagnostics suppressed (render cap: 500)")
+	assert.True(t, strings.HasSuffix(got, "... and 1 more diagnostics suppressed (render cap: 500)"),
+		"tail line should be the final content in the output")
+}
+
+func TestRender_UnderCapNoTail(t *testing.T) {
+	src := make([]byte, 600)
+	for i := range src {
+		src[i] = 'a'
+	}
+	got := report.Render("x.decl", src, synthDiags(499), report.RenderOptions{})
+
+	assert.NotContains(t, got, "suppressed",
+		"under-cap render must not include the trailing summary line")
+}
+
+func TestRenderJSON_CapAt500(t *testing.T) {
+	src := make([]byte, 600)
+	for i := range src {
+		src[i] = 'a'
+	}
+	got := report.RenderJSON("x.decl", src, synthDiags(501))
+
+	var out struct {
+		File        string        `json:"file"`
+		Diagnostics []interface{} `json:"diagnostics"`
+		Truncated   int           `json:"truncated"`
+	}
+	require.NoError(t, json.Unmarshal([]byte(got), &out))
+	assert.Len(t, out.Diagnostics, 500)
+	assert.Equal(t, 1, out.Truncated)
+}
+
+func TestRenderJSON_UnderCapNoTruncatedField(t *testing.T) {
+	src := []byte("aa")
+	got := report.RenderJSON("x.decl", src, synthDiags(1))
+
+	assert.NotContains(t, got, "truncated",
+		"omitempty must keep the truncated field out of sub-cap JSON")
+}
+
 func TestRender_SortOrder(t *testing.T) {
 	src := []byte("aaa bbb ccc\n")
 	// Supply diags out of order: offset 8 before offset 4

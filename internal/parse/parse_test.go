@@ -699,6 +699,54 @@ func TestM12_12_UnterminatedTupleAnchorsAtLastConsumed(t *testing.T) {
 }
 
 // -------------------------
+// M17.3: top-level cascade gate
+// -------------------------
+
+// Off-grammar first significant token must produce exactly one diagnostic
+// (EXPECTED_SYMBOL anchored at the offender), not a per-token cascade.
+// SC-1 precedent: brace-to-paren flip of a 1.78 MB animset emitted 223,305
+// PARSE_UNEXPECTED_TOKEN before this gate landed.
+func TestM17_3_RootBraceFlipEmitsOneDiag(t *testing.T) {
+	src := []byte("( a b c d e f g h i j }")
+	_, diags := scanAndWalk(t, src)
+	require.Len(t, diags, 1, "expected exactly one diag; got %v", diags)
+	d := diags[0]
+	assert.Equal(t, scan.DiagnosticCode("PARSE_EXPECTED_SYMBOL"), d.Code)
+	assert.Equal(t, "expected '{' at top level", d.Message)
+	assert.Equal(t, 0, d.Span.Start, "anchor at the '('")
+	assert.Equal(t, 1, d.Span.End)
+}
+
+// SC-3 precedent: stripping `// ` from `eof.line-comment-no-newline.decl`
+// previously walked 8 bare identifiers through the for-loop, emitting one
+// PARSE_UNEXPECTED_TOKEN each.
+func TestM17_3_BareIdentifiersDoNotCascade(t *testing.T) {
+	src := []byte("normal line comment, no newline at EOF")
+	_, diags := scanAndWalk(t, src)
+	require.Len(t, diags, 1, "expected exactly one diag; got %v", diags)
+	d := diags[0]
+	assert.Equal(t, scan.DiagnosticCode("PARSE_EXPECTED_SYMBOL"), d.Code)
+	assert.Equal(t, "expected '{' at top level", d.Message)
+	assert.Equal(t, 0, d.Span.Start, "anchor at 'normal'")
+	assert.Equal(t, 6, d.Span.End)
+}
+
+// Files whose first significant token *is* Version or component must
+// continue to flow into the existing top-level loop — the gate must not
+// fire on either keyword.
+func TestM17_3_VersionAndComponentStillPass(t *testing.T) {
+	cases := [][]byte{
+		[]byte("Version 1\ncomponent Foo Bar {}"),
+		[]byte("component Foo Bar {}"),
+	}
+	for _, src := range cases {
+		_, diags := scanAndWalk(t, src)
+		_, fired := findDiagByMessage(diags, "expected '{' at top level")
+		assert.False(t, fired, "gate must not fire on Version/component first token; diags=%v", diags)
+	}
+}
+
+// -------------------------
 // Integration test
 // -------------------------
 

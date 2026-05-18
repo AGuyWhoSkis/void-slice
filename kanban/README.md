@@ -19,6 +19,7 @@ Goals capture durable intent — the why and the scope of a body of work. Ticket
 | [M12 — Lint engine hardening](goals/M12.md) | `goals/M12.md` |
 | [M13 — Whitespace-invariance as a hard property](goals/M13.md) | `goals/M13.md` |
 | [M14 — Declared-typing spike](goals/M14.md) | `goals/M14.md` |
+| [M17 — Edit→lint surprise](goals/M17.md) | `goals/M17.md` |
 
 ### `Paths:` field
 
