@@ -14,8 +14,9 @@ export function Landing() {
           <code>.entitydef</code> files before they break a level.
         </p>
         <p>
-          Paste, drop, or click a sample file below — the playground sends it to
-          the same engine the CLI uses and renders diagnostics inline.
+          Paste, drop, or click a sample below. Then try breaking it — flip a
+          quote, delete a semicolon, change a <code>num=</code> — and watch the
+          diagnostics update as you type. Same engine the CLI uses.
         </p>
         <a className="vs-cta" href="#playground">
           Try it →

@@ -75,7 +75,7 @@ export function Editor({ value, diagnostics, scrollToLine, onChange }: EditorPro
           ".cm-activeLine": { backgroundColor: "transparent" },
           ".cm-activeLineGutter": { backgroundColor: "transparent" },
           ".cm-selectionBackground, &.cm-focused .cm-selectionBackground, ::selection":
-            { backgroundColor: "var(--bg-hover)" },
+            { backgroundColor: "var(--selection)" },
         }),
         EditorView.updateListener.of((u) => {
           if (u.docChanged) {

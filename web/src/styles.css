@@ -10,6 +10,7 @@
   --error-bg: #fdecea;
   --warning: #b7791f;
   --warning-bg: #fef6e1;
+  --selection: #b3d4fc;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --max-w: 1080px;
 }
@@ -26,6 +27,7 @@
   --error-bg: #2a1517;
   --warning: #f0b429;
   --warning-bg: #2a2010;
+  --selection: #2c5282;
   color-scheme: dark;
 }
 
