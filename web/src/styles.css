@@ -371,6 +371,38 @@ a:hover {
   color: var(--fg);
 }
 
+.vs-diags-limitations {
+  margin-top: auto;
+  padding: 8px 12px 12px;
+  border-top: 1px solid var(--border);
+  color: var(--fg-muted);
+  font-size: 12px;
+}
+
+.vs-diags-limitations summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px 0;
+}
+
+.vs-diags-limitations ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+.vs-diags-limitations li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.vs-diags-limitations li:last-child {
+  margin-bottom: 0;
+}
+
+.vs-diags-limitations strong {
+  color: var(--fg);
+}
+
 /* Theme toggle */
 
 .vs-theme-toggle {

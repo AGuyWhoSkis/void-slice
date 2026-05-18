@@ -40,13 +40,27 @@ func usage() {
 	fmt.Fprintln(os.Stderr, "  voidslice lsp")
 }
 
+const lintUsage = `usage: voidslice lint <file> [--json]
+
+Limitations:
+  Small edits can produce many errors when they change the file's parse
+  shape. A single quote-byte flip can extend an orphan string literal
+  across multiple following statements — the diagnostic count reflects
+  the structural reach of the edit, not the edit's byte count.
+
+  Non-ASCII bytes in code positions produce scan errors. Comments
+  containing non-ASCII characters (e.g. accented letters) will error
+  if uncommented.
+`
+
 func runLint(args []string) int {
 	lintFlags := flag.NewFlagSet("lint", flag.ExitOnError)
 	jsonMode := lintFlags.Bool("json", false, "machine-readable JSON output")
+	lintFlags.Usage = func() { fmt.Fprint(os.Stderr, lintUsage) }
 	positional := parseInterspersed(lintFlags, args)
 
 	if len(positional) != 1 {
-		fmt.Fprintln(os.Stderr, "usage: voidslice lint <file> [--json]")
+		lintFlags.Usage()
 		return 2
 	}
 	filename := positional[0]
