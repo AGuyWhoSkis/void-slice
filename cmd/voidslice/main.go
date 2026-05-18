@@ -43,14 +43,14 @@ func usage() {
 const lintUsage = `usage: voidslice lint <file> [--json]
 
 Limitations:
+  Non-ASCII bytes in code positions produce scan errors. Comments
+  containing non-ASCII characters (e.g. accented letters) will error
+  if uncommented.
+
   Small edits can produce many errors when they change the file's parse
   shape. A single quote-byte flip can extend an orphan string literal
   across multiple following statements — the diagnostic count reflects
   the structural reach of the edit, not the edit's byte count.
-
-  Non-ASCII bytes in code positions produce scan errors. Comments
-  containing non-ASCII characters (e.g. accented letters) will error
-  if uncommented.
 `
 
 func runLint(args []string) int {

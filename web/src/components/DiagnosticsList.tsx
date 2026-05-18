@@ -35,16 +35,16 @@ export function DiagnosticsList({ diagnostics, onSelect }: DiagnosticsListProps)
         <summary>Linter limitations</summary>
         <ul>
           <li>
-            <strong>Small edits can produce many errors</strong> when they change the
-            file's parse shape. A single quote-byte flip can extend an orphan string
-            literal across multiple following statements — the diagnostic count
-            reflects the structural reach of the edit, not the edit's byte count.
-          </li>
-          <li>
             <strong>Non-ASCII bytes in code positions</strong> trigger scan errors. A
             comment containing non-ASCII characters (e.g. accented letters in author
             notes) will produce errors if uncommented — the linter can't tell that the
             bytes were author-intended.
+          </li>
+          <li>
+            <strong>Small edits can produce many errors</strong> when they change the
+            file's parse shape. A single quote-byte flip can extend an orphan string
+            literal across multiple following statements — the diagnostic count
+            reflects the structural reach of the edit, not the edit's byte count.
           </li>
         </ul>
       </details>
